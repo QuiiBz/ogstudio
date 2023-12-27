@@ -3,6 +3,9 @@ node_modules/
 .next/
 .vscode/
 .idea/
+.turbo/
 
 .DS_Store
 *.log
+.env
+*.tsbuildinfo
