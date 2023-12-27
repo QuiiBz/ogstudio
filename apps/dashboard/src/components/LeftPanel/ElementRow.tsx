@@ -36,36 +36,27 @@ export function ElementRow({ element }: ElementRowProps) {
         onClick={() => { setSelectedElement(element.id); }}
         type="button"
       >
-        {element.tag === 'p' ? (
-          <>
-            <TextIcon height="1.4em" width="1.4em" />
-            {element.content.slice(0, 25)}
-          </>
-        ) : null}
-        {element.tag === 'div' && element.backgroundImage ? (
-          <>
-            <ImageIcon height="1.4em" width="1.4em" />
-            Image
-          </>
-        ) : null}
-        {element.tag === 'div' && !element.backgroundImage && !element.radius ? (
-          <>
-            <BoxIcon height="1.4em" width="1.4em" />
-            Box
-          </>
-        ) : null}
-        {element.tag === 'div' && !element.backgroundImage && element.radius ? (
-          <>
-            <CircleIcon height="1.4em" width="1.4em" />
-            Rounded box
-          </>
-        ) : null}
-        {element.tag === 'span' ? (
-          <>
-            <MagicWandIcon height="1.4em" width="1.4em" />
-            Dynamic text
-          </>
-        ) : null}
+        {element.tag === 'p'
+          ? <TextIcon height="1.4em" width="1.4em" />
+          : null
+        }
+        {element.tag === 'div' && element.backgroundImage
+          ? <ImageIcon height="1.4em" width="1.4em" />
+          : null
+        }
+        {element.tag === 'div' && !element.backgroundImage && !element.radius
+          ? <BoxIcon height="1.4em" width="1.4em" />
+          : null
+        }
+        {element.tag === 'div' && !element.backgroundImage && element.radius
+          ? <CircleIcon height="1.4em" width="1.4em" />
+          : null
+        }
+        {element.tag === 'span'
+          ? <MagicWandIcon height="1.4em" width="1.4em" />
+          : null
+        }
+        {element.name}
       </button>
       <button
         className="text-gray-600 hover:text-gray-900"

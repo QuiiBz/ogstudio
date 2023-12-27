@@ -28,6 +28,7 @@ export function EditorToolbar() {
     <div className="rounded-md border border-gray-100 bg-white z-10 flex flex-row items-center">
       <ToolbarButton element={{
         tag: 'p',
+        name: 'Text',
         width: 100,
         height: 50,
         visible: true,
@@ -46,6 +47,7 @@ export function EditorToolbar() {
       <div className="w-[1px] h-4 bg-gray-100" />
       <ToolbarButton element={{
         tag: 'div',
+        name: 'Box',
         width: 200,
         height: 200,
         visible: true,
@@ -58,6 +60,7 @@ export function EditorToolbar() {
       <div className="w-[1px] h-4 bg-gray-100" />
       <ToolbarButton element={{
         tag: 'div',
+        name: 'Rounded box',
         width: 150,
         height: 150,
         visible: true,
@@ -71,6 +74,7 @@ export function EditorToolbar() {
       <div className="w-[1px] h-4 bg-gray-100" />
       <ToolbarButton element={{
         tag: 'div',
+        name: 'Image',
         width: 200,
         height: 150,
         visible: true,
@@ -85,6 +89,7 @@ export function EditorToolbar() {
       <div className="w-[1px] h-4 bg-gray-100" />
       <ToolbarButton element={{
         tag: 'span',
+        name: 'Dynamic text',
         width: 312,
         height: 50,
         visible: true,

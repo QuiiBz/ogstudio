@@ -13,6 +13,7 @@ const initialElements: OGElement[] = [
   {
     id: createElementId(),
     tag: 'div',
+    name: 'Box',
     x: 0,
     y: 0,
     width: 1200,
