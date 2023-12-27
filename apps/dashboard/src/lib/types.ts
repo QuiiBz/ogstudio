@@ -3,6 +3,7 @@ import type { Font } from "./fonts"
 export type OGElement = (OGPElement | OGDynamicElement | OGDivElement)
   & {
     id: string
+    name: string
     x: number
     y: number
     width: number

@@ -246,7 +246,7 @@ export function OgEditor({ initialElements, width, height }: OgProviderProps) {
 
   return (
     <OgContext.Provider value={value}>
-      <div className="w-screen h-screen flex flex-row justify-between items-center bg-gray-50">
+      <div className="w-screen h-screen flex flex-row justify-between items-center bg-gray-50 overflow-hidden">
         <div className="w-[300px] h-screen flex flex-col border-r border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
           <LeftPanel />
         </div>
