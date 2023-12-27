@@ -1,6 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from '@dnd-kit/utilities';
-import type { OGElement } from "../_lib/types"
+import type { OGElement } from "../lib/types";
 import { useOg } from "./OgPlayground"
 import { BoxIcon } from "./icons/BoxIcon"
 import { CircleIcon } from "./icons/CircleIcon"
@@ -69,10 +69,12 @@ export function ElementTab({ element }: ElementTabProps) {
       </button>
       <button
         className="text-gray-600 hover:text-gray-900"
-        onClick={() => { updateElement({
-          ...element,
-          visible: !element.visible,
-        }); }}
+        onClick={() => {
+          updateElement({
+            ...element,
+            visible: !element.visible,
+          });
+        }}
         type="button"
       >
         {element.visible ? <VisibleIcon /> : <NotVisibleIcon />}

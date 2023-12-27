@@ -1,6 +1,6 @@
 'use client'
-import { OgPlayground } from "./_components/OgPlayground";
-import type { OGElement } from "./_lib/types";
+import { OgPlayground } from "../components/OgPlayground";
+import type { OGElement } from "../lib/types";
 
 const initialElements: OGElement[] = [
   {

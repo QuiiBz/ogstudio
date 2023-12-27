@@ -1,5 +1,5 @@
 import type { ReactElement } from "react"
-import type { OGElement } from "../_lib/types"
+import type { OGElement } from "../lib/types"
 import { TextIcon } from "./icons/TextIcon"
 import { CircleIcon } from "./icons/CircleIcon"
 import { ImageIcon } from "./icons/ImageIcon"

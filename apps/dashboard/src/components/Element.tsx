@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import { useEffect, useMemo, useRef, useState } from "react"
-import type { OGElement } from "../_lib/types"
+import type { OGElement } from "../lib/types";
 import { useOg } from "./OgPlayground"
 
 function hexToRgba(hex: string, alpha: number) {

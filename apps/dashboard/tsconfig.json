@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@ogstudio/typescript/nextjs.json",
   "compilerOptions": {
     "plugins": [

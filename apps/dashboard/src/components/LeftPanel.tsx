@@ -4,7 +4,7 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import { DndContext, KeyboardSensor, PointerSensor, closestCenter, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, arrayMove, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import { exportToPng, exportToSvg } from "../_lib/export";
+import { exportToPng, exportToSvg } from "../lib/export";
 import { ElementTab } from "./ElementTab";
 import { useOg } from "./OgPlayground";
 import { Button } from "./Button";
@@ -88,18 +88,18 @@ export function LeftPanel() {
 
   async function getFonts() {
     return Promise.all(elements.filter(element => element.tag === 'p' || element.tag === 'span').map(async element => {
-      // @ts-expect-error wrong inference
+      // @ts-expect-error -- wrong inference
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- wrong inference
       const fontName = element.fontFamily.toLowerCase().replace(' ', '-')
-      // @ts-expect-error wrong inference
+      // @ts-expect-error -- wrong inference
       const data = await fetch(`https://fonts.bunny.net/${fontName}/files/${fontName}-latin-${element.fontWeight}-normal.woff`).then(response => response.arrayBuffer())
 
       return {
-        // @ts-expect-error wrong inference
+        // @ts-expect-error -- wrong inference
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- wrong inference
         name: element.fontFamily,
         data,
-        // @ts-expect-error wrong inference
+        // @ts-expect-error -- wrong inference
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- wrong inference
         weight: element.fontWeight,
       }

@@ -1,4 +1,4 @@
-import { FONTS, WEIGHTS } from "../_lib/fonts";
+import { FONTS, WEIGHTS } from "../lib/fonts";
 import { Button } from "./Button";
 import { Input, Select } from "./Labels";
 import { useOg } from "./OgPlayground";

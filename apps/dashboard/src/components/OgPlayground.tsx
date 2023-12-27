@@ -1,6 +1,6 @@
 import type { RefObject } from "react";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import type { OGElement } from "../_lib/types";
+import type { OGElement } from "../lib/types";
 import { Element } from './Element'
 import { RightPanel } from "./RightPanel";
 import { LeftPanel } from "./LeftPanel";
