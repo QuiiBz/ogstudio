@@ -39,6 +39,7 @@ export function EditorToolbar() {
         fontFamily: 'Inter',
         fontWeight: 400,
         lineHeight: 1,
+        letterSpacing: 0,
         fontSize: 50,
         align: 'left',
       }}>
@@ -99,6 +100,7 @@ export function EditorToolbar() {
         fontFamily: 'Inter',
         fontWeight: 400,
         lineHeight: 1,
+        letterSpacing: 0,
         fontSize: 50,
         align: 'left',
       }}>
