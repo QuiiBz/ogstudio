@@ -329,6 +329,6 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
           <RightPanel />
         </div>
       </div>
-    </OgContext.Provider>
+    </OgContext.Provider  >
   )
 }
