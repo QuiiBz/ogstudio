@@ -18,6 +18,8 @@ interface OgContextType {
   removeElement: (id: string) => void
   undoRedo: (type: 'undo' | 'redo') => void
   reset: () => void
+  zoom: number
+  setZoom: (zoom: number) => void
   rootRef: RefObject<HTMLDivElement>
 }
 
@@ -55,6 +57,7 @@ export function OgEditor({ initialElements, width, height }: OgProviderProps) {
 
     return initialElements
   })
+  const [zoom, setZoom] = useState(100)
   const rootRef = useRef<HTMLDivElement>(null)
 
   const setSelectedElement = useCallback((id: string | null) => {
@@ -247,8 +250,10 @@ export function OgEditor({ initialElements, width, height }: OgProviderProps) {
     removeElement,
     undoRedo,
     reset,
+    zoom,
+    setZoom,
     rootRef,
-  }), [elements, selectedElement, setSelectedElement, setElements, updateElement, addElement, removeElement, undoRedo, reset])
+  }), [elements, selectedElement, setSelectedElement, setElements, updateElement, addElement, removeElement, undoRedo, reset, zoom, setZoom])
 
   return (
     <OgContext.Provider value={value}>
@@ -258,14 +263,14 @@ export function OgEditor({ initialElements, width, height }: OgProviderProps) {
         </div>
         <div className="flex flex-col items-center gap-4">
           <p className="text-xs text-gray-400 z-10">{width}x{height}</p>
-          <div className="bg-white shadow-lg shadow-gray-100 relative" style={{ width, height }}>
+          <div className="bg-white shadow-lg shadow-gray-100 relative" style={{ width, height, transform: `scale(${zoom / 100})` }}>
             <div ref={rootRef} style={{ display: 'flex', width: '100%', height: '100%' }}>
               {elements.map(element => (
                 <Element element={element} key={element.id} />
               ))}
             </div>
           </div>
-          <div className="border border-gray-100 absolute pointer-events-none transform translate-y-[32px]" style={{ width, height }} />
+          <div className="border border-gray-100 absolute pointer-events-none" style={{ width, height, transform: `scale(${zoom / 100}) translateY(${32 / (zoom / 100)}px)` }} />
           <EditorToolbar />
         </div>
         <div className="w-[300px] h-screen flex flex-col border-l border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
