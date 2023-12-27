@@ -1,9 +1,10 @@
-import { useOg } from "../OgPlayground";
+import { useOg } from "../OgEditor";
 import type { OGElement } from "../../lib/types";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { AddIcon } from "../icons/AddIcon";
 import { ColorIcon } from "../icons/ColorIcon";
-import { Input, Select } from "../Labels";
+import { Input } from '../forms/Input'
+import { Select } from '../forms/Select'
 import { WidthIcon } from "../icons/WidthIcon";
 import { BorderStyleIcon } from "../icons/BorderStyleIcon";
 

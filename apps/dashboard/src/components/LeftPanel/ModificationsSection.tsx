@@ -1,5 +1,5 @@
 import { Button } from "../Button";
-import { useOg } from "../OgPlayground";
+import { useOg } from "../OgEditor";
 import { RedoIcon } from "../icons/RedoIcon";
 import { UndoIcon } from "../icons/UndoIcon";
 

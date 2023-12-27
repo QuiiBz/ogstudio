@@ -1,24 +1,12 @@
 import type { RefObject } from "react";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { OGElement } from "../lib/types";
+import { createElementId } from "../lib/elements";
+import { maybeLoadFont } from "../lib/fonts";
 import { Element } from './Element'
 import { RightPanel } from "./RightPanel";
 import { LeftPanel } from "./LeftPanel";
-import { PlaygroundToolbar } from "./PlaygroundToolbar";
-
-function maybeLoadFont(font: string, weight: number) {
-  const id = `font-${font}-${weight}`
-
-  if (document.getElementById(id)) {
-    return
-  }
-
-  const link = document.createElement('link')
-  link.id = id
-  link.rel = 'stylesheet'
-  link.href = `https://fonts.bunny.net/css?family=${font.toLowerCase().replace(' ', '-')}:${weight}`
-  document.head.appendChild(link)
-}
+import { EditorToolbar } from "./EditorToolbar";
 
 interface OgContextType {
   elements: OGElement[]
@@ -55,7 +43,7 @@ let editIndex = -1
 
 let elementToCopy: OGElement | undefined
 
-export function OgPlayground({ initialElements, width, height }: OgProviderProps) {
+export function OgEditor({ initialElements, width, height }: OgProviderProps) {
   const [selectedElement, setRealSelectedElement] = useState<string | null>(null)
   const [elements, setRealElements] = useState<OGElement[]>(() => {
     const item = typeof localStorage !== 'undefined' ? localStorage.getItem('elements') : undefined
@@ -209,7 +197,7 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
             ...elementToCopy,
             x: elementToCopy.x + 10,
             y: elementToCopy.y + 10,
-            id: String(Math.random()),
+            id: createElementId(),
           })
         }
       }
@@ -258,7 +246,7 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
             </div>
           </div>
           <div className="border border-gray-100 absolute pointer-events-none transform translate-y-[32px]" style={{ width, height }} />
-          <PlaygroundToolbar />
+          <EditorToolbar />
         </div>
         <div className="w-[300px] h-screen flex flex-col border-l border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
           <RightPanel />

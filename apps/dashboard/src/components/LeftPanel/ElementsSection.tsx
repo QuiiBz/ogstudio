@@ -2,7 +2,7 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import { DndContext, KeyboardSensor, PointerSensor, closestCenter, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, arrayMove, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import { useOg } from "../OgPlayground";
+import { useOg } from "../OgEditor";
 import { ElementRow } from "./ElementRow";
 
 export function ElementsSection() {

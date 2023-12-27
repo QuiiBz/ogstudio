@@ -1,9 +1,9 @@
-import { useOg } from "../OgPlayground";
+import { useOg } from "../OgEditor";
 import type { OGElement } from "../../lib/types";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { AddIcon } from "../icons/AddIcon";
 import { ColorIcon } from "../icons/ColorIcon";
-import { Input } from "../Labels";
+import { Input } from '../forms/Input'
 import { WidthIcon } from "../icons/WidthIcon";
 import { GradientIcon } from "../icons/GradientIcon";
 

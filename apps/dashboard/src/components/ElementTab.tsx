@@ -1,7 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from '@dnd-kit/utilities';
 import type { OGElement } from "../lib/types";
-import { useOg } from "./OgPlayground"
+import { useOg } from "./OgEditor"
 import { BoxIcon } from "./icons/BoxIcon"
 import { CircleIcon } from "./icons/CircleIcon"
 import { ImageIcon } from "./icons/ImageIcon"

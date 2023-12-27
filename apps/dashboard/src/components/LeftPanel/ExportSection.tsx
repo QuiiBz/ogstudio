@@ -3,7 +3,7 @@ import { flushSync } from "react-dom";
 import { Button } from "../Button";
 import { PngIcon } from "../icons/PngIcon";
 import { SvgIcon } from "../icons/SvgIcon";
-import { useOg } from "../OgPlayground";
+import { useOg } from "../OgEditor";
 import { domToReactLike, exportToPng, exportToSvg } from "../../lib/export";
 
 export function ExportSection() {

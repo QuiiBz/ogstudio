@@ -1,4 +1,4 @@
-import { useOg } from "../OgPlayground";
+import { useOg } from "../OgEditor";
 import { BackgroundSection } from "./BackgroundSection";
 import { BorderSection } from "./BorderSection";
 import { FontSection } from "./FontSection";

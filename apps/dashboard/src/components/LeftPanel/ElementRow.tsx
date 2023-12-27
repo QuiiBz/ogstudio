@@ -4,7 +4,7 @@ import type { OGElement } from "../../lib/types";
 import { NotVisibleIcon } from "../icons/NotVisibleIcon"
 import { TextIcon } from "../icons/TextIcon"
 import { VisibleIcon } from "../icons/VisibleIcon"
-import { useOg } from "../OgPlayground"
+import { useOg } from "../OgEditor"
 import { BoxIcon } from "../icons/BoxIcon"
 import { CircleIcon } from "../icons/CircleIcon"
 import { ImageIcon } from "../icons/ImageIcon"

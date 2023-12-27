@@ -1,6 +1,6 @@
 import type { OGElement } from "../../lib/types";
 import { Button } from "../Button";
-import { useOg } from "../OgPlayground";
+import { useOg } from "../OgEditor";
 import { DeleteIcon } from "../icons/DeleteIcon";
 
 interface ModificationsSectionProps {

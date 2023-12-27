@@ -1,5 +1,5 @@
-import { useOg } from "../OgPlayground";
-import { Input } from '../Labels'
+import { useOg } from "../OgEditor";
+import { Input } from '../forms/Input'
 import type { OGElement } from "../../lib/types";
 
 interface SizePositionSectionProps {

@@ -1,8 +1,10 @@
-import { useOg } from "../OgPlayground";
-import { Input, Select } from '../Labels'
+import { useOg } from "../OgEditor";
+import { Input } from '../forms/Input'
+import { Select } from '../forms/Select'
 import type { OGElement } from "../../lib/types";
 import { TextIcon } from "../icons/TextIcon";
-import { FONTS, WEIGHTS } from "../../lib/fonts";
+import type { Font } from "../../lib/fonts";
+import { FONTS, FONT_WEIGHTS } from "../../lib/fonts";
 import { BoldIcon } from "../icons/BoldIcon";
 import { FontSizeIcon } from "../icons/FontSizeIcon";
 import { ColorIcon } from "../icons/ColorIcon";
@@ -26,10 +28,12 @@ export function FontSection({ selectedElement }: FontSectionProps) {
       <p className="text-xs text-gray-600">Font</p>
       <div className="grid grid-cols-2 gap-2">
         <Select onChange={value => {
+          const font = value as unknown as Font
+
           updateElement({
             ...selectedElement,
-            fontFamily: value as unknown as typeof FONTS[number],
-            fontWeight: WEIGHTS[value as unknown as typeof FONTS[number]].includes(selectedElement.fontWeight) ? selectedElement.fontWeight : 400,
+            fontFamily: font,
+            fontWeight: FONT_WEIGHTS[font].includes(selectedElement.fontWeight) ? selectedElement.fontWeight : 400,
           });
         }} value={selectedElement.fontFamily} values={[...FONTS]}>
           <TextIcon />
@@ -39,7 +43,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
             ...selectedElement,
             fontWeight: Number(value),
           });
-        }} value={String(selectedElement.fontWeight)} values={WEIGHTS[selectedElement.fontFamily].map(String)}>
+        }} value={String(selectedElement.fontWeight)} values={FONT_WEIGHTS[selectedElement.fontFamily].map(String)}>
           <BoldIcon />
         </Select>
         <Input onChange={value => {

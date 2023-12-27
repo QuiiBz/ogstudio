@@ -1,5 +1,6 @@
-import { useOg } from "../OgPlayground";
-import { Input, Select } from '../Labels'
+import { useOg } from "../OgEditor";
+import { Input } from '../forms/Input'
+import { Select } from '../forms/Select'
 import type { OGElement } from "../../lib/types";
 import { ColorIcon } from "../icons/ColorIcon";
 import { DeleteIcon } from "../icons/DeleteIcon";

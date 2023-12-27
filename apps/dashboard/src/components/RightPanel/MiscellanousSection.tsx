@@ -1,6 +1,6 @@
 import type { OGElement } from "../../lib/types";
-import { Input } from "../Labels";
-import { useOg } from "../OgPlayground";
+import { Input } from '../forms/Input'
+import { useOg } from "../OgEditor";
 import { CornerIcon } from "../icons/CornerIcon";
 import { OpacityIcon } from "../icons/OpacityIcon";
 import { RotateIcon } from "../icons/RotateIcon";

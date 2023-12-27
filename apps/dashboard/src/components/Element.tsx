@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import { useEffect, useMemo, useRef, useState } from "react"
 import type { OGElement } from "../lib/types";
 import { hexToRgba } from "../lib/colors";
-import { useOg } from "./OgPlayground"
+import { useOg } from "./OgEditor"
 
 interface ElementProps {
   element: OGElement
