@@ -17,6 +17,7 @@ interface OgContextType {
   addElement: (element: OGElement) => void
   removeElement: (id: string) => void
   undoRedo: (type: 'undo' | 'redo') => void
+  reset: () => void
   rootRef: RefObject<HTMLDivElement>
 }
 
@@ -232,6 +233,10 @@ export function OgEditor({ initialElements, width, height }: OgProviderProps) {
     }
   }, [rootRef, selectedElement, removeElement, addElement, elements, undoRedo, setSelectedElement])
 
+  const reset = useCallback(() => {
+    setElements(initialElements)
+  }, [initialElements, setElements])
+
   const value = useMemo(() => ({
     elements,
     selectedElement,
@@ -241,8 +246,9 @@ export function OgEditor({ initialElements, width, height }: OgProviderProps) {
     addElement,
     removeElement,
     undoRedo,
+    reset,
     rootRef,
-  }), [elements, selectedElement, setSelectedElement, setElements, updateElement, addElement, removeElement, undoRedo])
+  }), [elements, selectedElement, setSelectedElement, setElements, updateElement, addElement, removeElement, undoRedo, reset])
 
   return (
     <OgContext.Provider value={value}>
