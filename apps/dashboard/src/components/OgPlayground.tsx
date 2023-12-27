@@ -245,7 +245,7 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
   return (
     <OgContext.Provider value={value}>
       <div className="w-screen h-screen flex flex-row justify-between items-center bg-gray-50">
-        <div className="w-[300px] h-screen flex flex-col border-r border-gray-100 shadow-lg shadow-gray-100 bg-white">
+        <div className="w-[300px] h-screen flex flex-col border-r border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
           <LeftPanel />
         </div>
         <div className="flex flex-col items-center gap-4">
@@ -260,7 +260,7 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
           <div className="border border-gray-100 absolute pointer-events-none transform translate-y-[32px]" style={{ width, height }} />
           <PlaygroundToolbar />
         </div>
-        <div className="w-[300px] h-screen flex flex-col border-l border-gray-100 shadow-lg shadow-gray-100 bg-white">
+        <div className="w-[300px] h-screen flex flex-col border-l border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
           <RightPanel />
         </div>
       </div>

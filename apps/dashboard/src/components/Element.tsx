@@ -1,16 +1,8 @@
 import type { CSSProperties } from "react";
 import { useEffect, useMemo, useRef, useState } from "react"
 import type { OGElement } from "../lib/types";
+import { hexToRgba } from "../lib/colors";
 import { useOg } from "./OgPlayground"
-
-function hexToRgba(hex: string, alpha: number) {
-  const bigint = parseInt(hex.replace('#', ''), 16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
-
-  return `rgba(${r}, ${g}, ${b}, ${alpha / 100})`;
-}
 
 interface ElementProps {
   element: OGElement

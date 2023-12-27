@@ -3,6 +3,65 @@ import satori from "satori"
 
 let wasmInitialized = false
 
+export function domToReactLike(element: Element, dynamicTextReplace: string): Record<string, unknown> {
+  const props: Record<string, unknown> = {}
+  const children = []
+
+  for (const attribute of element.attributes) {
+    if (attribute.name === 'style') {
+      const style: Record<string, string> = {}
+      const declarations = attribute.value.split(/;( |$)/)
+
+      for (const declaration of declarations) {
+        const [property, value] = declaration.split(/:(.*)/)
+
+        if (property && value) {
+          let finalValue = value.trim()
+
+          if (property === 'box-shadow' && finalValue.startsWith('rgb(')) {
+            let rgbValue: string | undefined
+
+            finalValue = finalValue.replace(/rgb\((.*)\)/, (_, rgb) => {
+              rgbValue = rgb as string
+              return ''
+            })
+
+            if (rgbValue) {
+              finalValue += ` rgb(${rgbValue})`
+            }
+          }
+
+          style[property] = finalValue
+        }
+      }
+
+      props.style = style
+      continue
+    }
+  }
+
+  for (const child of element.children) {
+    children.push(domToReactLike(child, dynamicTextReplace))
+  }
+
+  if (children.length === 0 && element.textContent) {
+    if (element.textContent === '[dynamic text]') {
+      children.push(dynamicTextReplace)
+    } else {
+      children.push(element.textContent)
+    }
+  }
+
+  return {
+    type: element.tagName.toLowerCase(),
+    props: {
+      ...props,
+      children,
+    },
+  }
+}
+
+
 export async function exportToSvg(reactLike: Record<string, unknown>, fonts: { name: string, data: ArrayBuffer, weight: number }[]): Promise<string> {
   const now = Date.now()
 
