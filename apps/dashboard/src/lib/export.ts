@@ -7,37 +7,34 @@ export function domToReactLike(element: Element, dynamicTextReplace: string): Re
   const props: Record<string, unknown> = {}
   const children = []
 
-  for (const attribute of element.attributes) {
-    if (attribute.name === 'style') {
-      const style: Record<string, string> = {}
-      const declarations = attribute.value.split(/;( |$)/)
+  if (element instanceof HTMLElement) {
+    const style: Record<string, string> = {}
+    const declarations = element.style.cssText.split(/;( |$)/)
 
-      for (const declaration of declarations) {
-        const [property, value] = declaration.split(/:(.*)/)
+    for (const declaration of declarations) {
+      const [property, value] = declaration.split(/:(.*)/)
 
-        if (property && value) {
-          let finalValue = value.trim()
+      if (property && value) {
+        let finalValue = value.trim()
 
-          if (property === 'box-shadow' && finalValue.startsWith('rgb(')) {
-            let rgbValue: string | undefined
+        if (property === 'box-shadow' && finalValue.startsWith('rgb(')) {
+          let rgbValue: string | undefined
 
-            finalValue = finalValue.replace(/rgb\((.*)\)/, (_, rgb) => {
-              rgbValue = rgb as string
-              return ''
-            })
+          finalValue = finalValue.replace(/rgb\((.*)\)/, (_, rgb) => {
+            rgbValue = rgb as string
+            return ''
+          })
 
-            if (rgbValue) {
-              finalValue += ` rgb(${rgbValue})`
-            }
+          if (rgbValue) {
+            finalValue += ` rgb(${rgbValue})`
           }
-
-          style[property] = finalValue
         }
-      }
 
-      props.style = style
-      continue
+        style[property] = finalValue
+      }
     }
+
+    props.style = style
   }
 
   for (const child of element.children) {

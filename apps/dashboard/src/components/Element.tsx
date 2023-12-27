@@ -237,10 +237,11 @@ export function Element({ element }: ElementProps) {
 
   return (
     <Tag
+      id={`element-${element.id}`}
+      style={style}
       className={`element cursor-default select-none !outline-blue-500 outline-1 outline-offset-[3px] hover:outline ${isSelected ? 'outline cursor-move' : ''} ${isEditing ? '!outline !cursor-text' : ''} ${element.tag === 'span' ? '!outline-dashed' : ''}`}
       // @ts-expect-error wtf?
       ref={elementRef}
-      style={style}
     >
       {element.tag === 'p' ? element.content : null}
       {element.tag === 'span' ? '[dynamic text]' : null}
