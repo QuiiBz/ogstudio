@@ -176,7 +176,7 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
         return
       }
 
-      if (event.key === 'Backspace' && selectedElement) {
+      if ((event.key === 'Backspace' || event.key === 'Delete') && selectedElement) {
         event.preventDefault()
         removeElement(selectedElement)
       }
