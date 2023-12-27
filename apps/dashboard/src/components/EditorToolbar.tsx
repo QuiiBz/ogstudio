@@ -1,14 +1,15 @@
 import type { ReactElement } from "react"
 import type { OGElement } from "../lib/types"
+import { createElement } from "../lib/elements"
 import { TextIcon } from "./icons/TextIcon"
 import { CircleIcon } from "./icons/CircleIcon"
 import { ImageIcon } from "./icons/ImageIcon"
-import { useOg } from "./OgPlayground"
+import { useOg } from "./OgEditor"
 import { BoxIcon } from "./icons/BoxIcon"
 import { MagicWandIcon } from "./icons/MagicWandIcon"
 
 interface ToolbarButtonProps {
-  element: OGElement
+  element: Partial<OGElement>
   children: ReactElement
 }
 
@@ -16,20 +17,17 @@ function ToolbarButton({ element, children }: ToolbarButtonProps) {
   const { addElement } = useOg()
 
   return (
-    <button className="p-2 text-gray-600 hover:text-gray-900" onClick={() => { addElement(element); }} type="button">
+    <button className="p-2 text-gray-600 hover:text-gray-900" onClick={() => { addElement(createElement(element)); }} type="button">
       {children}
     </button>
   )
 }
 
-export function PlaygroundToolbar() {
+export function EditorToolbar() {
   return (
     <div className="rounded-md border border-gray-100 bg-white z-10 flex flex-row items-center">
       <ToolbarButton element={{
         tag: 'p',
-        id: String(Math.random()),
-        x: (1200 - 100) / 2,
-        y: (630 - 50) / 2,
         width: 100,
         height: 50,
         visible: true,
@@ -48,9 +46,6 @@ export function PlaygroundToolbar() {
       <div className="w-[1px] h-4 bg-gray-100" />
       <ToolbarButton element={{
         tag: 'div',
-        id: String(Math.random()),
-        x: (1200 - 200) / 2,
-        y: (630 - 200) / 2,
         width: 200,
         height: 200,
         visible: true,
@@ -63,9 +58,6 @@ export function PlaygroundToolbar() {
       <div className="w-[1px] h-4 bg-gray-100" />
       <ToolbarButton element={{
         tag: 'div',
-        id: String(Math.random()),
-        x: (1200 - 150) / 2,
-        y: (630 - 150) / 2,
         width: 150,
         height: 150,
         visible: true,
@@ -79,9 +71,6 @@ export function PlaygroundToolbar() {
       <div className="w-[1px] h-4 bg-gray-100" />
       <ToolbarButton element={{
         tag: 'div',
-        id: String(Math.random()),
-        x: (1200 - 200) / 2,
-        y: (630 - 150) / 2,
         width: 200,
         height: 150,
         visible: true,
@@ -96,9 +85,6 @@ export function PlaygroundToolbar() {
       <div className="w-[1px] h-4 bg-gray-100" />
       <ToolbarButton element={{
         tag: 'span',
-        id: String(Math.random()),
-        x: (1200 - 312) / 2,
-        y: (630 - 50) / 2,
         width: 312,
         height: 50,
         visible: true,
