@@ -1,20 +1,20 @@
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from '@dnd-kit/utilities';
-import type { OGElement } from "../lib/types";
-import { useOg } from "./OgEditor"
-import { BoxIcon } from "./icons/BoxIcon"
-import { CircleIcon } from "./icons/CircleIcon"
-import { ImageIcon } from "./icons/ImageIcon"
-import { MagicWandIcon } from "./icons/MagicWandIcon"
-import { NotVisibleIcon } from "./icons/NotVisibleIcon"
-import { TextIcon } from "./icons/TextIcon"
-import { VisibleIcon } from "./icons/VisibleIcon"
+import type { OGElement } from "../../lib/types";
+import { NotVisibleIcon } from "../icons/NotVisibleIcon"
+import { TextIcon } from "../icons/TextIcon"
+import { VisibleIcon } from "../icons/VisibleIcon"
+import { useOg } from "../OgEditor"
+import { BoxIcon } from "../icons/BoxIcon"
+import { CircleIcon } from "../icons/CircleIcon"
+import { ImageIcon } from "../icons/ImageIcon"
+import { MagicWandIcon } from "../icons/MagicWandIcon"
 
-interface ElementTabProps {
+interface ElementRowProps {
   element: OGElement
 }
 
-export function ElementTab({ element }: ElementTabProps) {
+export function ElementRow({ element }: ElementRowProps) {
   const { selectedElement, setSelectedElement, updateElement } = useOg()
   const {
     attributes,
@@ -39,7 +39,6 @@ export function ElementTab({ element }: ElementTabProps) {
         {element.tag === 'p' ? (
           <>
             <TextIcon height="1.4em" width="1.4em" />
-            {/* TODO: use ellipsis instead of slicing */}
             {element.content.slice(0, 25)}
           </>
         ) : null}

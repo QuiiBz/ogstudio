@@ -1,24 +1,12 @@
 import type { RefObject } from "react";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { OGElement } from "../lib/types";
+import { createElementId } from "../lib/elements";
+import { maybeLoadFont } from "../lib/fonts";
 import { Element } from './Element'
 import { RightPanel } from "./RightPanel";
 import { LeftPanel } from "./LeftPanel";
-import { PlaygroundToolbar } from "./PlaygroundToolbar";
-
-function maybeLoadFont(font: string, weight: number) {
-  const id = `font-${font}-${weight}`
-
-  if (document.getElementById(id)) {
-    return
-  }
-
-  const link = document.createElement('link')
-  link.id = id
-  link.rel = 'stylesheet'
-  link.href = `https://fonts.bunny.net/css?family=${font.toLowerCase().replace(' ', '-')}:${weight}`
-  document.head.appendChild(link)
-}
+import { EditorToolbar } from "./EditorToolbar";
 
 interface OgContextType {
   elements: OGElement[]
@@ -55,7 +43,7 @@ let editIndex = -1
 
 let elementToCopy: OGElement | undefined
 
-export function OgPlayground({ initialElements, width, height }: OgProviderProps) {
+export function OgEditor({ initialElements, width, height }: OgProviderProps) {
   const [selectedElement, setRealSelectedElement] = useState<string | null>(null)
   const [elements, setRealElements] = useState<OGElement[]>(() => {
     const item = typeof localStorage !== 'undefined' ? localStorage.getItem('elements') : undefined
@@ -70,12 +58,16 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
 
   const setSelectedElement = useCallback((id: string | null) => {
     const element = elements.find(item => item.id === id)
+
+    // Don't allow selecting hidden elements
     if (element && !element.visible) {
       return
     }
 
     setRealSelectedElement(id)
 
+    // Blur the currently focused DOM element (e.g. an input) when the user
+    // edits an element
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur()
     }
@@ -147,6 +139,9 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
     setElements(edits[editIndex], true)
   }, [setElements])
 
+  /**
+   * Immediately load fonts for elements that are visible on the page.
+   */
   useEffect(() => {
     elements.forEach(element => {
       if (element.tag === 'p' || element.tag === 'span') {
@@ -172,35 +167,42 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
     }
 
     function onKeyDown(event: KeyboardEvent) {
+      // If we're not focusing the body, don't do anything
       if (event.target !== document.body) {
         return
       }
 
+      // Delete any selected element
       if ((event.key === 'Backspace' || event.key === 'Delete') && selectedElement) {
         event.preventDefault()
         removeElement(selectedElement)
       }
 
-      if (event.key === 'Escape') {
+      // Unselect any selected element when pressing escape
+      if (event.key === 'Escape' && selectedElement) {
         event.preventDefault()
         setSelectedElement(null)
       }
 
+      // Undo
       if (event.key === 'z' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
         undoRedo('undo')
       }
 
+      // Redo
       if (event.key === 'Z' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
         undoRedo('redo')
       }
 
+      // Copy an element
       if (selectedElement && event.key === 'c' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
         elementToCopy = elements.find(item => item.id === selectedElement)
       }
 
+      // Paste a copied element
       if (event.key === 'v' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
 
@@ -209,7 +211,7 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
             ...elementToCopy,
             x: elementToCopy.x + 10,
             y: elementToCopy.y + 10,
-            id: String(Math.random()),
+            id: createElementId(),
           })
         }
       }
@@ -258,7 +260,7 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
             </div>
           </div>
           <div className="border border-gray-100 absolute pointer-events-none transform translate-y-[32px]" style={{ width, height }} />
-          <PlaygroundToolbar />
+          <EditorToolbar />
         </div>
         <div className="w-[300px] h-screen flex flex-col border-l border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
           <RightPanel />
