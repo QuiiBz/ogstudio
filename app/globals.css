@@ -1,0 +1,51 @@
+@import url('https://fonts.bunny.net/css?family=inter:400');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.element:focus {
+  outline: none;
+}
+
+.handle.top-left {
+  top: -8px;
+  left: -8px;
+  cursor: nwse-resize;
+}
+
+.handle.top-right {
+  top: -8px;
+  right: -8px;
+  cursor: nesw-resize;
+}
+
+.handle.bottom-left {
+  bottom: -8px;
+  left: -8px;
+  cursor: nesw-resize;
+}
+
+.handle.bottom-right {
+  bottom: -8px;
+  right: -8px;
+  cursor: nwse-resize;
+}
+
+.handle.top-center {
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: grabbing;
+}
+
+.handle.top-center::after {
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 12px;
+  @apply bg-blue-500;
+}

@@ -1,0 +1,8 @@
+node_modules/
+.vercel/
+.next/
+.vscode/
+.idea/
+
+.DS_Store
+*.log
