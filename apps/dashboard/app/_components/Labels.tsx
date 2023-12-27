@@ -1,9 +1,10 @@
-import { ReactNode, useId } from "react"
+import type { ReactNode } from "react";
+import { useId } from "react"
 
 type InputType = 'text' | 'color' | 'number' | 'textarea'
 type InputTypeToValue<Type extends InputType> = Type extends 'number' ? number : string
 
-type InputProps<Type extends InputType> = {
+interface InputProps<Type extends InputType> {
   type: Type
   value: InputTypeToValue<Type>
   min?: number
@@ -21,28 +22,20 @@ export function Input<Type extends InputType>({ type, value, min, max, suffix, o
   return (
     <div className={`border border-gray-200 rounded bg-gray-50 flex items-center gap-1 hover:border-gray-300 relative ${children ? 'pl-1.5' : ''} ${className}`}>
       {children ? (
-        <label htmlFor={id} className="text-gray-700 text-sm whitespace-nowrap">
+        <label className="text-gray-700 text-sm whitespace-nowrap" htmlFor={id}>
           {children}
         </label>
       ) : null}
       <Tag
-        id={id}
         className="px-1 py-0.5 text-gray-900 rounded w-full focus:outline-blue-500"
-        type={type}
-        min={min}
+        id={id}
         max={max}
-        value={value}
-        onKeyUp={event => {
-          if (event.key === 'Enter' || event.key === 'Escape') {
-            event.preventDefault()
-            event.currentTarget.blur()
-          }
-        }}
+        min={min}
         onChange={event => {
-          const value = event.target.value
+          const eventValue = event.target.value
 
           if (type === 'number') {
-            const valueNumber = Number(value)
+            const valueNumber = Number(eventValue)
 
             if (min !== undefined && valueNumber < min || max !== undefined && valueNumber > max) {
               return
@@ -50,8 +43,16 @@ export function Input<Type extends InputType>({ type, value, min, max, suffix, o
           }
 
           // @ts-expect-error wtf?
-          onChange(value)
+          onChange(eventValue)
         }}
+        onKeyUp={event => {
+          if (event.key === 'Enter' || event.key === 'Escape') {
+            event.preventDefault()
+            event.currentTarget.blur()
+          }
+        }}
+        type={type}
+        value={value}
       />
       {suffix ? (
         <span className="absolute right-2 text-xs text-gray-400">
@@ -62,7 +63,7 @@ export function Input<Type extends InputType>({ type, value, min, max, suffix, o
   )
 }
 
-type SelectProps = {
+interface SelectProps {
   value: string
   values: string[]
   onChange: (value: string) => void
@@ -74,17 +75,17 @@ export function Select({ value, values, onChange, children }: SelectProps) {
 
   return (
     <div className="border border-gray-100 rounded pl-1.5 bg-gray-100 flex items-center gap-1 hover:border-gray-300">
-      <label htmlFor={id} className="text-gray-700 text-sm whitespace-nowrap">
+      <label className="text-gray-700 text-sm whitespace-nowrap" htmlFor={id}>
         {children}
       </label>
       <select
-        id={id}
         className="px-1 py-0.5 text-gray-900 rounded w-full h-full focus:outline-blue-500"
         defaultValue={value}
-        onChange={event => onChange(event.target.value)}
+        id={id}
+        onChange={event => { onChange(event.target.value); }}
       >
         {values.map(currentValue => (
-          <option value={currentValue} key={currentValue}>{currentValue}</option>
+          <option key={currentValue} value={currentValue}>{currentValue}</option>
         ))}
       </select>
     </div>

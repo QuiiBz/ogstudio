@@ -1,9 +1,10 @@
-import { RefObject, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import type { RefObject } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import type { OGElement } from "../_lib/types";
 import { Element } from './Element'
 import { RightPanel } from "./RightPanel";
 import { LeftPanel } from "./LeftPanel";
 import { PlaygroundToolbar } from "./PlaygroundToolbar";
-import { OGElement } from "../_lib/types";
 
 function maybeLoadFont(font: string, weight: number) {
   const id = `font-${font}-${weight}`
@@ -19,7 +20,7 @@ function maybeLoadFont(font: string, weight: number) {
   document.head.appendChild(link)
 }
 
-type OgContextType = {
+interface OgContextType {
   elements: OGElement[]
   selectedElement: string | null
   setSelectedElement: (id: string | null) => void
@@ -43,7 +44,7 @@ export function useOg() {
   return context
 }
 
-type OgProviderProps = {
+interface OgProviderProps {
   initialElements: OGElement[]
   width: number
   height: number
@@ -52,7 +53,7 @@ type OgProviderProps = {
 const edits: OGElement[][] = []
 let editIndex = -1
 
-let elementToCopy: OGElement | null = null
+let elementToCopy: OGElement | undefined
 
 export function OgPlayground({ initialElements, width, height }: OgProviderProps) {
   const [selectedElement, setRealSelectedElement] = useState<string | null>(null)
@@ -60,7 +61,7 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
     const item = typeof localStorage !== 'undefined' ? localStorage.getItem('elements') : undefined
 
     if (item) {
-      return JSON.parse(item)
+      return JSON.parse(item) as OGElement[]
     }
 
     return initialElements
@@ -80,17 +81,17 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
     }
   }, [elements])
 
-  const setElements = useCallback((elements: OGElement[], skipEdit?: boolean) => {
+  const setElements = useCallback((newElements: OGElement[], skipEdit?: boolean) => {
     setRealElements(oldElements => {
       if (!skipEdit) {
         editIndex += 1
         edits[editIndex] = oldElements
       }
 
-      return elements
+      return newElements
     })
 
-    localStorage.setItem('elements', JSON.stringify(elements))
+    localStorage.setItem('elements', JSON.stringify(newElements))
   }, [])
 
   const updateElement = useCallback((element: OGElement) => {
@@ -152,7 +153,6 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
         maybeLoadFont(element.fontFamily, element.fontWeight)
       }
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -198,7 +198,7 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
 
       if (selectedElement && event.key === 'c' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
-        elementToCopy = elements.find(item => item.id === selectedElement)!
+        elementToCopy = elements.find(item => item.id === selectedElement)
       }
 
       if (event.key === 'v' && (event.metaKey || event.ctrlKey)) {
@@ -250,14 +250,14 @@ export function OgPlayground({ initialElements, width, height }: OgProviderProps
         </div>
         <div className="flex flex-col items-center gap-4">
           <p className="text-xs text-gray-400 z-10">{width}x{height}</p>
-          <div style={{ width, height }} className="bg-white shadow-lg shadow-gray-100 relative">
+          <div className="bg-white shadow-lg shadow-gray-100 relative" style={{ width, height }}>
             <div ref={rootRef} style={{ display: 'flex', width: '100%', height: '100%' }}>
               {elements.map(element => (
-                <Element key={element.id} element={element} />
+                <Element element={element} key={element.id} />
               ))}
             </div>
           </div>
-          <div style={{ width, height }} className="border border-gray-100 absolute pointer-events-none transform translate-y-[32px]" />
+          <div className="border border-gray-100 absolute pointer-events-none transform translate-y-[32px]" style={{ width, height }} />
           <PlaygroundToolbar />
         </div>
         <div className="w-[300px] h-screen flex flex-col border-l border-gray-100 shadow-lg shadow-gray-100 bg-white">

@@ -1,7 +1,7 @@
+import { FONTS, WEIGHTS } from "../_lib/fonts";
 import { Button } from "./Button";
 import { Input, Select } from "./Labels";
 import { useOg } from "./OgPlayground";
-import { FONTS, WEIGHTS } from "../_lib/fonts";
 import { AddIcon } from "./icons/AddIcon";
 import { AlignLeftIcon } from "./icons/AlignLeftIcon";
 import { BoldIcon } from "./icons/BoldIcon";
@@ -40,96 +40,120 @@ export function RightPanel() {
     <div className="flex flex-col items-start gap-4 p-4">
       <p className="text-xs text-gray-600">Size & Position</p>
       <div className="grid grid-cols-2 gap-2">
-        <Input type="number" value={selectedElementData.x} suffix="px" min={0} max={1200 - selectedElementData.width} onChange={value => updateElement({
-          ...selectedElementData,
-          x: value,
-        })}>
+        <Input max={1200 - selectedElementData.width} min={0} onChange={value => {
+          updateElement({
+            ...selectedElementData,
+            x: value,
+          });
+        }} suffix="px" type="number" value={selectedElementData.x}>
           X
         </Input>
-        <Input type="number" value={selectedElementData.y} suffix="px" min={0} max={630 - selectedElementData.height} onChange={value => updateElement({
-          ...selectedElementData,
-          y: value,
-        })}>
+        <Input max={630 - selectedElementData.height} min={0} onChange={value => {
+          updateElement({
+            ...selectedElementData,
+            y: value,
+          });
+        }} suffix="px" type="number" value={selectedElementData.y}>
           Y
         </Input>
-        <Input type="number" value={selectedElementData.width} suffix="px" onChange={value => updateElement({
-          ...selectedElementData,
-          width: value,
-        })}>
+        <Input onChange={value => {
+          updateElement({
+            ...selectedElementData,
+            width: value,
+          });
+        }} suffix="px" type="number" value={selectedElementData.width}>
           W
         </Input>
-        <Input type="number" value={selectedElementData.height} suffix="px" onChange={value => updateElement({
-          ...selectedElementData,
-          height: value,
-        })}>
+        <Input onChange={value => {
+          updateElement({
+            ...selectedElementData,
+            height: value,
+          });
+        }} suffix="px" type="number" value={selectedElementData.height}>
           H
         </Input>
       </div>
       <div className="h-[1px] w-full bg-gray-100" />
-      {selectedElementData.tag == 'p' || selectedElementData.tag === 'span' ? (
+      {selectedElementData.tag === 'p' || selectedElementData.tag === 'span' ? (
         <>
           <p className="text-xs text-gray-600">Font</p>
           <div className="grid grid-cols-2 gap-2">
-            <Select value={selectedElementData.fontFamily} values={[...FONTS]} onChange={value => updateElement({
-              ...selectedElementData,
-              fontFamily: value as unknown as typeof FONTS[number],
-              fontWeight: WEIGHTS[value as unknown as typeof FONTS[number]].includes(selectedElementData.fontWeight) ? selectedElementData.fontWeight : 400,
-            })}>
+            <Select onChange={value => {
+              updateElement({
+                ...selectedElementData,
+                fontFamily: value as unknown as typeof FONTS[number],
+                fontWeight: WEIGHTS[value as unknown as typeof FONTS[number]].includes(selectedElementData.fontWeight) ? selectedElementData.fontWeight : 400,
+              });
+            }} value={selectedElementData.fontFamily} values={[...FONTS]}>
               <TextIcon />
             </Select>
-            <Select value={String(selectedElementData.fontWeight)} values={WEIGHTS[selectedElementData.fontFamily].map(String)} onChange={value => updateElement({
-              ...selectedElementData,
-              fontWeight: Number(value),
-            })}>
+            <Select onChange={value => {
+              updateElement({
+                ...selectedElementData,
+                fontWeight: Number(value),
+              });
+            }} value={String(selectedElementData.fontWeight)} values={WEIGHTS[selectedElementData.fontFamily].map(String)}>
               <BoldIcon />
             </Select>
-            <Input type="number" value={selectedElementData.fontSize} suffix="px" onChange={value => updateElement({
-              ...selectedElementData,
-              fontSize: value,
-            })}>
+            <Input onChange={value => {
+              updateElement({
+                ...selectedElementData,
+                fontSize: value,
+              });
+            }} suffix="px" type="number" value={selectedElementData.fontSize}>
               <FontSizeIcon />
             </Input>
-            <Input type="color" value={selectedElementData.color} onChange={value => updateElement({
-              ...selectedElementData,
-              color: value,
-            })}>
+            <Input onChange={value => {
+              updateElement({
+                ...selectedElementData,
+                color: value,
+              });
+            }} type="color" value={selectedElementData.color}>
               <ColorIcon />
             </Input>
-            <Input type="number" value={selectedElementData.lineHeight} min={0} max={5} onChange={value => updateElement({
-              ...selectedElementData,
-              lineHeight: value,
-            })}>
+            <Input max={5} min={0} onChange={value => {
+              updateElement({
+                ...selectedElementData,
+                lineHeight: value,
+              });
+            }} type="number" value={selectedElementData.lineHeight}>
               <LineHeightIcon />
             </Input>
-            <Input type="number" value={0} min={0} max={5} onChange={() => updateElement(selectedElementData)}>
+            <Input max={5} min={0} onChange={() => { updateElement(selectedElementData); }} type="number" value={0}>
               <LetterSpacingIcon />
             </Input>
-            <Select value={selectedElementData.align ?? 'left'} values={['left', 'right', 'center']} onChange={value => updateElement({
-              ...selectedElementData,
-              // @ts-expect-error wtf?
-              align: value,
-            })}>
+            <Select onChange={value => {
+              updateElement({
+                ...selectedElementData,
+                // @ts-expect-error wtf?
+                align: value,
+              });
+            }} value={selectedElementData.align} values={['left', 'right', 'center']}>
               <AlignLeftIcon />
             </Select>
             {selectedElementData.tag === 'p' ? (
-              <Input type="textarea" className="col-span-full" value={selectedElementData.content} onChange={value => updateElement({
-                ...selectedElementData,
-                content: value,
-              })} />
+              <Input className="col-span-full" onChange={value => {
+                updateElement({
+                  ...selectedElementData,
+                  content: value,
+                });
+              }} type="textarea" value={selectedElementData.content} />
             ) : null}
           </div>
         </>
       ) : null}
-      {selectedElementData.tag == 'div' && !selectedElementData.backgroundImage ? (
+      {selectedElementData.tag === 'div' && !selectedElementData.backgroundImage ? (
         <>
           {!selectedElementData.gradient ? (
             <>
               <p className="text-xs text-gray-600">Background color</p>
               <div className="grid grid-cols-1 gap-2 w-full">
-                <Input type="color" value={selectedElementData.backgroundColor} onChange={value => updateElement({
-                  ...selectedElementData,
-                  backgroundColor: value,
-                })}>
+                <Input onChange={value => {
+                  updateElement({
+                    ...selectedElementData,
+                    backgroundColor: value,
+                  });
+                }} type="color" value={selectedElementData.backgroundColor}>
                   <ColorIcon />
                 </Input>
               </div>
@@ -138,67 +162,79 @@ export function RightPanel() {
           <div className="flex items-center justify-between w-full">
             <p className="text-xs text-gray-600">Background gradient</p>
             {selectedElementData.gradient ? (
-              <button type="button" className="text-gray-600 hover:text-gray-900" onClick={() => updateElement({
-                ...selectedElementData,
-                gradient: undefined,
-              })}>
+              <button className="text-gray-600 hover:text-gray-900" onClick={() => {
+                updateElement({
+                  ...selectedElementData,
+                  gradient: undefined,
+                });
+              }} type="button">
                 <DeleteIcon />
               </button>
             ) : (
-              <button type="button" className="text-gray-600 hover:text-gray-900" onClick={() => updateElement({
-                ...selectedElementData,
-                gradient: {
-                  start: '#000000',
-                  end: '#FFFFFF',
-                  angle: 90,
-                  type: 'linear',
-                },
-              })}>
+              <button className="text-gray-600 hover:text-gray-900" onClick={() => {
+                updateElement({
+                  ...selectedElementData,
+                  gradient: {
+                    start: '#000000',
+                    end: '#FFFFFF',
+                    angle: 90,
+                    type: 'linear',
+                  },
+                });
+              }} type="button">
                 <AddIcon />
               </button>
             )}
           </div>
           {selectedElementData.gradient ? (
             <div className="grid grid-cols-2 gap-2 w-full">
-              <Input type="color" value={selectedElementData.gradient.start} onChange={value => updateElement({
-                ...selectedElementData,
-                // @ts-expect-error wtf?
-                gradient: {
-                  ...selectedElementData.gradient,
-                  start: value,
-                }
-              })}>
-                <StartIcon />
-              </Input>
-              <Input type="color" value={selectedElementData.gradient.end} onChange={value => updateElement({
-                ...selectedElementData,
-                // @ts-expect-error wtf?
-                gradient: {
-                  ...selectedElementData.gradient,
-                  end: value,
-                }
-              })}>
-                <EndIcon />
-              </Input>
-              <Select value={selectedElementData.gradient.type} values={['linear', 'radial']} onChange={value => updateElement({
-                ...selectedElementData,
-                gradient: {
-                  ...selectedElementData.gradient,
-                  // @ts-expect-error wtf?
-                  type: value,
-                },
-              })}>
-                <GradientIcon />
-              </Select>
-              {selectedElementData.gradient.type === 'linear' ? (
-                <Input type="number" value={selectedElementData.gradient.angle} min={-360} max={360} suffix="deg" onChange={value => updateElement({
+              <Input onChange={value => {
+                updateElement({
                   ...selectedElementData,
                   // @ts-expect-error wtf?
                   gradient: {
                     ...selectedElementData.gradient,
-                    angle: value,
+                    start: value,
+                  }
+                });
+              }} type="color" value={selectedElementData.gradient.start}>
+                <StartIcon />
+              </Input>
+              <Input onChange={value => {
+                updateElement({
+                  ...selectedElementData,
+                  // @ts-expect-error wtf?
+                  gradient: {
+                    ...selectedElementData.gradient,
+                    end: value,
+                  }
+                });
+              }} type="color" value={selectedElementData.gradient.end}>
+                <EndIcon />
+              </Input>
+              <Select onChange={value => {
+                updateElement({
+                  ...selectedElementData,
+                  gradient: {
+                    ...selectedElementData.gradient,
+                    // @ts-expect-error wtf?
+                    type: value,
                   },
-                })}>
+                });
+              }} value={selectedElementData.gradient.type} values={['linear', 'radial']}>
+                <GradientIcon />
+              </Select>
+              {selectedElementData.gradient.type === 'linear' ? (
+                <Input max={360} min={-360} onChange={value => {
+                  updateElement({
+                    ...selectedElementData,
+                    // @ts-expect-error wtf?
+                    gradient: {
+                      ...selectedElementData.gradient,
+                      angle: value,
+                    },
+                  });
+                }} suffix="deg" type="number" value={selectedElementData.gradient.angle}>
                   <SquareIcon />
                 </Input>
               ) : null}
@@ -211,38 +247,46 @@ export function RightPanel() {
           <div className="flex items-center justify-between w-full">
             <p className="text-xs text-gray-600">Background image</p>
             {selectedElementData.backgroundImage ? (
-              <button type="button" className="text-gray-600 hover:text-gray-900" onClick={() => updateElement({
-                ...selectedElementData,
-                backgroundImage: undefined,
-              })}>
+              <button className="text-gray-600 hover:text-gray-900" onClick={() => {
+                updateElement({
+                  ...selectedElementData,
+                  backgroundImage: undefined,
+                });
+              }} type="button">
                 <DeleteIcon />
               </button>
             ) : (
-              <button type="button" className="text-gray-600 hover:text-gray-900" onClick={() => updateElement({
-                ...selectedElementData,
-                backgroundImage: 'https://source.unsplash.com/random',
-                backgroundSize: 'cover',
-              })}>
+              <button className="text-gray-600 hover:text-gray-900" onClick={() => {
+                updateElement({
+                  ...selectedElementData,
+                  backgroundImage: 'https://source.unsplash.com/random',
+                  backgroundSize: 'cover',
+                });
+              }} type="button">
                 <AddIcon />
               </button>
             )}
           </div>
           {selectedElementData.backgroundImage ? (
             <div className="grid grid-cols-2 gap-2 w-full">
-              <Input className="col-span-full" type="text" value={selectedElementData.backgroundImage} onChange={value => updateElement({
-                ...selectedElementData,
-                backgroundImage: value,
-              })}>
+              <Input className="col-span-full" onChange={value => {
+                updateElement({
+                  ...selectedElementData,
+                  backgroundImage: value,
+                });
+              }} type="text" value={selectedElementData.backgroundImage}>
                 <LinkIcon />
               </Input>
-              <Select value={selectedElementData.backgroundSize ?? ''} values={['contain', 'cover']} onChange={value => updateElement({
-                ...selectedElementData,
-                // @ts-expect-error wtf?
-                backgroundSize: value,
-              })}>
+              <Select onChange={value => {
+                updateElement({
+                  ...selectedElementData,
+                  // @ts-expect-error wtf?
+                  backgroundSize: value,
+                });
+              }} value={selectedElementData.backgroundSize ?? ''} values={['contain', 'cover']}>
                 <ImageSizeIcon />
               </Select>
-              <Select value="center" values={["center"]} onChange={() => updateElement(selectedElementData)}>
+              <Select onChange={() => { updateElement(selectedElementData); }} value="center" values={["center"]}>
                 <ImagePositionIcon />
               </Select>
             </div>
@@ -253,55 +297,65 @@ export function RightPanel() {
       <div className="flex items-center justify-between w-full">
         <p className="text-xs text-gray-600">Border</p>
         {selectedElementData.border ? (
-          <button type="button" className="text-gray-600 hover:text-gray-900" onClick={() => updateElement({
-            ...selectedElementData,
-            border: undefined,
-          })}>
+          <button className="text-gray-600 hover:text-gray-900" onClick={() => {
+            updateElement({
+              ...selectedElementData,
+              border: undefined,
+            });
+          }} type="button">
             <DeleteIcon />
           </button>
         ) : (
-          <button type="button" className="text-gray-600 hover:text-gray-900" onClick={() => updateElement({
-            ...selectedElementData,
-            border: {
-              color: '#000000',
-              width: 1,
-              style: 'outside',
-            },
-          })}>
+          <button className="text-gray-600 hover:text-gray-900" onClick={() => {
+            updateElement({
+              ...selectedElementData,
+              border: {
+                color: '#000000',
+                width: 1,
+                style: 'outside',
+              },
+            });
+          }} type="button">
             <AddIcon />
           </button>
         )}
       </div>
       {selectedElementData.border ? (
         <div className="grid grid-cols-2 gap-2 w-full">
-          <Input type="color" value={selectedElementData.border.color} onChange={value => updateElement({
-            ...selectedElementData,
-            // @ts-expect-error wtf?
-            border: {
-              ...selectedElementData.border,
-              color: value,
-            }
-          })}>
+          <Input onChange={value => {
+            updateElement({
+              ...selectedElementData,
+              // @ts-expect-error wtf?
+              border: {
+                ...selectedElementData.border,
+                color: value,
+              }
+            });
+          }} type="color" value={selectedElementData.border.color}>
             <ColorIcon />
           </Input>
-          <Input type="number" value={selectedElementData.border.width} suffix="px" min={0} max={99} onChange={value => updateElement({
-            ...selectedElementData,
-            // @ts-expect-error wtf?
-            border: {
-              ...selectedElementData.border,
-              width: value,
-            }
-          })}>
+          <Input max={99} min={0} onChange={value => {
+            updateElement({
+              ...selectedElementData,
+              // @ts-expect-error wtf?
+              border: {
+                ...selectedElementData.border,
+                width: value,
+              }
+            });
+          }} suffix="px" type="number" value={selectedElementData.border.width}>
             <WidthIcon />
           </Input>
-          <Select value={selectedElementData.border.style} values={['outside', 'inside']} onChange={value => updateElement({
-            ...selectedElementData,
-            border: {
-              ...selectedElementData.border,
-              // @ts-expect-error wtf?
-              style: value,
-            }
-          })}>
+          <Select onChange={value => {
+            updateElement({
+              ...selectedElementData,
+              border: {
+                ...selectedElementData.border,
+                // @ts-expect-error wtf?
+                style: value,
+              }
+            });
+          }} value={selectedElementData.border.style} values={['outside', 'inside']}>
             <BorderStyleIcon />
           </Select>
         </div>
@@ -310,23 +364,27 @@ export function RightPanel() {
       <div className="flex items-center justify-between w-full">
         <p className="text-xs text-gray-600">Shadow</p>
         {selectedElementData.shadow ? (
-          <button type="button" className="text-gray-600 hover:text-gray-900" onClick={() => updateElement({
-            ...selectedElementData,
-            shadow: undefined,
-          })}>
+          <button className="text-gray-600 hover:text-gray-900" onClick={() => {
+            updateElement({
+              ...selectedElementData,
+              shadow: undefined,
+            });
+          }} type="button">
             <DeleteIcon />
           </button>
         ) : (
-          <button type="button" className="text-gray-600 hover:text-gray-900" onClick={() => updateElement({
-            ...selectedElementData,
-            shadow: {
-              color: '#000000',
-              width: 5,
-              blur: 5,
-              x: 0,
-              y: 0,
-            },
-          })}>
+          <button className="text-gray-600 hover:text-gray-900" onClick={() => {
+            updateElement({
+              ...selectedElementData,
+              shadow: {
+                color: '#000000',
+                width: 5,
+                blur: 5,
+                x: 0,
+                y: 0,
+              },
+            });
+          }} type="button">
             <AddIcon />
           </button>
         )}
@@ -334,55 +392,65 @@ export function RightPanel() {
       {selectedElementData.shadow ? (
         <div className="grid grid-cols-2 gap-2 w-full">
           {selectedElementData.tag === 'p' || selectedElementData.tag === 'span' ? null : (
-            <Input type="number" value={selectedElementData.shadow.width} suffix="px" min={0} max={99} onChange={value => updateElement({
+            <Input max={99} min={0} onChange={value => {
+              updateElement({
+                ...selectedElementData,
+                // @ts-expect-error wtf?
+                shadow: {
+                  ...selectedElementData.shadow,
+                  width: value,
+                }
+              });
+            }} suffix="px" type="number" value={selectedElementData.shadow.width}>
+              <WidthIcon />
+            </Input>
+          )}
+          <Input max={99} min={0} onChange={value => {
+            updateElement({
               ...selectedElementData,
               // @ts-expect-error wtf?
               shadow: {
                 ...selectedElementData.shadow,
-                width: value,
+                blur: value,
               }
-            })}>
-              <WidthIcon />
-            </Input>
-          )}
-          <Input type="number" value={selectedElementData.shadow.blur} suffix="px" min={0} max={99} onChange={value => updateElement({
-            ...selectedElementData,
-            // @ts-expect-error wtf?
-            shadow: {
-              ...selectedElementData.shadow,
-              blur: value,
-            }
-          })}>
+            });
+          }} suffix="px" type="number" value={selectedElementData.shadow.blur}>
             <GradientIcon />
           </Input>
-          <Input type="number" value={selectedElementData.shadow.x} suffix="px" onChange={value => updateElement({
-            ...selectedElementData,
-            // @ts-expect-error wtf?
-            shadow: {
-              ...selectedElementData.shadow,
-              x: value,
-            }
-          })}>
+          <Input onChange={value => {
+            updateElement({
+              ...selectedElementData,
+              // @ts-expect-error wtf?
+              shadow: {
+                ...selectedElementData.shadow,
+                x: value,
+              }
+            });
+          }} suffix="px" type="number" value={selectedElementData.shadow.x}>
             X
           </Input>
-          <Input type="number" value={selectedElementData.shadow.y} suffix="px" onChange={value => updateElement({
-            ...selectedElementData,
-            // @ts-expect-error wtf?
-            shadow: {
-              ...selectedElementData.shadow,
-              y: value,
-            }
-          })}>
+          <Input onChange={value => {
+            updateElement({
+              ...selectedElementData,
+              // @ts-expect-error wtf?
+              shadow: {
+                ...selectedElementData.shadow,
+                y: value,
+              }
+            });
+          }} suffix="px" type="number" value={selectedElementData.shadow.y}>
             Y
           </Input>
-          <Input type="color" value={selectedElementData.shadow.color} onChange={value => updateElement({
-            ...selectedElementData,
-            // @ts-expect-error wtf?
-            shadow: {
-              ...selectedElementData.shadow,
-              color: value,
-            }
-          })}>
+          <Input onChange={value => {
+            updateElement({
+              ...selectedElementData,
+              // @ts-expect-error wtf?
+              shadow: {
+                ...selectedElementData.shadow,
+                color: value,
+              }
+            });
+          }} type="color" value={selectedElementData.shadow.color}>
             <ColorIcon />
           </Input>
         </div>
@@ -390,23 +458,29 @@ export function RightPanel() {
       <div className="h-[1px] w-full bg-gray-100" />
       <p className="text-xs text-gray-600">Miscellaneous</p>
       <div className="grid grid-cols-2 gap-2 w-full">
-        <Input type="number" value={selectedElementData.opacity} min={0} max={100} suffix="%" onChange={value => updateElement({
-          ...selectedElementData,
-          opacity: value,
-        })}>
+        <Input max={100} min={0} onChange={value => {
+          updateElement({
+            ...selectedElementData,
+            opacity: value,
+          });
+        }} suffix="%" type="number" value={selectedElementData.opacity}>
           <OpacityIcon />
         </Input>
-        <Input type="number" value={selectedElementData.rotate} min={-360} max={360} suffix="deg" onChange={value => updateElement({
-          ...selectedElementData,
-          rotate: value,
-        })}>
+        <Input max={360} min={-360} onChange={value => {
+          updateElement({
+            ...selectedElementData,
+            rotate: value,
+          });
+        }} suffix="deg" type="number" value={selectedElementData.rotate}>
           <RotateIcon />
         </Input>
         {selectedElementData.tag === 'div' ? (
-          <Input type="number" value={selectedElementData.radius ?? 0} min={0} max={999} suffix="px" onChange={value => updateElement({
-            ...selectedElementData,
-            radius: value,
-          })}>
+          <Input max={999} min={0} onChange={value => {
+            updateElement({
+              ...selectedElementData,
+              radius: value,
+            });
+          }} suffix="px" type="number" value={selectedElementData.radius ?? 0}>
             <CornerIcon />
           </Input>
         ) : null}
@@ -414,7 +488,7 @@ export function RightPanel() {
       <div className="h-[1px] w-full bg-gray-100" />
       <p className="text-xs text-gray-600">Modifications</p>
       <div className="grid grid-cols-1 gap-2 w-full">
-        <Button onClick={() => removeElement(selectedElementData.id)} variant="danger" icon={<DeleteIcon />}>Delete</Button>
+        <Button icon={<DeleteIcon />} onClick={() => { removeElement(selectedElementData.id); }} variant="danger">Delete</Button>
       </div>
     </div >
   )

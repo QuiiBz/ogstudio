@@ -1,11 +1,12 @@
 import { flushSync } from "react-dom";
-import { useOg } from "./OgPlayground";
-import { exportToPng, exportToSvg } from "../_lib/export";
 import { useState } from "react";
-import { DndContext, DragEndEvent, KeyboardSensor, PointerSensor, closestCenter, useSensor, useSensors } from "@dnd-kit/core";
+import type { DragEndEvent } from "@dnd-kit/core";
+import { DndContext, KeyboardSensor, PointerSensor, closestCenter, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, arrayMove, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { ElementTab } from "./ElementTab";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { exportToPng, exportToSvg } from "../_lib/export";
+import { ElementTab } from "./ElementTab";
+import { useOg } from "./OgPlayground";
 import { Button } from "./Button";
 import { SvgIcon } from "./icons/SvgIcon";
 import { PngIcon } from "./icons/PngIcon";
@@ -29,15 +30,15 @@ function domToReactLike(element: Element, dynamicTextReplace: string): Record<st
           let finalValue = value.trim()
 
           if (property === 'box-shadow' && finalValue.startsWith('rgb(')) {
-            let rgbValue;
+            let rgbValue: string | undefined
 
             finalValue = finalValue.replace(/rgb\((.*)\)/, (_, rgb) => {
-              rgbValue = rgb
+              rgbValue = rgb as string
               return ''
             })
 
             if (rgbValue) {
-              finalValue += ' rgb(' + rgbValue + ')'
+              finalValue += ` rgb(${rgbValue})`
             }
           }
 
@@ -88,15 +89,18 @@ export function LeftPanel() {
   async function getFonts() {
     return Promise.all(elements.filter(element => element.tag === 'p' || element.tag === 'span').map(async element => {
       // @ts-expect-error wrong inference
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- wrong inference
       const fontName = element.fontFamily.toLowerCase().replace(' ', '-')
       // @ts-expect-error wrong inference
       const data = await fetch(`https://fonts.bunny.net/${fontName}/files/${fontName}-latin-${element.fontWeight}-normal.woff`).then(response => response.arrayBuffer())
 
       return {
         // @ts-expect-error wrong inference
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- wrong inference
         name: element.fontFamily,
         data,
         // @ts-expect-error wrong inference
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- wrong inference
         weight: element.fontWeight,
       }
     }))
@@ -158,10 +162,10 @@ export function LeftPanel() {
     <div className="flex flex-col items-start gap-4 p-4">
       <p className="text-xs text-gray-600">Elements</p>
       <div className="flex flex-col-reverse w-full">
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd} onDragOver={handleDragEnd} modifiers={[restrictToVerticalAxis]}>
+        <DndContext collisionDetection={closestCenter} modifiers={[restrictToVerticalAxis]} onDragEnd={handleDragEnd} onDragOver={handleDragEnd} sensors={sensors}>
           <SortableContext items={elements} strategy={verticalListSortingStrategy}>
             {elements.map(element => (
-              <ElementTab key={element.id} element={element} />
+              <ElementTab element={element} key={element.id} />
             ))}
           </SortableContext>
         </DndContext>
@@ -169,20 +173,20 @@ export function LeftPanel() {
       <div className="h-[1px] w-full bg-gray-100" />
       <p className="text-xs text-gray-600">Modifications</p>
       <div className="grid grid-cols-2 gap-2 w-full">
-        <Button onClick={() => undoRedo('undo')} icon={<UndoIcon />}>Undo</Button>
-        <Button onClick={() => undoRedo('redo')} icon={<RedoIcon />}>Redo</Button>
+        <Button icon={<UndoIcon />} onClick={() => { undoRedo('undo'); }}>Undo</Button>
+        <Button icon={<RedoIcon />} onClick={() => { undoRedo('redo'); }}>Redo</Button>
       </div>
       <div className="h-[1px] w-full bg-gray-100" />
       <p className="text-xs text-gray-600">Export</p>
       <div className="grid grid-cols-1 gap-2 w-full">
-        <Button onClick={() => preview()} icon={<VisibleIcon />}>Preview</Button>
-        <Button onClick={() => exportSvg()} icon={<SvgIcon />}>Export as SVG</Button>
-        <Button onClick={() => exportPng()} icon={<PngIcon />}>Export as PNG</Button>
+        <Button icon={<VisibleIcon />} onClick={() => preview()}>Preview</Button>
+        <Button icon={<SvgIcon />} onClick={() => exportSvg()}>Export as SVG</Button>
+        <Button icon={<PngIcon />} onClick={() => exportPng()}>Export as PNG</Button>
       </div>
       {ogImage ? (
         <div className="absolute top-0 left-0 z-50">
           <div className="w-[1200px] h-[630px] " dangerouslySetInnerHTML={{ __html: ogImage }} />
-          <button type="button" onClick={() => setOgImage(null)}>Close</button>
+          <button onClick={() => { setOgImage(null); }} type="button">Close</button>
         </div>
       ) : null}
     </div >

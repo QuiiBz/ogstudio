@@ -1,6 +1,6 @@
 'use client'
 import { OgPlayground } from "./_components/OgPlayground";
-import { OGElement } from "./_lib/types";
+import type { OGElement } from "./_lib/types";
 
 const initialElements: OGElement[] = [
   {
@@ -19,6 +19,6 @@ const initialElements: OGElement[] = [
 
 export default function Home() {
   return (
-    <OgPlayground initialElements={initialElements} width={1200} height={630} />
+    <OgPlayground height={630} initialElements={initialElements} width={1200} />
   )
 }

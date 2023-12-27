@@ -1,4 +1,4 @@
-import { FONTS } from "./fonts"
+import type { FONTS } from "./fonts"
 
 export type OGElement = (OGPElement | OGDynamicElement | OGDivElement)
   & {
@@ -24,7 +24,7 @@ export type OGElement = (OGPElement | OGDynamicElement | OGDivElement)
     }
   }
 
-export type OGPElement = {
+export interface OGPElement {
   tag: 'p'
   content: string
   color: string
@@ -39,7 +39,7 @@ export type OGDynamicElement = Omit<OGPElement, 'tag' | 'content'> & {
   tag: 'span'
 }
 
-export type OGDivElement = {
+export interface OGDivElement {
   tag: 'div'
   radius?: number
   backgroundColor: string

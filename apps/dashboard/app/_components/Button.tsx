@@ -1,6 +1,6 @@
-import { ReactNode } from "react"
+import type { ReactNode } from "react"
 
-type ButtonProps = {
+interface ButtonProps {
   icon?: ReactNode
   variant?: 'danger'
   onClick: () => void
@@ -10,7 +10,7 @@ type ButtonProps = {
 
 export function Button({ icon, variant, onClick, className, children }: ButtonProps) {
   return (
-    <button type="button" onClick={onClick} className={`flex gap-3 items-center px-3 py-1 border rounded ${variant === 'danger' ? 'text-red-900 bg-red-50 border-red-200 hover:border-red-300' : 'text-gray-900 bg-gray-50 border-gray-200 hover:border-gray-300'} ${className}`}>
+    <button className={`flex gap-3 items-center px-3 py-1 border rounded ${variant === 'danger' ? 'text-red-900 bg-red-50 border-red-200 hover:border-red-300' : 'text-gray-900 bg-gray-50 border-gray-200 hover:border-gray-300'} ${className}`} onClick={onClick} type="button">
       {icon}
       {children}
     </button>

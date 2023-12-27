@@ -1,5 +1,6 @@
-import { CSSProperties, useEffect, useMemo, useRef, useState } from "react"
-import { OGElement } from "../_lib/types"
+import type { CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState } from "react"
+import type { OGElement } from "../_lib/types"
 import { useOg } from "./OgPlayground"
 
 function hexToRgba(hex: string, alpha: number) {
@@ -11,7 +12,7 @@ function hexToRgba(hex: string, alpha: number) {
   return `rgba(${r}, ${g}, ${b}, ${alpha / 100})`;
 }
 
-type ElementProps = {
+interface ElementProps {
   element: OGElement
 }
 
@@ -45,25 +46,31 @@ export function Element({ element }: ElementProps) {
 
       const startX = event.clientX - target.offsetLeft
       const startY = event.clientY - target.offsetTop
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know it's not null
       const initialX = isResizer ? target.parentElement!.offsetLeft : target.offsetLeft
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know it's not null
       const initialY = isResizer ? target.parentElement!.offsetTop : target.offsetTop
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know it's not null
       const initialWidth = isResizer ? target.parentElement!.offsetWidth : target.offsetWidth
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know it's not null
       const initialHeight = isResizer ? target.parentElement!.offsetHeight : target.offsetHeight
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know it's not null
       const initialRotate = isResizer ? Number(target.parentElement!.style.transform.replace('rotate(', '').replace('deg)', '')) : 0
 
       let changed = false
 
-      function onMouseMove(event: MouseEvent) {
+      function onMouseMove(mouseMoveEvent: MouseEvent) {
         changed = true
 
         if (isResizer) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know it's not null
           const parent = target.parentElement!
 
           if (target.classList.contains('bottom-right')) {
-            let width = event.clientX - startX
-            let height = event.clientY - startY
+            let width = mouseMoveEvent.clientX - startX
+            let height = mouseMoveEvent.clientY - startY
 
-            if (event.shiftKey) {
+            if (mouseMoveEvent.shiftKey) {
               // Snap to 1:1
               const ratio = initialWidth / initialHeight
               const newRatio = width / height
@@ -78,39 +85,39 @@ export function Element({ element }: ElementProps) {
             parent.style.width = `${width}px`
             parent.style.height = `${height}px`
           } else if (target.classList.contains('bottom-left')) {
-            const x = initialX + event.clientX - startX
-            const width = x === 0 ? initialWidth + (event.clientX - startX) : initialWidth - (event.clientX - startX)
+            const x = initialX + mouseMoveEvent.clientX - startX
+            const width = x === 0 ? initialWidth + (mouseMoveEvent.clientX - startX) : initialWidth - (mouseMoveEvent.clientX - startX)
 
             parent.style.width = `${width}px`
             parent.style.left = `${x}px`
 
-            const height = event.clientY - startY
+            const height = mouseMoveEvent.clientY - startY
             parent.style.height = `${height}px`
           } else if (target.classList.contains('top-right')) {
-            const width = event.clientX - startX
+            const width = mouseMoveEvent.clientX - startX
             parent.style.width = `${width}px`
 
-            const y = initialY + event.clientY - startY
-            const height = y === 0 ? initialHeight + (event.clientY - startY) : initialHeight - (event.clientY - startY)
+            const y = initialY + mouseMoveEvent.clientY - startY
+            const height = y === 0 ? initialHeight + (mouseMoveEvent.clientY - startY) : initialHeight - (mouseMoveEvent.clientY - startY)
             parent.style.height = `${height}px`
             parent.style.top = `${y}px`
           } else if (target.classList.contains('top-left')) {
-            const x = initialX + event.clientX - startX
-            const width = x === 0 ? initialWidth + (event.clientX - startX) : initialWidth - (event.clientX - startX)
+            const x = initialX + mouseMoveEvent.clientX - startX
+            const width = x === 0 ? initialWidth + (mouseMoveEvent.clientX - startX) : initialWidth - (mouseMoveEvent.clientX - startX)
             parent.style.width = `${width}px`
             parent.style.left = `${x}px`
 
-            const y = initialY + event.clientY - startY
-            const height = y === 0 ? initialHeight + (event.clientY - startY) : initialHeight - (event.clientY - startY)
+            const y = initialY + mouseMoveEvent.clientY - startY
+            const height = y === 0 ? initialHeight + (mouseMoveEvent.clientY - startY) : initialHeight - (mouseMoveEvent.clientY - startY)
             parent.style.top = `${y}px`
             parent.style.height = `${height}px`
           } else if (target.classList.contains('top-center')) {
             // Rotate based on offset from center of target
-            const x = event.clientX - startX - (parent.offsetWidth / 2)
-            const y = event.clientY - startY - (parent.offsetHeight / 2)
+            const x = mouseMoveEvent.clientX - startX - (parent.offsetWidth / 2)
+            const y = mouseMoveEvent.clientY - startY - (parent.offsetHeight / 2)
             let rotate = (Math.atan2(y, x) * 180 / Math.PI) + 90 + initialRotate
 
-            if (event.shiftKey) {
+            if (mouseMoveEvent.shiftKey) {
               // Snap to 15 degree increments
               rotate = Math.round(rotate / 15) * 15
             }
@@ -126,8 +133,8 @@ export function Element({ element }: ElementProps) {
             parent.style.transform = `rotate(${rotate}deg)`
           }
         } else {
-          const x = event.clientX - startX
-          const y = event.clientY - startY
+          const x = mouseMoveEvent.clientX - startX
+          const y = mouseMoveEvent.clientY - startY
 
           target.style.left = `${x}px`
           target.style.top = `${y}px`
@@ -152,6 +159,7 @@ export function Element({ element }: ElementProps) {
             y,
           })
         } else {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know it's not null
           const parent = target.parentElement!
           const x = Number(parent.style.left.replace('px', ''))
           const y = Number(parent.style.top.replace('px', ''))
@@ -187,9 +195,9 @@ export function Element({ element }: ElementProps) {
       target.focus()
       setIsEditing(true)
 
-      function onKeyDown(event: KeyboardEvent) {
-        if (event.key === 'Enter' || event.key === 'Escape') {
-          event.preventDefault()
+      function onKeyDown(keyDownEvent: KeyboardEvent) {
+        if (keyDownEvent.key === 'Enter' || keyDownEvent.key === 'Escape') {
+          keyDownEvent.preventDefault()
           target.blur()
         }
 
@@ -234,7 +242,7 @@ export function Element({ element }: ElementProps) {
 
   const style = useMemo<CSSProperties>(() => {
     const boxShadows: string[] = []
-    let textShadow: string | undefined = undefined
+    let textShadow: string | undefined
 
     if (element.border) {
       boxShadows.push(`0 0 0 ${element.border.width}px${element.border.style === 'inside' ? ' inset' : ''} ${element.border.color}`)
@@ -258,7 +266,7 @@ export function Element({ element }: ElementProps) {
       boxShadow: boxShadows.length ? boxShadows.join(', ') : undefined,
     }
 
-    if (element.tag === 'p' || element.tag == 'span') {
+    if (element.tag === 'p' || element.tag === 'span') {
       base = {
         ...base,
         color: hexToRgba(element.color, element.opacity),
@@ -305,9 +313,9 @@ export function Element({ element }: ElementProps) {
 
   return (
     <Tag
+      className={`element cursor-default select-none !outline-blue-500 outline-1 outline-offset-[3px] hover:outline ${isSelected ? 'outline cursor-move' : ''} ${isEditing ? '!outline !cursor-text' : ''} ${element.tag === 'span' ? '!outline-dashed' : ''}`}
       // @ts-expect-error wtf?
       ref={elementRef}
-      className={`element cursor-default select-none !outline-blue-500 outline-1 outline-offset-[3px] hover:outline ${isSelected ? 'outline cursor-move' : ''} ${isEditing ? '!outline !cursor-text' : ''} ${element.tag === 'span' ? '!outline-dashed' : ''}`}
       style={style}
     >
       {element.tag === 'p' ? element.content : null}

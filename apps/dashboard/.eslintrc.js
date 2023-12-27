@@ -1,6 +1,6 @@
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-  extends: ["@ogstudio/eslint/nextjs.js"],
+  extends: ["./node_modules/@ogstudio/eslint/nextjs"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: true,

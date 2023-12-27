@@ -26,7 +26,6 @@ module.exports = {
     React: true,
     JSX: true,
   },
-  plugins: ["only-warn"],
   settings: {
     "import/resolver": {
       typescript: {
@@ -38,5 +37,14 @@ module.exports = {
   // add rules configurations here
   rules: {
     "import/no-default-export": "off",
+    "unicorn/filename-case": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "import/no-cycle": "off",
+    "no-console": "warn",
+    "no-bitwise": "off",
+    "no-nested-ternary": "off",
+    "react/hook-use-state": "off",
+    "prefer-named-capture-group": "off",
+    "@typescript-eslint/no-misused-promises": "off",
   },
 };

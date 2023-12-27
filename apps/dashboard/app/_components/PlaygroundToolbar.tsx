@@ -1,5 +1,5 @@
-import { ReactElement } from "react"
-import { OGElement } from "../_lib/types"
+import type { ReactElement } from "react"
+import type { OGElement } from "../_lib/types"
 import { TextIcon } from "./icons/TextIcon"
 import { CircleIcon } from "./icons/CircleIcon"
 import { ImageIcon } from "./icons/ImageIcon"
@@ -7,7 +7,7 @@ import { useOg } from "./OgPlayground"
 import { BoxIcon } from "./icons/BoxIcon"
 import { MagicWandIcon } from "./icons/MagicWandIcon"
 
-type ToolbarButtonProps = {
+interface ToolbarButtonProps {
   element: OGElement
   children: ReactElement
 }
@@ -16,7 +16,7 @@ function ToolbarButton({ element, children }: ToolbarButtonProps) {
   const { addElement } = useOg()
 
   return (
-    <button type="button" className="p-2 text-gray-600 hover:text-gray-900" onClick={() => addElement(element)}>
+    <button className="p-2 text-gray-600 hover:text-gray-900" onClick={() => { addElement(element); }} type="button">
       {children}
     </button>
   )
@@ -43,7 +43,7 @@ export function PlaygroundToolbar() {
         fontSize: 50,
         align: 'left',
       }}>
-        <TextIcon width="1.4em" height="1.4em" />
+        <TextIcon height="1.4em" width="1.4em" />
       </ToolbarButton>
       <div className="w-[1px] h-4 bg-gray-100" />
       <ToolbarButton element={{
@@ -58,7 +58,7 @@ export function PlaygroundToolbar() {
         opacity: 100,
         backgroundColor: '#000000',
       }}>
-        <BoxIcon width="1.4em" height="1.4em" />
+        <BoxIcon height="1.4em" width="1.4em" />
       </ToolbarButton>
       <div className="w-[1px] h-4 bg-gray-100" />
       <ToolbarButton element={{
@@ -74,7 +74,7 @@ export function PlaygroundToolbar() {
         backgroundColor: '#000000',
         radius: 999,
       }}>
-        <CircleIcon width="1.4em" height="1.4em" />
+        <CircleIcon height="1.4em" width="1.4em" />
       </ToolbarButton>
       <div className="w-[1px] h-4 bg-gray-100" />
       <ToolbarButton element={{
@@ -91,7 +91,7 @@ export function PlaygroundToolbar() {
         backgroundImage: 'https://source.unsplash.com/random',
         backgroundSize: 'cover',
       }}>
-        <ImageIcon width="1.4em" height="1.4em" />
+        <ImageIcon height="1.4em" width="1.4em" />
       </ToolbarButton>
       <div className="w-[1px] h-4 bg-gray-100" />
       <ToolbarButton element={{
@@ -111,7 +111,7 @@ export function PlaygroundToolbar() {
         fontSize: 50,
         align: 'left',
       }}>
-        <MagicWandIcon width="1.4em" height="1.4em" />
+        <MagicWandIcon height="1.4em" width="1.4em" />
       </ToolbarButton>
     </div>
   )

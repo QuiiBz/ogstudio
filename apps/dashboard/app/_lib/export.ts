@@ -3,7 +3,7 @@ import satori from "satori"
 
 let wasmInitialized = false
 
-export async function exportToSvg(reactLike: Record<string, unknown>, fonts: Array<{ name: string, data: ArrayBuffer, weight: number }>): Promise<string> {
+export async function exportToSvg(reactLike: Record<string, unknown>, fonts: { name: string, data: ArrayBuffer, weight: number }[]): Promise<string> {
   const now = Date.now()
 
   const svg = await satori(
@@ -20,7 +20,7 @@ export async function exportToSvg(reactLike: Record<string, unknown>, fonts: Arr
   return svg
 }
 
-export async function exportToPng(svg: string, fonts: Array<Uint8Array>): Promise<Uint8Array> {
+export async function exportToPng(svg: string, fonts: Uint8Array[]): Promise<Uint8Array> {
   const now = Date.now()
 
   if (!wasmInitialized) {
