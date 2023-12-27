@@ -39,6 +39,7 @@ export function ElementTab({ element }: ElementTabProps) {
         {element.tag === 'p' ? (
           <>
             <TextIcon height="1.4em" width="1.4em" />
+            {/* TODO: use ellipsis instead of slicing */}
             {element.content.slice(0, 25)}
           </>
         ) : null}

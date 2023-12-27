@@ -58,12 +58,16 @@ export function OgEditor({ initialElements, width, height }: OgProviderProps) {
 
   const setSelectedElement = useCallback((id: string | null) => {
     const element = elements.find(item => item.id === id)
+
+    // Don't allow selecting hidden elements
     if (element && !element.visible) {
       return
     }
 
     setRealSelectedElement(id)
 
+    // Blur the currently focused DOM element (e.g. an input) when the user
+    // edits an element
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur()
     }
@@ -135,6 +139,9 @@ export function OgEditor({ initialElements, width, height }: OgProviderProps) {
     setElements(edits[editIndex], true)
   }, [setElements])
 
+  /**
+   * Immediately load fonts for elements that are visible on the page.
+   */
   useEffect(() => {
     elements.forEach(element => {
       if (element.tag === 'p' || element.tag === 'span') {
@@ -160,35 +167,42 @@ export function OgEditor({ initialElements, width, height }: OgProviderProps) {
     }
 
     function onKeyDown(event: KeyboardEvent) {
+      // If we're not focusing the body, don't do anything
       if (event.target !== document.body) {
         return
       }
 
+      // Delete any selected element
       if ((event.key === 'Backspace' || event.key === 'Delete') && selectedElement) {
         event.preventDefault()
         removeElement(selectedElement)
       }
 
-      if (event.key === 'Escape') {
+      // Unselect any selected element when pressing escape
+      if (event.key === 'Escape' && selectedElement) {
         event.preventDefault()
         setSelectedElement(null)
       }
 
+      // Undo
       if (event.key === 'z' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
         undoRedo('undo')
       }
 
+      // Redo
       if (event.key === 'Z' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
         undoRedo('redo')
       }
 
+      // Copy an element
       if (selectedElement && event.key === 'c' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
         elementToCopy = elements.find(item => item.id === selectedElement)
       }
 
+      // Paste a copied element
       if (event.key === 'v' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
 

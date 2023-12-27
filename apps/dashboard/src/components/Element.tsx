@@ -1,7 +1,6 @@
-import type { CSSProperties } from "react";
 import { useEffect, useMemo, useRef, useState } from "react"
 import type { OGElement } from "../lib/types";
-import { hexToRgba } from "../lib/colors";
+import { createElementStyle } from "../lib/elements";
 import { useOg } from "./OgEditor"
 
 interface ElementProps {
@@ -15,13 +14,6 @@ export function Element({ element }: ElementProps) {
 
   const isSelected = selectedElement === element.id
   const Tag = element.tag
-
-  useEffect(() => {
-    if (isEditing && !isSelected) {
-      elementRef.current?.blur()
-    }
-
-  }, [isEditing, isSelected])
 
   useEffect(() => {
     function onMouseDown(event: MouseEvent) {
@@ -54,6 +46,7 @@ export function Element({ element }: ElementProps) {
       function onMouseMove(mouseMoveEvent: MouseEvent) {
         changed = true
 
+        // We want to resize / rotate
         if (isResizer) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know it's not null
           const parent = target.parentElement!
@@ -125,6 +118,7 @@ export function Element({ element }: ElementProps) {
             parent.style.transform = `rotate(${rotate}deg)`
           }
         } else {
+          // We want to move
           const x = mouseMoveEvent.clientX - startX
           const y = mouseMoveEvent.clientY - startY
 
@@ -141,16 +135,7 @@ export function Element({ element }: ElementProps) {
           return
         }
 
-        if (!isResizer) {
-          const x = Number(target.style.left.replace('px', ''))
-          const y = Number(target.style.top.replace('px', ''))
-
-          updateElement({
-            ...element,
-            x,
-            y,
-          })
-        } else {
+        if (isResizer) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know it's not null
           const parent = target.parentElement!
           const x = Number(parent.style.left.replace('px', ''))
@@ -167,6 +152,15 @@ export function Element({ element }: ElementProps) {
             height,
             rotate,
           })
+        } else {
+          const x = Number(target.style.left.replace('px', ''))
+          const y = Number(target.style.top.replace('px', ''))
+
+          updateElement({
+            ...element,
+            x,
+            y,
+          })
         }
       }
 
@@ -179,6 +173,7 @@ export function Element({ element }: ElementProps) {
 
       const target = event.target as HTMLElement
 
+      // Prevent double-clicking on resizers
       if (!target.className.includes('element')) {
         return
       }
@@ -188,6 +183,8 @@ export function Element({ element }: ElementProps) {
       setIsEditing(true)
 
       function onKeyDown(keyDownEvent: KeyboardEvent) {
+        // Submit on enter or escape. The actual cleanup is done in the
+        // onBlur event handler.
         if (keyDownEvent.key === 'Enter' || keyDownEvent.key === 'Escape') {
           keyDownEvent.preventDefault()
           target.blur()
@@ -232,72 +229,7 @@ export function Element({ element }: ElementProps) {
     }
   }, [element.tag, elementRef, isEditing, setSelectedElement, updateElement, removeElement, selectedElement, isSelected, element])
 
-  const style = useMemo<CSSProperties>(() => {
-    const boxShadows: string[] = []
-    let textShadow: string | undefined
-
-    if (element.border) {
-      boxShadows.push(`0 0 0 ${element.border.width}px${element.border.style === 'inside' ? ' inset' : ''} ${element.border.color}`)
-    }
-
-    if (element.shadow) {
-      if (element.tag === 'p' || element.tag === 'span') {
-        textShadow = `${element.shadow.x}px ${element.shadow.y}px ${element.shadow.blur}px ${element.shadow.color}`
-      } else {
-        boxShadows.push(`${element.shadow.x}px ${element.shadow.y}px ${element.shadow.blur}px ${element.shadow.width}px ${element.shadow.color}`)
-      }
-    }
-
-    let base: CSSProperties = {
-      position: 'absolute',
-      top: `${element.y}px`,
-      left: `${element.x}px`,
-      width: `${element.width}px`,
-      height: `${element.height}px`,
-      transform: element.rotate !== 0 ? `rotate(${element.rotate}deg)` : undefined,
-      boxShadow: boxShadows.length ? boxShadows.join(', ') : undefined,
-    }
-
-    if (element.tag === 'p' || element.tag === 'span') {
-      base = {
-        ...base,
-        color: hexToRgba(element.color, element.opacity),
-        fontFamily: element.fontFamily,
-        fontWeight: element.fontWeight,
-        fontSize: `${element.fontSize}px`,
-        lineHeight: element.lineHeight,
-        textAlign: element.align,
-        marginTop: 0,
-        marginBottom: 0,
-        textShadow,
-      }
-    }
-
-    if (element.tag === 'div') {
-      base = {
-        ...base,
-        display: 'flex',
-        borderRadius: element.radius ? `${element.radius}px` : undefined,
-        background: element.backgroundImage
-          ? undefined
-          : element.gradient
-            ? element.gradient.type === 'radial'
-              ? `radial-gradient(${element.gradient.start}, ${element.gradient.end})`
-              : `linear-gradient(${element.gradient.angle}deg, ${element.gradient.start}, ${element.gradient.end})`
-            : hexToRgba(element.backgroundColor, element.opacity),
-        backgroundImage: element.backgroundImage ? `url(${element.backgroundImage})` : undefined,
-        backgroundRepeat: element.backgroundImage ? 'no-repeat' : undefined, // TODO
-        // backgroundPosition: element.backgroundImage ? 'center' : undefined, // TODO
-        backgroundSize: element.backgroundImage
-          ? element.backgroundSize === 'cover'
-            ? 'auto 100%'
-            : '100% 100%'
-          : undefined,
-      }
-    }
-
-    return Object.fromEntries(Object.entries(base).filter(([, value]) => value !== undefined));
-  }, [element])
+  const style = useMemo(() => createElementStyle(element), [element])
 
   if (!element.visible) {
     return null
