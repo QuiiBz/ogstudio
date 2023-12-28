@@ -1,3 +1,4 @@
+'use client'
 import type { RefObject } from "react";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { OGElement } from "../lib/types";
@@ -35,6 +36,7 @@ export function useOg() {
 
 interface OgProviderProps {
   initialElements: OGElement[]
+  localStorageKey: string
   width: number
   height: number
 }
@@ -44,10 +46,11 @@ let editIndex = -1
 
 let elementToCopy: OGElement | undefined
 
-export function OgEditor({ initialElements, width, height }: OgProviderProps) {
+export function OgEditor({ initialElements, localStorageKey: key, width, height }: OgProviderProps) {
+  const localStorageKey = `og-${key}`
   const [selectedElement, setRealSelectedElement] = useState<string | null>(null)
   const [elements, setRealElements] = useState<OGElement[]>(() => {
-    const item = typeof localStorage !== 'undefined' ? localStorage.getItem('elements') : undefined
+    const item = typeof localStorage !== 'undefined' ? localStorage.getItem(localStorageKey) : undefined
 
     if (item) {
       return JSON.parse(item) as OGElement[]
@@ -84,7 +87,7 @@ export function OgEditor({ initialElements, width, height }: OgProviderProps) {
       return newElements
     })
 
-    localStorage.setItem('elements', JSON.stringify(newElements))
+    localStorage.setItem(localStorageKey, JSON.stringify(newElements))
   }, [])
 
   const updateElement = useCallback((element: OGElement) => {

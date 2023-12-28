@@ -1,3 +1,5 @@
+import type { OGElement } from "./types"
+
 export const FONTS = [
   'Roboto',
   'Open Sans',
@@ -44,5 +46,30 @@ export function maybeLoadFont(font: string, weight: number) {
   link.rel = 'stylesheet'
   link.href = `https://fonts.bunny.net/css?family=${font.toLowerCase().replace(' ', '-')}:${weight}`
   document.head.appendChild(link)
+}
+
+/**
+ * Load all fonts used in the given elements from Bunny Fonts. The fonts are
+ * returned as an `ArrayBuffer`, along with the font name and weight.
+ */
+export async function loadFonts(elements: OGElement[]) {
+  // TODO: dedupe fonts
+  return Promise.all(elements.filter(element => element.tag === 'p' || element.tag === 'span').map(async element => {
+    // @ts-expect-error -- wrong inference
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- wrong inference
+    const fontName = element.fontFamily.toLowerCase().replace(' ', '-')
+    // @ts-expect-error -- wrong inference
+    const data = await fetch(`https://fonts.bunny.net/${fontName}/files/${fontName}-latin-${element.fontWeight}-normal.woff`).then(response => response.arrayBuffer())
+
+    return {
+      // @ts-expect-error -- wrong inference
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- wrong inference
+      name: element.fontFamily,
+      data,
+      // @ts-expect-error -- wrong inference
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- wrong inference
+      weight: element.fontWeight,
+    }
+  }))
 }
 
