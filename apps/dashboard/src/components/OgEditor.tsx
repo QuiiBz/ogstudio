@@ -49,15 +49,7 @@ let elementToCopy: OGElement | undefined
 export function OgEditor({ initialElements, localStorageKey: key, width, height }: OgProviderProps) {
   const localStorageKey = `og-${key}`
   const [selectedElement, setRealSelectedElement] = useState<string | null>(null)
-  const [elements, setRealElements] = useState<OGElement[]>(() => {
-    const item = typeof localStorage !== 'undefined' ? localStorage.getItem(localStorageKey) : undefined
-
-    if (item) {
-      return JSON.parse(item) as OGElement[]
-    }
-
-    return initialElements
-  })
+  const [elements, setRealElements] = useState<OGElement[]>([])
   const rootRef = useRef<HTMLDivElement>(null)
 
   const setSelectedElement = useCallback((id: string | null) => {
@@ -88,7 +80,7 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
     })
 
     localStorage.setItem(localStorageKey, JSON.stringify(newElements))
-  }, [])
+  }, [localStorageKey])
 
   const updateElement = useCallback((element: OGElement) => {
     const index = elements.findIndex(item => item.id === element.id)
@@ -144,15 +136,25 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
   }, [setElements])
 
   /**
-   * Immediately load fonts for elements that are visible on the page.
+   * When the editor image is updated or loaded for the first time, reset every
+   * state, and load the elements and fonts.
    */
   useEffect(() => {
-    elements.forEach(element => {
+    const item = localStorage.getItem(localStorageKey)
+    const ogElements = item ? JSON.parse(item) as OGElement[] : initialElements
+
+    setRealElements(ogElements)
+    setSelectedElement(null)
+    edits.length = 0
+    editIndex = -1
+
+    // Immediately load fonts for elements that will be visible on the page.
+    ogElements.forEach(element => {
       if (element.tag === 'p' || element.tag === 'span') {
         maybeLoadFont(element.fontFamily, element.fontWeight)
       }
     })
-  }, [])
+  }, [localStorageKey, initialElements])
 
   useEffect(() => {
     function onContextMenu(event: MouseEvent) {
