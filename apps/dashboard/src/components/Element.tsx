@@ -10,7 +10,7 @@ interface ElementProps {
 export function Element({ element }: ElementProps) {
   const elementRef = useRef<HTMLElement>(null)
   const [isEditing, setIsEditing] = useState(false)
-  const { selectedElement, setSelectedElement, updateElement, removeElement } = useOg()
+  const { selectedElement, setSelectedElement, updateElement, removeElement, zoom } = useOg()
 
   const isSelected = selectedElement === element.id
   const Tag = element.tag
@@ -227,7 +227,7 @@ export function Element({ element }: ElementProps) {
         elementRef.current.removeEventListener('dblclick', onDoubleClick)
       }
     }
-  }, [element.tag, elementRef, isEditing, setSelectedElement, updateElement, removeElement, selectedElement, isSelected, element])
+  }, [element.tag, elementRef, isEditing, setSelectedElement, updateElement, removeElement, selectedElement, isSelected, element, zoom])
 
   const style = useMemo(() => createElementStyle(element), [element])
 

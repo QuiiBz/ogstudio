@@ -1,5 +1,5 @@
 import type { OGElement } from "../../lib/types";
-import { Button } from "../Button";
+import { Button } from "../forms/Button";
 import { useOg } from "../OgEditor";
 import { DeleteIcon } from "../icons/DeleteIcon";
 
