@@ -9,6 +9,8 @@ import { OgEditor } from "./OgEditor";
 import { DeleteIcon } from "./icons/DeleteIcon";
 import { AddIcon } from "./icons/AddIcon";
 import { OgImage } from "./OgImage";
+import { ArrowRightIcon } from "./icons/ArrowRightIcon";
+import { CustomLink } from "./CustomLink";
 
 interface OgImageWrapperProps {
   href: string
@@ -74,19 +76,29 @@ export function OgSplash() {
     <>
       <OgEditor height={630} initialElements={INITIAL_ELEMENTS} localStorageKey={image ?? 'splash'} width={1200} />
       {image ? null : (
-        <div className="w-screen h-screen bg-black/20 flex justify-center items-center absolute top-0 left-0 z-10">
+        <div className="w-screen h-screen bg-black/20 flex justify-center items-center absolute top-0 left-0 z-10 backdrop-blur-[1px]">
           <div className="p-8 rounded-md bg-white shadow-lg shadow-gray-300 max-w-4xl">
             <div className="flex flex-col gap-4">
-              <h2 className="text-gray-800 text-xl">Templates</h2>
+              <div className="flex flex-row justify-between items-center">
+                <h2 className="text-gray-800 text-xl">Templates</h2>
+                <CustomLink href="/templates" icon={<ArrowRightIcon />} iconPosition="right">
+                  See all
+                </CustomLink>
+              </div>
               <div className="flex gap-2 overflow-x-scroll no-scrollbar">
-                <OgImageWrapper elements={[]} href="/" />
-                <OgImageWrapper elements={[]} href="/" />
-                <OgImageWrapper elements={[]} href="/" />
+                <OgImageWrapper href="/" />
+                <OgImageWrapper href="/" />
+                <OgImageWrapper href="/" />
               </div>
             </div>
             <div className="h-[1px] w-full bg-gray-100 my-8" />
             <div className="flex flex-col gap-4">
-              <h2 className="text-gray-800 text-xl">My OG images</h2>
+              <div className="flex flex-row justify-between items-center">
+                <h2 className="text-gray-800 text-xl">My OG images</h2>
+                <CustomLink href="/my-images" icon={<ArrowRightIcon />} iconPosition="right">
+                  See all
+                </CustomLink>
+              </div>
               <div className="flex gap-2 overflow-x-scroll no-scrollbar">
                 <OgImageWrapper href={`/?i=${createElementId()}`}>
                   <AddIcon height="1.4em" width="1.4em" /> Start from scratch

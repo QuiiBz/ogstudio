@@ -258,10 +258,10 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
   return (
     <OgContext.Provider value={value}>
       <div className="w-screen h-screen flex flex-row justify-between items-center bg-gray-50 overflow-hidden">
-        <div className="w-[300px] h-screen flex flex-col border-r border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
+        <div className="w-[300px] min-w-[300px] h-screen flex flex-col border-r border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
           <LeftPanel />
         </div>
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-4 absolute transform left-1/2 -translate-x-1/2">
           <p className="text-xs text-gray-400 z-10">{width}x{height}</p>
           <div className="bg-white shadow-lg shadow-gray-100 relative" style={{ width, height }}>
             <div ref={rootRef} style={{ display: 'flex', width: '100%', height: '100%' }}>
@@ -273,7 +273,7 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
           <div className="border border-gray-100 absolute pointer-events-none transform translate-y-[32px]" style={{ width, height }} />
           <EditorToolbar />
         </div>
-        <div className="w-[300px] h-screen flex flex-col border-l border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
+        <div className="w-[300px] min-w-[300px] h-screen flex flex-col border-l border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
           <RightPanel />
         </div>
       </div>
