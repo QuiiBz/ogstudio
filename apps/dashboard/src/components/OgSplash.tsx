@@ -65,6 +65,7 @@ export function OgSplash({ route }: OgSplashProps) {
   const [ogImages, setOgImages] = useState<OGImage[]>([])
   const router = useRouter()
 
+  // Load images from localStorage
   useEffect(() => {
     const images = Object.keys(localStorage).reduce<OGImage[]>((acc, current) => {
       if (current.startsWith('og-')) {
@@ -147,7 +148,7 @@ export function OgSplash({ route }: OgSplashProps) {
                 <div className="h-[1px] w-full bg-gray-100 my-8" />
                 <div className="flex flex-col gap-4">
                   <div className="flex justify-between items-center">
-                    <h2 className="text-gray-800 text-xl">My OG images</h2>
+                    <h2 className="text-gray-800 text-xl">My images</h2>
                     <CustomLink href="/my-images" icon={<ArrowRightIcon />} iconPosition="right">
                       See all
                     </CustomLink>
@@ -185,7 +186,7 @@ export function OgSplash({ route }: OgSplashProps) {
             ) : (
               <div className="flex flex-col gap-4">
                 <div className="flex justify-between items-center">
-                  <h2 className="text-gray-800 text-xl">My OG images</h2>
+                  <h2 className="text-gray-800 text-xl">My images</h2>
                   <CustomLink href="/" icon={<ArrowLeftIcon />}>
                     Back
                   </CustomLink>
