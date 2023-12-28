@@ -181,6 +181,46 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
         return
       }
 
+      // Move down
+      if (event.key === 'ArrowDown' && selectedElement) {
+        event.preventDefault()
+        const element = elements.find(item => item.id === selectedElement)
+        updateElement({
+          ...element,
+          y: element.y + 1
+        })
+      }
+
+      // Move up
+      if (event.key === 'ArrowUp' && selectedElement) {
+        event.preventDefault()
+        const element = elements.find(item => item.id === selectedElement)
+        updateElement({
+          ...element,
+          y: element.y - 1
+        })
+      }
+
+      // Move left
+      if (event.key === 'ArrowLeft' && selectedElement) {
+        event.preventDefault()
+        const element = elements.find(item => item.id === selectedElement)
+        updateElement({
+          ...element,
+          x: element.x - 1
+        })
+      }
+
+      // Move right
+      if (event.key === 'ArrowRight' && selectedElement) {
+        event.preventDefault()
+        const element = elements.find(item => item.id === selectedElement)
+        updateElement({
+          ...element,
+          x: element.x + 1
+        })
+      }
+
       // Delete any selected element
       if ((event.key === 'Backspace' || event.key === 'Delete') && selectedElement) {
         event.preventDefault()

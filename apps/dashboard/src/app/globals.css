@@ -20,6 +20,10 @@
   }
 }
 
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .element:focus {
   outline: none;
 }
