@@ -70,7 +70,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
         }} type="number" value={selectedElement.lineHeight}>
           <LineHeightIcon />
         </Input>
-        <Input max={5} min={0} onChange={value => {
+        <Input max={10} min={-10} onChange={value => {
           updateElement({
             ...selectedElement,
             letterSpacing: value,
