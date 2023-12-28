@@ -33,6 +33,7 @@ export interface OGPElement {
   fontWeight: number
   fontSize: number
   lineHeight: number
+  letterSpacing: number
   align: 'left' | 'center' | 'right'
 }
 
