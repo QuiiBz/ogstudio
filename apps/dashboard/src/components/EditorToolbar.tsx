@@ -3,11 +3,11 @@ import { createElement } from "../lib/elements"
 import { TextIcon } from "./icons/TextIcon"
 import { CircleIcon } from "./icons/CircleIcon"
 import { ImageIcon } from "./icons/ImageIcon"
-import { useOg } from "./OgEditor"
 import { BoxIcon } from "./icons/BoxIcon"
 import { MagicWandIcon } from "./icons/MagicWandIcon"
 import { ZoomOutIcon } from "./icons/ZoomOutIcon"
 import { ZoomInIcon } from "./icons/ZoomInIcon"
+import { useOg } from "./OgEditor"
 
 interface ToolbarButtonProps {
   onClick: () => void
@@ -54,6 +54,7 @@ export function EditorToolbar() {
             fontFamily: 'Inter',
             fontWeight: 400,
             lineHeight: 1,
+            letterSpacing: 0,
             fontSize: 50,
             align: 'left',
           }));
@@ -122,6 +123,7 @@ export function EditorToolbar() {
             fontFamily: 'Inter',
             fontWeight: 400,
             lineHeight: 1,
+            letterSpacing: 0,
             fontSize: 50,
             align: 'left',
           }))

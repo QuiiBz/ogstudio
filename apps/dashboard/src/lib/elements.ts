@@ -2,6 +2,29 @@ import type { CSSProperties } from "react";
 import type { OGElement } from "./types";
 import { hexToRgba } from "./colors";
 
+/**
+ * The initial elements to render in the editor.
+ *
+ * It only contains a single element, a white background that
+ * takes the entire width and height of the editor.
+ */
+export const INITIAL_ELEMENTS: OGElement[] = [
+  {
+    id: createElementId(),
+    tag: 'div',
+    name: 'Box',
+    x: 0,
+    y: 0,
+    width: 1200,
+    height: 630,
+    visible: true,
+    rotate: 0,
+    opacity: 100,
+    backgroundColor: '#ffffff',
+  },
+]
+
+
 export function createElementId() {
   return Math.random().toString(36).substr(2, 9);
 }
@@ -61,6 +84,7 @@ export function createElementStyle(element: OGElement): CSSProperties {
       fontWeight: element.fontWeight,
       fontSize: `${element.fontSize}px`,
       lineHeight: element.lineHeight,
+      letterSpacing: `${element.letterSpacing}px`,
       textAlign: element.align,
       // By default, Satori sets a margin top and bottom on some elements:
       // https://github.com/vercel/satori/blob/29fe2e4a9676a1ba41c361ec1a547d6de329b039/src/handler/presets.ts#L15
