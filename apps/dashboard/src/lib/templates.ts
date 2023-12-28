@@ -49,6 +49,7 @@ export const TEMPLATES = [
         "fontFamily": "Montserrat",
         "fontWeight": 600,
         "lineHeight": 1,
+        "letterSpacing": 0,
         "fontSize": 120,
         "align": "left"
       },
@@ -68,6 +69,7 @@ export const TEMPLATES = [
         "fontFamily": "Montserrat",
         "fontWeight": 600,
         "lineHeight": 1,
+        "letterSpacing": 0,
         "fontSize": 80,
         "align": "left"
       },
