@@ -1,4 +1,4 @@
-import { Button } from "../Button";
+import { Button } from "../forms/Button";
 import { useOg } from "../OgEditor";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { RedoIcon } from "../icons/RedoIcon";

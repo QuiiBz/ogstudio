@@ -1,34 +1,15 @@
 import { useState } from "react";
 import { flushSync } from "react-dom";
-import { Button } from "../Button";
+import { Button } from "../forms/Button";
 import { PngIcon } from "../icons/PngIcon";
 import { SvgIcon } from "../icons/SvgIcon";
 import { useOg } from "../OgEditor";
 import { domToReactLike, exportToPng, exportToSvg } from "../../lib/export";
+import { loadFonts } from "../../lib/fonts";
 
 export function ExportSection() {
   const { rootRef, elements, setSelectedElement } = useOg()
   const [isLoading, setIsLoading] = useState(false)
-
-  async function getFonts() {
-    return Promise.all(elements.filter(element => element.tag === 'p' || element.tag === 'span').map(async element => {
-      // @ts-expect-error -- wrong inference
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- wrong inference
-      const fontName = element.fontFamily.toLowerCase().replace(' ', '-')
-      // @ts-expect-error -- wrong inference
-      const data = await fetch(`https://fonts.bunny.net/${fontName}/files/${fontName}-latin-${element.fontWeight}-normal.woff`).then(response => response.arrayBuffer())
-
-      return {
-        // @ts-expect-error -- wrong inference
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- wrong inference
-        name: element.fontFamily,
-        data,
-        // @ts-expect-error -- wrong inference
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- wrong inference
-        weight: element.fontWeight,
-      }
-    }))
-  }
 
   async function exportSvg(openInNewTab = true) {
     if (!rootRef.current) {
@@ -42,7 +23,7 @@ export function ExportSection() {
     setIsLoading(true)
 
     const reactLike = domToReactLike(rootRef.current, 'This is a dynamic text')
-    const fonts = await getFonts()
+    const fonts = await loadFonts(elements)
     const svg = await exportToSvg(reactLike, fonts)
 
     setIsLoading(false)

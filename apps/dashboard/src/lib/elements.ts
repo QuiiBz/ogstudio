@@ -2,6 +2,29 @@ import type { CSSProperties } from "react";
 import type { OGElement } from "./types";
 import { hexToRgba } from "./colors";
 
+/**
+ * The initial elements to render in the editor.
+ *
+ * It only contains a single element, a white background that
+ * takes the entire width and height of the editor.
+ */
+export const INITIAL_ELEMENTS: OGElement[] = [
+  {
+    id: createElementId(),
+    tag: 'div',
+    name: 'Box',
+    x: 0,
+    y: 0,
+    width: 1200,
+    height: 630,
+    visible: true,
+    rotate: 0,
+    opacity: 100,
+    backgroundColor: '#ffffff',
+  },
+]
+
+
 export function createElementId() {
   return Math.random().toString(36).substr(2, 9);
 }
