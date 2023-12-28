@@ -1,32 +1,12 @@
-'use client'
-import { OgEditor } from "../components/OgEditor";
-import { createElementId } from "../lib/elements";
-import type { OGElement } from "../lib/types";
-
-/**
- * The initial elements to render in the editor.
- *
- * It only contains a single element, a white background that
- * takes the entire width and height of the editor.
- */
-const initialElements: OGElement[] = [
-  {
-    id: createElementId(),
-    tag: 'div',
-    name: 'Box',
-    x: 0,
-    y: 0,
-    width: 1200,
-    height: 630,
-    visible: true,
-    rotate: 0,
-    opacity: 100,
-    backgroundColor: '#ffffff',
-  },
-]
+import { Suspense } from "react";
+import { OgSplash } from "../components/OgSplash";
 
 export default function Home() {
   return (
-    <OgEditor height={630} initialElements={initialElements} width={1200} />
+    // OgSplash uses `useSearchParams()` so we need to wrap it in a Suspense
+    // to allow to statically render the page: https://nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-functions
+    <Suspense>
+      <OgSplash />
+    </Suspense>
   )
 }
