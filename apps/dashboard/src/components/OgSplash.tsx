@@ -2,9 +2,10 @@
 import type { MouseEvent, ReactNode } from "react";
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { INITIAL_ELEMENTS, createElementId } from "../lib/elements";
 import type { OGElement } from "../lib/types";
+import type { Template } from "../lib/templates";
 import { TEMPLATES } from "../lib/templates";
 import { OgEditor } from "./OgEditor";
 import { DeleteIcon } from "./icons/DeleteIcon";
@@ -15,15 +16,18 @@ import { CustomLink } from "./CustomLink";
 import { ArrowLeftIcon } from "./icons/ArrowLeftIcon";
 
 interface OgImageWrapperProps {
-  href: string
+  href?: string
+  onClick?: (event: MouseEvent<HTMLElement>) => void
   elements?: OGElement[]
   children?: ReactNode
   deletable?: (event: MouseEvent<HTMLSpanElement>) => void
 }
 
-function OgImageWrapper({ href, elements, children, deletable }: OgImageWrapperProps) {
+function OgImageWrapper({ href, onClick, elements, children, deletable }: OgImageWrapperProps) {
+  const Tag = href ? Link : 'button'
+
   return (
-    <Link className="h-[157px] w-[300px] min-w-[300px] flex items-center justify-center text-gray-600 border rounded border-gray-200 hover:border-gray-400 relative group overflow-hidden" href={href}>
+    <Tag className="h-[157px] w-[300px] min-w-[300px] flex items-center justify-center text-gray-600 border rounded border-gray-200 hover:border-gray-400 relative group overflow-hidden" href={href ?? ''} onClick={onClick}>
       {elements ? (
         <Suspense fallback={<div className="animate-pulse w-3/4 h-1/6 bg-gray-100 rounded-full" />}>
           <OgImage elements={elements} />
@@ -35,7 +39,7 @@ function OgImageWrapper({ href, elements, children, deletable }: OgImageWrapperP
           <DeleteIcon />
         </button>
       ) : null}
-    </Link>
+    </Tag>
   )
 }
 
@@ -52,6 +56,7 @@ export function OgSplash({ route }: OgSplashProps) {
   const searchParams = useSearchParams();
   const image = searchParams.get('i')
   const [ogImages, setOgImages] = useState<OGImage[]>([])
+  const router = useRouter()
 
   useEffect(() => {
     const images = Object.keys(localStorage).reduce<OGImage[]>((acc, current) => {
@@ -66,7 +71,17 @@ export function OgSplash({ route }: OgSplashProps) {
     }, [])
 
     setOgImages(images)
-  }, [])
+  }, [image])
+
+  function copyTemplate(template: Template) {
+    return function onClick() {
+      const id = createElementId()
+      const key = `og-${id}`
+
+      localStorage.setItem(key, JSON.stringify(template.elements))
+      router.push(`/?i=${id}`)
+    }
+  }
 
   function deleteOgImage(ogImage: string) {
     return function onClick(event: MouseEvent<HTMLSpanElement>) {
@@ -95,7 +110,7 @@ export function OgSplash({ route }: OgSplashProps) {
                   </div>
                   <div className="flex gap-2">
                     {TEMPLATES.slice(0, 2).map((template) => (
-                      <OgImageWrapper elements={template.elements} href="/" key={template.name} />
+                      <OgImageWrapper elements={template.elements} key={template.name} onClick={copyTemplate(template)} />
                     ))}
                   </div>
                 </div>
