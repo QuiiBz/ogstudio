@@ -46,7 +46,7 @@ interface OgProviderProps {
 const edits: OGElement[][] = []
 let editIndex = -1
 
-let elementToCopy: OGElement | undefined
+let elementIdToCopy: string | undefined
 
 export function OgEditor({ initialElements, localStorageKey: key, width, height }: OgProviderProps) {
   const localStorageKey = `og-${key}`
@@ -157,7 +157,7 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
         maybeLoadFont(element.fontFamily, element.fontWeight)
       }
     })
-  }, [localStorageKey, initialElements])
+  }, [localStorageKey])
 
   useEffect(() => {
     function onContextMenu(event: MouseEvent) {
@@ -248,20 +248,25 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
       // Copy an element
       if (selectedElement && event.key === 'c' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
-        elementToCopy = elements.find(item => item.id === selectedElement)
+        elementIdToCopy = selectedElement
       }
 
       // Paste a copied element
       if (event.key === 'v' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
 
+        const elementToCopy = elements.find(item => item.id === elementIdToCopy)
+
         if (elementToCopy) {
-          addElement({
+          const newElement: OGElement = {
             ...elementToCopy,
             x: elementToCopy.x + 10,
             y: elementToCopy.y + 10,
             id: createElementId(),
-          })
+          }
+
+          addElement(newElement)
+          elementIdToCopy = newElement.id
         }
       }
     }
@@ -269,15 +274,17 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
     if (rootRef.current) {
       rootRef.current.addEventListener('contextmenu', onContextMenu)
       rootRef.current.addEventListener('click', onClick)
-      document.addEventListener('keydown', onKeyDown)
     }
+
+    document.addEventListener('keydown', onKeyDown)
 
     return () => {
       if (rootRef.current) {
         rootRef.current.removeEventListener('contextmenu', onContextMenu)
         rootRef.current.removeEventListener('click', onClick)
-        document.removeEventListener('keydown', onKeyDown)
       }
+
+      document.removeEventListener('keydown', onKeyDown)
     }
   }, [rootRef, selectedElement, removeElement, addElement, elements, undoRedo, setSelectedElement])
 
