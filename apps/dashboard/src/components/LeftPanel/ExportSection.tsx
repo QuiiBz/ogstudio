@@ -1,54 +1,91 @@
 import { useState } from "react";
 import { flushSync } from "react-dom";
+import { toast } from "sonner";
 import { Button } from "../forms/Button";
 import { PngIcon } from "../icons/PngIcon";
 import { SvgIcon } from "../icons/SvgIcon";
 import { useOg } from "../OgEditor";
-import { domToReactLike, exportToPng, exportToSvg } from "../../lib/export";
+import { domToReactElements, exportToPng, exportToSvg } from "../../lib/export";
+import type { FontData } from "../../lib/fonts";
 import { loadFonts } from "../../lib/fonts";
 
 export function ExportSection() {
   const { rootRef, elements, setSelectedElement } = useOg()
   const [isLoading, setIsLoading] = useState(false)
 
-  async function exportSvg(openInNewTab = true) {
-    if (!rootRef.current) {
-      return {}
-    }
-
+  async function exportSvg(showProgress = true) {
     flushSync(() => {
       setSelectedElement(null)
     })
 
-    setIsLoading(true)
+    async function run() {
+      setIsLoading(true)
 
-    const reactLike = domToReactLike(rootRef.current, 'This is a dynamic text')
-    const fonts = await loadFonts(elements)
-    const svg = await exportToSvg(reactLike, fonts)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- rootRef is always defined
+      const reactElements = domToReactElements(rootRef.current!, 'This is a dynamic text')
+      const fonts = await loadFonts(elements)
+      const svg = await exportToSvg(reactElements, fonts)
 
-    setIsLoading(false)
+      setIsLoading(false)
 
-    if (openInNewTab) {
-      const blob = new Blob([svg], { type: 'image/svg+xml' })
-      const url = URL.createObjectURL(blob)
-      window.open(url)
+      return { fonts, svg }
     }
 
-    return { fonts, svg }
+    return new Promise<{
+      fonts: FontData[];
+      svg: string;
+    }>((resolve, reject) => {
+      if (showProgress) {
+        let svg: string
+
+        toast.promise(run(), {
+          loading: 'Exporting to SVG...',
+          success: (data) => {
+            resolve(data)
+            svg = data.svg
+
+            return 'SVG exported!'
+          },
+          action: {
+            label: 'Download',
+            onClick: () => {
+              const blob = new Blob([svg], { type: 'image/svg+xml' })
+              const url = URL.createObjectURL(blob)
+              window.open(url)
+            }
+          }
+        });
+      }
+
+      run().then(resolve).catch(reject)
+    })
   }
 
   async function exportPng() {
     const { svg, fonts } = await exportSvg(false)
 
-    setIsLoading(true)
+    let png: Uint8Array
 
-    const png = await exportToPng(svg ?? '', fonts?.map(font => new Uint8Array(font.data)) ?? [])
+    async function run() {
+      setIsLoading(true)
 
-    setIsLoading(false)
+      png = await exportToPng(svg, fonts.map(font => new Uint8Array(font.data)))
 
-    const blob = new Blob([png], { type: 'image/png' })
-    const url = URL.createObjectURL(blob)
-    window.open(url)
+      setIsLoading(false)
+    }
+
+    toast.promise(run(), {
+      loading: 'Exporting to PNG...',
+      success: 'PNG exported!',
+      action: {
+        label: 'Download',
+        onClick: () => {
+          const blob = new Blob([png], { type: 'image/png' })
+          const url = URL.createObjectURL(blob)
+          window.open(url)
+        }
+      }
+    });
   }
 
   return (

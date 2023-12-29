@@ -48,11 +48,17 @@ export function maybeLoadFont(font: string, weight: number) {
   document.head.appendChild(link)
 }
 
+export interface FontData {
+  name: string
+  data: ArrayBuffer
+  weight: number
+}
+
 /**
  * Load all fonts used in the given elements from Bunny Fonts. The fonts are
  * returned as an `ArrayBuffer`, along with the font name and weight.
  */
-export async function loadFonts(elements: OGElement[]) {
+export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
   // TODO: dedupe fonts
   return Promise.all(elements.filter(element => element.tag === 'p' || element.tag === 'span').map(async element => {
     // @ts-expect-error -- wrong inference
