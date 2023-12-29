@@ -1,5 +1,6 @@
 import { Resvg, initWasm } from "@resvg/resvg-wasm"
 import satori from "satori"
+import { toast } from "sonner"
 
 let wasmInitialized = false
 
@@ -60,20 +61,33 @@ export function domToReactLike(element: Element, dynamicTextReplace: string): Re
 
 
 export async function exportToSvg(reactLike: Record<string, unknown>, fonts: { name: string, data: ArrayBuffer, weight: number }[]): Promise<string> {
-  const now = Date.now()
+  try {
+    const now = Date.now()
 
-  const svg = await satori(
-    // @ts-expect-error wtf?
-    reactLike,
-    {
-      width: 1200,
-      height: 630,
-      fonts,
-    },
-  )
+    const svg = await satori(
+      // @ts-expect-error wtf?
+      reactLike,
+      {
+        width: 1200,
+        height: 630,
+        fonts,
+      },
+    )
 
-  console.log('satori', Date.now() - now)
-  return svg
+    console.log('satori', Date.now() - now)
+    return svg
+  } catch (error) {
+    console.error(error)
+
+    // Firefox only recently added support for the Intl.Segmenter API
+    // See https://caniuse.com/mdn-javascript_builtins_intl_segmenter
+    // See https://github.com/QuiiBz/ogstudio/issues/19
+    if (error instanceof Error && error.message.includes('Intl.Segmenter')) {
+      toast.error('Your browser does not support a required feature (Intl.Segmenter). Please update to the latest version.')
+    }
+
+    return ''
+  }
 }
 
 export async function exportToPng(svg: string, fonts: Uint8Array[]): Promise<Uint8Array> {

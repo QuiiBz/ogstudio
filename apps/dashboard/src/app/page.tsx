@@ -1,6 +1,11 @@
 import { Suspense } from "react";
 import { OgSplash } from "../components/OgSplash";
 
+export const metadata = {
+  title: 'OG Studio',
+  description: 'Figma-like OG (Open Graph) Image builder.',
+}
+
 export default function Home() {
   return (
     // OgSplash uses `useSearchParams()` so we need to wrap it in a Suspense

@@ -216,12 +216,15 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
         event.preventDefault()
 
         if (elementToCopy) {
-          addElement({
+          const newElement: OGElement = {
             ...elementToCopy,
             x: elementToCopy.x + 10,
             y: elementToCopy.y + 10,
             id: createElementId(),
-          })
+          }
+
+          addElement(newElement)
+          elementToCopy = newElement
         }
       }
     }
