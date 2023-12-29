@@ -1,13 +1,15 @@
 import { Resvg, initWasm } from "@resvg/resvg-wasm"
 import satori from "satori"
 import { toast } from "sonner"
+import type { CSSProperties } from "react"
+import type { OGElement } from "./types"
 
 let wasmInitialized = false
 
 export interface ReactElements {
-  type: string
+  type: OGElement['tag']
   props: {
-    style?: Record<string, string>
+    style?: CSSProperties
     children?: (ReactElements | string)[]
   }
 }
@@ -23,7 +25,7 @@ export function domToReactElements(element: Element, dynamicTextReplace: string)
   const children: ReactElements['props']['children'] = []
 
   if (element instanceof HTMLElement) {
-    const style: Record<string, string> = {}
+    const style: CSSProperties = {}
     const declarations = element.style.cssText.split(/;( |$)/)
 
     for (const declaration of declarations) {
@@ -45,6 +47,7 @@ export function domToReactElements(element: Element, dynamicTextReplace: string)
           }
         }
 
+        // @ts-expect-error we expect property to be a valid CSS property
         style[property] = finalValue
       }
     }
@@ -65,7 +68,7 @@ export function domToReactElements(element: Element, dynamicTextReplace: string)
   }
 
   return {
-    type: element.tagName.toLowerCase(),
+    type: element.tagName.toLowerCase() as OGElement['tag'],
     props: {
       ...props,
       children,
