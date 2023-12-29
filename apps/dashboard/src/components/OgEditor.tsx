@@ -181,6 +181,58 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
         return
       }
 
+      // Move down
+      if (event.key === 'ArrowDown' && selectedElement) {
+        event.preventDefault()
+        const element = elements.find(item => item.id === selectedElement)
+
+        if (element) {
+          updateElement({
+            ...element,
+            y: element.y + (event.shiftKey ? 10 : 1)
+          })
+        }
+      }
+
+      // Move up
+      if (event.key === 'ArrowUp' && selectedElement) {
+        event.preventDefault()
+        const element = elements.find(item => item.id === selectedElement)
+
+        if (element) {
+          updateElement({
+            ...element,
+            y: element.y - (event.shiftKey ? 10 : 1)
+          })
+        }
+      }
+
+      // Move left
+      if (event.key === 'ArrowLeft' && selectedElement) {
+        event.preventDefault()
+        const element = elements.find(item => item.id === selectedElement)
+
+        if (element) {
+          updateElement({
+            ...element,
+            x: element.x - (event.shiftKey ? 10 : 1)
+          })
+        }
+      }
+
+      // Move right
+      if (event.key === 'ArrowRight' && selectedElement) {
+        event.preventDefault()
+        const element = elements.find(item => item.id === selectedElement)
+
+        if (element) {
+          updateElement({
+            ...element,
+            x: element.x + (event.shiftKey ? 10 : 1)
+          })
+        }
+      }
+
       // Delete any selected element
       if ((event.key === 'Backspace' || event.key === 'Delete') && selectedElement) {
         event.preventDefault()
@@ -289,6 +341,6 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
           <RightPanel />
         </div>
       </div>
-    </OgContext.Provider>
+    </OgContext.Provider  >
   )
 }
