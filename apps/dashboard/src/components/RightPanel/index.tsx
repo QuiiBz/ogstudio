@@ -4,6 +4,7 @@ import { BorderSection } from "./BorderSection";
 import { FontSection } from "./FontSection";
 import { MiscellanousSection } from "./MiscellanousSection";
 import { ModificationsSection } from "./ModificationsSection";
+import { NameSection } from "./NameSection";
 import { ShadowSection } from "./ShadowSection";
 import { SizePositionSection } from "./SizePositionSection";
 
@@ -21,6 +22,8 @@ export function RightPanel() {
 
   return (
     <div className="flex flex-col items-start gap-4 p-4">
+      <NameSection selectedElement={selectedElementData} />
+      <div className="h-[1px] w-full bg-gray-100" />
       <SizePositionSection selectedElement={selectedElementData} />
       <div className="h-[1px] w-full bg-gray-100" />
       <FontSection selectedElement={selectedElementData} />
