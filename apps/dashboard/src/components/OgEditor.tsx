@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import type { OGElement } from "../lib/types";
 import { createElementId } from "../lib/elements";
 import { maybeLoadFont } from "../lib/fonts";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 import { Element } from './Element'
 import { RightPanel } from "./RightPanel";
 import { LeftPanel } from "./LeftPanel";
@@ -51,7 +52,7 @@ let elementIdToCopy: string | undefined
 export function OgEditor({ initialElements, localStorageKey: key, width, height }: OgProviderProps) {
   const localStorageKey = `og-${key}`
   const [selectedElement, setRealSelectedElement] = useState<string | null>(null)
-  const [zoom, setZoom] = useState(100)
+  const [zoom, setZoom] = useLocalStorage(100, 'zoom')
   const [elements, setRealElements] = useState<OGElement[]>([])
   const rootRef = useRef<HTMLDivElement>(null)
 
@@ -325,7 +326,7 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
         <div className="w-[300px] min-w-[300px] h-screen flex flex-col border-r border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
           <LeftPanel />
         </div>
-        <div className="flex flex-col items-center gap-4 absolute transform left-1/2 -translate-x-1/2">
+        <div className="flex flex-col items-center gap-4 fixed transform left-1/2 -translate-x-1/2">
           <p className="text-xs text-gray-400 z-10">{width}x{height}</p>
           <div className="bg-white shadow-lg shadow-gray-100 relative" style={{ width, height, transform: `scale(${zoom / 100})` }}>
             <div ref={rootRef} style={{ display: 'flex', width: '100%', height: '100%' }}>
