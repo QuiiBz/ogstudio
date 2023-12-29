@@ -187,7 +187,7 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
         const element = elements.find(item => item.id === selectedElement)
         updateElement({
           ...element,
-          y: element.y + 1
+          y: element.y + (event.shiftKey ? 10 : 1)
         })
       }
 
@@ -197,7 +197,7 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
         const element = elements.find(item => item.id === selectedElement)
         updateElement({
           ...element,
-          y: element.y - 1
+          y: element.y - (event.shiftKey ? 10 : 1)
         })
       }
 
@@ -207,7 +207,7 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
         const element = elements.find(item => item.id === selectedElement)
         updateElement({
           ...element,
-          x: element.x - 1
+          x: element.x - (event.shiftKey ? 10 : 1)
         })
       }
 
@@ -217,7 +217,7 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
         const element = elements.find(item => item.id === selectedElement)
         updateElement({
           ...element,
-          x: element.x + 1
+          x: element.x + (event.shiftKey ? 10 : 1)
         })
       }
 
