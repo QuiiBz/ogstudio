@@ -5,7 +5,8 @@
     "dev": "turbo dev",
     "build": "turbo build",
     "lint": "turbo lint",
-    "typecheck": "turbo typecheck"
+    "typecheck": "turbo typecheck",
+    "test": "turbo test -- run"
   },
   "devDependencies": {
     "prettier": "^3.1.1",

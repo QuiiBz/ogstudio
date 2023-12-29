@@ -1,12 +1,13 @@
 import usePromise from "react-promise-suspense"
 import { createElementStyle } from "../lib/elements"
+import type { ReactElements } from "../lib/export";
 import { exportToSvg } from "../lib/export"
 import { loadFonts } from "../lib/fonts"
 import type { OGElement } from "../lib/types"
 
 async function loadOgImage(elements: OGElement[]) {
   const fonts = await loadFonts(elements)
-  const reactLike = {
+  const reactElements: ReactElements = {
     type: 'div',
     props: {
       style: {
@@ -18,13 +19,13 @@ async function loadOgImage(elements: OGElement[]) {
         type: element.tag,
         props: {
           style: createElementStyle(element),
-          ...(element.tag === 'p' ? { children: element.content } : {}),
+          ...(element.tag === 'p' ? { children: [element.content] } : {}),
         },
       }))
     }
   }
 
-  const svg = await exportToSvg(reactLike, fonts)
+  const svg = await exportToSvg(reactElements, fonts)
   return `data:image/svg+xml;base64,${btoa(svg)}`
 }
 

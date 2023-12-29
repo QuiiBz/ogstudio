@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
@@ -30,7 +31,9 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "happy-dom": "^12.10.3",
     "postcss": "^8",
-    "tailwindcss": "^3.3.0"
+    "tailwindcss": "^3.3.0",
+    "vitest": "^1.1.0"
   }
 }

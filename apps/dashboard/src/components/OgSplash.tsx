@@ -3,6 +3,7 @@ import type { MouseEvent, ReactNode } from "react";
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 import { INITIAL_ELEMENTS, createElementId } from "../lib/elements";
 import type { OGElement } from "../lib/types";
 import type { Template } from "../lib/templates";
@@ -91,7 +92,7 @@ export function OgSplash({ route }: OgSplashProps) {
       if (push) {
         router.push(`/?i=${id}`)
       } else {
-        setOgImages([{ id: key, content: template.elements }, ...ogImages])
+        setOgImages(images => [{ id: key, content: template.elements }, ...images])
       }
     }
   }
@@ -104,6 +105,7 @@ export function OgSplash({ route }: OgSplashProps) {
       event.stopPropagation();
 
       copy()
+      toast('Image duplicated!')
     }
   }
 
@@ -113,7 +115,19 @@ export function OgSplash({ route }: OgSplashProps) {
       event.stopPropagation();
 
       localStorage.removeItem(ogImage.id)
-      setOgImages(ogImages.filter(({ id }) => id !== ogImage.id))
+      setOgImages(images => images.filter(({ id }) => id !== ogImage.id))
+
+      toast('Image deleted!', {
+        action: {
+          label: 'Undo',
+          onClick: () => {
+            localStorage.setItem(ogImage.id, JSON.stringify(ogImage.content))
+            setOgImages(images => [ogImage, ...images])
+
+            toast('Image restored!')
+          }
+        },
+      })
     }
   }
 

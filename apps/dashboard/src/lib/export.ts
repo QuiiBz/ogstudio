@@ -1,15 +1,31 @@
 import { Resvg, initWasm } from "@resvg/resvg-wasm"
 import satori from "satori"
 import { toast } from "sonner"
+import type { CSSProperties } from "react"
+import type { OGElement } from "./types"
 
 let wasmInitialized = false
 
-export function domToReactLike(element: Element, dynamicTextReplace: string): Record<string, unknown> {
+export interface ReactElements {
+  type: OGElement['tag']
+  props: {
+    style?: CSSProperties
+    children?: (ReactElements | string)[]
+  }
+}
+
+/**
+ * Transform a DOM node to a React elements structure, since we're not
+ * running a JSX transformer.
+ *
+ * See https://github.com/vercel/satori#use-without-jsx
+ */
+export function domToReactElements(element: Element, dynamicTextReplace: string): ReactElements {
   const props: Record<string, unknown> = {}
-  const children = []
+  const children: ReactElements['props']['children'] = []
 
   if (element instanceof HTMLElement) {
-    const style: Record<string, string> = {}
+    const style: CSSProperties = {}
     const declarations = element.style.cssText.split(/;( |$)/)
 
     for (const declaration of declarations) {
@@ -31,6 +47,7 @@ export function domToReactLike(element: Element, dynamicTextReplace: string): Re
           }
         }
 
+        // @ts-expect-error we expect property to be a valid CSS property
         style[property] = finalValue
       }
     }
@@ -39,7 +56,7 @@ export function domToReactLike(element: Element, dynamicTextReplace: string): Re
   }
 
   for (const child of element.children) {
-    children.push(domToReactLike(child, dynamicTextReplace))
+    children.push(domToReactElements(child, dynamicTextReplace))
   }
 
   if (children.length === 0 && element.textContent) {
@@ -51,7 +68,7 @@ export function domToReactLike(element: Element, dynamicTextReplace: string): Re
   }
 
   return {
-    type: element.tagName.toLowerCase(),
+    type: element.tagName.toLowerCase() as OGElement['tag'],
     props: {
       ...props,
       children,
@@ -59,14 +76,14 @@ export function domToReactLike(element: Element, dynamicTextReplace: string): Re
   }
 }
 
-
-export async function exportToSvg(reactLike: Record<string, unknown>, fonts: { name: string, data: ArrayBuffer, weight: number }[]): Promise<string> {
+/**
+ * Export React elements to an SVG string, using the provided fonts.
+ */
+export async function exportToSvg(reactElements: ReactElements, fonts: { name: string, data: ArrayBuffer, weight: number }[]): Promise<string> {
   try {
-    const now = Date.now()
-
     const svg = await satori(
       // @ts-expect-error wtf?
-      reactLike,
+      reactElements,
       {
         width: 1200,
         height: 630,
@@ -74,7 +91,6 @@ export async function exportToSvg(reactLike: Record<string, unknown>, fonts: { n
       },
     )
 
-    console.log('satori', Date.now() - now)
     return svg
   } catch (error) {
     console.error(error)
@@ -90,11 +106,18 @@ export async function exportToSvg(reactLike: Record<string, unknown>, fonts: { n
   }
 }
 
+/**
+ * Export an SVG string to a PNG Uint8Array, using the provided font buffers.
+ */
 export async function exportToPng(svg: string, fonts: Uint8Array[]): Promise<Uint8Array> {
-  const now = Date.now()
-
   if (!wasmInitialized) {
-    await initWasm(fetch('https://unpkg.com/@resvg/resvg-wasm/index_bg.wasm'))
+    // eslint-disable-next-line turbo/no-undeclared-env-vars -- will always be set when running the tests
+    if (process.env.VITEST_POOL_ID) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-member-access -- we know what we're doing
+      await initWasm(require('node:fs/promises').readFile('node_modules/@resvg/resvg-wasm/index_bg.wasm'))
+    } else {
+      await initWasm(fetch('https://unpkg.com/@resvg/resvg-wasm/index_bg.wasm'))
+    }
     wasmInitialized = true
   }
 
@@ -106,6 +129,5 @@ export async function exportToPng(svg: string, fonts: Uint8Array[]): Promise<Uin
   const pngData = resvgJS.render()
   const pngBuffer = pngData.asPng()
 
-  console.log('resvg', Date.now() - now)
   return pngBuffer
 }
