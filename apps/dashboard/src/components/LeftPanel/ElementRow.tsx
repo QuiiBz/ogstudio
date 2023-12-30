@@ -98,6 +98,9 @@ export function ElementRow({ element }: ElementRowProps) {
         {isEditing ? (
           <form className="flex items-center gap-2" onSubmit={onSubmit} ref={formRef}>
             <input
+              
+              // eslint-disable-next-line -- Usability and accessibility for users is not reduced here
+              autoFocus
               className="w-48"
               id="elementNameInput"
               onChange={({ target }) => {
@@ -121,9 +124,7 @@ export function ElementRow({ element }: ElementRowProps) {
               <CheckIcon />
             </button>
           </form>
-        ) : (<>
-          {element.name}
-        </>)}
+        ) : element.name}
       </button>
       <button
         className="text-gray-600 hover:text-gray-900"
