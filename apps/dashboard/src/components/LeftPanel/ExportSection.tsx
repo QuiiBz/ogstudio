@@ -16,7 +16,12 @@ export function ExportSection() {
   const setSelectedElementId = useElementsStore(state => state.setSelectedElementId)
   const [isLoading, setIsLoading] = useState(false)
 
+  function exportUrl() {
+    toast.error('Not implemented yet!')
+  }
+
   async function exportSvg(showProgress = true) {
+    // Immediately deselect any selected element to remove the outline
     flushSync(() => {
       setSelectedElementId(null)
     })
@@ -94,9 +99,10 @@ export function ExportSection() {
   return (
     <>
       <p className="text-xs text-gray-600">Export</p>
-      <div className="grid grid-cols-1 gap-2 w-full">
-        <Button icon={<SvgIcon />} isLoading={isLoading} onClick={() => exportSvg()}>Export as SVG</Button>
-        <Button icon={<PngIcon />} isLoading={isLoading} onClick={() => exportPng()}>Export as PNG</Button>
+      <div className="grid grid-cols-2 gap-2 w-full">
+        <Button className="col-span-full" icon={<PngIcon />} onClick={exportUrl} variant="success">Export to URL</Button>
+        <Button icon={<SvgIcon />} isLoading={isLoading} onClick={exportSvg}>SVG</Button>
+        <Button icon={<PngIcon />} isLoading={isLoading} onClick={exportPng}>PNG</Button>
       </div>
     </>
   )
