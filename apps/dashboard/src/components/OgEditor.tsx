@@ -38,6 +38,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const zoom = useZoomStore(state => state.zoom)
   const { selectedElementId, setSelectedElementId, elements, updateElement, removeElement, addElement, loadImage } = useElementsStore()
+  const { undo, redo } = useElementsStore.temporal.getState()
 
   /**
    * When the editor image is updated or loaded for the first time, reset every
@@ -136,13 +137,13 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
       // Undo
       if (event.key === 'z' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
-        // undoRedo('undo')
+        undo()
       }
 
       // Redo
       if (event.key === 'Z' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
-        // undoRedo('redo')
+        redo()
       }
 
       // Copy an element
@@ -186,7 +187,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
 
       document.removeEventListener('keydown', onKeyDown)
     }
-  }, [rootRef, selectedElementId, removeElement, addElement, elements, setSelectedElementId, updateElement])
+  }, [rootRef, selectedElementId, removeElement, addElement, elements, setSelectedElementId, updateElement, redo, undo])
 
   const value = useMemo(() => ({
     rootRef,

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { temporal } from 'zundo'
 import type { OGElement } from "../lib/types";
 import { maybeLoadFont } from "../lib/fonts";
 
@@ -14,7 +15,7 @@ interface ElementsState {
   updateElement: (element: OGElement) => void
 }
 
-export const useElementsStore = create<ElementsState>((set, get) => ({
+export const useElementsStore = create<ElementsState>()(temporal((set, get) => ({
   imageId: '',
   elements: [],
   setElements: elements => {
@@ -31,6 +32,8 @@ export const useElementsStore = create<ElementsState>((set, get) => ({
         maybeLoadFont(element.fontFamily, element.fontWeight)
       }
     })
+
+    useElementsStore.temporal.getState().clear()
   },
   selectedElementId: null,
   setSelectedElementId: id => {
@@ -38,6 +41,7 @@ export const useElementsStore = create<ElementsState>((set, get) => ({
 
     // Don't allow selecting hidden elements
     if (element && !element.visible) {
+
       return
     }
 
@@ -52,7 +56,6 @@ export const useElementsStore = create<ElementsState>((set, get) => ({
   addElement: element => {
     set(state => {
       const elements = [...state.elements, element]
-      localStorage.setItem(state.imageId, JSON.stringify(elements))
 
       return { elements, selectedElementId: element.id }
     })
@@ -60,7 +63,6 @@ export const useElementsStore = create<ElementsState>((set, get) => ({
   removeElement: elementId => {
     set(state => {
       const elements = state.elements.filter(element => element.id !== elementId)
-      localStorage.setItem(state.imageId, JSON.stringify(elements))
 
       return { elements }
     })
@@ -68,7 +70,6 @@ export const useElementsStore = create<ElementsState>((set, get) => ({
   updateElement: element => {
     set(state => {
       const elements = state.elements.map(e => e.id === element.id ? element : e)
-      localStorage.setItem(state.imageId, JSON.stringify(elements))
 
       // If the element was hidden, and it was the currently selected element,
       // unselect it
@@ -84,5 +85,9 @@ export const useElementsStore = create<ElementsState>((set, get) => ({
 
       return { elements }
     })
+  },
+}), {
+  onSave: (_, state) => {
+    localStorage.setItem(state.imageId, JSON.stringify(state.elements))
   }
 }))

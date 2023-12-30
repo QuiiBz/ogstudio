@@ -53,6 +53,9 @@ importers:
       sonner:
         specifier: ^1.3.1
         version: 1.3.1(react-dom@18.2.0)(react@18.2.0)
+      zundo:
+        specifier: ^2.0.3
+        version: 2.0.3(zustand@4.4.7)
       zustand:
         specifier: ^4.4.7
         version: 4.4.7(@types/react@18.2.45)(react@18.2.0)
@@ -5020,6 +5023,14 @@ packages:
 
   /yoga-wasm-web@0.3.3:
     resolution: {integrity: sha512-N+d4UJSJbt/R3wqY7Coqs5pcV0aUj2j9IaQ3rNj9bVCLld8tTGKRa2USARjnvZJWVx1NDmQev8EknoczaOQDOA==}
+    dev: false
+
+  /zundo@2.0.3(zustand@4.4.7):
+    resolution: {integrity: sha512-tsOar9Ft1d7T8bH3XCf1JEOV+re/2Hzr7ni2g+9fiPMbXUdzWwu0BmMyDi4MoZeP4RhEhcZfuOmsFF39oLF/aw==}
+    peerDependencies:
+      zustand: ^4.3.0
+    dependencies:
+      zustand: 4.4.7(@types/react@18.2.45)(react@18.2.0)
     dev: false
 
   /zustand@4.4.7(@types/react@18.2.45)(react@18.2.0):
