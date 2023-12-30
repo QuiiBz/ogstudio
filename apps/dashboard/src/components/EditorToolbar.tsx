@@ -1,5 +1,7 @@
 import type { ReactElement } from "react"
 import { createElement } from "../lib/elements"
+import { useZoomStore } from "../stores/zoomStore"
+import { useElementsStore } from "../stores/elementsStore"
 import { TextIcon } from "./icons/TextIcon"
 import { CircleIcon } from "./icons/CircleIcon"
 import { ImageIcon } from "./icons/ImageIcon"
@@ -7,7 +9,6 @@ import { BoxIcon } from "./icons/BoxIcon"
 import { MagicWandIcon } from "./icons/MagicWandIcon"
 import { ZoomOutIcon } from "./icons/ZoomOutIcon"
 import { ZoomInIcon } from "./icons/ZoomInIcon"
-import { useOg } from "./OgEditor"
 
 interface ToolbarButtonProps {
   onClick: () => void
@@ -23,19 +24,8 @@ function ToolbarButton({ onClick, children }: ToolbarButtonProps) {
 }
 
 export function EditorToolbar() {
-  const { addElement, zoom, setZoom } = useOg()
-
-  function zoomIn() {
-    if (zoom >= 100) return
-
-    setZoom(zoom + 10)
-  }
-
-  function zoomOut() {
-    if (zoom <= 10) return
-
-    setZoom(zoom - 10)
-  }
+  const addElement = useElementsStore(state => state.addElement)
+  const { zoom, zoomIn, zoomOut } = useZoomStore()
 
   return (
     <div className="flex flex-row items-center z-10 gap-4">

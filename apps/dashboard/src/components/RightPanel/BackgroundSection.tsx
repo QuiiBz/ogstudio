@@ -1,4 +1,3 @@
-import { useOg } from "../OgEditor";
 import { Input } from '../forms/Input'
 import { Select } from '../forms/Select'
 import type { OGElement } from "../../lib/types";
@@ -12,13 +11,14 @@ import { SquareIcon } from "../icons/SquareIcon";
 import { LinkIcon } from "../icons/LinkIcon";
 import { ImageSizeIcon } from "../icons/ImageSizeIcon";
 import { ImagePositionIcon } from "../icons/ImagePositionIcon";
+import { useElementsStore } from "../../stores/elementsStore";
 
 interface BackgroundSectionProps {
   selectedElement: OGElement
 }
 
 export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
-  const { updateElement } = useOg()
+  const updateElement = useElementsStore(state => state.updateElement)
 
   if (selectedElement.tag !== 'div') {
     return

@@ -1,5 +1,4 @@
-import { Suspense } from "react";
-import { OgSplash } from "../components/OgSplash";
+import { HomeSplash } from "../components/Splash/HomeSplash";
 
 export const metadata = {
   title: 'OG Studio',
@@ -7,11 +6,5 @@ export const metadata = {
 }
 
 export default function Home() {
-  return (
-    // OgSplash uses `useSearchParams()` so we need to wrap it in a Suspense
-    // to allow to statically render the page: https://nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-functions
-    <Suspense>
-      <OgSplash route="splash" />
-    </Suspense>
-  )
+  return <HomeSplash />
 }

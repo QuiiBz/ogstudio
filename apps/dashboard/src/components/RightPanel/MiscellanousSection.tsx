@@ -1,16 +1,16 @@
 import type { OGElement } from "../../lib/types";
 import { Input } from '../forms/Input'
-import { useOg } from "../OgEditor";
 import { CornerIcon } from "../icons/CornerIcon";
 import { OpacityIcon } from "../icons/OpacityIcon";
 import { RotateIcon } from "../icons/RotateIcon";
+import { useElementsStore } from "../../stores/elementsStore";
 
 interface MiscellanousSectionProps {
   selectedElement: OGElement
 }
 
 export function MiscellanousSection({ selectedElement }: MiscellanousSectionProps) {
-  const { updateElement } = useOg()
+  const updateElement = useElementsStore(state => state.updateElement)
 
   return (
     <>
