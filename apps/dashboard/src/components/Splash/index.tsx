@@ -20,7 +20,7 @@ export function Splash({ children }: OgSplashProps) {
         <div className="w-screen h-screen bg-black/10 flex justify-center items-center absolute top-0 left-0 z-10 backdrop-blur-[1px]">
           <div className="p-8 rounded-md bg-white shadow-lg shadow-gray-200 w-[980px] h-[684px]">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4">
                 <h1 className="text-gray-900 text-2xl">OG Studio</h1>
                 <span className="flex gap-2 items-center px-3 py-1 rounded-full text-white bg-yellow-500 select-none text-xs">
                   Early preview
