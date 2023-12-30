@@ -6,7 +6,7 @@ import { AddIcon } from "../icons/AddIcon";
 import type { OGElement } from "../../lib/types";
 import { TEMPLATES } from "../../lib/templates";
 import { useImagesStore } from "../../stores/imagesStore";
-import { OgImageWrapper } from ".";
+import { OgImage } from "../OgImage";
 
 export function HomeSplash() {
   const { images, copyTemplate, createEmptyImage, copyImage, deleteImage } = useImagesStore()
@@ -23,10 +23,15 @@ export function HomeSplash() {
         </div>
         <div className="flex gap-2">
           {TEMPLATES.slice(0, 2).map((template) => (
-            <OgImageWrapper elements={template.elements} key={template.name} onClick={() => {
-              const { id } = copyTemplate(template)
-              router.push(`/?i=${id}`)
-            }} />
+            <OgImage
+              elements={template.elements}
+              key={template.name}
+              name={template.name}
+              onClick={() => {
+                const { id } = copyTemplate(template)
+                router.push(`/?i=${id}`)
+              }}
+            />
           ))}
         </div>
       </div>
@@ -39,19 +44,20 @@ export function HomeSplash() {
           </CustomLink>
         </div>
         <div className="flex gap-2">
-          <OgImageWrapper onClick={() => {
+          <OgImage onClick={() => {
             const { id } = createEmptyImage()
             router.push(`/?i=${id}`)
           }}>
             <AddIcon height="1.4em" width="1.4em" /> Start from scratch
-          </OgImageWrapper>
-          {images.slice(0, 2).map(ogImage => (
-            <OgImageWrapper
-              copiable={() => copyImage(ogImage)}
-              deletable={() => { deleteImage(ogImage); }}
-              elements={JSON.parse(localStorage.getItem(ogImage.id) || '[]') as OGElement[]}
-              href={`/?i=${ogImage.id}`}
-              key={ogImage.id}
+          </OgImage>
+          {images.slice(0, 2).map(image => (
+            <OgImage
+              copiable={() => copyImage(image)}
+              deletable={() => { deleteImage(image); }}
+              elements={JSON.parse(localStorage.getItem(image.id) || '[]') as OGElement[]}
+              href={`/?i=${image.id}`}
+              key={image.id}
+              name={image.name}
             />
           ))}
         </div>

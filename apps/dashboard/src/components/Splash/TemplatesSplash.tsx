@@ -2,7 +2,7 @@
 import { CustomLink } from "../CustomLink";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { TEMPLATES } from "../../lib/templates";
-import { OgImageWrapper } from ".";
+import { OgImage } from "../OgImage";
 
 export function TemplatesSplash() {
   return (
@@ -15,7 +15,12 @@ export function TemplatesSplash() {
       </div>
       <div className="grid grid-cols-3 gap-2 max-h-[50vh] overflow-y-scroll no-scrollbar">
         {TEMPLATES.map((template) => (
-          <OgImageWrapper elements={template.elements} href="/" key={template.name} />
+          <OgImage
+            elements={template.elements}
+            href="/"
+            key={template.name}
+            name={template.name}
+          />
         ))}
       </div>
     </div>

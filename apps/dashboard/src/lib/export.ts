@@ -3,6 +3,8 @@ import satori from "satori"
 import { toast } from "sonner"
 import type { CSSProperties } from "react"
 import type { OGElement } from "./types"
+import { loadFonts } from "./fonts"
+import { createElementStyle } from "./elements"
 
 let wasmInitialized = false
 
@@ -131,3 +133,34 @@ export async function exportToPng(svg: string, fonts: Uint8Array[]): Promise<Uin
 
   return pngBuffer
 }
+
+/**
+ * Render an array of OG elements to an image data URL, to be used within
+ * the `src` attribute of an `img` element.
+ */
+export async function renderToImg(elements: OGElement[]) {
+  const fonts = await loadFonts(elements)
+
+  // We first render the wrapper element, then all the childrens
+  const reactElements: ReactElements = {
+    type: 'div',
+    props: {
+      style: {
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+      },
+      children: elements.map(element => ({
+        type: element.tag,
+        props: {
+          style: createElementStyle(element),
+          ...(element.tag === 'p' ? { children: [element.content] } : {}),
+        },
+      }))
+    }
+  }
+
+  const svg = await exportToSvg(reactElements, fonts)
+  return `data:image/svg+xml;base64,${btoa(svg)}`
+}
+

@@ -1,7 +1,8 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { describe, it, expect } from 'vitest'
-import { domToReactElements, exportToPng, exportToSvg } from '../export'
+import { domToReactElements, exportToPng, exportToSvg, renderToImg } from '../export'
+import { createElementId } from '../elements'
 
 describe('domToReactElements', () => {
   it('should transform a dom node to react elements', () => {
@@ -104,4 +105,33 @@ describe('exportToPng', () => {
   })
 
   it.todo('should export text to png')
+})
+
+describe('renderToImg', () => {
+  it('should render to a base64 data url', async () => {
+    const data = await renderToImg([
+      {
+        tag: 'p',
+        id: createElementId(),
+        name: 'Text',
+        width: 100,
+        height: 50,
+        x: 0,
+        y: 0,
+        visible: true,
+        rotate: 0,
+        opacity: 100,
+        content: 'Text',
+        color: '#000000',
+        fontFamily: 'Inter',
+        fontWeight: 400,
+        lineHeight: 1,
+        letterSpacing: 0,
+        fontSize: 50,
+        align: 'left',
+
+      }
+    ])
+    expect(data).toMatchSnapshot()
+  })
 })

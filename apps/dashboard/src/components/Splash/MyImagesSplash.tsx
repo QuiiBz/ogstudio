@@ -5,7 +5,7 @@ import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { AddIcon } from "../icons/AddIcon";
 import { useImagesStore } from "../../stores/imagesStore";
 import type { OGElement } from "../../lib/types";
-import { OgImageWrapper } from ".";
+import { OgImage } from "../OgImage";
 
 export function MyImagesSplash() {
   const { images, createEmptyImage, copyImage, deleteImage } = useImagesStore()
@@ -20,19 +20,20 @@ export function MyImagesSplash() {
         </CustomLink>
       </div>
       <div className="grid grid-cols-3 gap-2 max-h-[50vh] overflow-y-scroll no-scrollbar">
-        <OgImageWrapper onClick={() => {
+        <OgImage onClick={() => {
           const { id } = createEmptyImage()
           router.push(`/?i=${id}`)
         }}>
           <AddIcon height="1.4em" width="1.4em" /> Start from scratch
-        </OgImageWrapper>
-        {images.map(ogImage => (
-          <OgImageWrapper
-            copiable={() => copyImage(ogImage)}
-            deletable={() => { deleteImage(ogImage); }}
-            elements={JSON.parse(localStorage.getItem(ogImage.id) || '[]') as OGElement[]}
-            href={`/?i=${ogImage.id}`}
-            key={ogImage.id}
+        </OgImage>
+        {images.map(image => (
+          <OgImage
+            copiable={() => copyImage(image)}
+            deletable={() => { deleteImage(image); }}
+            elements={JSON.parse(localStorage.getItem(image.id) || '[]') as OGElement[]}
+            href={`/?i=${image.id}`}
+            key={image.id}
+            name={image.name}
           />
         ))}
       </div>

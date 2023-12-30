@@ -1,54 +1,8 @@
 'use client'
-import type { MouseEvent, ReactNode } from "react";
-import { Suspense } from "react";
-import Link from "next/link";
+import type { ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
-import type { OGElement } from "../../lib/types";
 import { OgEditor } from "../OgEditor";
-import { DeleteIcon } from "../icons/DeleteIcon";
-import { OgImage } from "../OgImage";
 import { CustomLink } from "../CustomLink";
-import { CopyIcon } from "../icons/CopyIcon";
-
-interface OgImageWrapperProps {
-  href?: string
-  onClick?: (event: MouseEvent<HTMLElement>) => void
-  elements?: OGElement[]
-  children?: ReactNode
-  copiable?: (event: MouseEvent<HTMLSpanElement>) => void
-  deletable?: (event: MouseEvent<HTMLSpanElement>) => void
-}
-
-export function OgImageWrapper({ href, onClick, elements, children, copiable, deletable }: OgImageWrapperProps) {
-  const Tag = href ? Link : 'button'
-
-  return (
-    <Tag className="h-[157px] w-[300px] min-w-[300px] flex items-center justify-center text-gray-600 border rounded border-gray-200 hover:border-gray-400 relative group overflow-hidden" href={href ?? ''} onClick={onClick}>
-      {elements ? (
-        <Suspense fallback={<div className="animate-pulse w-3/4 h-1/6 bg-gray-100 rounded-full" />}>
-          <OgImage elements={elements} />
-        </Suspense>
-      ) : null}
-      {children}
-      {copiable ? (
-        <button className="absolute right-8 top-1 p-1 bg-black/60 rounded text-gray-300 hover:text-gray-200 hidden group-hover:block" onClick={event => {
-          event.preventDefault()
-          copiable(event)
-        }} type="button">
-          <CopyIcon />
-        </button>
-      ) : null}
-      {deletable ? (
-        <button className="absolute right-1 top-1 p-1 bg-black/60 rounded text-gray-300 hover:text-gray-200 hidden group-hover:block" onClick={event => {
-          event.preventDefault()
-          deletable(event)
-        }} type="button">
-          <DeleteIcon />
-        </button>
-      ) : null}
-    </Tag>
-  )
-}
 
 interface OgSplashProps {
   children: ReactNode
