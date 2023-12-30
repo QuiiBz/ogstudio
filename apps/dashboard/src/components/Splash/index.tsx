@@ -3,7 +3,6 @@ import type { MouseEvent, ReactNode } from "react";
 import { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { INITIAL_ELEMENTS } from "../../lib/elements";
 import type { OGElement } from "../../lib/types";
 import { OgEditor } from "../OgEditor";
 import { DeleteIcon } from "../icons/DeleteIcon";
@@ -61,7 +60,7 @@ export function Splash({ children }: OgSplashProps) {
 
   return (
     <>
-      <OgEditor height={630} initialElements={INITIAL_ELEMENTS} localStorageKey={image ?? 'splash'} width={1200} />
+      <OgEditor height={630} imageId={image ?? 'splash'} width={1200} />
       {image ? null : (
         <div className="w-screen h-screen bg-black/10 flex justify-center items-center absolute top-0 left-0 z-10 backdrop-blur-[1px]">
           <div className="p-8 rounded-md bg-white shadow-lg shadow-gray-200 w-[980px] h-[636px]">

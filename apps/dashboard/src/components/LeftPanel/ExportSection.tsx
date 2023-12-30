@@ -8,14 +8,17 @@ import { useOg } from "../OgEditor";
 import { domToReactElements, exportToPng, exportToSvg } from "../../lib/export";
 import type { FontData } from "../../lib/fonts";
 import { loadFonts } from "../../lib/fonts";
+import { useElementsStore } from "../../stores/elementsStore";
 
 export function ExportSection() {
-  const { rootRef, elements, setSelectedElement } = useOg()
+  const { rootRef } = useOg()
+  const elements = useElementsStore(state => state.elements)
+  const setSelectedElementId = useElementsStore(state => state.setSelectedElementId)
   const [isLoading, setIsLoading] = useState(false)
 
   async function exportSvg(showProgress = true) {
     flushSync(() => {
-      setSelectedElement(null)
+      setSelectedElementId(null)
     })
 
     async function run() {

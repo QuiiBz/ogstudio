@@ -1,6 +1,7 @@
 import type { ReactElement } from "react"
 import { createElement } from "../lib/elements"
 import { useZoomStore } from "../stores/zoomStore"
+import { useElementsStore } from "../stores/elementsStore"
 import { TextIcon } from "./icons/TextIcon"
 import { CircleIcon } from "./icons/CircleIcon"
 import { ImageIcon } from "./icons/ImageIcon"
@@ -8,7 +9,6 @@ import { BoxIcon } from "./icons/BoxIcon"
 import { MagicWandIcon } from "./icons/MagicWandIcon"
 import { ZoomOutIcon } from "./icons/ZoomOutIcon"
 import { ZoomInIcon } from "./icons/ZoomInIcon"
-import { useOg } from "./OgEditor"
 
 interface ToolbarButtonProps {
   onClick: () => void
@@ -24,7 +24,7 @@ function ToolbarButton({ onClick, children }: ToolbarButtonProps) {
 }
 
 export function EditorToolbar() {
-  const { addElement } = useOg()
+  const addElement = useElementsStore(state => state.addElement)
   const { zoom, zoomIn, zoomOut } = useZoomStore()
 
   return (

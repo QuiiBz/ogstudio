@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { toast } from "sonner";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { createElementId } from "../lib/elements";
+import { INITIAL_ELEMENTS, createElementId } from "../lib/elements";
 import type { Template } from "../lib/templates";
 
 export interface OGImage {
@@ -31,7 +31,7 @@ export const useImagesStore = create(persist<ImagesState>(set => ({
       id: createElementId(),
     }
 
-    localStorage.setItem(image.id, JSON.stringify([]))
+    localStorage.setItem(image.id, JSON.stringify(INITIAL_ELEMENTS))
     set(state => ({ images: [image, ...state.images] }))
 
     return image

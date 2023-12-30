@@ -1,4 +1,4 @@
-import { useOg } from "../OgEditor";
+import { useElementsStore } from "../../stores/elementsStore";
 import { BackgroundSection } from "./BackgroundSection";
 import { BorderSection } from "./BorderSection";
 import { FontSection } from "./FontSection";
@@ -8,8 +8,8 @@ import { ShadowSection } from "./ShadowSection";
 import { SizePositionSection } from "./SizePositionSection";
 
 export function RightPanel() {
-  const { elements, selectedElement } = useOg()
-  const selectedElementData = elements.find(element => element.id === selectedElement)
+  const { selectedElementId, elements } = useElementsStore()
+  const selectedElementData = elements.find(element => element.id === selectedElementId)
 
   if (!selectedElementData) {
     return (

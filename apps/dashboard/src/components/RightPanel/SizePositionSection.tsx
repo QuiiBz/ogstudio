@@ -1,13 +1,13 @@
-import { useOg } from "../OgEditor";
 import { Input } from '../forms/Input'
 import type { OGElement } from "../../lib/types";
+import { useElementsStore } from "../../stores/elementsStore";
 
 interface SizePositionSectionProps {
   selectedElement: OGElement
 }
 
 export function SizePositionSection({ selectedElement }: SizePositionSectionProps) {
-  const { updateElement } = useOg()
+  const updateElement = useElementsStore(state => state.updateElement)
 
   return (
     <>

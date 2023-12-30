@@ -1,14 +1,14 @@
 import type { OGElement } from "../../lib/types";
 import { Button } from "../forms/Button";
-import { useOg } from "../OgEditor";
 import { DeleteIcon } from "../icons/DeleteIcon";
+import { useElementsStore } from "../../stores/elementsStore";
 
 interface ModificationsSectionProps {
   selectedElement: OGElement
 }
 
 export function ModificationsSection({ selectedElement }: ModificationsSectionProps) {
-  const { removeElement } = useOg()
+  const removeElement = useElementsStore(state => state.removeElement)
 
   return (
     <>

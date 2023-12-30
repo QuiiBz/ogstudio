@@ -1,11 +1,11 @@
 import { Button } from "../forms/Button";
-import { useOg } from "../OgEditor";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { RedoIcon } from "../icons/RedoIcon";
 import { UndoIcon } from "../icons/UndoIcon";
 
 export function ModificationSection() {
-  const { undoRedo, reset } = useOg()
+  const undoRedo = (a: string) => { }
+  const reset = () => { }
 
   return (
     <>

@@ -1,4 +1,3 @@
-import { useOg } from "../OgEditor";
 import { Input } from '../forms/Input'
 import { Select } from '../forms/Select'
 import type { OGElement } from "../../lib/types";
@@ -11,13 +10,14 @@ import { ColorIcon } from "../icons/ColorIcon";
 import { LineHeightIcon } from "../icons/LineHeightIcon";
 import { AlignLeftIcon } from "../icons/AlignLeftIcon";
 import { LetterSpacingIcon } from "../icons/LetterSpacingIcon";
+import { useElementsStore } from "../../stores/elementsStore";
 
 interface FontSectionProps {
   selectedElement: OGElement
 }
 
 export function FontSection({ selectedElement }: FontSectionProps) {
-  const { updateElement } = useOg()
+  const updateElement = useElementsStore(state => state.updateElement)
 
   if (selectedElement.tag !== 'p' && selectedElement.tag !== 'span') {
     return null
