@@ -39,7 +39,7 @@ export function ElementsSection() {
   return (
     <>
       <p className="text-xs text-gray-600">Elements</p>
-      <div className="flex flex-col-reverse w-full">
+      <div className="flex flex-col-reverse w-full max-h-[calc(100vh-420px)] overflow-y-scroll no-scrollbar">
         <DndContext collisionDetection={closestCenter} modifiers={[restrictToVerticalAxis]} onDragEnd={handleDragEnd} onDragOver={handleDragEnd} sensors={sensors}>
           <SortableContext items={elements} strategy={verticalListSortingStrategy}>
             {elements.map(element => (

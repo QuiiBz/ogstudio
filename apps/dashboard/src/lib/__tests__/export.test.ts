@@ -129,8 +129,33 @@ describe('renderToImg', () => {
         letterSpacing: 0,
         fontSize: 50,
         align: 'left',
+      },
+    ])
+    expect(data).toMatchSnapshot()
+  })
 
-      }
+  it('should not render non-visible elements', async () => {
+    const data = await renderToImg([
+      {
+        tag: 'p',
+        id: createElementId(),
+        name: 'Text',
+        width: 100,
+        height: 50,
+        x: 0,
+        y: 0,
+        visible: false,
+        rotate: 0,
+        opacity: 100,
+        content: 'Text',
+        color: '#000000',
+        fontFamily: 'Inter',
+        fontWeight: 400,
+        lineHeight: 1,
+        letterSpacing: 0,
+        fontSize: 50,
+        align: 'left',
+      },
     ])
     expect(data).toMatchSnapshot()
   })

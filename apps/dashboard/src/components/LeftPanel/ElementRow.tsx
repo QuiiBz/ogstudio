@@ -32,9 +32,9 @@ export function ElementRow({ element }: ElementRowProps) {
   };
 
   return (
-    <div className="flex justify-between items-center pb-2 cursor-auto" ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div className="flex justify-between items-center cursor-auto group" ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <button
-        className={`flex gap-2 select-none text-gray-600 hover:text-gray-900 w-full ${selectedElementId === element.id ? '!text-blue-500' : ''} ${!element.visible ? '!text-gray-300' : ''}`}
+        className={`flex gap-2 select-none py-1 text-gray-600 hover:text-gray-900 w-full ${selectedElementId === element.id ? '!text-blue-500' : ''} ${!element.visible ? '!text-gray-300' : ''}`}
         onClick={() => { setSelectedElementId(element.id); }}
         type="button"
       >
@@ -61,7 +61,7 @@ export function ElementRow({ element }: ElementRowProps) {
         {element.name}
       </button>
       <button
-        className="text-gray-600 hover:text-gray-900"
+        className={`text-gray-600 hover:text-gray-900 hidden group-hover:block ${!element.visible ? '!block' : ''}`}
         onClick={() => {
           updateElement({
             ...element,

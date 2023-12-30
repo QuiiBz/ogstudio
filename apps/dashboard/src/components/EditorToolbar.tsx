@@ -127,7 +127,7 @@ export function EditorToolbar() {
         </ToolbarButton>
         <div className="w-[1px] h-4 bg-gray-100" />
         {/* Set absolute width to make sure it doesn't change the layout */}
-        <span className="text-xs w-[46px] text-center text-gray-600">{zoom}%</span>
+        <span className="text-xs w-[46px] text-center text-gray-600 select-none">{zoom}%</span>
         <div className="w-[1px] h-4 bg-gray-100" />
         <ToolbarButton onClick={() => { zoomIn() }}>
           <ZoomInIcon />

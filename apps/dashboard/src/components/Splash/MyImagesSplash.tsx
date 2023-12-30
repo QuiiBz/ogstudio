@@ -19,7 +19,7 @@ export function MyImagesSplash() {
           Back
         </CustomLink>
       </div>
-      <div className="grid grid-cols-3 gap-2 max-h-[50vh] overflow-y-scroll no-scrollbar">
+      <div className="grid grid-cols-3 gap-2 max-h-[427px] overflow-y-scroll no-scrollbar">
         <OgImage onClick={() => {
           const { id } = createEmptyImage()
           router.push(`/?i=${id}`)

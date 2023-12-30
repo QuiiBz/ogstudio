@@ -150,7 +150,7 @@ export async function renderToImg(elements: OGElement[]) {
         width: '100%',
         height: '100%',
       },
-      children: elements.map(element => ({
+      children: elements.filter(element => element.visible).map(element => ({
         type: element.tag,
         props: {
           style: createElementStyle(element),
