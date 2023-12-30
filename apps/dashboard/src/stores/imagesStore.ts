@@ -45,6 +45,7 @@ export const useImagesStore = create(persist<ImagesState>(set => ({
     localStorage.setItem(image.id, JSON.stringify(template.elements))
     set(state => ({ images: [image, ...state.images] }))
 
+    toast('Template duplicated!')
     return image
   },
   copyImage: image => {

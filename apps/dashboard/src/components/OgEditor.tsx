@@ -196,7 +196,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
   return (
     <OgContext.Provider value={value}>
       <div className="w-screen h-screen flex flex-row justify-between items-center bg-gray-50 overflow-hidden">
-        <div className="w-[300px] min-w-[300px] h-screen flex flex-col border-r border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
+        <div className="w-[300px] min-w-[300px] h-screen border-r border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
           <LeftPanel />
         </div>
         <div className="flex flex-col items-center gap-4 fixed transform left-1/2 -translate-x-1/2">

@@ -10,7 +10,7 @@ interface CustomLinkProps {
 
 export function CustomLink({ icon, iconPosition = 'left', href, children }: CustomLinkProps) {
   return (
-    <Link className="flex gap-2 items-center px-3 py-1 rounded-full text-gray-600 hover:text-gray-900 hover:bg-gray-50" href={href}>
+    <Link className="flex gap-2 items-center px-3 py-1 rounded-full text-gray-600 hover:text-gray-900 hover:bg-gray-50 select-none" href={href}>
       {icon && iconPosition === 'left' ? icon : null}
       {children}
       {icon && iconPosition === 'right' ? icon : null}
