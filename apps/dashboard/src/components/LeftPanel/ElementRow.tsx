@@ -9,6 +9,7 @@ import { CircleIcon } from "../icons/CircleIcon"
 import { ImageIcon } from "../icons/ImageIcon"
 import { MagicWandIcon } from "../icons/MagicWandIcon"
 import { useElementsStore } from "../../stores/elementsStore";
+import { cn } from "../../lib/cn";
 
 interface ElementRowProps {
   element: OGElement
@@ -34,7 +35,11 @@ export function ElementRow({ element }: ElementRowProps) {
   return (
     <div className="flex justify-between items-center cursor-auto group" ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <button
-        className={`flex gap-2 select-none py-1 text-gray-600 hover:text-gray-900 w-full ${selectedElementId === element.id ? '!text-blue-500' : ''} ${!element.visible ? '!text-gray-300' : ''}`}
+        className={cn(
+          "flex gap-2 select-none py-1 text-gray-600 hover:text-gray-900 w-full",
+          { "text-blue-500": selectedElementId === element.id },
+          { "text-gray-300": !element.visible },
+        )}
         onClick={() => { setSelectedElementId(element.id); }}
         type="button"
       >

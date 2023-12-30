@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { useId } from "react"
+import { cn } from "../../lib/cn";
 
 type InputType = 'text' | 'color' | 'number' | 'textarea'
 type InputTypeToValue<Type extends InputType> = Type extends 'number' ? number : string
@@ -20,7 +21,11 @@ export function Input<Type extends InputType>({ type, value, min, max, suffix, o
   const Tag = type === 'textarea' ? 'textarea' : 'input'
 
   return (
-    <div className={`border border-gray-200 rounded bg-gray-50 flex items-center gap-1 hover:border-gray-300 relative ${children ? 'pl-1.5' : ''} ${className}`}>
+    <div className={cn(
+      "border border-gray-200 rounded bg-gray-50 flex items-center gap-1 hover:border-gray-300 relative",
+      { "pl-1.5": children },
+      className
+    )}>
       {children ? (
         <label className="text-gray-700 text-sm whitespace-nowrap" htmlFor={id}>
           {children}
