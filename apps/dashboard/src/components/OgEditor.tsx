@@ -47,8 +47,7 @@ let editIndex = -1
 
 let elementIdToCopy: string | undefined
 
-export function OgEditor({ initialElements, localStorageKey: key, width, height }: OgProviderProps) {
-  const localStorageKey = `og-${key}`
+export function OgEditor({ initialElements, localStorageKey, width, height }: OgProviderProps) {
   const [selectedElement, setRealSelectedElement] = useState<string | null>(null)
   const [elements, setRealElements] = useState<OGElement[]>([])
   const rootRef = useRef<HTMLDivElement>(null)

@@ -1,13 +1,12 @@
 'use client'
 import type { MouseEvent, ReactNode } from "react";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { toast } from "sonner";
 import { INITIAL_ELEMENTS, createElementId } from "../lib/elements";
 import type { OGElement } from "../lib/types";
-import type { Template } from "../lib/templates";
 import { TEMPLATES } from "../lib/templates";
+import { useImagesStore } from "../stores/imagesStore";
 import { OgEditor } from "./OgEditor";
 import { DeleteIcon } from "./icons/DeleteIcon";
 import { AddIcon } from "./icons/AddIcon";
@@ -38,12 +37,18 @@ function OgImageWrapper({ href, onClick, elements, children, copiable, deletable
       ) : null}
       {children}
       {copiable ? (
-        <button className="absolute right-8 top-1 p-1 bg-black/60 rounded text-gray-300 hover:text-gray-200 hidden group-hover:block" onClick={copiable} type="button">
+        <button className="absolute right-8 top-1 p-1 bg-black/60 rounded text-gray-300 hover:text-gray-200 hidden group-hover:block" onClick={event => {
+          event.preventDefault()
+          copiable(event)
+        }} type="button">
           <CopyIcon />
         </button>
       ) : null}
       {deletable ? (
-        <button className="absolute right-1 top-1 p-1 bg-black/60 rounded text-gray-300 hover:text-gray-200 hidden group-hover:block" onClick={deletable} type="button">
+        <button className="absolute right-1 top-1 p-1 bg-black/60 rounded text-gray-300 hover:text-gray-200 hidden group-hover:block" onClick={event => {
+          event.preventDefault()
+          deletable(event)
+        }} type="button">
           <DeleteIcon />
         </button>
       ) : null}
@@ -51,10 +56,10 @@ function OgImageWrapper({ href, onClick, elements, children, copiable, deletable
   )
 }
 
-interface OGImage {
-  id: string
-  content: OGElement[]
-}
+// interface OGImage {
+//   id: string
+//   content: OGElement[]
+// }
 
 interface OgSplashProps {
   route: 'splash' | 'templates' | 'my-images'
@@ -63,73 +68,74 @@ interface OgSplashProps {
 export function OgSplash({ route }: OgSplashProps) {
   const searchParams = useSearchParams();
   const image = searchParams.get('i')
-  const [ogImages, setOgImages] = useState<OGImage[]>([])
+  // const [ogImages, setOgImages] = useState<OGImage[]>([])
+  const { images, createEmptyImage, copyTemplate, copyImage, deleteImage } = useImagesStore()
   const router = useRouter()
 
-  // Load images from localStorage
-  useEffect(() => {
-    const images = Object.keys(localStorage).reduce<OGImage[]>((acc, current) => {
-      if (current.startsWith('og-')) {
-        acc.push({
-          id: current,
-          content: JSON.parse(localStorage.getItem(current) || '[]') as OGElement[]
-        })
-      }
-
-      return acc
-    }, [])
-
-    setOgImages(images)
-  }, [image])
-
-  function copyTemplate(template: Template, push = true) {
-    return function onClick() {
-      const id = createElementId()
-      const key = `og-${id}`
-
-      localStorage.setItem(key, JSON.stringify(template.elements))
-
-      if (push) {
-        router.push(`/?i=${id}`)
-      } else {
-        setOgImages(images => [{ id: key, content: template.elements }, ...images])
-      }
-    }
-  }
-
-  function copyOgImage(ogImage: OGImage) {
-    const copy = copyTemplate({ name: ogImage.id, elements: ogImage.content }, false)
-
-    return function onClick(event: MouseEvent<HTMLSpanElement>) {
-      event.preventDefault();
-      event.stopPropagation();
-
-      copy()
-      toast('Image duplicated!')
-    }
-  }
-
-  function deleteOgImage(ogImage: OGImage) {
-    return function onClick(event: MouseEvent<HTMLSpanElement>) {
-      event.preventDefault();
-      event.stopPropagation();
-
-      localStorage.removeItem(ogImage.id)
-      setOgImages(images => images.filter(({ id }) => id !== ogImage.id))
-
-      toast('Image deleted!', {
-        action: {
-          label: 'Undo',
-          onClick: () => {
-            localStorage.setItem(ogImage.id, JSON.stringify(ogImage.content))
-            setOgImages(images => [ogImage, ...images])
-
-            toast('Image restored!')
-          }
-        },
-      })
-    }
-  }
+  // // Load images from localStorage
+  // useEffect(() => {
+  //   const images = Object.keys(localStorage).reduce<OGImage[]>((acc, current) => {
+  //     if (current.startsWith('og-')) {
+  //       acc.push({
+  //         id: current,
+  //         content: JSON.parse(localStorage.getItem(current) || '[]') as OGElement[]
+  //       })
+  //     }
+  //
+  //     return acc
+  //   }, [])
+  //
+  //   setOgImages(images)
+  // }, [image])
+  //
+  // function copyTemplate(template: Template, push = true) {
+  //   return function onClick() {
+  //     const id = createElementId()
+  //     const key = `og-${id}`
+  //
+  //     localStorage.setItem(key, JSON.stringify(template.elements))
+  //
+  //     if (push) {
+  //       router.push(`/?i=${id}`)
+  //     } else {
+  //       setOgImages(images => [{ id: key, content: template.elements }, ...images])
+  //     }
+  //   }
+  // }
+  //
+  // function copyOgImage(ogImage: OGImage) {
+  //   const copy = copyTemplate({ name: ogImage.id, elements: ogImage.content }, false)
+  //
+  //   return function onClick(event: MouseEvent<HTMLSpanElement>) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //
+  //     copy()
+  //     toast('Image duplicated!')
+  //   }
+  // }
+  //
+  // function deleteOgImage(ogImage: OGImage) {
+  //   return function onClick(event: MouseEvent<HTMLSpanElement>) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //
+  //     localStorage.removeItem(ogImage.id)
+  //     setOgImages(images => images.filter(({ id }) => id !== ogImage.id))
+  //
+  //     toast('Image deleted!', {
+  //       action: {
+  //         label: 'Undo',
+  //         onClick: () => {
+  //           localStorage.setItem(ogImage.id, JSON.stringify(ogImage.content))
+  //           setOgImages(images => [ogImage, ...images])
+  //
+  //           toast('Image restored!')
+  //         }
+  //       },
+  //     })
+  //   }
+  // }
 
   return (
     <>
@@ -155,7 +161,10 @@ export function OgSplash({ route }: OgSplashProps) {
                   </div>
                   <div className="flex gap-2">
                     {TEMPLATES.slice(0, 2).map((template) => (
-                      <OgImageWrapper elements={template.elements} key={template.name} onClick={copyTemplate(template)} />
+                      <OgImageWrapper elements={template.elements} key={template.name} onClick={() => {
+                        const { id } = copyTemplate(template)
+                        router.push(`/?i=${id}`)
+                      }} />
                     ))}
                   </div>
                 </div>
@@ -168,15 +177,18 @@ export function OgSplash({ route }: OgSplashProps) {
                     </CustomLink>
                   </div>
                   <div className="flex gap-2">
-                    <OgImageWrapper href={`/?i=${createElementId()}`}>
+                    <OgImageWrapper onClick={() => {
+                      const { id } = createEmptyImage()
+                      router.push(`/?i=${id}`)
+                    }}>
                       <AddIcon height="1.4em" width="1.4em" /> Start from scratch
                     </OgImageWrapper>
-                    {ogImages.slice(0, 2).map(ogImage => (
+                    {images.slice(0, 2).map(ogImage => (
                       <OgImageWrapper
-                        copiable={copyOgImage(ogImage)}
-                        deletable={deleteOgImage(ogImage)}
-                        elements={ogImage.content}
-                        href={`/?i=${ogImage.id.replace('og-', '')}`}
+                        copiable={() => copyImage(ogImage)}
+                        deletable={() => { deleteImage(ogImage); }}
+                        elements={JSON.parse(localStorage.getItem(ogImage.id) || '[]') as OGElement[]}
+                        href={`/?i=${ogImage.id}`}
                         key={ogImage.id}
                       />
                     ))}
@@ -209,12 +221,12 @@ export function OgSplash({ route }: OgSplashProps) {
                   <OgImageWrapper href={`/?i=${createElementId()}`}>
                     <AddIcon height="1.4em" width="1.4em" /> Start from scratch
                   </OgImageWrapper>
-                  {ogImages.map(ogImage => (
+                  {images.map(ogImage => (
                     <OgImageWrapper
-                      copiable={copyOgImage(ogImage)}
-                      deletable={deleteOgImage(ogImage)}
-                      elements={ogImage.content}
-                      href={`/?i=${ogImage.id.replace('og-', '')}`}
+                      copiable={() => copyImage(ogImage)}
+                      deletable={() => { deleteImage(ogImage); }}
+                      elements={JSON.parse(localStorage.getItem(ogImage.id) || '[]') as OGElement[]}
+                      href={`/?i=${ogImage.id}`}
                       key={ogImage.id}
                     />
                   ))}
