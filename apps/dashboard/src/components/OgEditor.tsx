@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import type { OGElement } from "../lib/types";
 import { createElementId } from "../lib/elements";
 import { maybeLoadFont } from "../lib/fonts";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useZoomStore } from "../stores/zoomStore";
 import { Element } from './Element'
 import { RightPanel } from "./RightPanel";
 import { LeftPanel } from "./LeftPanel";
@@ -20,8 +20,6 @@ interface OgContextType {
   removeElement: (id: string) => void
   undoRedo: (type: 'undo' | 'redo') => void
   reset: () => void
-  zoom: number
-  setZoom: (zoom: number) => void
   rootRef: RefObject<HTMLDivElement>
 }
 
@@ -52,9 +50,9 @@ let elementIdToCopy: string | undefined
 export function OgEditor({ initialElements, localStorageKey: key, width, height }: OgProviderProps) {
   const localStorageKey = `og-${key}`
   const [selectedElement, setRealSelectedElement] = useState<string | null>(null)
-  const [zoom, setZoom] = useLocalStorage(100, 'zoom')
   const [elements, setRealElements] = useState<OGElement[]>([])
   const rootRef = useRef<HTMLDivElement>(null)
+  const zoom = useZoomStore(state => state.zoom)
 
   const setSelectedElement = useCallback((id: string | null) => {
     const element = elements.find(item => item.id === id)
@@ -299,7 +297,7 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
 
       document.removeEventListener('keydown', onKeyDown)
     }
-  }, [rootRef, selectedElement, removeElement, addElement, elements, undoRedo, setSelectedElement])
+  }, [rootRef, selectedElement, removeElement, addElement, elements, undoRedo, setSelectedElement, updateElement])
 
   const reset = useCallback(() => {
     setElements(initialElements)
@@ -315,10 +313,8 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
     removeElement,
     undoRedo,
     reset,
-    zoom,
-    setZoom,
     rootRef,
-  }), [elements, selectedElement, setSelectedElement, setElements, updateElement, addElement, removeElement, undoRedo, reset, zoom, setZoom])
+  }), [elements, selectedElement, setSelectedElement, setElements, updateElement, addElement, removeElement, undoRedo, reset])
 
   return (
     <OgContext.Provider value={value}>
