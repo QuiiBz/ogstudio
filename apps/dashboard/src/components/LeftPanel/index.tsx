@@ -16,6 +16,6 @@ export function LeftPanel() {
         <div className="h-[1px] w-full bg-gray-100" />
         <ExportSection />
       </div>
-    </div >
-  )
+    </div>
+  );
 }

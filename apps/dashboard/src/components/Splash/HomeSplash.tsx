@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useRouter } from "next/navigation";
 import { CustomLink } from "../CustomLink";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
@@ -9,15 +9,20 @@ import { useImagesStore } from "../../stores/imagesStore";
 import { OgImage } from "../OgImage";
 
 export function HomeSplash() {
-  const { images, copyTemplate, createEmptyImage, copyImage, deleteImage } = useImagesStore()
-  const router = useRouter()
+  const { images, copyTemplate, createEmptyImage, copyImage, deleteImage } =
+    useImagesStore();
+  const router = useRouter();
 
   return (
     <>
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
           <h2 className="text-gray-800 text-xl">Templates</h2>
-          <CustomLink href="/templates" icon={<ArrowRightIcon />} iconPosition="right">
+          <CustomLink
+            href="/templates"
+            icon={<ArrowRightIcon />}
+            iconPosition="right"
+          >
             See all
           </CustomLink>
         </div>
@@ -28,8 +33,8 @@ export function HomeSplash() {
               key={template.name}
               name={template.name}
               onClick={() => {
-                const { id } = copyTemplate(template)
-                router.push(`/?i=${id}`)
+                const { id } = copyTemplate(template);
+                router.push(`/?i=${id}`);
               }}
             />
           ))}
@@ -39,22 +44,34 @@ export function HomeSplash() {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
           <h2 className="text-gray-800 text-xl">My images</h2>
-          <CustomLink href="/my-images" icon={<ArrowRightIcon />} iconPosition="right">
+          <CustomLink
+            href="/my-images"
+            icon={<ArrowRightIcon />}
+            iconPosition="right"
+          >
             See all
           </CustomLink>
         </div>
         <div className="flex gap-2">
-          <OgImage onClick={() => {
-            const { id } = createEmptyImage()
-            router.push(`/?i=${id}`)
-          }}>
+          <OgImage
+            onClick={() => {
+              const { id } = createEmptyImage();
+              router.push(`/?i=${id}`);
+            }}
+          >
             <AddIcon height="1.4em" width="1.4em" /> Start from scratch
           </OgImage>
-          {images.slice(0, 2).map(image => (
+          {images.slice(0, 2).map((image) => (
             <OgImage
               copiable={() => copyImage(image)}
-              deletable={() => { deleteImage(image); }}
-              elements={JSON.parse(localStorage.getItem(image.id) || '[]') as OGElement[]}
+              deletable={() => {
+                deleteImage(image);
+              }}
+              elements={
+                JSON.parse(
+                  localStorage.getItem(image.id) || "[]",
+                ) as OGElement[]
+              }
               href={`/?i=${image.id}`}
               key={image.id}
               name={image.name}
@@ -63,5 +80,5 @@ export function HomeSplash() {
         </div>
       </div>
     </>
-  )
+  );
 }

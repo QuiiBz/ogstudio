@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { CustomLink } from "../CustomLink";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { TEMPLATES } from "../../lib/templates";
@@ -24,5 +24,5 @@ export function TemplatesSplash() {
         ))}
       </div>
     </div>
-  )
+  );
 }

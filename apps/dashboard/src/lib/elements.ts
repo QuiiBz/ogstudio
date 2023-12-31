@@ -11,8 +11,8 @@ import { hexToRgba } from "./colors";
 export const INITIAL_ELEMENTS: OGElement[] = [
   {
     id: createElementId(),
-    tag: 'div',
-    name: 'Box',
+    tag: "div",
+    name: "Box",
     x: 0,
     y: 0,
     width: 1200,
@@ -20,10 +20,9 @@ export const INITIAL_ELEMENTS: OGElement[] = [
     visible: true,
     rotate: 0,
     opacity: 100,
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
   },
-]
-
+];
 
 export function createElementId() {
   return Math.random().toString(36).substr(2, 9);
@@ -39,7 +38,7 @@ export function createElement(element: Partial<OGElement>): OGElement {
     id: createElementId(),
     x: (1200 - (element.width ?? 0)) / 2,
     y: (630 - (element.height ?? 0)) / 2,
-  }
+  };
 }
 
 /**
@@ -48,35 +47,42 @@ export function createElement(element: Partial<OGElement>): OGElement {
  * are supported: https://github.com/vercel/satori#css
  */
 export function createElementStyle(element: OGElement): CSSProperties {
-  const boxShadows: string[] = []
-  let textShadow: string | undefined
+  const boxShadows: string[] = [];
+  let textShadow: string | undefined;
 
   // Borders are generated as box shadows to avoid taking up extra space and
   // allow for more flexibility
   if (element.border) {
-    boxShadows.push(`0 0 0 ${element.border.width}px${element.border.style === 'inside' ? ' inset' : ''} ${element.border.color}`)
+    boxShadows.push(
+      `0 0 0 ${element.border.width}px${
+        element.border.style === "inside" ? " inset" : ""
+      } ${element.border.color}`,
+    );
   }
 
   if (element.shadow) {
-    if (element.tag === 'p' || element.tag === 'span') {
-      textShadow = `${element.shadow.x}px ${element.shadow.y}px ${element.shadow.blur}px ${element.shadow.color}`
+    if (element.tag === "p" || element.tag === "span") {
+      textShadow = `${element.shadow.x}px ${element.shadow.y}px ${element.shadow.blur}px ${element.shadow.color}`;
     } else {
-      boxShadows.push(`${element.shadow.x}px ${element.shadow.y}px ${element.shadow.blur}px ${element.shadow.width}px ${element.shadow.color}`)
+      boxShadows.push(
+        `${element.shadow.x}px ${element.shadow.y}px ${element.shadow.blur}px ${element.shadow.width}px ${element.shadow.color}`,
+      );
     }
   }
 
   // There is a set of base styles that are shared by all elements
   let base: CSSProperties = {
-    position: 'absolute',
+    position: "absolute",
     top: `${element.y}px`,
     left: `${element.x}px`,
     width: `${element.width}px`,
     height: `${element.height}px`,
-    transform: element.rotate !== 0 ? `rotate(${element.rotate}deg)` : undefined,
-    boxShadow: boxShadows.length ? boxShadows.join(', ') : undefined,
-  }
+    transform:
+      element.rotate !== 0 ? `rotate(${element.rotate}deg)` : undefined,
+    boxShadow: boxShadows.length ? boxShadows.join(", ") : undefined,
+  };
 
-  if (element.tag === 'p' || element.tag === 'span') {
+  if (element.tag === "p" || element.tag === "span") {
     base = {
       ...base,
       color: hexToRgba(element.color, element.opacity),
@@ -91,32 +97,36 @@ export function createElementStyle(element: OGElement): CSSProperties {
       marginTop: 0,
       marginBottom: 0,
       textShadow,
-    }
+    };
   }
 
-  if (element.tag === 'div') {
+  if (element.tag === "div") {
     base = {
       ...base,
-      display: 'flex',
+      display: "flex",
       borderRadius: element.radius ? `${element.radius}px` : undefined,
       background: element.backgroundImage
         ? undefined
         : element.gradient
-          ? element.gradient.type === 'radial'
+          ? element.gradient.type === "radial"
             ? `radial-gradient(${element.gradient.start}, ${element.gradient.end})`
             : `linear-gradient(${element.gradient.angle}deg, ${element.gradient.start}, ${element.gradient.end})`
           : hexToRgba(element.backgroundColor, element.opacity),
-      backgroundImage: element.backgroundImage ? `url(${element.backgroundImage})` : undefined,
-      backgroundRepeat: element.backgroundImage ? 'no-repeat' : undefined, // TODO
+      backgroundImage: element.backgroundImage
+        ? `url(${element.backgroundImage})`
+        : undefined,
+      backgroundRepeat: element.backgroundImage ? "no-repeat" : undefined, // TODO
       // backgroundPosition: element.backgroundImage ? 'center' : undefined, // TODO
       backgroundSize: element.backgroundImage
-        ? element.backgroundSize === 'cover'
-          ? 'auto 100%'
-          : '100% 100%'
+        ? element.backgroundSize === "cover"
+          ? "auto 100%"
+          : "100% 100%"
         : undefined,
-    }
+    };
   }
 
   // Filter out undefined values
-  return Object.fromEntries(Object.entries(base).filter(([, value]) => value !== undefined));
+  return Object.fromEntries(
+    Object.entries(base).filter(([, value]) => value !== undefined),
+  );
 }
