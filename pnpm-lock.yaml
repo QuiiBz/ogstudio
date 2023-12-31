@@ -43,10 +43,19 @@ importers:
         version: 2.6.0
       '@tanstack/react-query':
         specifier: ^5.15.5
-        version: 5.15.5(react@18.2.0)
+        version: 5.17.0(react@18.2.0)
+      '@vercel/analytics':
+        specifier: ^1.1.1
+        version: 1.1.1
+      '@vercel/speed-insights':
+        specifier: ^1.0.2
+        version: 1.0.2
       arctic:
         specifier: ^0.10.2
         version: 0.10.2
+      clsx:
+        specifier: ^2.1.0
+        version: 2.1.0
       drizzle-orm:
         specifier: ^0.29.2
         version: 0.29.2(@libsql/client@0.4.0-pre.5)(@types/react@18.2.45)(expo-sqlite@13.2.0)(react@18.2.0)
@@ -3209,16 +3218,16 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@tanstack/query-core@5.15.5:
-    resolution: {integrity: sha512-GDwVfu8RPswqVu27+zuIkZINru6CN++zzBbBK+OnAgzxK8N4Obdi+sG2P0EO8rJAOw0fLyQTsO4GCZ1djwaUCg==}
+  /@tanstack/query-core@5.17.0:
+    resolution: {integrity: sha512-LoBaPtbMY26kRS+ohII4thTsWkJJsXKGitOLikTo2aqPA4yy7cfFJITs8DRnuERT7tLF5xfG9Lnm33Vp/38Vmw==}
     dev: false
 
-  /@tanstack/react-query@5.15.5(react@18.2.0):
-    resolution: {integrity: sha512-JSPpzsJPqpNySgjMhAvBpF3gVhtlI/0bZrBmwmcD/ewYYOExll+tIz13gkgnCfNA1qTJQnbv7vdc2gw594vq9Q==}
+  /@tanstack/react-query@5.17.0(react@18.2.0):
+    resolution: {integrity: sha512-iNSn6ZA7mHUjrT0a271eKoa1oR1HznlrGbb475awft1kuP3zrhyUCrI8tlGowOr7zRoAxJholjwxO+gfz1IObw==}
     peerDependencies:
       react: ^18.0.0
     dependencies:
-      '@tanstack/query-core': 5.15.5
+      '@tanstack/query-core': 5.17.0
       react: 18.2.0
     dev: false
 
@@ -4304,6 +4313,11 @@ packages:
   /clone@2.1.2:
     resolution: {integrity: sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==}
     engines: {node: '>=0.8'}
+    dev: false
+
+  /clsx@2.1.0:
+    resolution: {integrity: sha512-m3iNNWpd9rl3jvvcBnu70ylMdrXt8Vlq4HYadnU5fwcOtvkSQWPmj7amUcDT2qYI7risszBjI5AUIUox9D16pg==}
+    engines: {node: '>=6'}
     dev: false
 
   /color-convert@1.9.3:
