@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react"
+import { clsx } from "clsx";
 import type { OGElement } from "../lib/types";
 import { createElementStyle } from "../lib/elements";
 import { useElementsStore } from "../stores/elementsStore";
-import { cn } from "../lib/cn";
 
 interface ElementProps {
   element: OGElement
@@ -241,14 +241,11 @@ export function Element({ element }: ElementProps) {
 
   return (
     <Tag
-      className={cn(
+      className={clsx(
         "element cursor-default select-none outline-1 outline-offset-[3px] hover:outline",
-        { "outline-blue-500": isSelected },
-        { "outline cursor-move": isSelected },
+        { "outline outline-blue-500 cursor-move": isSelected },
         { "outline-dashed": element.tag === "span" },
-        { "outline-none": isEditing },
-        { "cursor-text": isEditing },
-        { "cursor-move": isSelected },
+        { "outline-none cursor-text": isEditing },
       )}
       id={`element-${element.id}`}
       // @ts-expect-error wtf?

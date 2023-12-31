@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useId } from "react"
-import { cn } from "../../lib/cn";
+import { clsx } from "clsx";
 
 type InputType = 'text' | 'color' | 'number' | 'textarea'
 type InputTypeToValue<Type extends InputType> = Type extends 'number' ? number : string
@@ -21,7 +21,7 @@ export function Input<Type extends InputType>({ type, value, min, max, suffix, o
   const Tag = type === 'textarea' ? 'textarea' : 'input'
 
   return (
-    <div className={cn(
+    <div className={clsx(
       "border border-gray-200 rounded bg-gray-50 flex items-center gap-1 hover:border-gray-300 relative",
       { "pl-1.5": children },
       className

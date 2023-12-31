@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { cn } from "../../lib/cn"
+import { clsx } from "clsx"
 
 interface ButtonProps {
   icon?: ReactNode
@@ -13,7 +13,7 @@ interface ButtonProps {
 export function Button({ icon, variant, onClick, isLoading, className, children }: ButtonProps) {
   return (
     <button 
-      className={cn(
+      className={clsx(
         "flex gap-3 items-center px-3 py-1 border rounded select-none",
         {
           "text-red-900 bg-red-50 border-red-200 hover:border-red-300": variant === "danger",
