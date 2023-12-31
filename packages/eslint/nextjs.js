@@ -11,16 +11,16 @@ const project = resolve(process.cwd(), "tsconfig.json");
  */
 
 module.exports = {
-  extends: [
+  extends: [...[
     "@vercel/style-guide/eslint/node",
     "@vercel/style-guide/eslint/typescript",
     "@vercel/style-guide/eslint/browser",
     "@vercel/style-guide/eslint/react",
     "@vercel/style-guide/eslint/next",
     "eslint-config-turbo",
-    "eslint-config-prettier",
-    "eslint-plugin-prettier"
   ].map(require.resolve),
+    "plugin:prettier/recommended",
+  ],
   parserOptions: {
     project,
   },
