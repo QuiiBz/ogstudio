@@ -11,7 +11,7 @@ export async function GET() {
     secure: process.env.NODE_ENV === "production",
     httpOnly: true,
     maxAge: 60 * 10,
-    sameSite: "lax"
+    sameSite: "lax",
   });
 
   return Response.redirect(url);
