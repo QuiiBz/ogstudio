@@ -69,8 +69,8 @@ export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
         // @ts-expect-error -- wrong inference
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- wrong inference
         const fontName = element.fontFamily.toLowerCase().replace(" ", "-");
-        // @ts-expect-error -- wrong inference
         const data = await fetch(
+          // @ts-expect-error -- wrong inference
           `https://fonts.bunny.net/${fontName}/files/${fontName}-latin-${element.fontWeight}-normal.woff`,
         ).then((response) => response.arrayBuffer());
 
