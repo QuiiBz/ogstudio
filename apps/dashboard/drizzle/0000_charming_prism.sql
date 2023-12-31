@@ -7,8 +7,11 @@ CREATE TABLE `user_session` (
 --> statement-breakpoint
 CREATE TABLE `user` (
 	`id` text PRIMARY KEY NOT NULL,
-	`github_id` integer NOT NULL,
-	`username` text NOT NULL
+	`github_id` integer,
+	`google_id` text,
+	`name` text NOT NULL,
+	`avatar` text DEFAULT '' NOT NULL
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `user_github_id_unique` ON `user` (`github_id`);
+CREATE UNIQUE INDEX `user_github_id_unique` ON `user` (`github_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `user_google_id_unique` ON `user` (`google_id`);

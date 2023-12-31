@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "a6d6a841-3fd2-49e8-9fdc-d334f23306db",
+  "id": "d223f266-e035-4d41-89f1-af0ac7c1007a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "user_session": {
@@ -62,15 +62,30 @@
           "name": "github_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
-        "username": {
-          "name": "username",
+        "google_id": {
+          "name": "google_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "avatar": {
+          "name": "avatar",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
         }
       },
       "indexes": {
@@ -78,6 +93,13 @@
           "name": "user_github_id_unique",
           "columns": [
             "github_id"
+          ],
+          "isUnique": true
+        },
+        "user_google_id_unique": {
+          "name": "user_google_id_unique",
+          "columns": [
+            "google_id"
           ],
           "isUnique": true
         }
