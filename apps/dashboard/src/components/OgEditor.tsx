@@ -40,6 +40,11 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
   const { selectedElementId, setSelectedElementId, elements, updateElement, removeElement, addElement, loadImage } = useElementsStore()
   const { undo, redo } = useElementsStore.temporal.getState()
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises -- we don't want to wait for this
+    useZoomStore.persist.rehydrate()
+  }, [])
+
   /**
    * When the editor image is updated or loaded for the first time, reset every
    * state, and load the elements and fonts.
