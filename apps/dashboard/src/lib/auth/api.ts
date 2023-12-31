@@ -15,7 +15,7 @@ export async function getSession(): Promise<SessionObject> {
   if (!sessionId) {
     return {
       user: null,
-      session: null
+      session: null,
     };
   }
 
@@ -25,14 +25,24 @@ export async function getSession(): Promise<SessionObject> {
   try {
     if (result.session?.fresh) {
       const sessionCookie = lucia.createSessionCookie(result.session.id);
-      cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+      cookies().set(
+        sessionCookie.name,
+        sessionCookie.value,
+        sessionCookie.attributes,
+      );
     }
 
     if (!result.session) {
       const sessionCookie = lucia.createBlankSessionCookie();
-      cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+      cookies().set(
+        sessionCookie.name,
+        sessionCookie.value,
+        sessionCookie.attributes,
+      );
     }
-  } catch { /* empty */ }
+  } catch {
+    /* empty */
+  }
 
   return result;
 }

@@ -15,9 +15,9 @@ interface OgSplashProps {
 }
 
 function SplashInner({ children }: OgSplashProps) {
-  const searchParams = useSearchParams()
-  const image = searchParams.get('i')
-  const { data } = useUser()
+  const searchParams = useSearchParams();
+  const image = searchParams.get("i");
+  const { data } = useUser();
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises -- we don't want to wait for this
@@ -34,7 +34,9 @@ function SplashInner({ children }: OgSplashProps) {
           <div className="p-8 rounded-md bg-white shadow-lg shadow-gray-200 w-[980px] h-[684px]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <Link className="text-gray-900 text-2xl" href="/">OG Studio</Link>
+                <Link className="text-gray-900 text-2xl" href="/">
+                  OG Studio
+                </Link>
                 <span className="flex gap-2 items-center px-3 py-1 rounded-full text-white bg-yellow-500 select-none text-xs">
                   Early preview
                 </span>
@@ -47,11 +49,29 @@ function SplashInner({ children }: OgSplashProps) {
                 </CustomLink>
               </div>
               {data?.user ? (
-                <CustomLink href="/profile" icon={<Image alt={`${data.user.name}'s avatar`} className="w-6 h-6 rounded-full" height={24} src={data.user.avatar} width={24} />} iconPosition="right">
+                <CustomLink
+                  href="/profile"
+                  icon={
+                    <Image
+                      alt={`${data.user.name}'s avatar`}
+                      className="w-6 h-6 rounded-full"
+                      height={24}
+                      src={data.user.avatar}
+                      width={24}
+                    />
+                  }
+                  iconPosition="right"
+                >
                   {data.user.name}
                 </CustomLink>
               ) : (
-                <CustomLink href="/login" icon={<div className="w-6 h-6 rounded-full bg-gray-200 animate-pulse" />} iconPosition="right">
+                <CustomLink
+                  href="/login"
+                  icon={
+                    <div className="w-6 h-6 rounded-full bg-gray-200 animate-pulse" />
+                  }
+                  iconPosition="right"
+                >
                   Guest
                 </CustomLink>
               )}
