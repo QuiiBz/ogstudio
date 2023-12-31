@@ -70,8 +70,8 @@ export function ElementRow({ element }: ElementRowProps) {
       <button
         className={clsx(
           "flex items-center gap-2 select-none text-gray-600 hover:text-gray-900 w-full",
-          { "text-blue-500": selectedElementId === element.id },
-          { "text-gray-300": !element.visible },
+          { "!text-blue-500": selectedElementId === element.id },
+          { "!text-gray-300": !element.visible },
         )}
         onClick={() => { setSelectedElementId(element.id); }}
         onDoubleClick={() => {

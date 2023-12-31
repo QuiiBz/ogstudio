@@ -245,7 +245,7 @@ export function Element({ element }: ElementProps) {
         "element cursor-default select-none outline-1 outline-offset-[3px] hover:outline",
         { "outline outline-blue-500 cursor-move": isSelected },
         { "outline-dashed": element.tag === "span" },
-        { "outline-none cursor-text": isEditing },
+        { "!outline-none !cursor-text": isEditing },
       )}
       id={`element-${element.id}`}
       // @ts-expect-error wtf?
