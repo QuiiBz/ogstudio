@@ -2,11 +2,13 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import { DndContext, KeyboardSensor, PointerSensor, closestCenter, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, arrayMove, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import { useOg } from "../OgEditor";
+import { useElementsStore } from "../../stores/elementsStore";
 import { ElementRow } from "./ElementRow";
 
 export function ElementsSection() {
-  const { elements, setElements } = useOg()
+  const elements = useElementsStore(state => state.elements)
+  const setElements = useElementsStore(state => state.setElements)
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -37,7 +39,7 @@ export function ElementsSection() {
   return (
     <>
       <p className="text-xs text-gray-600">Elements</p>
-      <div className="flex flex-col-reverse w-full">
+      <div className="flex flex-col-reverse w-full max-h-[calc(100vh-420px)] overflow-y-scroll no-scrollbar">
         <DndContext collisionDetection={closestCenter} modifiers={[restrictToVerticalAxis]} onDragEnd={handleDragEnd} onDragOver={handleDragEnd} sensors={sensors}>
           <SortableContext items={elements} strategy={verticalListSortingStrategy}>
             {elements.map(element => (

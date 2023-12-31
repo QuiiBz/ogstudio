@@ -9,5 +9,3 @@ export function hexToRgba(hex: string, alpha: number) {
 
   return `rgba(${r}, ${g}, ${b}, ${alpha / 100})`;
 }
-
-

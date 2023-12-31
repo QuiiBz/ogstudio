@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import type { OGElement } from "../lib/types";
 import { createElementStyle } from "../lib/elements";
-import { useOg } from "./OgEditor"
+import { useElementsStore } from "../stores/elementsStore";
 
 interface ElementProps {
   element: OGElement
@@ -10,9 +10,12 @@ interface ElementProps {
 export function Element({ element }: ElementProps) {
   const elementRef = useRef<HTMLElement>(null)
   const [isEditing, setIsEditing] = useState(false)
-  const { selectedElement, setSelectedElement, updateElement, removeElement, zoom } = useOg()
+  const selectedElementId = useElementsStore(state => state.selectedElementId)
+  const setSelectedElementId = useElementsStore(state => state.setSelectedElementId)
+  const updateElement = useElementsStore(state => state.updateElement)
+  const removeElement = useElementsStore(state => state.removeElement)
 
-  const isSelected = selectedElement === element.id
+  const isSelected = selectedElementId === element.id
   const Tag = element.tag
 
   useEffect(() => {
@@ -23,7 +26,7 @@ export function Element({ element }: ElementProps) {
 
       event.preventDefault();
 
-      setSelectedElement(element.id)
+      setSelectedElementId(element.id)
 
       const target = event.target as HTMLElement
       const isResizer = target.parentElement?.classList.contains('element')
@@ -227,7 +230,7 @@ export function Element({ element }: ElementProps) {
         elementRef.current.removeEventListener('dblclick', onDoubleClick)
       }
     }
-  }, [element.tag, elementRef, isEditing, setSelectedElement, updateElement, removeElement, selectedElement, isSelected, element, zoom])
+  }, [element.tag, elementRef, isEditing, setSelectedElementId, updateElement, removeElement, selectedElementId, isSelected, element])
 
   const style = useMemo(() => createElementStyle(element), [element])
 

@@ -1,4 +1,3 @@
-import { useOg } from "../OgEditor";
 import type { OGElement } from "../../lib/types";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { AddIcon } from "../icons/AddIcon";
@@ -7,13 +6,14 @@ import { Input } from '../forms/Input'
 import { Select } from '../forms/Select'
 import { WidthIcon } from "../icons/WidthIcon";
 import { BorderStyleIcon } from "../icons/BorderStyleIcon";
+import { useElementsStore } from "../../stores/elementsStore";
 
 interface BorderSectionProps {
   selectedElement: OGElement
 }
 
 export function BorderSection({ selectedElement }: BorderSectionProps) {
-  const { updateElement } = useOg()
+  const updateElement = useElementsStore(state => state.updateElement)
 
   return (
     <>

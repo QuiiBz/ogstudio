@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'sonner'
+import { Suspense } from 'react'
+import { Splash } from '../components/Splash'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -18,8 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
-        <Toaster />
+        {/* OgSplash uses `useSearchParams()` so we need to wrap it in a Suspense to allow to statically render the page
+        https://nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-functions */}
+        <Suspense>
+          <Splash>
+            {children}
+          </Splash>
+        </Suspense>
+        <Toaster closeButton richColors />
       </body>
     </html>
   )

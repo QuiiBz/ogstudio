@@ -1,26 +1,16 @@
 'use client'
 import type { RefObject } from "react";
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef } from "react";
 import type { OGElement } from "../lib/types";
 import { createElementId } from "../lib/elements";
-import { maybeLoadFont } from "../lib/fonts";
+import { useZoomStore } from "../stores/zoomStore";
+import { useElementsStore } from "../stores/elementsStore";
 import { Element } from './Element'
 import { RightPanel } from "./RightPanel";
 import { LeftPanel } from "./LeftPanel";
 import { EditorToolbar } from "./EditorToolbar";
 
 interface OgContextType {
-  elements: OGElement[]
-  selectedElement: string | null
-  setSelectedElement: (id: string | null) => void
-  setElements: (elements: OGElement[], skipEdit?: boolean) => void
-  updateElement: (element: OGElement) => void
-  addElement: (element: OGElement) => void
-  removeElement: (id: string) => void
-  undoRedo: (type: 'undo' | 'redo') => void
-  reset: () => void
-  zoom: number
-  setZoom: (zoom: number) => void
   rootRef: RefObject<HTMLDivElement>
 }
 
@@ -37,129 +27,26 @@ export function useOg() {
 }
 
 interface OgProviderProps {
-  initialElements: OGElement[]
-  localStorageKey: string
+  imageId: string
   width: number
   height: number
 }
 
-const edits: OGElement[][] = []
-let editIndex = -1
-
 let elementIdToCopy: string | undefined
 
-export function OgEditor({ initialElements, localStorageKey: key, width, height }: OgProviderProps) {
-  const localStorageKey = `og-${key}`
-  const [selectedElement, setRealSelectedElement] = useState<string | null>(null)
-  const [zoom, setZoom] = useState(100)
-  const [elements, setRealElements] = useState<OGElement[]>([])
+export function OgEditor({ imageId, width, height }: OgProviderProps) {
   const rootRef = useRef<HTMLDivElement>(null)
-
-  const setSelectedElement = useCallback((id: string | null) => {
-    const element = elements.find(item => item.id === id)
-
-    // Don't allow selecting hidden elements
-    if (element && !element.visible) {
-      return
-    }
-
-    setRealSelectedElement(id)
-
-    // Blur the currently focused DOM element (e.g. an input) when the user
-    // edits an element
-    if (document.activeElement instanceof HTMLElement) {
-      if (document.activeElement.id === "elementNameInput")
-        return
-      document.activeElement.blur()
-    }
-  }, [elements])
-
-  const setElements = useCallback((newElements: OGElement[], skipEdit?: boolean) => {
-    setRealElements(oldElements => {
-      if (!skipEdit) {
-        editIndex += 1
-        edits[editIndex] = oldElements
-      }
-
-      return newElements
-    })
-
-    localStorage.setItem(localStorageKey, JSON.stringify(newElements))
-  }, [localStorageKey])
-
-  const updateElement = useCallback((element: OGElement) => {
-    const index = elements.findIndex(item => item.id === element.id)
-
-    if (index === -1) {
-      return
-    }
-
-    const newElements = [...elements]
-    newElements[index] = element
-
-    if (!element.visible && element.id === selectedElement) {
-      setSelectedElement(null)
-    }
-
-    if (element.tag === 'p' || element.tag === 'span') {
-      maybeLoadFont(element.fontFamily, element.fontWeight)
-    }
-
-    setElements(newElements)
-  }, [elements, setElements, setSelectedElement, selectedElement])
-
-  const addElement = useCallback((element: OGElement) => {
-    setElements([...elements, element])
-    setSelectedElement(element.id)
-  }, [elements, setElements, setSelectedElement])
-
-  const removeElement = useCallback((id: string) => {
-    const newElements = elements.filter(item => item.id !== id)
-    setElements(newElements)
-  }, [elements, setElements])
-
-  const undoRedo = useCallback((type: 'undo' | 'redo') => {
-    if (editIndex === -1) {
-      return
-    }
-
-    if (type === 'undo') {
-      editIndex -= 1
-    } else {
-      editIndex += 1
-    }
-
-    if (editIndex < 0) {
-      editIndex = 0
-    }
-
-    if (editIndex > edits.length - 1) {
-      editIndex = edits.length - 1
-    }
-
-    setElements(edits[editIndex], true)
-  }, [setElements])
+  const zoom = useZoomStore(state => state.zoom)
+  const { selectedElementId, setSelectedElementId, elements, updateElement, removeElement, addElement, loadImage } = useElementsStore()
+  const { undo, redo } = useElementsStore.temporal.getState()
 
   /**
    * When the editor image is updated or loaded for the first time, reset every
    * state, and load the elements and fonts.
    */
   useEffect(() => {
-    const item = localStorage.getItem(localStorageKey)
-    const ogElements = item ? JSON.parse(item) as OGElement[] : initialElements
-
-    setRealElements(ogElements)
-    setSelectedElement(null)
-    edits.length = 0
-    editIndex = -1
-
-    // Immediately load fonts for elements that will be visible on the page.
-    ogElements.forEach(element => {
-      if (element.tag === 'p' || element.tag === 'span') {
-        maybeLoadFont(element.fontFamily, element.fontWeight)
-      }
-    })
-  }, [localStorageKey])
+    loadImage(imageId)
+  }, [imageId, loadImage])
 
   useEffect(() => {
     function onContextMenu(event: MouseEvent) {
@@ -174,7 +61,7 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
         return
       }
 
-      setSelectedElement(null)
+      setSelectedElementId(null)
     }
 
     function onKeyDown(event: KeyboardEvent) {
@@ -184,9 +71,9 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
       }
 
       // Move down
-      if (event.key === 'ArrowDown' && selectedElement) {
+      if (event.key === 'ArrowDown' && selectedElementId) {
         event.preventDefault()
-        const element = elements.find(item => item.id === selectedElement)
+        const element = elements.find(item => item.id === selectedElementId)
 
         if (element) {
           updateElement({
@@ -197,9 +84,9 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
       }
 
       // Move up
-      if (event.key === 'ArrowUp' && selectedElement) {
+      if (event.key === 'ArrowUp' && selectedElementId) {
         event.preventDefault()
-        const element = elements.find(item => item.id === selectedElement)
+        const element = elements.find(item => item.id === selectedElementId)
 
         if (element) {
           updateElement({
@@ -210,9 +97,9 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
       }
 
       // Move left
-      if (event.key === 'ArrowLeft' && selectedElement) {
+      if (event.key === 'ArrowLeft' && selectedElementId) {
         event.preventDefault()
-        const element = elements.find(item => item.id === selectedElement)
+        const element = elements.find(item => item.id === selectedElementId)
 
         if (element) {
           updateElement({
@@ -223,9 +110,9 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
       }
 
       // Move right
-      if (event.key === 'ArrowRight' && selectedElement) {
+      if (event.key === 'ArrowRight' && selectedElementId) {
         event.preventDefault()
-        const element = elements.find(item => item.id === selectedElement)
+        const element = elements.find(item => item.id === selectedElementId)
 
         if (element) {
           updateElement({
@@ -236,33 +123,33 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
       }
 
       // Delete any selected element
-      if ((event.key === 'Backspace' || event.key === 'Delete') && selectedElement) {
+      if ((event.key === 'Backspace' || event.key === 'Delete') && selectedElementId) {
         event.preventDefault()
-        removeElement(selectedElement)
+        removeElement(selectedElementId)
       }
 
       // Unselect any selected element when pressing escape
-      if (event.key === 'Escape' && selectedElement) {
+      if (event.key === 'Escape' && selectedElementId) {
         event.preventDefault()
-        setSelectedElement(null)
+        setSelectedElementId(null)
       }
 
       // Undo
       if (event.key === 'z' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
-        undoRedo('undo')
+        undo()
       }
 
       // Redo
       if (event.key === 'Z' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
-        undoRedo('redo')
+        redo()
       }
 
       // Copy an element
-      if (selectedElement && event.key === 'c' && (event.metaKey || event.ctrlKey)) {
+      if (selectedElementId && event.key === 'c' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
-        elementIdToCopy = selectedElement
+        elementIdToCopy = selectedElementId
       }
 
       // Paste a copied element
@@ -300,34 +187,19 @@ export function OgEditor({ initialElements, localStorageKey: key, width, height 
 
       document.removeEventListener('keydown', onKeyDown)
     }
-  }, [rootRef, selectedElement, removeElement, addElement, elements, undoRedo, setSelectedElement])
-
-  const reset = useCallback(() => {
-    setElements(initialElements)
-  }, [initialElements, setElements])
+  }, [rootRef, selectedElementId, removeElement, addElement, elements, setSelectedElementId, updateElement, redo, undo])
 
   const value = useMemo(() => ({
-    elements,
-    selectedElement,
-    setSelectedElement,
-    setElements,
-    updateElement,
-    addElement,
-    removeElement,
-    undoRedo,
-    reset,
-    zoom,
-    setZoom,
     rootRef,
-  }), [elements, selectedElement, setSelectedElement, setElements, updateElement, addElement, removeElement, undoRedo, reset, zoom, setZoom])
+  }), [])
 
   return (
     <OgContext.Provider value={value}>
       <div className="w-screen h-screen flex flex-row justify-between items-center bg-gray-50 overflow-hidden">
-        <div className="w-[300px] min-w-[300px] h-screen flex flex-col border-r border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
+        <div className="w-[300px] min-w-[300px] h-screen border-r border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
           <LeftPanel />
         </div>
-        <div className="flex flex-col items-center gap-4 absolute transform left-1/2 -translate-x-1/2">
+        <div className="flex flex-col items-center gap-4 fixed transform left-1/2 -translate-x-1/2">
           <p className="text-xs text-gray-400 z-10">{width}x{height}</p>
           <div className="bg-white shadow-lg shadow-gray-100 relative" style={{ width, height, transform: `scale(${zoom / 100})` }}>
             <div ref={rootRef} style={{ display: 'flex', width: '100%', height: '100%' }}>

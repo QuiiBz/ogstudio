@@ -1,5 +1,7 @@
 import type { ReactElement } from "react"
 import { createElement } from "../lib/elements"
+import { useZoomStore } from "../stores/zoomStore"
+import { useElementsStore } from "../stores/elementsStore"
 import { TextIcon } from "./icons/TextIcon"
 import { CircleIcon } from "./icons/CircleIcon"
 import { ImageIcon } from "./icons/ImageIcon"
@@ -7,7 +9,6 @@ import { BoxIcon } from "./icons/BoxIcon"
 import { MagicWandIcon } from "./icons/MagicWandIcon"
 import { ZoomOutIcon } from "./icons/ZoomOutIcon"
 import { ZoomInIcon } from "./icons/ZoomInIcon"
-import { useOg } from "./OgEditor"
 
 interface ToolbarButtonProps {
   onClick: () => void
@@ -23,19 +24,8 @@ function ToolbarButton({ onClick, children }: ToolbarButtonProps) {
 }
 
 export function EditorToolbar() {
-  const { addElement, zoom, setZoom } = useOg()
-
-  function zoomIn() {
-    if (zoom >= 100) return
-
-    setZoom(zoom + 10)
-  }
-
-  function zoomOut() {
-    if (zoom <= 10) return
-
-    setZoom(zoom - 10)
-  }
+  const addElement = useElementsStore(state => state.addElement)
+  const { zoom, zoomIn, zoomOut } = useZoomStore()
 
   return (
     <div className="flex flex-row items-center z-10 gap-4">
@@ -137,7 +127,7 @@ export function EditorToolbar() {
         </ToolbarButton>
         <div className="w-[1px] h-4 bg-gray-100" />
         {/* Set absolute width to make sure it doesn't change the layout */}
-        <span className="text-xs w-[46px] text-center text-gray-600">{zoom}%</span>
+        <span className="text-xs w-[46px] text-center text-gray-600 select-none">{zoom}%</span>
         <div className="w-[1px] h-4 bg-gray-100" />
         <ToolbarButton onClick={() => { zoomIn() }}>
           <ZoomInIcon />
