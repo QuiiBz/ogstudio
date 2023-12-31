@@ -108,20 +108,9 @@ export function ExportSection() {
     <>
       <p className="text-xs text-gray-600">Export</p>
       <div className="grid grid-cols-2 gap-2 w-full">
-        <Button
-          className="col-span-full"
-          icon={<PngIcon />}
-          onClick={exportUrl}
-          variant="success"
-        >
-          Export to URL
-        </Button>
-        <Button disabled={isLoading} icon={<SvgIcon />} onClick={exportSvg}>
-          SVG
-        </Button>
-        <Button disabled={isLoading} icon={<PngIcon />} onClick={exportPng}>
-          PNG
-        </Button>
+        <Button className="col-span-full" icon={<PngIcon />} onClick={exportUrl} variant="success">Export to URL</Button>
+        <Button disabled={isLoading} icon={<SvgIcon />} onClick={exportSvg}>SVG</Button>
+        <Button disabled={isLoading} icon={<PngIcon />} onClick={exportPng}>PNG</Button>
       </div>
     </>
   );
