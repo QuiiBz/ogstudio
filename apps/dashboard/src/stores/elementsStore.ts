@@ -50,6 +50,8 @@ export const useElementsStore = create<ElementsState>()(temporal((set, get) => (
     // Blur the currently focused DOM element (e.g. an input) when the user
     // edits an element
     if (document.activeElement instanceof HTMLElement) {
+      if (document.activeElement.id === "elementNameInput")
+        return
       document.activeElement.blur()
     }
   },

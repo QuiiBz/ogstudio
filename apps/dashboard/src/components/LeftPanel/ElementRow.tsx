@@ -65,10 +65,10 @@ export function ElementRow({ element }: ElementRowProps) {
   }
 
   return (
-    <div className="flex justify-between items-center cursor-auto group" ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div className="flex justify-between items-center cursor-auto group h-7" ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <button
-        className={`flex items-center gap-2 select-none text-gray-600 hover:text-gray-900 w-full ${selectedElement === element.id ? '!text-blue-500' : ''} ${!element.visible ? '!text-gray-300' : ''}`}
-        onClick={() => { setSelectedElement(element.id); }}
+        className={`flex items-center gap-2 select-none text-gray-600 hover:text-gray-900 w-full ${selectedElementId === element.id ? '!text-blue-500' : ''} ${!element.visible ? '!text-gray-300' : ''}`}
+        onClick={() => { setSelectedElementId(element.id); }}
         onDoubleClick={() => {
           if (isEditing)
             return
@@ -112,8 +112,12 @@ export function ElementRow({ element }: ElementRowProps) {
                 })
               }}
               onKeyDown={(event) => {
+                event.stopPropagation()
                 if (event.key === "Enter" || event.key === "Escape") {
                   formRef.current?.requestSubmit()
+                }
+                if (event.key === "Spacebar") {
+                  console.log("!")
                 }
               }}
               type="text"
