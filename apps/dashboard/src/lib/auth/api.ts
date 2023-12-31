@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+// eslint-disable-next-line import/named -- missing types?
 import { cache } from "react";
 import type { Session, User } from "lucia";
 import { lucia } from "./lucia";
@@ -22,7 +23,7 @@ export async function getSession(): Promise<SessionObject> {
 
   // next.js throws when you attempt to set cookie when rendering page
   try {
-    if (result.session && result.session.fresh) {
+    if (result.session?.fresh) {
       const sessionCookie = lucia.createSessionCookie(result.session.id);
       cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
     }

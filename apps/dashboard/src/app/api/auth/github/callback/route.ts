@@ -2,14 +2,16 @@ import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
 import { generateId } from "lucia";
 import { eq } from "drizzle-orm";
-import { github } from "../../../../lib/auth/artic";
-import { lucia } from "../../../../lib/auth/lucia";
-import { userTable } from "../../../../lib/db/schema";
-import { db } from "../../../../lib/db/db";
+import { github } from "../../../../../lib/auth/artic";
+import { db } from "../../../../../lib/db/db";
+import { lucia } from "../../../../../lib/auth/lucia";
+import { userTable } from "../../../../../lib/db/schema";
 
+// https://docs.github.com/en/rest/users/users?apiVersion=2022-11-28
 interface GitHubUser {
   id: number
-  login: string
+  avatar_url: string
+  name: string
 }
 
 export async function GET(request: Request): Promise<Response> {
@@ -31,6 +33,7 @@ export async function GET(request: Request): Promise<Response> {
         Authorization: `Bearer ${tokens.accessToken}`
       }
     });
+
     const githubUser = await githubUserResponse.json() as GitHubUser;
     const existingUser = await db.select().from(userTable).where(eq(userTable.githubId, githubUser.id)).get();
 
@@ -51,7 +54,8 @@ export async function GET(request: Request): Promise<Response> {
     await db.insert(userTable).values({
       id: userId,
       githubId: githubUser.id,
-      username: githubUser.login
+      name: githubUser.name,
+      avatar: githubUser.avatar_url,
     })
 
     const session = await lucia.createSession(userId, {});

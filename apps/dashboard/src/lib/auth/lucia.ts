@@ -13,9 +13,11 @@ export const lucia = new Lucia(adapter, {
     }
   },
   getUserAttributes: (attributes) => {
+    console.log({ attributes })
     return {
-      githubId: attributes.github_id,
-      username: attributes.username
+      githubId: attributes.githubId,
+      name: attributes.name,
+      avatar: attributes.avatar,
     };
   }
 });
@@ -26,7 +28,8 @@ declare module "lucia" {
   }
 
   interface DatabaseUserAttributes {
-    github_id: number;
-    username: string;
+    githubId: number;
+    name: string;
+    avatar: string;
   }
 }
