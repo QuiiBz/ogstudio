@@ -1,17 +1,26 @@
 'use client'
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { OgEditor } from "../OgEditor";
 import { CustomLink } from "../CustomLink";
 import { GitHubIcon } from "../icons/GitHubIcon";
+import { useImagesStore } from "../../stores/imagesStore";
+import { useZoomStore } from "../../stores/zoomStore";
 
 interface OgSplashProps {
   children: ReactNode
 }
 
-export function Splash({ children }: OgSplashProps) {
+function SplashInner({ children }: OgSplashProps) {
   const searchParams = useSearchParams()
   const image = searchParams.get('i')
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises -- we don't want to wait for this
+    useImagesStore.persist.rehydrate()
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises -- we don't want to wait for this
+    useZoomStore.persist.rehydrate()
+  }, [])
 
   return (
     <>
@@ -43,3 +52,12 @@ export function Splash({ children }: OgSplashProps) {
   )
 }
 
+export function Splash({ children }: OgSplashProps) {
+  return (
+    // SplashInner uses `useSearchParams()` so we need to wrap it in a Suspense to allow to statically render the page
+    // https://nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-functions
+    <Suspense>
+      <SplashInner>{children}</SplashInner>
+    </Suspense>
+  )
+}
