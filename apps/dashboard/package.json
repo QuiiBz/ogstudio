@@ -16,6 +16,8 @@
     "@dnd-kit/sortable": "^8.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@resvg/resvg-wasm": "^2.6.0",
+    "@vercel/analytics": "^1.1.1",
+    "@vercel/speed-insights": "^1.0.2",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
