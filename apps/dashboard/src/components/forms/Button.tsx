@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import type { ComponentPropsWithRef, ReactNode } from "react"
 import { clsx } from "clsx"
 
 interface ButtonProps {
@@ -6,12 +6,13 @@ interface ButtonProps {
   variant?: 'danger' | 'success'
   href?: string
   onClick?: () => void
+  type?: ComponentPropsWithRef<'button'>['type']
   disabled?: boolean
   className?: string
   children: ReactNode
 }
 
-export function Button({ icon, variant, href, onClick, disabled, className, children }: ButtonProps) {
+export function Button({ icon, variant, href, onClick, type = 'button', disabled, className, children }: ButtonProps) {
   const Tag = href ? "a" : "button"
 
   return (
@@ -28,7 +29,8 @@ export function Button({ icon, variant, href, onClick, disabled, className, chil
       )}
       href={disabled ? undefined : href}
       onClick={disabled ? undefined : onClick}
-      type="button">
+      type={type}
+    >
       {icon}
       {children}
     </Tag>
