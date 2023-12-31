@@ -5,6 +5,8 @@ export const metadata = {
   description: 'Pre-made Open Graph image templates.',
 }
 
+export const dynamic = 'force-static'
+
 export default function Templates() {
   return <TemplatesSplash />
 }

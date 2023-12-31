@@ -5,6 +5,8 @@ export const metadata = {
   description: 'My Open Graph images.',
 }
 
+export const dynamic = 'force-static'
+
 export default function MyImages() {
   return <MyImagesSplash />
 }

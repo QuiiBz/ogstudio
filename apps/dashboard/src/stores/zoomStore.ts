@@ -26,4 +26,5 @@ export const useZoomStore = create(persist<ZoomState>((set, get) => ({
 }), {
   name: 'zoom',
   storage: createJSONStorage(() => localStorage),
+  skipHydration: true,
 }))
