@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { migrate } from 'drizzle-orm/libsql/migrator';
-import { client, db } from '../src';
+import { client, db } from '../src/lib/db/db';
 
 async function run() {
   // This will run migrations on the database, skipping the ones already applied

@@ -32,12 +32,12 @@ importers:
       '@dnd-kit/utilities':
         specifier: ^3.2.2
         version: 3.2.2(react@18.2.0)
+      '@libsql/client':
+        specifier: 0.4.0-pre.5
+        version: 0.4.0-pre.5
       '@lucia-auth/adapter-drizzle':
         specifier: 1.0.0-beta.0
         version: 1.0.0-beta.0(lucia@3.0.0-beta.13)
-      '@ogstudio/db':
-        specifier: workspace:*
-        version: link:../../packages/db
       '@resvg/resvg-wasm':
         specifier: ^2.6.0
         version: 2.6.0
@@ -56,12 +56,15 @@ importers:
       clsx:
         specifier: ^2.1.0
         version: 2.1.0
+      drizzle-orm:
+        specifier: ^0.29.2
+        version: 0.29.2(@libsql/client@0.4.0-pre.5)(@types/react@18.2.45)(expo-sqlite@13.2.0)(react@18.2.0)
       lucia:
         specifier: 3.0.0-beta.13
         version: 3.0.0-beta.13
       next:
         specifier: 14.0.4
-        version: 14.0.4(react-dom@18.2.0)(react@18.2.0)
+        version: 14.0.4(@babel/core@7.23.6)(react-dom@18.2.0)(react@18.2.0)
       oslo:
         specifier: ^0.26.2
         version: 0.26.2
@@ -111,6 +114,9 @@ importers:
       dotenv:
         specifier: ^16.3.1
         version: 16.3.1
+      drizzle-kit:
+        specifier: ^0.20.9
+        version: 0.20.9
       happy-dom:
         specifier: ^12.10.3
         version: 12.10.3
@@ -126,31 +132,6 @@ importers:
       vitest:
         specifier: ^1.1.0
         version: 1.1.0(@types/node@20.10.5)(happy-dom@12.10.3)
-
-  packages/db:
-    dependencies:
-      '@libsql/client':
-        specifier: 0.4.0-pre.5
-        version: 0.4.0-pre.5
-      drizzle-orm:
-        specifier: ^0.29.2
-        version: 0.29.2(@libsql/client@0.4.0-pre.5)(@types/react@18.2.45)(expo-sqlite@13.2.0)(react@18.2.0)
-    devDependencies:
-      '@ogstudio/eslint':
-        specifier: workspace:*
-        version: link:../eslint
-      '@ogstudio/typescript':
-        specifier: workspace:*
-        version: link:../typescript
-      dotenv:
-        specifier: ^16.3.1
-        version: 16.3.1
-      drizzle-kit:
-        specifier: ^0.20.9
-        version: 0.20.9
-      tsx:
-        specifier: ^4.7.0
-        version: 4.7.0
 
   packages/eslint:
     devDependencies:
@@ -7367,7 +7348,7 @@ packages:
     resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
     dev: true
 
-  /next@14.0.4(react-dom@18.2.0)(react@18.2.0):
+  /next@14.0.4(@babel/core@7.23.6)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-qbwypnM7327SadwFtxXnQdGiKpkuhaRLE2uq62/nRul9cj9KhQ5LhHmlziTNqUidZotw/Q1I9OjirBROdUJNgA==}
     engines: {node: '>=18.17.0'}
     hasBin: true
@@ -7390,7 +7371,7 @@ packages:
       postcss: 8.4.31
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      styled-jsx: 5.1.1(react@18.2.0)
+      styled-jsx: 5.1.1(@babel/core@7.23.6)(react@18.2.0)
       watchpack: 2.4.0
     optionalDependencies:
       '@next/swc-darwin-arm64': 14.0.4
@@ -8840,7 +8821,7 @@ packages:
     resolution: {integrity: sha512-0MP/Cxx5SzeeZ10p/bZI0S6MpgD+yxAhi1BOQ34jgnMXsCq3j1t6tQnZu+KdlL7dvJTLT3g9xN8tl10TqgFMcg==}
     dev: false
 
-  /styled-jsx@5.1.1(react@18.2.0):
+  /styled-jsx@5.1.1(@babel/core@7.23.6)(react@18.2.0):
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
@@ -8853,6 +8834,7 @@ packages:
       babel-plugin-macros:
         optional: true
     dependencies:
+      '@babel/core': 7.23.6
       client-only: 0.0.1
       react: 18.2.0
     dev: false
