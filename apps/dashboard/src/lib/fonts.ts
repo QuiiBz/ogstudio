@@ -1,19 +1,19 @@
-import type { OGElement } from "./types"
+import type { OGElement } from "./types";
 
 export const FONTS = [
-  'Roboto',
-  'Open Sans',
-  'Montserrat',
-  'Lato',
-  'Poppins',
-  'Inter',
-  'Oswald',
-  'Raleway',
-  'Nunito',
-  'Ubuntu',
-] as const
+  "Roboto",
+  "Open Sans",
+  "Montserrat",
+  "Lato",
+  "Poppins",
+  "Inter",
+  "Oswald",
+  "Raleway",
+  "Nunito",
+  "Ubuntu",
+] as const;
 
-export type Font = typeof FONTS[number]
+export type Font = (typeof FONTS)[number];
 
 export const FONT_WEIGHTS = {
   Roboto: [100, 300, 400, 500, 700, 900],
@@ -26,7 +26,7 @@ export const FONT_WEIGHTS = {
   Raleway: [100, 200, 300, 400, 500, 600, 700, 800, 900],
   Nunito: [200, 300, 400, 500, 600, 700, 800, 900],
   Ubuntu: [300, 400, 500, 700],
-} satisfies Record<Font, number[]>
+} satisfies Record<Font, number[]>;
 
 /**
  * Try to load a font from Bunny Fonts, if the font is not already loaded.
@@ -35,23 +35,25 @@ export const FONT_WEIGHTS = {
  * using it.
  */
 export function maybeLoadFont(font: string, weight: number) {
-  const id = `font-${font}-${weight}`
+  const id = `font-${font}-${weight}`;
 
   if (document.getElementById(id)) {
-    return
+    return;
   }
 
-  const link = document.createElement('link')
-  link.id = id
-  link.rel = 'stylesheet'
-  link.href = `https://fonts.bunny.net/css?family=${font.toLowerCase().replace(' ', '-')}:${weight}`
-  document.head.appendChild(link)
+  const link = document.createElement("link");
+  link.id = id;
+  link.rel = "stylesheet";
+  link.href = `https://fonts.bunny.net/css?family=${font
+    .toLowerCase()
+    .replace(" ", "-")}:${weight}`;
+  document.head.appendChild(link);
 }
 
 export interface FontData {
-  name: string
-  data: ArrayBuffer
-  weight: number
+  name: string;
+  data: ArrayBuffer;
+  weight: number;
 }
 
 /**
@@ -60,22 +62,27 @@ export interface FontData {
  */
 export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
   // TODO: dedupe fonts
-  return Promise.all(elements.filter(element => element.tag === 'p' || element.tag === 'span').map(async element => {
-    // @ts-expect-error -- wrong inference
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- wrong inference
-    const fontName = element.fontFamily.toLowerCase().replace(' ', '-')
-    // @ts-expect-error -- wrong inference
-    const data = await fetch(`https://fonts.bunny.net/${fontName}/files/${fontName}-latin-${element.fontWeight}-normal.woff`).then(response => response.arrayBuffer())
+  return Promise.all(
+    elements
+      .filter((element) => element.tag === "p" || element.tag === "span")
+      .map(async (element) => {
+        // @ts-expect-error -- wrong inference
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- wrong inference
+        const fontName = element.fontFamily.toLowerCase().replace(" ", "-");
+        // @ts-expect-error -- wrong inference
+        const data = await fetch(
+          `https://fonts.bunny.net/${fontName}/files/${fontName}-latin-${element.fontWeight}-normal.woff`,
+        ).then((response) => response.arrayBuffer());
 
-    return {
-      // @ts-expect-error -- wrong inference
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- wrong inference
-      name: element.fontFamily,
-      data,
-      // @ts-expect-error -- wrong inference
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- wrong inference
-      weight: element.fontWeight,
-    }
-  }))
+        return {
+          // @ts-expect-error -- wrong inference
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- wrong inference
+          name: element.fontFamily,
+          data,
+          // @ts-expect-error -- wrong inference
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- wrong inference
+          weight: element.fontWeight,
+        };
+      }),
+  );
 }
-

@@ -11,32 +11,37 @@ import { loadFonts } from "../../lib/fonts";
 import { useElementsStore } from "../../stores/elementsStore";
 
 export function ExportSection() {
-  const { rootRef } = useOg()
-  const elements = useElementsStore(state => state.elements)
-  const setSelectedElementId = useElementsStore(state => state.setSelectedElementId)
-  const [isLoading, setIsLoading] = useState(false)
+  const { rootRef } = useOg();
+  const elements = useElementsStore((state) => state.elements);
+  const setSelectedElementId = useElementsStore(
+    (state) => state.setSelectedElementId,
+  );
+  const [isLoading, setIsLoading] = useState(false);
 
   function exportUrl() {
-    toast.error('Not implemented yet!')
+    toast.error("Not implemented yet!");
   }
 
   async function exportSvg(showProgress = true) {
     // Immediately deselect any selected element to remove the outline
     flushSync(() => {
-      setSelectedElementId(null)
-    })
+      setSelectedElementId(null);
+    });
 
     async function run() {
-      setIsLoading(true)
+      setIsLoading(true);
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- rootRef is always defined
-      const reactElements = domToReactElements(rootRef.current!, 'This is a dynamic text')
-      const fonts = await loadFonts(elements)
-      const svg = await exportToSvg(reactElements, fonts)
+      const reactElements = domToReactElements(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- We know it's defined
+        rootRef.current!,
+        "This is a dynamic text",
+      );
+      const fonts = await loadFonts(elements);
+      const svg = await exportToSvg(reactElements, fonts);
 
-      setIsLoading(false)
+      setIsLoading(false);
 
-      return { fonts, svg }
+      return { fonts, svg };
     }
 
     return new Promise<{
@@ -44,55 +49,58 @@ export function ExportSection() {
       svg: string;
     }>((resolve, reject) => {
       if (showProgress) {
-        let svg: string
+        let svg: string;
 
         toast.promise(run(), {
-          loading: 'Exporting to SVG...',
+          loading: "Exporting to SVG...",
           success: (data) => {
-            resolve(data)
-            svg = data.svg
+            resolve(data);
+            svg = data.svg;
 
-            return 'SVG exported!'
+            return "SVG exported!";
           },
           action: {
-            label: 'Download',
+            label: "Download",
             onClick: () => {
-              const blob = new Blob([svg], { type: 'image/svg+xml' })
-              const url = URL.createObjectURL(blob)
-              window.open(url)
-            }
-          }
+              const blob = new Blob([svg], { type: "image/svg+xml" });
+              const url = URL.createObjectURL(blob);
+              window.open(url);
+            },
+          },
         });
       }
 
-      run().then(resolve).catch(reject)
-    })
+      run().then(resolve).catch(reject);
+    });
   }
 
   async function exportPng() {
-    const { svg, fonts } = await exportSvg(false)
+    const { svg, fonts } = await exportSvg(false);
 
-    let png: Uint8Array
+    let png: Uint8Array;
 
     async function run() {
-      setIsLoading(true)
+      setIsLoading(true);
 
-      png = await exportToPng(svg, fonts.map(font => new Uint8Array(font.data)))
+      png = await exportToPng(
+        svg,
+        fonts.map((font) => new Uint8Array(font.data)),
+      );
 
-      setIsLoading(false)
+      setIsLoading(false);
     }
 
     toast.promise(run(), {
-      loading: 'Exporting to PNG...',
-      success: 'PNG exported!',
+      loading: "Exporting to PNG...",
+      success: "PNG exported!",
       action: {
-        label: 'Download',
+        label: "Download",
         onClick: () => {
-          const blob = new Blob([png], { type: 'image/png' })
-          const url = URL.createObjectURL(blob)
-          window.open(url)
-        }
-      }
+          const blob = new Blob([png], { type: "image/png" });
+          const url = URL.createObjectURL(blob);
+          window.open(url);
+        },
+      },
     });
   }
 
@@ -100,10 +108,21 @@ export function ExportSection() {
     <>
       <p className="text-xs text-gray-600">Export</p>
       <div className="grid grid-cols-2 gap-2 w-full">
-        <Button className="col-span-full" icon={<PngIcon />} onClick={exportUrl} variant="success">Export to URL</Button>
-        <Button icon={<SvgIcon />} isLoading={isLoading} onClick={exportSvg}>SVG</Button>
-        <Button icon={<PngIcon />} isLoading={isLoading} onClick={exportPng}>PNG</Button>
+        <Button
+          className="col-span-full"
+          icon={<PngIcon />}
+          onClick={exportUrl}
+          variant="success"
+        >
+          Export to URL
+        </Button>
+        <Button icon={<SvgIcon />} isLoading={isLoading} onClick={exportSvg}>
+          SVG
+        </Button>
+        <Button icon={<PngIcon />} isLoading={isLoading} onClick={exportPng}>
+          PNG
+        </Button>
       </div>
     </>
-  )
+  );
 }

@@ -6,7 +6,5 @@ export function SplashSection() {
     <CustomLink href="/" icon={<ArrowLeftIcon />}>
       Back
     </CustomLink>
-  )
+  );
 }
-
-

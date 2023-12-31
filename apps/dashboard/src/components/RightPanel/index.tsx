@@ -8,15 +8,19 @@ import { ShadowSection } from "./ShadowSection";
 import { SizePositionSection } from "./SizePositionSection";
 
 export function RightPanel() {
-  const { selectedElementId, elements } = useElementsStore()
-  const selectedElementData = elements.find(element => element.id === selectedElementId)
+  const { selectedElementId, elements } = useElementsStore();
+  const selectedElementData = elements.find(
+    (element) => element.id === selectedElementId,
+  );
 
   if (!selectedElementData) {
     return (
       <div className="flex items-center justify-center h-full">
-        <p className="text-sm text-gray-600 text-center">Create or select an element <br /> to get started.</p>
+        <p className="text-sm text-gray-600 text-center">
+          Create or select an element <br /> to get started.
+        </p>
       </div>
-    )
+    );
   }
 
   return (
@@ -38,6 +42,5 @@ export function RightPanel() {
         <ModificationsSection selectedElement={selectedElementData} />
       </div>
     </div>
-  )
+  );
 }
-
