@@ -1,3 +1,4 @@
+import { clsx } from "clsx";
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from '@dnd-kit/utilities';
 import { useRef, useState } from "react";
@@ -67,7 +68,11 @@ export function ElementRow({ element }: ElementRowProps) {
   return (
     <div className="flex justify-between items-center cursor-auto group h-7" ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <button
-        className={`flex items-center gap-2 select-none text-gray-600 hover:text-gray-900 w-full ${selectedElementId === element.id ? '!text-blue-500' : ''} ${!element.visible ? '!text-gray-300' : ''}`}
+        className={clsx(
+          "flex items-center gap-2 select-none text-gray-600 hover:text-gray-900 w-full",
+          { "!text-blue-500": selectedElementId === element.id },
+          { "!text-gray-300": !element.visible },
+        )}
         onClick={() => { setSelectedElementId(element.id); }}
         onDoubleClick={() => {
           if (isEditing)

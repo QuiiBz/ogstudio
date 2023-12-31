@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react"
+import { clsx } from "clsx";
 import type { OGElement } from "../lib/types";
 import { createElementStyle } from "../lib/elements";
 import { useElementsStore } from "../stores/elementsStore";
@@ -240,11 +241,16 @@ export function Element({ element }: ElementProps) {
 
   return (
     <Tag
+      className={clsx(
+        "element cursor-default select-none outline-1 outline-offset-[3px] hover:outline",
+        { "outline outline-blue-500 cursor-move": isSelected },
+        { "outline-dashed": element.tag === "span" },
+        { "!outline-none !cursor-text": isEditing },
+      )}
       id={`element-${element.id}`}
-      style={style}
-      className={`element cursor-default select-none !outline-blue-500 outline-1 outline-offset-[3px] hover:outline ${isSelected ? 'outline cursor-move' : ''} ${isEditing ? '!outline !cursor-text' : ''} ${element.tag === 'span' ? '!outline-dashed' : ''}`}
       // @ts-expect-error wtf?
       ref={elementRef}
+      style={style}
     >
       {element.tag === 'p' ? element.content : null}
       {element.tag === 'span' ? '[dynamic text]' : null}
