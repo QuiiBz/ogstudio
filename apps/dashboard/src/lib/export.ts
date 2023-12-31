@@ -127,7 +127,7 @@ export async function exportToPng(
     // eslint-disable-next-line turbo/no-undeclared-env-vars -- will always be set when running the tests
     if (process.env.VITEST_POOL_ID) {
       await initWasm(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-member-access -- it actually works fine
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-member-access -- it actually works fine in tests
         require("node:fs/promises").readFile(
           "node_modules/@resvg/resvg-wasm/index_bg.wasm",
         ),
