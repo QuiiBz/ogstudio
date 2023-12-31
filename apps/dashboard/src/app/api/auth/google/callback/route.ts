@@ -1,11 +1,9 @@
 import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
 import { generateId } from "lucia";
-import { eq } from "drizzle-orm";
+import { db, userTable, eq } from '@ogstudio/db'
 import { google } from "../../../../../lib/auth/artic";
-import { db } from "../../../../../lib/db/db";
 import { lucia } from "../../../../../lib/auth/lucia";
-import { userTable } from "../../../../../lib/db/schema";
 
 // https://developers.google.com/identity/openid-connect/openid-connect#an-id-tokens-payload
 interface GoogleUser {

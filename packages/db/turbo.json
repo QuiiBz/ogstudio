@@ -1,0 +1,14 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": [
+    "//"
+  ],
+  "pipeline": {
+    "build": {
+      "env": [
+        "DATABASE_URL",
+        "DATABASE_AUTH_TOKEN"
+      ]
+    }
+  }
+}

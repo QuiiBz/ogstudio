@@ -1,11 +1,9 @@
 import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
 import { generateId } from "lucia";
-import { eq } from "drizzle-orm";
+import { db, userTable, eq } from '@ogstudio/db'
 import { github } from "../../../../../lib/auth/artic";
-import { db } from "../../../../../lib/db/db";
 import { lucia } from "../../../../../lib/auth/lucia";
-import { userTable } from "../../../../../lib/db/schema";
 
 // https://docs.github.com/en/rest/users/users?apiVersion=2022-11-28
 interface GitHubUser {

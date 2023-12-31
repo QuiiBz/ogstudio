@@ -7,8 +7,6 @@
     "build": {
       "env": [
         "NODE_ENV",
-        "DATABASE_URL",
-        "DATABASE_AUTH_TOKEN",
         "GITHUB_CLIENT_ID",
         "GITHUB_CLIENT_SECRET",
         "GOOGLE_CLIENT_ID",

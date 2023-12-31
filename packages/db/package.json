@@ -1,0 +1,26 @@
+{
+  "name": "@ogstudio/db",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "generate": "drizzle-kit generate:sqlite",
+    "migrate": "tsx drizzle/migrate.ts",
+    "studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@libsql/client": "0.4.0-pre.5",
+    "drizzle-orm": "^0.29.2"
+  },
+  "devDependencies": {
+    "@ogstudio/eslint": "workspace:*",
+    "@ogstudio/typescript": "workspace:*",
+    "dotenv": "^16.3.1",
+    "drizzle-kit": "^0.20.9",
+    "tsx": "^4.7.0"
+  }
+}
