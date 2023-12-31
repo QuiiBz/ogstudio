@@ -29,7 +29,7 @@ export function HomeSplash() {
               name={template.name}
               onClick={() => {
                 const { id } = copyTemplate(template)
-                router.push(`/${id}`)
+                router.push(`/?i=${id}`)
               }}
             />
           ))}
@@ -46,7 +46,7 @@ export function HomeSplash() {
         <div className="flex gap-2">
           <OgImage onClick={() => {
             const { id } = createEmptyImage()
-            router.push(`/${id}`)
+            router.push(`/?i=${id}`)
           }}>
             <AddIcon height="1.4em" width="1.4em" /> Start from scratch
           </OgImage>
@@ -55,7 +55,7 @@ export function HomeSplash() {
               copiable={() => copyImage(image)}
               deletable={() => { deleteImage(image); }}
               elements={JSON.parse(localStorage.getItem(image.id) || '[]') as OGElement[]}
-              href={`/${image.id}`}
+              href={`/?i=${image.id}`}
               key={image.id}
               name={image.name}
             />

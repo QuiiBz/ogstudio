@@ -22,7 +22,7 @@ export function MyImagesSplash() {
       <div className="grid grid-cols-3 gap-2 max-h-[427px] overflow-y-scroll no-scrollbar">
         <OgImage onClick={() => {
           const { id } = createEmptyImage()
-          router.push(`/${id}`)
+          router.push(`/?i=${id}`)
         }}>
           <AddIcon height="1.4em" width="1.4em" /> Start from scratch
         </OgImage>
@@ -31,7 +31,7 @@ export function MyImagesSplash() {
             copiable={() => copyImage(image)}
             deletable={() => { deleteImage(image); }}
             elements={JSON.parse(localStorage.getItem(image.id) || '[]') as OGElement[]}
-            href={`/${image.id}`}
+            href={`/?i=${image.id}`}
             key={image.id}
             name={image.name}
           />
