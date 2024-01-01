@@ -3,6 +3,7 @@ import {
   createElementId,
   createElement,
   createElementStyle,
+  createImgElementStyle,
 } from "../elements";
 
 describe("createElementId", () => {
@@ -441,71 +442,55 @@ describe("createElementStyle", () => {
         `);
       });
     });
+  });
+});
 
-    describe("image", () => {
-      it("should generate style with image and cover", () => {
-        const style = createElementStyle({
-          tag: "div",
-          id: createElementId(),
-          name: "Box",
-          x: 10,
-          y: 20,
-          width: 100,
-          height: 200,
-          visible: true,
-          rotate: 0,
-          opacity: 80,
-          backgroundColor: "#ffffff",
-          backgroundImage: "https://via.placeholder.com/150",
-          backgroundSize: "cover",
-        });
-
-        expect(style).toMatchInlineSnapshot(`
-          {
-            "backgroundImage": "url(https://via.placeholder.com/150)",
-            "backgroundRepeat": "no-repeat",
-            "backgroundSize": "auto 100%",
-            "display": "flex",
-            "height": "200px",
-            "left": "10px",
-            "position": "absolute",
-            "top": "20px",
-            "width": "100px",
-          }
-        `);
-      });
-
-      it("should generate style with image and contain", () => {
-        const style = createElementStyle({
-          tag: "div",
-          id: createElementId(),
-          name: "Box",
-          x: 10,
-          y: 20,
-          width: 100,
-          height: 200,
-          visible: true,
-          rotate: 0,
-          opacity: 80,
-          backgroundColor: "#ffffff",
-          backgroundImage: "https://via.placeholder.com/150",
-          backgroundSize: "contain",
-        });
-
-        expect(style).toMatchInlineSnapshot(`
-          {
-            "backgroundImage": "url(https://via.placeholder.com/150)",
-            "backgroundRepeat": "no-repeat",
-            "backgroundSize": "100% 100%",
-            "display": "flex",
-            "height": "200px",
-            "left": "10px",
-            "position": "absolute",
-            "top": "20px",
-            "width": "100px",
-          }
-        `);
-      });
+describe("createImgElementStyle", () => {
+  it("should generate style with image and cover", () => {
+    const style = createImgElementStyle({
+      tag: "div",
+      id: createElementId(),
+      name: "Box",
+      x: 10,
+      y: 20,
+      width: 100,
+      height: 200,
+      visible: true,
+      rotate: 0,
+      opacity: 80,
+      backgroundColor: "#ffffff",
+      backgroundImage: "https://via.placeholder.com/150",
+      backgroundSize: "cover",
     });
+
+    expect(style).toMatchInlineSnapshot(`
+      {
+        "objectFit": "cover",
+      }
+    `);
+  });
+
+  it("should generate style with image and contain", () => {
+    const style = createImgElementStyle({
+      tag: "div",
+      id: createElementId(),
+      name: "Box",
+      x: 10,
+      y: 20,
+      width: 100,
+      height: 200,
+      visible: true,
+      rotate: 0,
+      opacity: 80,
+      backgroundColor: "#ffffff",
+      backgroundImage: "https://via.placeholder.com/150",
+      backgroundSize: "contain",
+    });
+
+    expect(style).toMatchInlineSnapshot(`
+      {
+        "objectFit": "contain",
+      }
+    `);
   });
 });
