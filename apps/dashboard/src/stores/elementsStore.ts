@@ -53,7 +53,10 @@ export const useElementsStore = create<ElementsState>()(
         // Blur the currently focused DOM element (e.g. an input) when the user
         // edits an element
         if (document.activeElement instanceof HTMLElement) {
-          if (document.activeElement.id === "elementNameInput") return;
+          if (document.activeElement.className.includes("elementNameInput")) {
+            return;
+          }
+
           document.activeElement.blur();
         }
       },

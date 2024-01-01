@@ -2,6 +2,13 @@ import { Button } from "../../components/forms/Button";
 import { GitHubIcon } from "../../components/icons/GitHubIcon";
 import { GoogleIcon } from "../../components/icons/GoogleIcon";
 
+export const metadata = {
+  title: "Templates - OG Studio",
+  description: "Sign in to export your images and sync them across devices.",
+};
+
+export const dynamic = "force-static";
+
 export default function Page() {
   return (
     <div className="flex flex-col items-center justify-center gap-8 mt-32">
