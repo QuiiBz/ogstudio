@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { clsx } from "clsx";
 import type { OGElement } from "../lib/types";
-import { createElementStyle } from "../lib/elements";
+import { createElementStyle, createImgElementStyle } from "../lib/elements";
 import { useElementsStore } from "../stores/elementsStore";
 
 interface ElementProps {
@@ -296,6 +296,18 @@ export function Element({ element }: ElementProps) {
     >
       {element.tag === "p" ? element.content : null}
       {element.tag === "span" ? "[dynamic text]" : null}
+      {element.tag === "div" && element.backgroundImage ? (
+        <img
+          alt=""
+          src={element.backgroundImage}
+          style={{
+            pointerEvents: "none",
+            ...createImgElementStyle(element),
+            width: "100%",
+            height: "100%",
+          }}
+        />
+      ) : null}
       {isSelected ? (
         <>
           <span className="handle top-left absolute w-2.5 h-2.5 rounded-full bg-white border border-blue-500" />

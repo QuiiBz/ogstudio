@@ -10,7 +10,6 @@ import { GradientIcon } from "../icons/GradientIcon";
 import { SquareIcon } from "../icons/SquareIcon";
 import { LinkIcon } from "../icons/LinkIcon";
 import { ImageSizeIcon } from "../icons/ImageSizeIcon";
-import { ImagePositionIcon } from "../icons/ImagePositionIcon";
 import { useElementsStore } from "../../stores/elementsStore";
 
 interface BackgroundSectionProps {
@@ -218,15 +217,17 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
               >
                 <ImageSizeIcon />
               </Select>
-              <Select
-                onChange={() => {
-                  updateElement(selectedElement);
-                }}
-                value="center"
-                values={["center"]}
-              >
-                <ImagePositionIcon />
-              </Select>
+              {/* TODO: image position */}
+              {/* Needs https://github.com/vercel/satori/pull/464 */}
+              {/* <Select */}
+              {/*   onChange={() => { */}
+              {/*     updateElement(selectedElement); */}
+              {/*   }} */}
+              {/*   value="center" */}
+              {/*   values={["center"]} */}
+              {/* > */}
+              {/*   <ImagePositionIcon /> */}
+              {/* </Select> */}
             </div>
           ) : null}
         </>
