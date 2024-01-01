@@ -284,10 +284,10 @@ export function Element({ element }: ElementProps) {
   return (
     <Tag
       className={clsx(
-        "element cursor-default select-none outline-1 outline-offset-[3px] hover:outline",
-        { "outline outline-blue-500 cursor-move": isSelected },
-        { "outline-dashed": element.tag === "span" },
-        { "!outline-none !cursor-text": isEditing },
+        "element cursor-default select-none !outline-blue-500 outline-1 outline-offset-[3px] hover:outline",
+        { "outline cursor-move": isSelected },
+        { "!outline !cursor-text": isEditing },
+        { "!outline-dashed": element.tag === "span" },
       )}
       id={`element-${element.id}`}
       // @ts-expect-error wtf?

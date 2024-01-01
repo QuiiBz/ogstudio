@@ -5,6 +5,13 @@ import { Button } from "../../components/forms/Button";
 import { LogoutIcon } from "../../components/icons/LogoutIcon";
 import { logoutAction } from "./logoutAction";
 
+// export const metadata = {
+//   title: "Profile - OG Studio",
+//   description: "Pre-made Open Graph image templates.",
+// };
+
+export const dynamic = "force-static";
+
 export default function Page() {
   const queryClient = useQueryClient();
 

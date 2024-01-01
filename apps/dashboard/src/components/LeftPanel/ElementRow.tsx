@@ -1,8 +1,7 @@
 import { clsx } from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useRef, useState } from "react";
-import type { FormEvent } from "react";
+import { useState } from "react";
 import type { OGElement } from "../../lib/types";
 import { NotVisibleIcon } from "../icons/NotVisibleIcon";
 import { TextIcon } from "../icons/TextIcon";
@@ -11,7 +10,6 @@ import { BoxIcon } from "../icons/BoxIcon";
 import { CircleIcon } from "../icons/CircleIcon";
 import { ImageIcon } from "../icons/ImageIcon";
 import { MagicWandIcon } from "../icons/MagicWandIcon";
-import { CheckIcon } from "../icons/CheckIcon";
 import { useElementsStore } from "../../stores/elementsStore";
 
 interface ElementRowProps {
@@ -28,46 +26,42 @@ export function ElementRow({ element }: ElementRowProps) {
   const updateElement = useElementsStore((state) => state.updateElement);
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: element.id });
+  const [isEditing, setIsEditing] = useState(false);
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
-  const [isEditing, setIsEditing] = useState(false);
-  const formRef = useRef<HTMLFormElement>(null);
+  function onSubmit(newName: string) {
+    let finalName = newName;
 
-  function onSubmit(event: FormEvent) {
-    event.preventDefault();
-
-    if (!element.name) {
-      let defaultName = "";
-
+    if (!finalName) {
       if (element.tag === "p") {
-        defaultName = "Text";
+        finalName = "Text";
       } else if (element.tag === "div" && element.backgroundImage) {
-        defaultName = "Image";
+        finalName = "Image";
       } else if (
         element.tag === "div" &&
         !element.backgroundImage &&
         !element.radius
       ) {
-        defaultName = "Box";
+        finalName = "Box";
       } else if (
         element.tag === "div" &&
         !element.backgroundImage &&
         element.radius
       ) {
-        defaultName = "Rounded box";
+        finalName = "Rounded box";
       } else {
-        defaultName = "Dynamic text";
+        finalName = "Dynamic text";
       }
-
-      updateElement({
-        ...element,
-        name: defaultName,
-      });
     }
+
+    updateElement({
+      ...element,
+      name: newName,
+    });
 
     setIsEditing(false);
   }
@@ -89,9 +83,12 @@ export function ElementRow({ element }: ElementRowProps) {
         onClick={() => {
           setSelectedElementId(element.id);
         }}
-        onDoubleClick={() => {
-          if (isEditing) return;
+        onDoubleClick={(event) => {
+          if (isEditing || !element.visible) {
+            return;
+          }
 
+          event.preventDefault();
           setIsEditing(true);
         }}
         type="button"
@@ -112,38 +109,21 @@ export function ElementRow({ element }: ElementRowProps) {
           <MagicWandIcon height="1.4em" width="1.4em" />
         ) : null}
         {isEditing ? (
-          <form
-            className="flex items-center gap-2"
-            onSubmit={onSubmit}
-            ref={formRef}
-          >
-            <input
-              // eslint-disable-next-line -- Usability and accessibility for users is not reduced here
-              autoFocus
-              className="w-48"
-              id="elementNameInput"
-              onChange={({ target }) => {
-                updateElement({
-                  ...element,
-                  name: target.value,
-                });
-              }}
-              onKeyDown={(event) => {
-                event.stopPropagation();
-                if (event.key === "Enter" || event.key === "Escape") {
-                  formRef.current?.requestSubmit();
-                }
-                if (event.key === "Spacebar") {
-                  console.log("!");
-                }
-              }}
-              type="text"
-              value={element.name}
-            />
-            <button className="text-gray-600 hover:text-gray-900" type="submit">
-              <CheckIcon />
-            </button>
-          </form>
+          <input
+            // eslint-disable-next-line -- Usability and accessibility for users is not reduced here
+            autoFocus
+            className="w-52 outline-blue-500 outline-1 outline-offset-[3px] elementNameInput"
+            defaultValue={element.name}
+            onBlur={(event) => {
+              onSubmit(event.currentTarget.value);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === "Escape") {
+                event.currentTarget.blur();
+              }
+            }}
+            type="text"
+          />
         ) : (
           element.name
         )}
