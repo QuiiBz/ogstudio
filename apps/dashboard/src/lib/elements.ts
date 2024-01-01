@@ -112,16 +112,22 @@ export function createElementStyle(element: OGElement): CSSProperties {
             ? `radial-gradient(${element.gradient.start}, ${element.gradient.end})`
             : `linear-gradient(${element.gradient.angle}deg, ${element.gradient.start}, ${element.gradient.end})`
           : hexToRgba(element.backgroundColor, element.opacity),
-      backgroundImage: element.backgroundImage
-        ? `url(${element.backgroundImage})`
-        : undefined,
-      backgroundRepeat: element.backgroundImage ? "no-repeat" : undefined, // TODO
-      // backgroundPosition: element.backgroundImage ? 'center' : undefined, // TODO
-      backgroundSize: element.backgroundImage
-        ? element.backgroundSize === "cover"
-          ? "auto 100%"
-          : "100% 100%"
-        : undefined,
+    };
+  }
+
+  // Filter out undefined values
+  return Object.fromEntries(
+    Object.entries(base).filter(([, value]) => value !== undefined),
+  );
+}
+
+export function createImgElementStyle(element: OGElement): CSSProperties {
+  let base: CSSProperties = {};
+
+  if (element.tag === "div" && element.backgroundImage) {
+    base = {
+      ...base,
+      objectFit: element.backgroundSize === "cover" ? "cover" : "contain",
     };
   }
 

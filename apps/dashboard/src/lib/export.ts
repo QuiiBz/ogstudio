@@ -4,14 +4,15 @@ import { toast } from "sonner";
 import type { CSSProperties } from "react";
 import type { OGElement } from "./types";
 import { loadFonts } from "./fonts";
-import { createElementStyle } from "./elements";
+import { createElementStyle, createImgElementStyle } from "./elements";
 
 let wasmInitialized = false;
 
 export interface ReactElements {
-  type: OGElement["tag"];
+  type: OGElement["tag"] | "img";
   props: {
     style?: CSSProperties;
+    src?: string;
     children?: (ReactElements | string)[];
   };
 }
@@ -34,13 +35,23 @@ export function elementsToReactElements(elements: OGElement[]): ReactElements {
       },
       children: elements
         .filter((element) => element.visible)
-        .map((element) => ({
-          type: element.tag,
-          props: {
-            style: createElementStyle(element),
-            ...(element.tag === "p" ? { children: [element.content] } : {}),
-          },
-        })),
+        .map((element) => {
+          const isImage = element.tag === "div" && element.backgroundImage;
+
+          return {
+            type: isImage ? "img" : element.tag,
+            props: {
+              style: isImage
+                ? {
+                    ...createElementStyle(element),
+                    ...createImgElementStyle(element),
+                  }
+                : createElementStyle(element),
+              ...(isImage ? { src: element.backgroundImage } : {}),
+              ...(element.tag === "p" ? { children: [element.content] } : {}),
+            },
+          };
+        }),
     },
   };
 }
