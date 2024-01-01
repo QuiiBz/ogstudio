@@ -17,66 +17,30 @@ export interface ReactElements {
 }
 
 /**
- * Transform a DOM node to a React elements structure, since we're not
- * running a JSX transformer.
+ * Transform a list of OG elements to React Elements, to be used with Satori
+ * since we're not using a JSX transformer.
  *
  * See https://github.com/vercel/satori#use-without-jsx
  */
-export function domToReactElements(
-  element: Element,
-  dynamicTextReplace: string,
-): ReactElements {
-  const props: Record<string, unknown> = {};
-  const children: ReactElements["props"]["children"] = [];
-
-  if (element instanceof HTMLElement) {
-    const style: CSSProperties = {};
-    const declarations = element.style.cssText.split(/;( |$)/);
-
-    for (const declaration of declarations) {
-      const [property, value] = declaration.split(/:(.*)/);
-
-      if (property && value) {
-        let finalValue = value.trim();
-
-        if (property === "box-shadow" && finalValue.startsWith("rgb(")) {
-          let rgbValue: string | undefined;
-
-          finalValue = finalValue.replace(/rgb\((.*)\)/, (_, rgb) => {
-            rgbValue = rgb as string;
-            return "";
-          });
-
-          if (rgbValue) {
-            finalValue += ` rgb(${rgbValue})`;
-          }
-        }
-
-        // @ts-expect-error we expect property to be a valid CSS property
-        style[property] = finalValue;
-      }
-    }
-
-    props.style = style;
-  }
-
-  for (const child of element.children) {
-    children.push(domToReactElements(child, dynamicTextReplace));
-  }
-
-  if (children.length === 0 && element.textContent) {
-    if (element.textContent === "[dynamic text]") {
-      children.push(dynamicTextReplace);
-    } else {
-      children.push(element.textContent);
-    }
-  }
-
+export function elementsToReactElements(elements: OGElement[]): ReactElements {
+  // We first render the wrapper element, then all the childrens
   return {
-    type: element.tagName.toLowerCase() as OGElement["tag"],
+    type: "div",
     props: {
-      ...props,
-      children,
+      style: {
+        display: "flex",
+        width: "100%",
+        height: "100%",
+      },
+      children: elements
+        .filter((element) => element.visible)
+        .map((element) => ({
+          type: element.tag,
+          props: {
+            style: createElementStyle(element),
+            ...(element.tag === "p" ? { children: [element.content] } : {}),
+          },
+        })),
     },
   };
 }
@@ -156,29 +120,9 @@ export async function exportToPng(
  * the `src` attribute of an `img` element.
  */
 export async function renderToImg(elements: OGElement[]) {
+  const reactElements = elementsToReactElements(elements);
   const fonts = await loadFonts(elements);
-
-  // We first render the wrapper element, then all the childrens
-  const reactElements: ReactElements = {
-    type: "div",
-    props: {
-      style: {
-        display: "flex",
-        width: "100%",
-        height: "100%",
-      },
-      children: elements
-        .filter((element) => element.visible)
-        .map((element) => ({
-          type: element.tag,
-          props: {
-            style: createElementStyle(element),
-            ...(element.tag === "p" ? { children: [element.content] } : {}),
-          },
-        })),
-    },
-  };
-
   const svg = await exportToSvg(reactElements, fonts);
+
   return `data:image/svg+xml;base64,${btoa(svg)}`;
 }

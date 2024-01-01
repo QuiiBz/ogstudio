@@ -4,14 +4,16 @@ import { toast } from "sonner";
 import { Button } from "../forms/Button";
 import { PngIcon } from "../icons/PngIcon";
 import { SvgIcon } from "../icons/SvgIcon";
-import { useOg } from "../OgEditor";
-import { domToReactElements, exportToPng, exportToSvg } from "../../lib/export";
+import {
+  elementsToReactElements,
+  exportToPng,
+  exportToSvg,
+} from "../../lib/export";
 import type { FontData } from "../../lib/fonts";
 import { loadFonts } from "../../lib/fonts";
 import { useElementsStore } from "../../stores/elementsStore";
 
 export function ExportSection() {
-  const { rootRef } = useOg();
   const elements = useElementsStore((state) => state.elements);
   const setSelectedElementId = useElementsStore(
     (state) => state.setSelectedElementId,
@@ -31,11 +33,7 @@ export function ExportSection() {
     async function run() {
       setIsLoading(true);
 
-      const reactElements = domToReactElements(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know it's defined
-        rootRef.current!,
-        "This is a dynamic text",
-      );
+      const reactElements = elementsToReactElements(elements);
       const fonts = await loadFonts(elements);
       const svg = await exportToSvg(reactElements, fonts);
 

@@ -1,6 +1,5 @@
 "use client";
-import type { RefObject } from "react";
-import { createContext, useContext, useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import type { OGElement } from "../lib/types";
 import { createElementId } from "../lib/elements";
 import { useZoomStore } from "../stores/zoomStore";
@@ -9,22 +8,6 @@ import { Element } from "./Element";
 import { RightPanel } from "./RightPanel";
 import { LeftPanel } from "./LeftPanel";
 import { EditorToolbar } from "./EditorToolbar";
-
-interface OgContextType {
-  rootRef: RefObject<HTMLDivElement>;
-}
-
-export const OgContext = createContext<OgContextType | null>(null);
-
-export function useOg() {
-  const context = useContext(OgContext);
-
-  if (!context) {
-    throw new Error("useOg must be used within a OgProvider");
-  }
-
-  return context;
-}
 
 interface OgProviderProps {
   imageId: string;
@@ -220,52 +203,43 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
     undo,
   ]);
 
-  const value = useMemo(
-    () => ({
-      rootRef,
-    }),
-    [],
-  );
-
   return (
-    <OgContext.Provider value={value}>
-      <div className="w-screen h-screen flex flex-row justify-between items-center bg-gray-50 overflow-hidden">
-        <div className="w-[300px] min-w-[300px] h-screen border-r border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
-          <LeftPanel />
-        </div>
-        <div className="flex flex-col items-center gap-4 fixed transform left-1/2 -translate-x-1/2">
-          <p className="text-xs text-gray-400 z-10">
-            {width}x{height}
-          </p>
-          <div
-            className="bg-white shadow-lg shadow-gray-100 relative"
-            style={{ width, height, transform: `scale(${zoom / 100})` }}
-          >
-            <div
-              ref={rootRef}
-              style={{ display: "flex", width: "100%", height: "100%" }}
-            >
-              {elements.map((element) => (
-                <Element element={element} key={element.id} />
-              ))}
-            </div>
-          </div>
-          <div
-            className="border border-gray-100 absolute pointer-events-none"
-            style={{
-              width,
-              height,
-              transform: `scale(${zoom / 100}) translateY(${
-                32 / (zoom / 100)
-              }px)`,
-            }}
-          />
-          <EditorToolbar />
-        </div>
-        <div className="w-[300px] min-w-[300px] h-screen flex flex-col border-l border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
-          <RightPanel />
-        </div>
+    <div className="w-screen h-screen flex flex-row justify-between items-center bg-gray-50 overflow-hidden">
+      <div className="w-[300px] min-w-[300px] h-screen border-r border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
+        <LeftPanel />
       </div>
-    </OgContext.Provider>
+      <div className="flex flex-col items-center gap-4 fixed transform left-1/2 -translate-x-1/2">
+        <p className="text-xs text-gray-400 z-10">
+          {width}x{height}
+        </p>
+        <div
+          className="bg-white shadow-lg shadow-gray-100 relative"
+          style={{ width, height, transform: `scale(${zoom / 100})` }}
+        >
+          <div
+            ref={rootRef}
+            style={{ display: "flex", width: "100%", height: "100%" }}
+          >
+            {elements.map((element) => (
+              <Element element={element} key={element.id} />
+            ))}
+          </div>
+        </div>
+        <div
+          className="border border-gray-100 absolute pointer-events-none"
+          style={{
+            width,
+            height,
+            transform: `scale(${zoom / 100}) translateY(${
+              32 / (zoom / 100)
+            }px)`,
+          }}
+        />
+        <EditorToolbar />
+      </div>
+      <div className="w-[300px] min-w-[300px] h-screen flex flex-col border-l border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
+        <RightPanel />
+      </div>
+    </div>
   );
 }

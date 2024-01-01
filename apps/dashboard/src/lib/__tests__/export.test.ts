@@ -2,71 +2,76 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { describe, it, expect } from "vitest";
 import {
-  domToReactElements,
+  elementsToReactElements,
   exportToPng,
   exportToSvg,
   renderToImg,
 } from "../export";
 import { createElementId } from "../elements";
 
-describe("domToReactElements", () => {
-  it("should transform a dom node to react elements", () => {
-    const element = document.createElement("div");
-    element.innerHTML = "Hello world";
-    element.style.color = "red";
-
-    const output = domToReactElements(element, "");
-    expect(output).toMatchInlineSnapshot(`
+describe("elementsToReactElements", () => {
+  it("should render to react elements", () => {
+    const data = elementsToReactElements([
       {
-        "props": {
-          "children": [
-            "Hello world",
-          ],
-          "style": {
-            "color": "red",
-          },
-        },
-        "type": "div",
-      }
-    `);
+        tag: "div",
+        id: createElementId(),
+        name: "Box",
+        width: 100,
+        height: 50,
+        x: 0,
+        y: 0,
+        visible: true,
+        rotate: 0,
+        opacity: 100,
+        backgroundColor: "#ffffff",
+      },
+    ]);
+    expect(data).toMatchSnapshot();
   });
 
-  it("should transform a dom node to react elements with text children", () => {
-    const element = document.createElement("div");
-    element.innerHTML = "Hello world";
-
-    const output = domToReactElements(element, "");
-    expect(output).toMatchInlineSnapshot(`
+  it("should not render non-visible elements", () => {
+    const data = elementsToReactElements([
       {
-        "props": {
-          "children": [
-            "Hello world",
-          ],
-          "style": {},
-        },
-        "type": "div",
-      }
-    `);
+        tag: "div",
+        id: createElementId(),
+        name: "Box",
+        width: 100,
+        height: 50,
+        x: 0,
+        y: 0,
+        visible: false,
+        rotate: 0,
+        opacity: 100,
+        backgroundColor: "#ffffff",
+      },
+    ]);
+    expect(data).toMatchSnapshot();
   });
 
-  it("should transform a dom node to react elements with styles", () => {
-    const element = document.createElement("div");
-    element.style.color = "red";
-    element.style.backgroundColor = "blue";
-
-    const output = domToReactElements(element, "");
-    expect(output).toMatchInlineSnapshot(`
+  it("should render text chidrens", () => {
+    const data = elementsToReactElements([
       {
-        "props": {
-          "children": [],
-          "style": {
-            "background-color": "blue",
-            "color": "red",
-          },
-        },
-        "type": "div",
-      }
-    `);
+        tag: "p",
+        id: createElementId(),
+        name: "Text",
+        width: 100,
+        height: 50,
+        x: 0,
+        y: 0,
+        visible: true,
+        rotate: 0,
+        opacity: 100,
+        content: "Text",
+        color: "#000000",
+        fontFamily: "Inter",
+        fontWeight: 400,
+        lineHeight: 1,
+        letterSpacing: 0,
+        fontSize: 50,
+        align: "left",
+      },
+    ]);
+    expect(data).toMatchSnapshot();
   });
 });
 
@@ -135,32 +140,6 @@ describe("renderToImg", () => {
         x: 0,
         y: 0,
         visible: true,
-        rotate: 0,
-        opacity: 100,
-        content: "Text",
-        color: "#000000",
-        fontFamily: "Inter",
-        fontWeight: 400,
-        lineHeight: 1,
-        letterSpacing: 0,
-        fontSize: 50,
-        align: "left",
-      },
-    ]);
-    expect(data).toMatchSnapshot();
-  });
-
-  it("should not render non-visible elements", async () => {
-    const data = await renderToImg([
-      {
-        tag: "p",
-        id: createElementId(),
-        name: "Text",
-        width: 100,
-        height: 50,
-        x: 0,
-        y: 0,
-        visible: false,
         rotate: 0,
         opacity: 100,
         content: "Text",
