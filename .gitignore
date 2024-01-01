@@ -4,7 +4,7 @@ node_modules/
 .vscode/
 .idea/
 .turbo/
-data/
+db.sqlite*
 
 .DS_Store
 *.log
