@@ -11,7 +11,8 @@
     "test": "vitest",
     "db:generate": "drizzle-kit generate:sqlite",
     "db:migrate": "tsx drizzle/migrate.ts",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:dev": "turso dev --db-file ./db.sqlite"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
