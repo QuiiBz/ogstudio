@@ -33,9 +33,18 @@ function SplashInner({ children }: OgSplashProps) {
         <div className="w-screen h-screen bg-black/10 flex justify-center items-center absolute top-0 left-0 z-10">
           <div className="p-8 rounded-md bg-white shadow-lg shadow-gray-200 w-[980px] h-[684px]">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Link className="text-gray-900 text-2xl" href="/">
-                  OG Studio
+              <div className="flex items-center gap-6">
+                <Link
+                  className="text-gray-900 text-2xl flex gap-2 items-center"
+                  href="/"
+                >
+                  <Image
+                    alt="OG Studio logo"
+                    height={50}
+                    src="/icon.png"
+                    width={50}
+                  />
+                  Studio
                 </Link>
                 <span className="flex gap-2 items-center px-3 py-1 rounded-full text-white bg-yellow-500 select-none text-xs">
                   Early preview

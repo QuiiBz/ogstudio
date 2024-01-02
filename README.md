@@ -1,4 +1,8 @@
 <p align="center">
+  <picture>
+    <img alt="" height="200px" src="https://github.com/QuiiBz/ogstudio/blob/main/assets/icon.png" />
+  </picture>
+  <br />
   <b>OG Studio</b>: Figma-like OG (Open Graph) Image builder
 </p>
 
