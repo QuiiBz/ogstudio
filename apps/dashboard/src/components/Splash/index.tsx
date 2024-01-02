@@ -40,9 +40,9 @@ function SplashInner({ children }: OgSplashProps) {
                 >
                   <Image
                     alt="OG Studio logo"
-                    height={40}
+                    height={50}
                     src="/icon.png"
-                    width={40}
+                    width={50}
                   />
                   Studio
                 </Link>
