@@ -14,6 +14,8 @@ interface InputProps<Type extends InputType> {
   max?: number;
   suffix?: string;
   onChange: (value: InputTypeToValue<Type>) => void;
+  trackArrowDirection?: boolean;
+  onKeyDown?: (arrowDirection: "up" | "down") => void;
   className?: string;
   children?: ReactNode;
 }
@@ -25,6 +27,8 @@ export function Input<Type extends InputType>({
   max,
   suffix,
   onChange,
+  trackArrowDirection,
+  onKeyDown,
   className,
   children,
 }: InputProps<Type>) {
@@ -55,6 +59,8 @@ export function Input<Type extends InputType>({
           if (type === "number") {
             const valueNumber = Number(eventValue);
 
+            // if (!eventValue) return;
+
             if (
               (min !== undefined && valueNumber < min) ||
               (max !== undefined && valueNumber > max)
@@ -65,6 +71,12 @@ export function Input<Type extends InputType>({
 
           // @ts-expect-error wtf?
           onChange(eventValue);
+        }}
+        onKeyDown={(event) => {
+          if (trackArrowDirection && type === "text" && onKeyDown) {
+            if (event.key === "ArrowDown") onKeyDown("down");
+            if (event.key === "ArrowUp") onKeyDown("up");
+          }
         }}
         onKeyUp={(event) => {
           if (event.key === "Enter" || event.key === "Escape") {

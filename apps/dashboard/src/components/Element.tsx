@@ -12,16 +12,16 @@ interface ElementProps {
 export function Element({ element }: ElementProps) {
   const elementRef = useRef<HTMLElement>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const selectedElementId = useElementsStore(
-    (state) => state.selectedElementId,
+  const selectedElementsId = useElementsStore(
+    (state) => state.selectedElementsId,
   );
-  const setSelectedElementId = useElementsStore(
-    (state) => state.setSelectedElementId,
+  const setSelectedElementsId = useElementsStore(
+    (state) => state.setSelectedElementsId,
   );
   const updateElement = useElementsStore((state) => state.updateElement);
   const removeElement = useElementsStore((state) => state.removeElement);
 
-  const isSelected = selectedElementId === element.id;
+  const isSelected = selectedElementsId.includes(element.id);
   const Tag = element.tag;
 
   useEffect(() => {
@@ -34,7 +34,9 @@ export function Element({ element }: ElementProps) {
 
       event.preventDefault();
 
-      setSelectedElementId(element.id);
+      setSelectedElementsId(
+        event.shiftKey ? [...selectedElementsId, element.id] : [element.id],
+      );
 
       const target = event.target as HTMLElement;
       const isResizer = target.parentElement?.classList.contains("element");
@@ -269,10 +271,10 @@ export function Element({ element }: ElementProps) {
     element.tag,
     elementRef,
     isEditing,
-    setSelectedElementId,
+    setSelectedElementsId,
     updateElement,
     removeElement,
-    selectedElementId,
+    selectedElementsId,
     isSelected,
     element,
   ]);
