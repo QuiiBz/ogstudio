@@ -17,11 +17,11 @@ interface ElementRowProps {
 }
 
 export function ElementRow({ element }: ElementRowProps) {
-  const selectedElementId = useElementsStore(
-    (state) => state.selectedElementId,
+  const selectedElementsId = useElementsStore(
+    (state) => state.selectedElementsId,
   );
-  const setSelectedElementId = useElementsStore(
-    (state) => state.setSelectedElementId,
+  const setSelectedElementsId = useElementsStore(
+    (state) => state.setSelectedElementsId,
   );
   const updateElement = useElementsStore((state) => state.updateElement);
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -77,11 +77,13 @@ export function ElementRow({ element }: ElementRowProps) {
       <button
         className={clsx(
           "flex items-center gap-2 select-none text-gray-600 hover:text-gray-900 w-full",
-          { "!text-blue-500": selectedElementId === element.id },
+          { "!text-blue-500": selectedElementsId.includes(element.id) },
           { "!text-gray-300": !element.visible },
         )}
-        onClick={() => {
-          setSelectedElementId(element.id);
+        onClick={(event) => {
+          setSelectedElementsId(
+            event.shiftKey ? [...selectedElementsId, element.id] : [element.id],
+          );
         }}
         onDoubleClick={(event) => {
           if (isEditing || !element.visible) {

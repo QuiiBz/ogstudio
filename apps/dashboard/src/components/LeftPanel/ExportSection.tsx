@@ -15,8 +15,8 @@ import { useElementsStore } from "../../stores/elementsStore";
 
 export function ExportSection() {
   const elements = useElementsStore((state) => state.elements);
-  const setSelectedElementId = useElementsStore(
-    (state) => state.setSelectedElementId,
+  const setSelectedElementsId = useElementsStore(
+    (state) => state.setSelectedElementsId,
   );
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,7 +27,7 @@ export function ExportSection() {
   async function exportSvg(showProgress = true) {
     // Immediately deselect any selected element to remove the outline
     flushSync(() => {
-      setSelectedElementId(null);
+      setSelectedElementsId([]);
     });
 
     async function run() {

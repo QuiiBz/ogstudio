@@ -8,8 +8,8 @@ interface ElementsState {
   elements: OGElement[];
   setElements: (elements: OGElement[]) => void;
   loadImage: (imageId: string) => void;
-  selectedElementId: string | null;
-  setSelectedElementId: (id: string | null) => void;
+  selectedElementsId: string[];
+  setSelectedElementsId: (id: string[]) => void;
   addElement: (element: OGElement) => void;
   removeElement: (elementId: string) => void;
   updateElement: (element: OGElement) => void;
@@ -28,7 +28,7 @@ export const useElementsStore = create<ElementsState>()(
           localStorage.getItem(imageId) || "[]",
         ) as OGElement[];
 
-        set({ imageId, elements, selectedElementId: null });
+        set({ imageId, elements, selectedElementsId: [] });
 
         // Immediately load fonts for elements that will be visible on the page.
         elements.forEach((element) => {
@@ -39,16 +39,22 @@ export const useElementsStore = create<ElementsState>()(
 
         useElementsStore.temporal.getState().clear();
       },
-      selectedElementId: null,
-      setSelectedElementId: (id) => {
-        const element = get().elements.find((item) => item.id === id);
+      selectedElementsId: [],
+      setSelectedElementsId: (ids) => {
+        const newIds = [];
 
-        // Don't allow selecting hidden elements
-        if (element && !element.visible) {
-          return;
-        }
+        ids.forEach((id) => {
+          const element = get().elements.find((item) => item.id === id);
 
-        set({ selectedElementId: id });
+          // Don't allow selecting hidden elements
+          if (element && !element.visible) {
+            return;
+          }
+
+          newIds.push(id);
+        });
+
+        set({ selectedElementsId: ids });
 
         // Blur the currently focused DOM element (e.g. an input) when the user
         // edits an element
@@ -84,8 +90,13 @@ export const useElementsStore = create<ElementsState>()(
 
           // If the element was hidden, and it was the currently selected element,
           // unselect it
-          if (!element.visible && element.id === state.selectedElementId) {
-            state.setSelectedElementId(null);
+          if (
+            !element.visible &&
+            state.selectedElementsId.includes(element.id)
+          ) {
+            state.setSelectedElementsId([
+              ...state.selectedElementsId.filter((id) => id !== element.id),
+            ]);
           }
 
           // Again, try to load the font if it's a text, because the font family or weight
