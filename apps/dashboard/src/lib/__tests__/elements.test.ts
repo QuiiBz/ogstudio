@@ -274,17 +274,18 @@ describe("createElementStyle", () => {
       expect(style).toMatchInlineSnapshot(`
         {
           "color": "rgba(255, 255, 255, 0.8)",
+          "display": "flex",
           "fontFamily": "Inter",
           "fontSize": "12px",
           "fontWeight": 400,
           "height": "200px",
+          "justifyContent": "flex-start",
           "left": "10px",
           "letterSpacing": "0px",
           "lineHeight": 1,
           "marginBottom": 0,
           "marginTop": 0,
           "position": "absolute",
-          "textAlign": "left",
           "top": "20px",
           "width": "100px",
         }
@@ -323,18 +324,105 @@ describe("createElementStyle", () => {
       expect(style).toMatchInlineSnapshot(`
         {
           "color": "rgba(255, 255, 255, 0.8)",
+          "display": "flex",
           "fontFamily": "Inter",
           "fontSize": "12px",
           "fontWeight": 400,
           "height": "200px",
+          "justifyContent": "flex-start",
           "left": "10px",
           "letterSpacing": "0px",
           "lineHeight": 1,
           "marginBottom": 0,
           "marginTop": 0,
           "position": "absolute",
-          "textAlign": "left",
           "textShadow": "2px 2px 4px blue",
+          "top": "20px",
+          "width": "100px",
+        }
+      `);
+    });
+
+    it("should generate style with align center", () => {
+      const style = createElementStyle({
+        tag: "p",
+        id: createElementId(),
+        name: "Box",
+        x: 10,
+        y: 20,
+        width: 100,
+        height: 200,
+        visible: true,
+        rotate: 0,
+        opacity: 80,
+        content: "Hello",
+        color: "#ffffff",
+        fontFamily: "Inter",
+        fontSize: 12,
+        fontWeight: 400,
+        lineHeight: 1,
+        letterSpacing: 0,
+        align: "center",
+      });
+
+      expect(style).toMatchInlineSnapshot(`
+        {
+          "color": "rgba(255, 255, 255, 0.8)",
+          "display": "flex",
+          "fontFamily": "Inter",
+          "fontSize": "12px",
+          "fontWeight": 400,
+          "height": "200px",
+          "justifyContent": "center",
+          "left": "10px",
+          "letterSpacing": "0px",
+          "lineHeight": 1,
+          "marginBottom": 0,
+          "marginTop": 0,
+          "position": "absolute",
+          "top": "20px",
+          "width": "100px",
+        }
+      `);
+    });
+
+    it("should generate style with align right", () => {
+      const style = createElementStyle({
+        tag: "p",
+        id: createElementId(),
+        name: "Box",
+        x: 10,
+        y: 20,
+        width: 100,
+        height: 200,
+        visible: true,
+        rotate: 0,
+        opacity: 80,
+        content: "Hello",
+        color: "#ffffff",
+        fontFamily: "Inter",
+        fontSize: 12,
+        fontWeight: 400,
+        lineHeight: 1,
+        letterSpacing: 0,
+        align: "right",
+      });
+
+      expect(style).toMatchInlineSnapshot(`
+        {
+          "color": "rgba(255, 255, 255, 0.8)",
+          "display": "flex",
+          "fontFamily": "Inter",
+          "fontSize": "12px",
+          "fontWeight": 400,
+          "height": "200px",
+          "justifyContent": "flex-end",
+          "left": "10px",
+          "letterSpacing": "0px",
+          "lineHeight": 1,
+          "marginBottom": 0,
+          "marginTop": 0,
+          "position": "absolute",
           "top": "20px",
           "width": "100px",
         }
