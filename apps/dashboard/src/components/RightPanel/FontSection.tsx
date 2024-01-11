@@ -63,6 +63,7 @@ export function FontSection({ selectedElements }: FontSectionProps) {
 
   return (
     <>
+      <div className="h-[1px] w-full bg-gray-100" />
       <p className="text-xs text-gray-600">Font</p>
       <div className="grid grid-cols-2 gap-2">
         <Select

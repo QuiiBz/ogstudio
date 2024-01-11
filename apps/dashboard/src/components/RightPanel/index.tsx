@@ -1,5 +1,5 @@
 import { useElementsStore } from "../../stores/elementsStore";
-// import { BackgroundSection } from "./BackgroundSection";
+import { BackgroundSection } from "./BackgroundSection";
 // import { BorderSection } from "./BorderSection";
 import { FontSection } from "./FontSection";
 import { MiscellanousSection } from "./MiscellanousSection";
@@ -27,9 +27,8 @@ export function RightPanel() {
     <div className="flex flex-col justify-between p-4 h-full">
       <div className="flex flex-col items-start gap-4">
         <SizePositionSection selectedElements={selectedElementsData} />
-        <div className="h-[1px] w-full bg-gray-100" />
         <FontSection selectedElements={selectedElementsData} />
-        {/* <BackgroundSection selectedElements={selectedElementsData} /> */}
+        <BackgroundSection selectedElements={selectedElementsData} />
         {/* <div className="h-[1px] w-full bg-gray-100" /> */}
         {/* <BorderSection selectedElement={selectedElementsData} /> */}
         {/* <div className="h-[1px] w-full bg-gray-100" />
