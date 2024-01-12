@@ -6,30 +6,14 @@ import { Input } from "../forms/Input";
 import { WidthIcon } from "../icons/WidthIcon";
 import { GradientIcon } from "../icons/GradientIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { setValue } from "../../lib/inputs";
+import { showMixed } from "../../lib/elements";
 
 interface ShadowSectionProps {
   selectedElements: OGElement[];
 }
 
 type OGBoxElement = OGBaseElement & OGDivElement;
-
-function showMixed(
-  selectedElements: OGElement[],
-  paramName: "width" | "blur" | "x" | "y" | "color",
-) {
-  const elementsValues = selectedElements.map(
-    // @ts-expect-error all elements have shadow
-    (element) => element.shadow[paramName],
-  );
-  return !elementsValues.every((value) => value === elementsValues[0]);
-}
-
-function setValue(value: string | number) {
-  if (typeof value === "number") return value;
-
-  const numberValue = Number(value);
-  return isNaN(numberValue) ? Number(value.replace(/\D/g, "")) : numberValue;
-}
 
 export function ShadowSection({ selectedElements }: ShadowSectionProps) {
   const updateElement = useElementsStore((state) => state.updateElement);
@@ -136,10 +120,12 @@ export function ShadowSection({ selectedElements }: ShadowSectionProps) {
               }}
               suffix="px"
               trackArrowDirection
-              type={showMixed(boxElements, "width") ? "text" : "number"}
+              type={
+                showMixed(boxElements, "width", "shadow") ? "text" : "number"
+              }
               // @ts-expect-error all elements have shadow
               value={
-                showMixed(boxElements, "width")
+                showMixed(boxElements, "width", "shadow")
                   ? "Mixed"
                   : boxElements[0].shadow?.width
               }
@@ -186,9 +172,11 @@ export function ShadowSection({ selectedElements }: ShadowSectionProps) {
             }}
             suffix="px"
             trackArrowDirection
-            type={showMixed(selectedElements, "blur") ? "text" : "number"}
+            type={
+              showMixed(selectedElements, "blur", "shadow") ? "text" : "number"
+            }
             value={
-              showMixed(selectedElements, "blur")
+              showMixed(selectedElements, "blur", "shadow")
                 ? "Mixed"
                 : selectedElements[0].shadow.blur
             }
@@ -227,9 +215,11 @@ export function ShadowSection({ selectedElements }: ShadowSectionProps) {
             }}
             suffix="px"
             trackArrowDirection
-            type={showMixed(selectedElements, "x") ? "text" : "number"}
+            type={
+              showMixed(selectedElements, "x", "shadow") ? "text" : "number"
+            }
             value={
-              showMixed(selectedElements, "x")
+              showMixed(selectedElements, "x", "shadow")
                 ? "Mixed"
                 : selectedElements[0].shadow.x
             }
@@ -268,9 +258,11 @@ export function ShadowSection({ selectedElements }: ShadowSectionProps) {
             }}
             suffix="px"
             trackArrowDirection
-            type={showMixed(selectedElements, "y") ? "text" : "number"}
+            type={
+              showMixed(selectedElements, "y", "shadow") ? "text" : "number"
+            }
             value={
-              showMixed(selectedElements, "y")
+              showMixed(selectedElements, "y", "shadow")
                 ? "Mixed"
                 : selectedElements[0].shadow.y
             }
@@ -293,7 +285,7 @@ export function ShadowSection({ selectedElements }: ShadowSectionProps) {
             }}
             type="color"
             value={
-              showMixed(selectedElements, "color")
+              showMixed(selectedElements, "color", "shadow")
                 ? "#ffffff"
                 : selectedElements[0].shadow.color
             }

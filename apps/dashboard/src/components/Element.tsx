@@ -310,7 +310,8 @@ export function Element({ element }: ElementProps) {
           }}
         />
       ) : null}
-      {isSelected ? (
+      {/* suggestion: make multiple element manipulations? */}
+      {isSelected && selectedElementsId.length === 1 ? (
         <>
           <span className="handle top-left absolute w-2.5 h-2.5 rounded-full bg-white border border-blue-500" />
           <span className="handle top-right absolute w-2.5 h-2.5 rounded-full bg-white border border-blue-500" />

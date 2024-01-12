@@ -114,7 +114,7 @@ export function ElementRow({ element }: ElementRowProps) {
           <input
             // eslint-disable-next-line -- Usability and accessibility for users is not reduced here
             autoFocus
-            className="w-52 outline-blue-500 outline-1 outline-offset-[3px] elementNameInput"
+            className="w-48 outline-blue-500 outline-1 outline-offset-[3px] elementNameInput"
             defaultValue={element.name}
             onBlur={(event) => {
               onSubmit(event.currentTarget.value);

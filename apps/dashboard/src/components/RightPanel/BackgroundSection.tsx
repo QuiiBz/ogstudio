@@ -11,35 +11,14 @@ import { SquareIcon } from "../icons/SquareIcon";
 import { LinkIcon } from "../icons/LinkIcon";
 import { ImageSizeIcon } from "../icons/ImageSizeIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { setValue } from "../../lib/inputs";
+import { showMixed } from "../../lib/elements";
 
 interface BackgroundSectionProps {
   selectedElements: OGElement[];
 }
 
 type OGBoxElement = OGBaseElement & OGDivElement;
-
-function showMixed(
-  selectedElements: OGBoxElement[],
-  paramName:
-    | "backgroundColor"
-    | "start"
-    | "end"
-    | "angle"
-    | "type"
-    | "backgroundImage"
-    | "backgroundSize",
-  forGradient?: boolean,
-) {
-  const elementsValues = selectedElements.map((element) =>
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- provided type for both element types
-    forGradient && element.gradient
-      ? // @ts-expect-error todo: fix ts & eslint errors
-        element.gradient[paramName]
-      : // @ts-expect-error todo: fix ts & eslint errors
-        element[paramName],
-  );
-  return !elementsValues.every((value) => value === elementsValues[0]);
-}
 
 function isSameBg(selectedElements: OGBoxElement[]) {
   if (selectedElements.length === 1) return true;
@@ -59,16 +38,6 @@ function isSameBg(selectedElements: OGBoxElement[]) {
     return false;
 
   return true;
-}
-
-function setValue(value: string | number, max?: number) {
-  if (typeof value === "string") {
-    const numberValue = Number(value.replace(/^\D-/g, ""));
-    if (max) return numberValue > max ? max : numberValue;
-    return numberValue;
-  }
-
-  return value;
 }
 
 export function BackgroundSection({
@@ -174,7 +143,7 @@ export function BackgroundSection({
                 }}
                 type="color"
                 value={
-                  showMixed(boxElements, "start", true)
+                  showMixed(boxElements, "start", "gradient")
                     ? "#ffffff"
                     : boxElements[0].gradient.start
                 }
@@ -197,7 +166,7 @@ export function BackgroundSection({
                 }}
                 type="color"
                 value={
-                  showMixed(boxElements, "end", true)
+                  showMixed(boxElements, "end", "gradient")
                     ? "#ffffff"
                     : boxElements[0].gradient.end
                 }
@@ -221,12 +190,12 @@ export function BackgroundSection({
                   });
                 }}
                 value={
-                  showMixed(boxElements, "type", true)
+                  showMixed(boxElements, "type", "gradient")
                     ? "Mixed"
                     : boxElements[0].gradient.type
                 }
                 values={
-                  showMixed(boxElements, "type", true)
+                  showMixed(boxElements, "type", "gradient")
                     ? ["linear", "radial", "Mixed"]
                     : ["linear", "radial"]
                 }
@@ -280,10 +249,12 @@ export function BackgroundSection({
                   suffix="deg"
                   trackArrowDirection
                   type={
-                    showMixed(boxElements, "angle", true) ? "text" : "number"
+                    showMixed(boxElements, "angle", "gradient")
+                      ? "text"
+                      : "number"
                   }
                   value={
-                    showMixed(boxElements, "angle", true)
+                    showMixed(boxElements, "angle", "gradient")
                       ? "Mixed"
                       : boxElements[0].gradient.angle
                   }

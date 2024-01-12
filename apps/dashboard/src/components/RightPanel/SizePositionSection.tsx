@@ -1,24 +1,11 @@
 import { Input } from "../forms/Input";
 import type { OGElement } from "../../lib/types";
 import { useElementsStore } from "../../stores/elementsStore";
+import { setValue } from "../../lib/inputs";
+import { showMixed } from "../../lib/elements";
 
 interface SizePositionSectionProps {
   selectedElements: OGElement[];
-}
-
-function showMixed(
-  selectedElements: OGElement[],
-  paramName: "x" | "y" | "width" | "height",
-) {
-  const elementsValues = selectedElements.map((element) => element[paramName]);
-  return !elementsValues.every((value) => value === elementsValues[0]);
-}
-
-function setValue(value: string | number) {
-  if (typeof value === "number") return value;
-
-  const numberValue = Number(value);
-  return isNaN(numberValue) ? Number(value.replace(/\D/g, "")) : numberValue;
 }
 
 export function SizePositionSection({
@@ -32,8 +19,6 @@ export function SizePositionSection({
       <div className="grid grid-cols-2 gap-2">
         <Input
           onChange={(value) => {
-            if (!value) return;
-
             selectedElements.forEach((selectedElement) => {
               updateElement({
                 ...selectedElement,
@@ -63,8 +48,6 @@ export function SizePositionSection({
         </Input>
         <Input
           onChange={(value) => {
-            if (!value) return;
-
             selectedElements.forEach((selectedElement) => {
               updateElement({
                 ...selectedElement,
@@ -94,8 +77,6 @@ export function SizePositionSection({
         </Input>
         <Input
           onChange={(value) => {
-            if (!value) return;
-
             selectedElements.forEach((selectedElement) => {
               updateElement({
                 ...selectedElement,
@@ -127,8 +108,6 @@ export function SizePositionSection({
         </Input>
         <Input
           onChange={(value) => {
-            if (!value) return;
-
             selectedElements.forEach((selectedElement) => {
               updateElement({
                 ...selectedElement,

@@ -70,7 +70,7 @@ export const useElementsStore = create<ElementsState>()(
         set((state) => {
           const elements = [...state.elements, element];
 
-          return { elements, selectedElementId: element.id };
+          return { elements, selectedElementsId: [element.id] };
         });
       },
       removeElement: (elementId) => {

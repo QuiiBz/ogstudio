@@ -4,32 +4,14 @@ import { CornerIcon } from "../icons/CornerIcon";
 import { OpacityIcon } from "../icons/OpacityIcon";
 import { RotateIcon } from "../icons/RotateIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { setValue } from "../../lib/inputs";
+import { showMixed } from "../../lib/elements";
 
 interface MiscellanousSectionProps {
   selectedElements: OGElement[];
 }
 
 type OGBoxElement = OGBaseElement & OGDivElement;
-
-function showMixed(
-  selectedElements: OGElement[] | OGBoxElement[],
-  paramName: "opacity" | "rotate" | "radius",
-) {
-  // @ts-expect-error need to think how to fix this type problem
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- provided type for both element types
-  const elementsValues = selectedElements.map((element) => element[paramName]);
-  return !elementsValues.every((value) => value === elementsValues[0]);
-}
-
-function setValue(value: string | number, max?: number) {
-  if (typeof value === "string") {
-    const numberValue = Number(value.replace(/^\D-/g, ""));
-    if (max) return numberValue > max ? max : numberValue;
-    return numberValue;
-  }
-
-  return value;
-}
 
 export function MiscellanousSection({
   selectedElements,
@@ -47,8 +29,6 @@ export function MiscellanousSection({
           max={100}
           min={0}
           onChange={(value) => {
-            if (!value) return;
-
             selectedElements.forEach((selectedElement) => {
               updateElement({
                 ...selectedElement,
@@ -85,8 +65,6 @@ export function MiscellanousSection({
           max={360}
           min={-360}
           onChange={(value) => {
-            if (!value) return;
-
             selectedElements.forEach((selectedElement) => {
               updateElement({
                 ...selectedElement,
@@ -125,8 +103,6 @@ export function MiscellanousSection({
             max={999}
             min={0}
             onChange={(value) => {
-              if (!value) return;
-
               boxElements.forEach((selectedElement) => {
                 updateElement({
                   ...selectedElement,

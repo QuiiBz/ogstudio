@@ -7,27 +7,11 @@ import { Select } from "../forms/Select";
 import { WidthIcon } from "../icons/WidthIcon";
 import { BorderStyleIcon } from "../icons/BorderStyleIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { setValue } from "../../lib/inputs";
+import { showMixed } from "../../lib/elements";
 
 interface BorderSectionProps {
   selectedElements: OGElement[];
-}
-
-function showMixed(
-  selectedElements: OGElement[],
-  paramName: "color" | "width" | "style",
-) {
-  const elementsValues = selectedElements.map(
-    // @ts-expect-error all elements have border
-    (element) => element.border[paramName],
-  );
-  return !elementsValues.every((value) => value === elementsValues[0]);
-}
-
-function setValue(value: string | number) {
-  if (typeof value === "number") return value;
-
-  const numberValue = Number(value);
-  return isNaN(numberValue) ? Number(value.replace(/\D/g, "")) : numberValue;
 }
 
 export function BorderSection({ selectedElements }: BorderSectionProps) {
@@ -103,7 +87,7 @@ export function BorderSection({ selectedElements }: BorderSectionProps) {
             }}
             type="color"
             value={
-              showMixed(selectedElements, "color")
+              showMixed(selectedElements, "color", "border")
                 ? "#ffffff"
                 : selectedElements[0].border.color
             }
@@ -149,9 +133,11 @@ export function BorderSection({ selectedElements }: BorderSectionProps) {
             }}
             suffix="px"
             trackArrowDirection
-            type={showMixed(selectedElements, "width") ? "text" : "number"}
+            type={
+              showMixed(selectedElements, "width", "border") ? "text" : "number"
+            }
             value={
-              showMixed(selectedElements, "width")
+              showMixed(selectedElements, "width", "border")
                 ? "Mixed"
                 : selectedElements[0].border.width
             }
@@ -175,12 +161,12 @@ export function BorderSection({ selectedElements }: BorderSectionProps) {
               });
             }}
             value={
-              showMixed(selectedElements, "style")
+              showMixed(selectedElements, "style", "border")
                 ? "Mixed"
                 : selectedElements[0].border.style
             }
             values={
-              showMixed(selectedElements, "style")
+              showMixed(selectedElements, "style", "border")
                 ? ["outside", "inside", "Mixed"]
                 : ["outside", "inside"]
             }

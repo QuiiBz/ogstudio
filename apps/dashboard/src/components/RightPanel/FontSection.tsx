@@ -16,38 +16,14 @@ import { LineHeightIcon } from "../icons/LineHeightIcon";
 import { AlignLeftIcon } from "../icons/AlignLeftIcon";
 import { LetterSpacingIcon } from "../icons/LetterSpacingIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { setValue } from "../../lib/inputs";
+import { showMixed } from "../../lib/elements";
 
 interface FontSectionProps {
   selectedElements: OGElement[];
 }
 
 type OGTextElement = (OGPElement | OGDynamicElement) & OGBaseElement;
-
-function showMixed(
-  selectedElements: OGTextElement[],
-  paramName:
-    | "fontFamily"
-    | "fontWeight"
-    | "fontSize"
-    | "lineHeight"
-    | "letterSpacing"
-    | "align"
-    | "color",
-) {
-  const elementsValues = selectedElements.map((element) => element[paramName]);
-  return !elementsValues.every((value) => value === elementsValues[0]);
-}
-
-function setValue(value: string | number, max?: number) {
-  if (typeof value === "string") {
-    const numberValue = Number(value.replace(/\D/g, ""));
-
-    if (max) return numberValue > max ? max : numberValue;
-    return numberValue;
-  }
-
-  return value;
-}
 
 export function FontSection({ selectedElements }: FontSectionProps) {
   const updateElement = useElementsStore((state) => state.updateElement);
@@ -122,9 +98,7 @@ export function FontSection({ selectedElements }: FontSectionProps) {
           <BoldIcon />
         </Select>
         <Input
-          onChange={(value): void => {
-            if (!value) return;
-
+          onChange={(value) => {
             textElements.forEach((selectedElement) => {
               updateElement({
                 ...selectedElement,
@@ -174,8 +148,6 @@ export function FontSection({ selectedElements }: FontSectionProps) {
           max={5}
           min={0}
           onChange={(value) => {
-            if (!value) return;
-
             textElements.forEach((selectedElement) => {
               updateElement({
                 ...selectedElement,
@@ -213,8 +185,6 @@ export function FontSection({ selectedElements }: FontSectionProps) {
           max={10}
           min={-10}
           onChange={(value) => {
-            if (!value) return;
-
             textElements.forEach((selectedElement) => {
               updateElement({
                 ...selectedElement,
