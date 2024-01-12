@@ -1,10 +1,10 @@
 import { useElementsStore } from "../../stores/elementsStore";
 import { BackgroundSection } from "./BackgroundSection";
-// import { BorderSection } from "./BorderSection";
+import { BorderSection } from "./BorderSection";
 import { FontSection } from "./FontSection";
 import { MiscellanousSection } from "./MiscellanousSection";
 import { ModificationsSection } from "./ModificationsSection";
-// import { ShadowSection } from "./ShadowSection";
+import { ShadowSection } from "./ShadowSection";
 import { SizePositionSection } from "./SizePositionSection";
 
 export function RightPanel() {
@@ -24,15 +24,15 @@ export function RightPanel() {
   }
 
   return (
-    <div className="flex flex-col justify-between p-4 h-full">
+    <div className="flex flex-col justify-between p-4 h-full overflow-auto">
       <div className="flex flex-col items-start gap-4">
         <SizePositionSection selectedElements={selectedElementsData} />
         <FontSection selectedElements={selectedElementsData} />
         <BackgroundSection selectedElements={selectedElementsData} />
-        {/* <div className="h-[1px] w-full bg-gray-100" /> */}
-        {/* <BorderSection selectedElement={selectedElementsData} /> */}
-        {/* <div className="h-[1px] w-full bg-gray-100" />
-        <ShadowSection selectedElement={selectedElementsData} /> */}
+        <div className="h-[1px] w-full bg-gray-100" />
+        <BorderSection selectedElements={selectedElementsData} />
+        <div className="h-[1px] w-full bg-gray-100" />
+        <ShadowSection selectedElements={selectedElementsData} />
         <div className="h-[1px] w-full bg-gray-100" />
         <MiscellanousSection selectedElements={selectedElementsData} />
       </div>

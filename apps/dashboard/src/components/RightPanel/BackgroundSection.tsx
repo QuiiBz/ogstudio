@@ -30,9 +30,14 @@ function showMixed(
     | "backgroundSize",
   forGradient?: boolean,
 ) {
-  // @ts-expect-error need to think how to fix this type problem
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- provided type for both element types
-  const elementsValues = selectedElements.map((element) => forGradient && element.gradient ? element.gradient[paramName] : element[paramName]);
+  const elementsValues = selectedElements.map((element) =>
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- provided type for both element types
+    forGradient && element.gradient
+      ? // @ts-expect-error todo: fix ts & eslint errors
+        element.gradient[paramName]
+      : // @ts-expect-error todo: fix ts & eslint errors
+        element[paramName],
+  );
   return !elementsValues.every((value) => value === elementsValues[0]);
 }
 
@@ -156,9 +161,10 @@ export function BackgroundSection({
               <Input
                 onChange={(value) => {
                   boxElements.forEach((selectedElement) => {
+                    if (!selectedElement.gradient) return;
+
                     updateElement({
                       ...selectedElement,
-                      // @ts-expect-error wtf?
                       gradient: {
                         ...selectedElement.gradient,
                         start: value,
@@ -178,9 +184,10 @@ export function BackgroundSection({
               <Input
                 onChange={(value) => {
                   boxElements.forEach((selectedElement) => {
+                    if (!selectedElement.gradient) return;
+
                     updateElement({
                       ...selectedElement,
-                      // @ts-expect-error wtf?
                       gradient: {
                         ...selectedElement.gradient,
                         end: value,
@@ -202,12 +209,13 @@ export function BackgroundSection({
                   if (value === "Mixed") return;
 
                   boxElements.forEach((selectedElement) => {
+                    if (!selectedElement.gradient) return;
+
                     updateElement({
                       ...selectedElement,
                       gradient: {
                         ...selectedElement.gradient,
-                        // @ts-expect-error wtf?
-                        type: value,
+                        type: value as "linear" | "radial",
                       },
                     });
                   });
@@ -347,11 +355,10 @@ export function BackgroundSection({
               </Input>
               <Select
                 onChange={(value) => {
-                  selectedElements.forEach((selectedElement) => {
+                  boxElements.forEach((selectedElement) => {
                     updateElement({
                       ...selectedElement,
-                      // @ts-expect-error wtf?
-                      backgroundSize: value,
+                      backgroundSize: value as "cover" | "contain",
                     });
                   });
                 }}
