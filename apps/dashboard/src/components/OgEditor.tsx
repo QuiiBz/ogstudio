@@ -43,6 +43,10 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
   useEffect(() => {
     loadImage(imageId);
 
+    if (useImagesStore.persist.hasHydrated()) {
+      setSelectedImageId(imageId);
+    }
+
     useImagesStore.persist.onFinishHydration(() => {
       setSelectedImageId(imageId);
     });
