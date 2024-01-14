@@ -9,8 +9,6 @@ import {
 } from "../../../../lib/export";
 import { loadFonts } from "../../../../lib/fonts";
 
-export const runtime = "edge";
-
 export async function GET(
   _request: Request,
   { params: { key } }: { params: { key: string } },

@@ -31,6 +31,8 @@ export function ExportSection() {
         return;
       }
 
+      setIsLoading(true);
+
       const response = await fetch("/api/export", {
         method: "POST",
         body: JSON.stringify({
@@ -40,17 +42,22 @@ export function ExportSection() {
       });
 
       if (!response.ok) {
-        throw new Error(response.statusText);
+        const error = ((await response.json()) as { error: string }).error;
+        setIsLoading(false);
+
+        throw new Error(error);
       }
 
       const { key } = (await response.json()) as ExportResponse;
       theKey = key;
+
+      setIsLoading(false);
     }
 
     toast.promise(run(), {
       loading: "Exporting to URL...",
       success: "URL exported!",
-      error: "Failed to export to URL",
+      error: (error: Error) => `Failed to export to URL: ${error.message}`,
       action: {
         label: "Copy URL",
         onClick: async () => {
@@ -146,6 +153,7 @@ export function ExportSection() {
       <div className="grid grid-cols-2 gap-2 w-full">
         <Button
           className="col-span-full"
+          disabled={isLoading}
           icon={<PngIcon />}
           onClick={exportUrl}
           variant="success"
