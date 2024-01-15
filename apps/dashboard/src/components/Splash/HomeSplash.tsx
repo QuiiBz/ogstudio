@@ -27,7 +27,7 @@ export function HomeSplash() {
           </CustomLink>
         </div>
         <div className="flex gap-2">
-          {TEMPLATES.slice(0, 2).map((template) => (
+          {TEMPLATES.slice(0, 3).map((template) => (
             <OgImage
               elements={template.elements}
               key={template.name}

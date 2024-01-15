@@ -20,8 +20,7 @@ TODO
 
 ## Contributing
 
-TODO
-<!-- [See the contributing guide](./CONTRIBUTING.md). -->
+[See the contributing guide](./CONTRIBUTING.md).
 
 ## Sponsors
 

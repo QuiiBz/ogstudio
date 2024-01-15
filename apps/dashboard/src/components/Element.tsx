@@ -26,7 +26,9 @@ export function Element({ element }: ElementProps) {
 
   useEffect(() => {
     function onMouseDown(event: MouseEvent) {
-      if (isEditing) {
+      // Prevent dragging the element when editing text
+      // or when not left-clicking
+      if (isEditing || event.button !== 0) {
         return;
       }
 

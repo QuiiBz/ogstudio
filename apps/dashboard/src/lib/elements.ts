@@ -85,13 +85,19 @@ export function createElementStyle(element: OGElement): CSSProperties {
   if (element.tag === "p" || element.tag === "span") {
     base = {
       ...base,
+      display: "flex",
       color: hexToRgba(element.color, element.opacity),
       fontFamily: element.fontFamily,
       fontWeight: element.fontWeight,
       fontSize: `${element.fontSize}px`,
       lineHeight: element.lineHeight,
       letterSpacing: `${element.letterSpacing}px`,
-      textAlign: element.align,
+      justifyContent:
+        element.align === "center"
+          ? "center"
+          : element.align === "right"
+            ? "flex-end"
+            : "flex-start",
       // By default, Satori sets a margin top and bottom on some elements:
       // https://github.com/vercel/satori/blob/29fe2e4a9676a1ba41c361ec1a547d6de329b039/src/handler/presets.ts#L15
       marginTop: 0,

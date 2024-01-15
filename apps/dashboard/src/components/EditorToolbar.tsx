@@ -151,7 +151,7 @@ export function EditorToolbar() {
             zoomOut();
           }}
         >
-          <ZoomOutIcon />
+          <ZoomOutIcon height="1.4em" width="1.4em" />
         </ToolbarButton>
         <div className="w-[1px] h-4 bg-gray-100" />
         {/* Set absolute width to make sure it doesn't change the layout */}
@@ -164,7 +164,7 @@ export function EditorToolbar() {
             zoomIn();
           }}
         >
-          <ZoomInIcon />
+          <ZoomInIcon height="1.4em" width="1.4em" />
         </ToolbarButton>
       </div>
     </div>
