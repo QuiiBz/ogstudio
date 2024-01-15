@@ -43,7 +43,7 @@ function isSameBg(selectedElements: OGBoxElement[]) {
 export function BackgroundSection({
   selectedElements,
 }: BackgroundSectionProps) {
-  const updateElement = useElementsStore((state) => state.updateElement);
+  const updateElements = useElementsStore((state) => state.updateElements);
   const boxElements = selectedElements.filter(
     (element) => element.tag === "div",
   ) as OGBoxElement[];
@@ -67,12 +67,13 @@ export function BackgroundSection({
               <div className="grid grid-cols-1 gap-2 w-full">
                 <Input
                   onChange={(value) => {
-                    boxElements.forEach((selectedElement) => {
-                      updateElement({
+                    const updatedElements = boxElements.map(
+                      (selectedElement) => ({
                         ...selectedElement,
                         backgroundColor: value,
-                      });
-                    });
+                      }),
+                    );
+                    updateElements(updatedElements);
                   }}
                   type="color"
                   value={
@@ -92,12 +93,13 @@ export function BackgroundSection({
               <button
                 className="text-gray-600 hover:text-gray-900"
                 onClick={() => {
-                  boxElements.forEach((selectedElement) => {
-                    updateElement({
+                  const updatedElements = boxElements.map(
+                    (selectedElement) => ({
                       ...selectedElement,
                       gradient: undefined,
-                    });
-                  });
+                    }),
+                  );
+                  updateElements(updatedElements);
                 }}
                 type="button"
               >
@@ -107,8 +109,8 @@ export function BackgroundSection({
               <button
                 className="text-gray-600 hover:text-gray-900"
                 onClick={() => {
-                  boxElements.forEach((selectedElement) => {
-                    updateElement({
+                  const updatedElements = boxElements.map(
+                    (selectedElement) => ({
                       ...selectedElement,
                       gradient: {
                         start: "#000000",
@@ -116,8 +118,9 @@ export function BackgroundSection({
                         angle: 90,
                         type: "linear",
                       },
-                    });
-                  });
+                    }),
+                  ) as OGElement[];
+                  updateElements(updatedElements);
                 }}
                 type="button"
               >
@@ -129,17 +132,16 @@ export function BackgroundSection({
             <div className="grid grid-cols-2 gap-2 w-full">
               <Input
                 onChange={(value) => {
-                  boxElements.forEach((selectedElement) => {
-                    if (!selectedElement.gradient) return;
-
-                    updateElement({
+                  const updatedElements = boxElements.map(
+                    (selectedElement) => ({
                       ...selectedElement,
                       gradient: {
                         ...selectedElement.gradient,
                         start: value,
                       },
-                    });
-                  });
+                    }),
+                  ) as OGElement[];
+                  updateElements(updatedElements);
                 }}
                 type="color"
                 value={
@@ -152,17 +154,16 @@ export function BackgroundSection({
               </Input>
               <Input
                 onChange={(value) => {
-                  boxElements.forEach((selectedElement) => {
-                    if (!selectedElement.gradient) return;
-
-                    updateElement({
+                  const updatedElements = boxElements.map(
+                    (selectedElement) => ({
                       ...selectedElement,
                       gradient: {
                         ...selectedElement.gradient,
                         end: value,
                       },
-                    });
-                  });
+                    }),
+                  ) as OGElement[];
+                  updateElements(updatedElements);
                 }}
                 type="color"
                 value={
@@ -177,17 +178,16 @@ export function BackgroundSection({
                 onChange={(value) => {
                   if (value === "Mixed") return;
 
-                  boxElements.forEach((selectedElement) => {
-                    if (!selectedElement.gradient) return;
-
-                    updateElement({
+                  const updatedElements = boxElements.map(
+                    (selectedElement) => ({
                       ...selectedElement,
                       gradient: {
                         ...selectedElement.gradient,
                         type: value as "linear" | "radial",
                       },
-                    });
-                  });
+                    }),
+                  ) as OGElement[];
+                  updateElements(updatedElements);
                 }}
                 value={
                   showMixed(boxElements, "type", "gradient")
@@ -207,44 +207,46 @@ export function BackgroundSection({
                   max={360}
                   min={-360}
                   onChange={(value) => {
-                    boxElements.forEach((selectedElement) => {
-                      if (!selectedElement.gradient) return;
-
-                      updateElement({
+                    const updatedElements = boxElements.map(
+                      (selectedElement) => ({
                         ...selectedElement,
                         gradient: {
                           ...selectedElement.gradient,
                           angle: setValue(value),
                         },
-                      });
-                    });
+                      }),
+                    ) as OGElement[];
+                    updateElements(updatedElements);
                   }}
                   onKeyDown={(direction) => {
-                    boxElements.forEach((selectedElement) => {
-                      if (!selectedElement.gradient) return;
+                    const updatedElements = boxElements.map(
+                      (selectedElement) => {
+                        if (!selectedElement.gradient) return selectedElement;
 
-                      if (
-                        selectedElement.gradient.angle === 360 &&
-                        direction === "up"
-                      )
-                        return;
-                      if (
-                        selectedElement.gradient.angle === -360 &&
-                        direction === "down"
-                      )
-                        return;
+                        if (
+                          selectedElement.gradient.angle === 360 &&
+                          direction === "up"
+                        )
+                          return selectedElement;
+                        if (
+                          selectedElement.gradient.angle === -360 &&
+                          direction === "down"
+                        )
+                          return selectedElement;
 
-                      updateElement({
-                        ...selectedElement,
-                        gradient: {
-                          ...selectedElement.gradient,
-                          angle:
-                            direction === "down"
-                              ? selectedElement.gradient.angle - 1
-                              : selectedElement.gradient.angle + 1,
-                        },
-                      });
-                    });
+                        return {
+                          ...selectedElement,
+                          gradient: {
+                            ...selectedElement.gradient,
+                            angle:
+                              direction === "down"
+                                ? selectedElement.gradient.angle - 1
+                                : selectedElement.gradient.angle + 1,
+                          },
+                        };
+                      },
+                    );
+                    updateElements(updatedElements);
                   }}
                   suffix="deg"
                   trackArrowDirection
@@ -274,12 +276,13 @@ export function BackgroundSection({
               <button
                 className="text-gray-600 hover:text-gray-900"
                 onClick={() => {
-                  boxElements.forEach((selectedElement) => {
-                    updateElement({
+                  const updatedElements = boxElements.map(
+                    (selectedElement) => ({
                       ...selectedElement,
                       backgroundImage: undefined,
-                    });
-                  });
+                    }),
+                  );
+                  updateElements(updatedElements);
                 }}
                 type="button"
               >
@@ -289,13 +292,14 @@ export function BackgroundSection({
               <button
                 className="text-gray-600 hover:text-gray-900"
                 onClick={() => {
-                  boxElements.forEach((selectedElement) => {
-                    updateElement({
+                  const updatedElements = boxElements.map(
+                    (selectedElement) => ({
                       ...selectedElement,
                       backgroundImage: "https://source.unsplash.com/random",
                       backgroundSize: "cover",
-                    });
-                  });
+                    }),
+                  ) as OGElement[];
+                  updateElements(updatedElements);
                 }}
                 type="button"
               >
@@ -308,12 +312,13 @@ export function BackgroundSection({
               <Input
                 className="col-span-full"
                 onChange={(value) => {
-                  boxElements.forEach((selectedElement) => {
-                    updateElement({
+                  const updatedElements = boxElements.map(
+                    (selectedElement) => ({
                       ...selectedElement,
                       backgroundImage: value,
-                    });
-                  });
+                    }),
+                  );
+                  updateElements(updatedElements);
                 }}
                 type="text"
                 value={
@@ -326,12 +331,13 @@ export function BackgroundSection({
               </Input>
               <Select
                 onChange={(value) => {
-                  boxElements.forEach((selectedElement) => {
-                    updateElement({
+                  const updatedElements = boxElements.map(
+                    (selectedElement) => ({
                       ...selectedElement,
                       backgroundSize: value as "cover" | "contain",
-                    });
-                  });
+                    }),
+                  );
+                  updateElements(updatedElements);
                 }}
                 value={
                   showMixed(boxElements, "backgroundSize")
@@ -350,7 +356,7 @@ export function BackgroundSection({
               {/* Needs https://github.com/vercel/satori/pull/464 */}
               {/* <Select */}
               {/*   onChange={() => { */}
-              {/*     updateElement(selectedElement); */}
+              {/*     updateElements(selectedElement); */}
               {/*   }} */}
               {/*   value="center" */}
               {/*   values={["center"]} */}

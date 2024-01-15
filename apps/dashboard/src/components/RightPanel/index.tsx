@@ -29,14 +29,11 @@ export function RightPanel() {
         <SizePositionSection selectedElements={selectedElementsData} />
         <FontSection selectedElements={selectedElementsData} />
         <BackgroundSection selectedElements={selectedElementsData} />
-        <div className="h-[1px] w-full bg-gray-100" />
         <BorderSection selectedElements={selectedElementsData} />
-        <div className="h-[1px] w-full bg-gray-100" />
         <ShadowSection selectedElements={selectedElementsData} />
-        <div className="h-[1px] w-full bg-gray-100" />
         <MiscellanousSection selectedElements={selectedElementsData} />
       </div>
-      <div className="flex flex-col items-start gap-4">
+      <div className="flex flex-col items-start gap-4 mt-4">
         <div className="h-[1px] w-full bg-gray-100" />
         <ModificationsSection selectedElements={selectedElementsData} />
       </div>

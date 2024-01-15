@@ -23,7 +23,7 @@ export function ElementRow({ element }: ElementRowProps) {
   const setSelectedElementsId = useElementsStore(
     (state) => state.setSelectedElementsId,
   );
-  const updateElement = useElementsStore((state) => state.updateElement);
+  const updateElements = useElementsStore((state) => state.updateElements);
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: element.id });
   const [isEditing, setIsEditing] = useState(false);
@@ -58,10 +58,12 @@ export function ElementRow({ element }: ElementRowProps) {
       }
     }
 
-    updateElement({
-      ...element,
-      name: newName,
-    });
+    updateElements([
+      {
+        ...element,
+        name: newName,
+      },
+    ]);
 
     setIsEditing(false);
   }
@@ -135,10 +137,12 @@ export function ElementRow({ element }: ElementRowProps) {
           !element.visible ? "!block" : ""
         }`}
         onClick={() => {
-          updateElement({
-            ...element,
-            visible: !element.visible,
-          });
+          updateElements([
+            {
+              ...element,
+              visible: !element.visible,
+            },
+          ]);
         }}
         type="button"
       >

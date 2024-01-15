@@ -16,7 +16,7 @@ interface ShadowSectionProps {
 type OGBoxElement = OGBaseElement & OGDivElement;
 
 export function ShadowSection({ selectedElements }: ShadowSectionProps) {
-  const updateElement = useElementsStore((state) => state.updateElement);
+  const updateElements = useElementsStore((state) => state.updateElements);
   const boxElements = selectedElements.filter(
     (element) => element.tag === "div",
   ) as OGBoxElement[];
@@ -35,18 +35,20 @@ export function ShadowSection({ selectedElements }: ShadowSectionProps) {
 
   return (
     <>
+      <div className="h-[1px] w-full bg-gray-100" />
       <div className="flex items-center justify-between w-full">
         <p className="text-xs text-gray-600">Shadow</p>
         {selectedElements[0].shadow ? (
           <button
             className="text-gray-600 hover:text-gray-900"
             onClick={() => {
-              selectedElements.forEach((selectedElement) => {
-                updateElement({
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
                   ...selectedElement,
                   shadow: undefined,
-                });
-              });
+                }),
+              );
+              updateElements(updatedElements);
             }}
             type="button"
           >
@@ -56,8 +58,8 @@ export function ShadowSection({ selectedElements }: ShadowSectionProps) {
           <button
             className="text-gray-600 hover:text-gray-900"
             onClick={() => {
-              selectedElements.forEach((selectedElement) => {
-                updateElement({
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
                   ...selectedElement,
                   shadow: {
                     color: "#000000",
@@ -66,8 +68,9 @@ export function ShadowSection({ selectedElements }: ShadowSectionProps) {
                     x: 0,
                     y: 0,
                   },
-                });
-              });
+                }),
+              );
+              updateElements(updatedElements);
             }}
             type="button"
           >
@@ -82,31 +85,28 @@ export function ShadowSection({ selectedElements }: ShadowSectionProps) {
               max={99}
               min={0}
               onChange={(value) => {
-                boxElements.forEach((selectedElement) => {
-                  if (!selectedElement.shadow) return;
-
-                  updateElement({
-                    ...selectedElement,
-                    shadow: {
-                      ...selectedElement.shadow,
-                      width: setValue(value),
-                    },
-                  });
-                });
+                const updatedElements = boxElements.map((selectedElement) => ({
+                  ...selectedElement,
+                  shadow: {
+                    ...selectedElement.shadow,
+                    width: setValue(value),
+                  },
+                })) as OGElement[];
+                updateElements(updatedElements);
               }}
               onKeyDown={(direction) => {
-                boxElements.forEach((selectedElement) => {
-                  if (!selectedElement.shadow) return;
+                const updatedElements = boxElements.map((selectedElement) => {
+                  if (!selectedElement.shadow) return selectedElement;
 
                   if (selectedElement.shadow.width === 99 && direction === "up")
-                    return;
+                    return selectedElement;
                   if (
                     selectedElement.shadow.width === 0 &&
                     direction === "down"
                   )
-                    return;
+                    return selectedElement;
 
-                  updateElement({
+                  return {
                     ...selectedElement,
                     shadow: {
                       ...selectedElement.shadow,
@@ -115,8 +115,9 @@ export function ShadowSection({ selectedElements }: ShadowSectionProps) {
                           ? selectedElement.shadow.width - 1
                           : selectedElement.shadow.width + 1,
                     },
-                  });
+                  };
                 });
+                updateElements(updatedElements);
               }}
               suffix="px"
               trackArrowDirection
@@ -137,38 +138,40 @@ export function ShadowSection({ selectedElements }: ShadowSectionProps) {
             max={99}
             min={0}
             onChange={(value) => {
-              selectedElements.forEach((selectedElement) => {
-                if (!selectedElement.shadow) return;
-
-                updateElement({
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
                   ...selectedElement,
                   shadow: {
                     ...selectedElement.shadow,
                     blur: setValue(value),
                   },
-                });
-              });
+                }),
+              ) as OGElement[];
+              updateElements(updatedElements);
             }}
             onKeyDown={(direction) => {
-              selectedElements.forEach((selectedElement) => {
-                if (!selectedElement.shadow) return;
+              const updatedElements = selectedElements.map(
+                (selectedElement) => {
+                  if (!selectedElement.shadow) return selectedElement;
 
-                if (selectedElement.shadow.blur === 99 && direction === "up")
-                  return;
-                if (selectedElement.shadow.blur === 0 && direction === "down")
-                  return;
+                  if (selectedElement.shadow.blur === 99 && direction === "up")
+                    return selectedElement;
+                  if (selectedElement.shadow.blur === 0 && direction === "down")
+                    return selectedElement;
 
-                updateElement({
-                  ...selectedElement,
-                  shadow: {
-                    ...selectedElement.shadow,
-                    blur:
-                      direction === "down"
-                        ? selectedElement.shadow.blur - 1
-                        : selectedElement.shadow.blur + 1,
-                  },
-                });
-              });
+                  return {
+                    ...selectedElement,
+                    shadow: {
+                      ...selectedElement.shadow,
+                      blur:
+                        direction === "down"
+                          ? selectedElement.shadow.blur - 1
+                          : selectedElement.shadow.blur + 1,
+                    },
+                  };
+                },
+              );
+              updateElements(updatedElements);
             }}
             suffix="px"
             trackArrowDirection
@@ -185,33 +188,35 @@ export function ShadowSection({ selectedElements }: ShadowSectionProps) {
           </Input>
           <Input
             onChange={(value) => {
-              selectedElements.forEach((selectedElement) => {
-                if (!selectedElement.shadow) return;
-
-                updateElement({
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
                   ...selectedElement,
                   shadow: {
                     ...selectedElement.shadow,
                     x: setValue(value),
                   },
-                });
-              });
+                }),
+              ) as OGElement[];
+              updateElements(updatedElements);
             }}
             onKeyDown={(direction) => {
-              selectedElements.forEach((selectedElement) => {
-                if (!selectedElement.shadow) return;
+              const updatedElements = selectedElements.map(
+                (selectedElement) => {
+                  if (!selectedElement.shadow) return selectedElement;
 
-                updateElement({
-                  ...selectedElement,
-                  shadow: {
-                    ...selectedElement.shadow,
-                    x:
-                      direction === "down"
-                        ? selectedElement.shadow.x - 1
-                        : selectedElement.shadow.x + 1,
-                  },
-                });
-              });
+                  return {
+                    ...selectedElement,
+                    shadow: {
+                      ...selectedElement.shadow,
+                      x:
+                        direction === "down"
+                          ? selectedElement.shadow.x - 1
+                          : selectedElement.shadow.x + 1,
+                    },
+                  };
+                },
+              );
+              updateElements(updatedElements);
             }}
             suffix="px"
             trackArrowDirection
@@ -228,33 +233,35 @@ export function ShadowSection({ selectedElements }: ShadowSectionProps) {
           </Input>
           <Input
             onChange={(value) => {
-              selectedElements.forEach((selectedElement) => {
-                if (!selectedElement.shadow) return;
-
-                updateElement({
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
                   ...selectedElement,
                   shadow: {
                     ...selectedElement.shadow,
                     y: setValue(value),
                   },
-                });
-              });
+                }),
+              ) as OGElement[];
+              updateElements(updatedElements);
             }}
             onKeyDown={(direction) => {
-              selectedElements.forEach((selectedElement) => {
-                if (!selectedElement.shadow) return;
+              const updatedElements = selectedElements.map(
+                (selectedElement) => {
+                  if (!selectedElement.shadow) return selectedElement;
 
-                updateElement({
-                  ...selectedElement,
-                  shadow: {
-                    ...selectedElement.shadow,
-                    y:
-                      direction === "down"
-                        ? selectedElement.shadow.y - 1
-                        : selectedElement.shadow.y + 1,
-                  },
-                });
-              });
+                  return {
+                    ...selectedElement,
+                    shadow: {
+                      ...selectedElement.shadow,
+                      y:
+                        direction === "down"
+                          ? selectedElement.shadow.y - 1
+                          : selectedElement.shadow.y + 1,
+                    },
+                  };
+                },
+              );
+              updateElements(updatedElements);
             }}
             suffix="px"
             trackArrowDirection
@@ -271,17 +278,16 @@ export function ShadowSection({ selectedElements }: ShadowSectionProps) {
           </Input>
           <Input
             onChange={(value) => {
-              selectedElements.forEach((selectedElement) => {
-                if (!selectedElement.shadow) return;
-
-                updateElement({
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
                   ...selectedElement,
                   shadow: {
                     ...selectedElement.shadow,
                     color: value,
                   },
-                });
-              });
+                }),
+              ) as OGElement[];
+              updateElements(updatedElements);
             }}
             type="color"
             value={

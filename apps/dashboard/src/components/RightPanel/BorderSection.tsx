@@ -15,7 +15,7 @@ interface BorderSectionProps {
 }
 
 export function BorderSection({ selectedElements }: BorderSectionProps) {
-  const updateElement = useElementsStore((state) => state.updateElement);
+  const updateElements = useElementsStore((state) => state.updateElements);
 
   if (
     selectedElements[0].border &&
@@ -31,18 +31,20 @@ export function BorderSection({ selectedElements }: BorderSectionProps) {
 
   return (
     <>
+      <div className="h-[1px] w-full bg-gray-100" />
       <div className="flex items-center justify-between w-full">
         <p className="text-xs text-gray-600">Border</p>
         {selectedElements[0].border ? (
           <button
             className="text-gray-600 hover:text-gray-900"
             onClick={() => {
-              selectedElements.forEach((selectedElement) => {
-                updateElement({
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
                   ...selectedElement,
                   border: undefined,
-                });
-              });
+                }),
+              );
+              updateElements(updatedElements);
             }}
             type="button"
           >
@@ -52,16 +54,17 @@ export function BorderSection({ selectedElements }: BorderSectionProps) {
           <button
             className="text-gray-600 hover:text-gray-900"
             onClick={() => {
-              selectedElements.forEach((selectedElement) => {
-                updateElement({
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
                   ...selectedElement,
                   border: {
                     color: "#000000",
                     width: 1,
                     style: "outside",
                   },
-                });
-              });
+                }),
+              ) as OGElement[];
+              updateElements(updatedElements);
             }}
             type="button"
           >
@@ -73,17 +76,16 @@ export function BorderSection({ selectedElements }: BorderSectionProps) {
         <div className="grid grid-cols-2 gap-2 w-full">
           <Input
             onChange={(value) => {
-              selectedElements.forEach((selectedElement) => {
-                if (!selectedElement.border) return;
-
-                updateElement({
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
                   ...selectedElement,
                   border: {
                     ...selectedElement.border,
                     color: value,
                   },
-                });
-              });
+                }),
+              ) as OGElement[];
+              updateElements(updatedElements);
             }}
             type="color"
             value={
@@ -98,38 +100,43 @@ export function BorderSection({ selectedElements }: BorderSectionProps) {
             max={99}
             min={0}
             onChange={(value) => {
-              selectedElements.forEach((selectedElement) => {
-                if (!selectedElement.border) return;
-
-                updateElement({
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
                   ...selectedElement,
                   border: {
                     ...selectedElement.border,
                     width: setValue(value),
                   },
-                });
-              });
+                }),
+              ) as OGElement[];
+              updateElements(updatedElements);
             }}
             onKeyDown={(direction) => {
-              selectedElements.forEach((selectedElement) => {
-                if (!selectedElement.border) return;
+              const updatedElements = selectedElements.map(
+                (selectedElement) => {
+                  if (!selectedElement.border) return selectedElement;
 
-                if (selectedElement.border.width === 99 && direction === "up")
-                  return;
-                if (selectedElement.border.width === 0 && direction === "down")
-                  return;
+                  if (selectedElement.border.width === 99 && direction === "up")
+                    return selectedElement;
+                  if (
+                    selectedElement.border.width === 0 &&
+                    direction === "down"
+                  )
+                    return selectedElement;
 
-                updateElement({
-                  ...selectedElement,
-                  border: {
-                    ...selectedElement.border,
-                    width:
-                      direction === "down"
-                        ? selectedElement.border.width - 1
-                        : selectedElement.border.width + 1,
-                  },
-                });
-              });
+                  return {
+                    ...selectedElement,
+                    border: {
+                      ...selectedElement.border,
+                      width:
+                        direction === "down"
+                          ? selectedElement.border.width - 1
+                          : selectedElement.border.width + 1,
+                    },
+                  };
+                },
+              );
+              updateElements(updatedElements);
             }}
             suffix="px"
             trackArrowDirection
@@ -148,17 +155,16 @@ export function BorderSection({ selectedElements }: BorderSectionProps) {
             onChange={(value) => {
               if (value === "Mixed") return;
 
-              selectedElements.forEach((selectedElement) => {
-                if (!selectedElement.border) return;
-
-                updateElement({
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
                   ...selectedElement,
                   border: {
                     ...selectedElement.border,
                     style: value as "outside" | "inside",
                   },
-                });
-              });
+                }),
+              ) as OGElement[];
+              updateElements(updatedElements);
             }}
             value={
               showMixed(selectedElements, "style", "border")

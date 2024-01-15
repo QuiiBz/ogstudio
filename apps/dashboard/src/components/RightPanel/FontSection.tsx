@@ -26,7 +26,7 @@ interface FontSectionProps {
 type OGTextElement = (OGPElement | OGDynamicElement) & OGBaseElement;
 
 export function FontSection({ selectedElements }: FontSectionProps) {
-  const updateElement = useElementsStore((state) => state.updateElement);
+  const updateElements = useElementsStore((state) => state.updateElements);
 
   const textElements = selectedElements.filter(
     (element) => element.tag !== "div",
@@ -46,17 +46,17 @@ export function FontSection({ selectedElements }: FontSectionProps) {
           onChange={(value) => {
             const font = value as unknown as Font;
             if (value === "Mixed") return;
-            textElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                fontFamily: font,
-                fontWeight: FONT_WEIGHTS[font].includes(
-                  selectedElement.fontWeight,
-                )
-                  ? selectedElement.fontWeight
-                  : 400,
-              });
-            });
+
+            const updatedElements = textElements.map((selectedElement) => ({
+              ...selectedElement,
+              fontFamily: font,
+              fontWeight: FONT_WEIGHTS[font].includes(
+                selectedElement.fontWeight,
+              )
+                ? selectedElement.fontWeight
+                : 400,
+            }));
+            updateElements(updatedElements);
           }}
           value={
             showMixed(textElements, "fontFamily")
@@ -74,12 +74,12 @@ export function FontSection({ selectedElements }: FontSectionProps) {
         <Select
           onChange={(value) => {
             if (value === "Mixed") return;
-            textElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                fontWeight: Number(value),
-              });
-            });
+
+            const updatedElements = textElements.map((selectedElement) => ({
+              ...selectedElement,
+              fontWeight: Number(value),
+            }));
+            updateElements(updatedElements);
           }}
           value={
             showMixed(textElements, "fontWeight")
@@ -99,23 +99,21 @@ export function FontSection({ selectedElements }: FontSectionProps) {
         </Select>
         <Input
           onChange={(value) => {
-            textElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                fontSize: setValue(value),
-              });
-            });
+            const updatedElements = textElements.map((selectedElement) => ({
+              ...selectedElement,
+              fontSize: setValue(value),
+            }));
+            updateElements(updatedElements);
           }}
           onKeyDown={(direction) => {
-            textElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                fontSize:
-                  direction === "down"
-                    ? selectedElement.fontSize - 1
-                    : selectedElement.fontSize + 1,
-              });
-            });
+            const updatedElements = textElements.map((selectedElement) => ({
+              ...selectedElement,
+              fontSize:
+                direction === "down"
+                  ? selectedElement.fontSize - 1
+                  : selectedElement.fontSize + 1,
+            }));
+            updateElements(updatedElements);
           }}
           suffix="px"
           trackArrowDirection
@@ -130,12 +128,11 @@ export function FontSection({ selectedElements }: FontSectionProps) {
         </Input>
         <Input
           onChange={(value) => {
-            textElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                color: value,
-              });
-            });
+            const updatedElements = textElements.map((selectedElement) => ({
+              ...selectedElement,
+              color: value,
+            }));
+            updateElements(updatedElements);
           }}
           type="color"
           value={
@@ -148,28 +145,28 @@ export function FontSection({ selectedElements }: FontSectionProps) {
           max={5}
           min={0}
           onChange={(value) => {
-            textElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                lineHeight: setValue(value, 5),
-              });
-            });
+            const updatedElement = textElements.map((selectedElement) => ({
+              ...selectedElement,
+              lineHeight: setValue(value, 5),
+            }));
+            updateElements(updatedElement);
           }}
           onKeyDown={(direction) => {
-            textElements.forEach((selectedElement) => {
+            const updatedElements = textElements.map((selectedElement) => {
               if (selectedElement.lineHeight === 5 && direction === "up")
-                return;
+                return selectedElement;
               if (selectedElement.lineHeight === 0 && direction === "down")
-                return;
+                return selectedElement;
 
-              updateElement({
+              return {
                 ...selectedElement,
                 lineHeight:
                   direction === "down"
                     ? selectedElement.lineHeight - 1
                     : selectedElement.lineHeight + 1,
-              });
+              };
             });
+            updateElements(updatedElements);
           }}
           trackArrowDirection
           type={showMixed(textElements, "lineHeight") ? "text" : "number"}
@@ -185,28 +182,28 @@ export function FontSection({ selectedElements }: FontSectionProps) {
           max={10}
           min={-10}
           onChange={(value) => {
-            textElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                letterSpacing: setValue(value),
-              });
-            });
+            const updatedElements = textElements.map((selectedElement) => ({
+              ...selectedElement,
+              letterSpacing: setValue(value),
+            }));
+            updateElements(updatedElements);
           }}
           onKeyDown={(direction) => {
-            textElements.forEach((selectedElement) => {
+            const updatedElements = textElements.map((selectedElement) => {
               if (selectedElement.letterSpacing === 10 && direction === "up")
-                return;
+                return selectedElement;
               if (selectedElement.letterSpacing === -10 && direction === "down")
-                return;
+                return selectedElement;
 
-              updateElement({
+              return {
                 ...selectedElement,
                 letterSpacing:
                   direction === "down"
                     ? selectedElement.letterSpacing - 1
                     : selectedElement.letterSpacing + 1,
-              });
+              };
             });
+            updateElements(updatedElements);
           }}
           trackArrowDirection
           type={showMixed(textElements, "letterSpacing") ? "text" : "number"}
@@ -222,13 +219,11 @@ export function FontSection({ selectedElements }: FontSectionProps) {
           onChange={(value) => {
             if (value === "Mixed") return;
 
-            textElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                // @ts-expect-error wtf?
-                align: value,
-              });
-            });
+            const updatedElements = textElements.map((selectedElement) => ({
+              ...selectedElement,
+              align: value as "left" | "right" | "center",
+            }));
+            updateElements(updatedElements);
           }}
           value={
             showMixed(textElements, "align") ? "Mixed" : textElements[0].align
@@ -245,11 +240,11 @@ export function FontSection({ selectedElements }: FontSectionProps) {
           <Input
             className="col-span-full"
             onChange={(value) => {
-              updateElement({
-                ...textEditable[0],
-                // @ts-expect-error provided element is OGPElement
+              const updatedElement = textEditable.map((element) => ({
+                ...element,
                 content: value,
-              });
+              }));
+              updateElements(updatedElement);
             }}
             type="textarea"
             // @ts-expect-error provided element is OGPElement

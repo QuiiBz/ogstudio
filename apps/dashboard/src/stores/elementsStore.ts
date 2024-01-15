@@ -12,7 +12,7 @@ interface ElementsState {
   setSelectedElementsId: (id: string[]) => void;
   addElement: (element: OGElement) => void;
   removeElement: (elementId: string) => void;
-  updateElement: (element: OGElement) => void;
+  updateElements: (updatedElements: OGElement[]) => void;
 }
 
 export const useElementsStore = create<ElementsState>()(
@@ -82,31 +82,39 @@ export const useElementsStore = create<ElementsState>()(
           return { elements };
         });
       },
-      updateElement: (element) => {
+      updateElements: (updatedElements) => {
         set((state) => {
-          const elements = state.elements.map((e) =>
-            e.id === element.id ? element : e,
+          const updatedElementsId = updatedElements.map(
+            (element) => element.id,
           );
 
-          // If the element was hidden, and it was the currently selected element,
-          // unselect it
-          if (
-            !element.visible &&
-            state.selectedElementsId.includes(element.id)
-          ) {
-            state.setSelectedElementsId([
-              ...state.selectedElementsId.filter((id) => id !== element.id),
-            ]);
-          }
+          const elements = state.elements.map((e) =>
+            updatedElementsId.includes(e.id)
+              ? updatedElements.find((element) => element.id === e.id)
+              : e,
+          ) as OGElement[];
 
-          // Again, try to load the font if it's a text, because the font family or weight
-          // might have changed
-          if (
-            (element.tag === "p" || element.tag === "span") &&
-            element.visible
-          ) {
-            maybeLoadFont(element.fontFamily, element.fontWeight);
-          }
+          updatedElements.forEach((element) => {
+            // If the element was hidden, and it was the currently selected element,
+            // unselect it
+            if (
+              !element.visible &&
+              state.selectedElementsId.includes(element.id)
+            ) {
+              state.setSelectedElementsId([
+                ...state.selectedElementsId.filter((id) => id !== element.id),
+              ]);
+            }
+
+            // Again, try to load the font if it's a text, because the font family or weight
+            // might have changed
+            if (
+              (element.tag === "p" || element.tag === "span") &&
+              element.visible
+            ) {
+              maybeLoadFont(element.fontFamily, element.fontWeight);
+            }
+          });
 
           return { elements };
         });

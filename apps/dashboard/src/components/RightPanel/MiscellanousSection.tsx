@@ -16,39 +16,42 @@ type OGBoxElement = OGBaseElement & OGDivElement;
 export function MiscellanousSection({
   selectedElements,
 }: MiscellanousSectionProps) {
-  const updateElement = useElementsStore((state) => state.updateElement);
+  const updateElements = useElementsStore((state) => state.updateElements);
   const boxElements = selectedElements.filter(
     (element) => element.tag === "div",
   ) as OGBoxElement[];
 
   return (
     <>
+      <div className="h-[1px] w-full bg-gray-100" />
       <p className="text-xs text-gray-600">Miscellaneous</p>
       <div className="grid grid-cols-2 gap-2 w-full">
         <Input
           max={100}
           min={0}
           onChange={(value) => {
-            selectedElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                opacity: setValue(value, 100),
-              });
-            });
+            const updatedElements = selectedElements.map((selectedElement) => ({
+              ...selectedElement,
+              opacity: setValue(value),
+            }));
+            updateElements(updatedElements);
           }}
           onKeyDown={(direction) => {
-            selectedElements.forEach((selectedElement) => {
-              if (selectedElement.opacity === 100 && direction === "up") return;
-              if (selectedElement.opacity === 0 && direction === "down") return;
+            const updatedElements = selectedElements.map((selectedElement) => {
+              if (selectedElement.opacity === 100 && direction === "up")
+                return selectedElement;
+              if (selectedElement.opacity === 0 && direction === "down")
+                return selectedElement;
 
-              updateElement({
+              return {
                 ...selectedElement,
                 opacity:
                   direction === "down"
                     ? selectedElement.opacity - 1
                     : selectedElement.opacity + 1,
-              });
+              };
             });
+            updateElements(updatedElements);
           }}
           suffix="%"
           trackArrowDirection
@@ -65,27 +68,28 @@ export function MiscellanousSection({
           max={360}
           min={-360}
           onChange={(value) => {
-            selectedElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                rotate: setValue(value),
-              });
-            });
+            const updatedElements = selectedElements.map((selectedElement) => ({
+              ...selectedElement,
+              rotate: setValue(value),
+            }));
+            updateElements(updatedElements);
           }}
           onKeyDown={(direction) => {
-            selectedElements.forEach((selectedElement) => {
-              if (selectedElement.rotate === 360 && direction === "up") return;
+            const updatedElements = selectedElements.map((selectedElement) => {
+              if (selectedElement.rotate === 360 && direction === "up")
+                return selectedElement;
               if (selectedElement.rotate === -360 && direction === "down")
-                return;
+                return selectedElement;
 
-              updateElement({
+              return {
                 ...selectedElement,
                 rotate:
                   direction === "down"
                     ? selectedElement.rotate - 1
                     : selectedElement.rotate + 1,
-              });
+              };
             });
+            updateElements(updatedElements);
           }}
           suffix="deg"
           trackArrowDirection
@@ -103,24 +107,26 @@ export function MiscellanousSection({
             max={999}
             min={0}
             onChange={(value) => {
-              boxElements.forEach((selectedElement) => {
-                updateElement({
-                  ...selectedElement,
-                  radius: setValue(value),
-                });
-              });
+              const updatedElements = boxElements.map((selectedElement) => ({
+                ...selectedElement,
+                radius: setValue(value),
+              }));
+              updateElements(updatedElements);
             }}
             onKeyDown={(direction) => {
-              boxElements.forEach((selectedElement) => {
+              const updatedElements = boxElements.map((selectedElement) => {
                 const radius = Math.round(selectedElement.radius ?? 0);
-                if (radius === 999 && direction === "up") return;
-                if (radius === 0 && direction === "down") return;
+                if (radius === 999 && direction === "up")
+                  return selectedElement;
+                if (radius === 0 && direction === "down")
+                  return selectedElement;
 
-                updateElement({
+                return {
                   ...selectedElement,
                   radius: direction === "down" ? radius - 1 : radius + 1,
-                });
+                };
               });
+              updateElements(updatedElements);
             }}
             suffix="px"
             trackArrowDirection

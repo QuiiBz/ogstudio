@@ -11,7 +11,7 @@ interface SizePositionSectionProps {
 export function SizePositionSection({
   selectedElements,
 }: SizePositionSectionProps) {
-  const updateElement = useElementsStore((state) => state.updateElement);
+  const updateElements = useElementsStore((state) => state.updateElements);
 
   return (
     <>
@@ -19,23 +19,21 @@ export function SizePositionSection({
       <div className="grid grid-cols-2 gap-2">
         <Input
           onChange={(value) => {
-            selectedElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                x: setValue(value),
-              });
-            });
+            const updatedElements = selectedElements.map((selectedElement) => ({
+              ...selectedElement,
+              x: setValue(value),
+            }));
+            updateElements(updatedElements);
           }}
           onKeyDown={(direction) => {
-            selectedElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                x:
-                  direction === "down"
-                    ? selectedElement.x - 1
-                    : selectedElement.x + 1,
-              });
-            });
+            const updatedElements = selectedElements.map((selectedElement) => ({
+              ...selectedElement,
+              x:
+                direction === "down"
+                  ? selectedElement.x - 1
+                  : selectedElement.x + 1,
+            }));
+            updateElements(updatedElements);
           }}
           suffix="px"
           trackArrowDirection
@@ -48,23 +46,21 @@ export function SizePositionSection({
         </Input>
         <Input
           onChange={(value) => {
-            selectedElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                y: setValue(value),
-              });
-            });
+            const updatedElements = selectedElements.map((selectedElement) => ({
+              ...selectedElement,
+              y: setValue(value),
+            }));
+            updateElements(updatedElements);
           }}
           onKeyDown={(direction) => {
-            selectedElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                y:
-                  direction === "down"
-                    ? selectedElement.y - 1
-                    : selectedElement.y + 1,
-              });
-            });
+            const updatedElements = selectedElements.map((selectedElement) => ({
+              ...selectedElement,
+              y:
+                direction === "down"
+                  ? selectedElement.y - 1
+                  : selectedElement.y + 1,
+            }));
+            updateElements(updatedElements);
           }}
           suffix="px"
           trackArrowDirection
@@ -77,23 +73,21 @@ export function SizePositionSection({
         </Input>
         <Input
           onChange={(value) => {
-            selectedElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                width: setValue(value),
-              });
-            });
+            const updatedElements = selectedElements.map((selectedElement) => ({
+              ...selectedElement,
+              width: setValue(value),
+            }));
+            updateElements(updatedElements);
           }}
           onKeyDown={(direction) => {
-            selectedElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                width:
-                  direction === "down"
-                    ? selectedElement.width - 1
-                    : selectedElement.width + 1,
-              });
-            });
+            const updatedElements = selectedElements.map((selectedElement) => ({
+              ...selectedElement,
+              width:
+                direction === "down"
+                  ? selectedElement.width - 1
+                  : selectedElement.width + 1,
+            }));
+            updateElements(updatedElements);
           }}
           suffix="px"
           trackArrowDirection
@@ -108,23 +102,21 @@ export function SizePositionSection({
         </Input>
         <Input
           onChange={(value) => {
-            selectedElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                height: setValue(value),
-              });
-            });
+            const updatedElements = selectedElements.map((selectedElement) => ({
+              ...selectedElement,
+              height: setValue(value),
+            }));
+            updateElements(updatedElements);
           }}
           onKeyDown={(direction) => {
-            selectedElements.forEach((selectedElement) => {
-              updateElement({
-                ...selectedElement,
-                height:
-                  direction === "down"
-                    ? selectedElement.height - 1
-                    : selectedElement.height + 1,
-              });
-            });
+            const updatedElements = selectedElements.map((selectedElement) => ({
+              ...selectedElement,
+              height:
+                direction === "down"
+                  ? selectedElement.height - 1
+                  : selectedElement.height + 1,
+            }));
+            updateElements(updatedElements);
           }}
           suffix="px"
           trackArrowDirection

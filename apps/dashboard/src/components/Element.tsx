@@ -18,7 +18,7 @@ export function Element({ element }: ElementProps) {
   const setSelectedElementsId = useElementsStore(
     (state) => state.setSelectedElementsId,
   );
-  const updateElement = useElementsStore((state) => state.updateElement);
+  const updateElements = useElementsStore((state) => state.updateElements);
   const removeElement = useElementsStore((state) => state.removeElement);
 
   const isSelected = selectedElementsId.includes(element.id);
@@ -182,23 +182,27 @@ export function Element({ element }: ElementProps) {
             parent.style.transform.replace("rotate(", "").replace("deg)", ""),
           );
 
-          updateElement({
-            ...element,
-            x,
-            y,
-            width,
-            height,
-            rotate,
-          });
+          updateElements([
+            {
+              ...element,
+              x,
+              y,
+              width,
+              height,
+              rotate,
+            },
+          ]);
         } else {
           const x = Number(target.style.left.replace("px", ""));
           const y = Number(target.style.top.replace("px", ""));
 
-          updateElement({
-            ...element,
-            x,
-            y,
-          });
+          updateElements([
+            {
+              ...element,
+              x,
+              y,
+            },
+          ]);
         }
       }
 
@@ -237,11 +241,13 @@ export function Element({ element }: ElementProps) {
         target.contentEditable = "false";
         setIsEditing(false);
 
-        updateElement({
-          ...element,
-          // @ts-expect-error wtf?
-          content: target.innerText,
-        });
+        updateElements([
+          {
+            ...element,
+            // @ts-expect-error wtf?
+            content: target.innerText,
+          },
+        ]);
 
         target.removeEventListener("blur", onBlur);
         target.removeEventListener("keydown", onKeyDown);
@@ -270,7 +276,7 @@ export function Element({ element }: ElementProps) {
     elementRef,
     isEditing,
     setSelectedElementsId,
-    updateElement,
+    updateElements,
     removeElement,
     selectedElementsId,
     isSelected,

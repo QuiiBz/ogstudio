@@ -24,7 +24,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
     selectedElementsId,
     setSelectedElementsId,
     elements,
-    updateElement,
+    updateElements,
     removeElement,
     addElement,
     loadImage,
@@ -73,14 +73,12 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
         const selectedElements = elements.filter((item) =>
           selectedElementsId.includes(item.id),
         );
-
         if (selectedElements.length) {
-          selectedElements.forEach((selectedElement) => {
-            updateElement({
-              ...selectedElement,
-              y: selectedElement.y + (event.shiftKey ? 10 : 1),
-            });
-          });
+          const updatedElements = selectedElements.map((selectedElement) => ({
+            ...selectedElement,
+            y: selectedElement.y + (event.shiftKey ? 10 : 1),
+          }));
+          updateElements(updatedElements);
         }
       }
 
@@ -92,12 +90,11 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
         );
 
         if (selectedElements.length) {
-          selectedElements.forEach((selectedElement) => {
-            updateElement({
-              ...selectedElement,
-              y: selectedElement.y - (event.shiftKey ? 10 : 1),
-            });
-          });
+          const updatedElements = selectedElements.map((selectedElement) => ({
+            ...selectedElement,
+            y: selectedElement.y - (event.shiftKey ? 10 : 1),
+          }));
+          updateElements(updatedElements);
         }
       }
 
@@ -109,12 +106,11 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
         );
 
         if (selectedElements.length) {
-          selectedElements.forEach((selectedElement) => {
-            updateElement({
-              ...selectedElement,
-              x: selectedElement.x - (event.shiftKey ? 10 : 1),
-            });
-          });
+          const updatedElements = selectedElements.map((selectedElement) => ({
+            ...selectedElement,
+            x: selectedElement.x - (event.shiftKey ? 10 : 1),
+          }));
+          updateElements(updatedElements);
         }
       }
 
@@ -126,12 +122,11 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
         );
 
         if (selectedElements.length) {
-          selectedElements.forEach((selectedElement) => {
-            updateElement({
-              ...selectedElement,
-              x: selectedElement.x + (event.shiftKey ? 10 : 1),
-            });
-          });
+          const updatedElements = selectedElements.map((selectedElement) => ({
+            ...selectedElement,
+            x: selectedElement.x + (event.shiftKey ? 10 : 1),
+          }));
+          updateElements(updatedElements);
         }
       }
 
@@ -211,7 +206,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
     addElement,
     elements,
     setSelectedElementsId,
-    updateElement,
+    updateElements,
     redo,
     undo,
   ]);
