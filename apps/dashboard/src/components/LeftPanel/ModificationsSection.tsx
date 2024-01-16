@@ -20,10 +20,20 @@ export function ModificationSection() {
     <>
       <p className="text-xs text-gray-600">Modifications</p>
       <div className="grid grid-cols-2 gap-2 w-full">
-        <Button icon={<UndoIcon />} onClick={undo}>
+        <Button
+          icon={<UndoIcon />}
+          onClick={() => {
+            undo();
+          }}
+        >
           Undo
         </Button>
-        <Button icon={<RedoIcon />} onClick={redo}>
+        <Button
+          icon={<RedoIcon />}
+          onClick={() => {
+            redo();
+          }}
+        >
           Redo
         </Button>
         <Button
