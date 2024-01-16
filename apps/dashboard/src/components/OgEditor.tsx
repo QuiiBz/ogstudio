@@ -4,10 +4,12 @@ import type { OGElement } from "../lib/types";
 import { createElementId } from "../lib/elements";
 import { useZoomStore } from "../stores/zoomStore";
 import { useElementsStore } from "../stores/elementsStore";
+import { useImagesStore } from "../stores/imagesStore";
 import { Element } from "./Element";
 import { RightPanel } from "./RightPanel";
 import { LeftPanel } from "./LeftPanel";
 import { EditorToolbar } from "./EditorToolbar";
+import { EditorTitle } from "./EditorTitle";
 
 interface OgProviderProps {
   imageId: string;
@@ -30,6 +32,9 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
     loadImage,
   } = useElementsStore();
   const { undo, redo } = useElementsStore.temporal.getState();
+  const setSelectedImageId = useImagesStore(
+    (state) => state.setSelectedImageId,
+  );
 
   /**
    * When the editor image is updated or loaded for the first time, reset every
@@ -37,7 +42,15 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
    */
   useEffect(() => {
     loadImage(imageId);
-  }, [imageId, loadImage]);
+
+    if (useImagesStore.persist.hasHydrated()) {
+      setSelectedImageId(imageId);
+    }
+
+    useImagesStore.persist.onFinishHydration(() => {
+      setSelectedImageId(imageId);
+    });
+  }, [imageId, loadImage, setSelectedImageId]);
 
   useEffect(() => {
     function onContextMenu(event: MouseEvent) {
@@ -216,10 +229,8 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
       <div className="w-[300px] min-w-[300px] h-screen border-r border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
         <LeftPanel />
       </div>
+      <EditorTitle />
       <div className="flex flex-col items-center gap-4 fixed transform left-1/2 -translate-x-1/2">
-        <p className="text-xs text-gray-400 z-10">
-          {width}x{height}
-        </p>
         <div
           className="bg-white shadow-lg shadow-gray-100 relative"
           style={{ width, height, transform: `scale(${zoom / 100})` }}
@@ -238,9 +249,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
           style={{
             width,
             height,
-            transform: `scale(${zoom / 100}) translateY(${
-              32 / (zoom / 100)
-            }px)`,
+            transform: `scale(${zoom / 100})`,
           }}
         />
         <EditorToolbar />
