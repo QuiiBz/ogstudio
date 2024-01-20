@@ -1,6 +1,6 @@
 import { kv } from "@vercel/kv";
-import { getSession } from "../../../lib/auth/api";
-import type { OGElement } from "../../../lib/types";
+import { getSession } from "../../../../lib/auth/api";
+import type { OGElement } from "../../../../lib/types";
 
 export interface ExportRequest {
   id: string;
@@ -23,5 +23,5 @@ export async function POST(request: Request) {
 
   await kv.set(key, JSON.stringify(elements));
 
-  return Response.json({ key });
+  return Response.json({ key: btoa(key) });
 }

@@ -1,6 +1,4 @@
 import { kv } from "@vercel/kv";
-// eslint-disable-next-line camelcase -- Next.js API
-import { unstable_noStore } from "next/cache";
 import type { OGElement } from "../../../../lib/types";
 import {
   elementsToReactElements,
@@ -10,10 +8,10 @@ import {
 import { loadFonts } from "../../../../lib/fonts";
 
 export async function GET(
-  _request: Request,
+  _: Request,
   { params: { key } }: { params: { key: string } },
 ) {
-  const elements = await kv.get(key);
+  const elements = await kv.get(atob(key));
 
   if (elements === null) {
     return Response.json("Not found", { status: 404 });
@@ -21,7 +19,6 @@ export async function GET(
 
   const ogElements = elements as OGElement[];
 
-  unstable_noStore();
   const reactElements = elementsToReactElements(ogElements);
   const fonts = await loadFonts(ogElements);
   const svg = await exportToSvg(reactElements, fonts);
@@ -33,7 +30,6 @@ export async function GET(
   return new Response(png, {
     headers: {
       "Content-Type": "image/png",
-      "Cache-Control": "public, max-age=31536000, immutable",
     },
   });
 }

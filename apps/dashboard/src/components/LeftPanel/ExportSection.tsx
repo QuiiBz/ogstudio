@@ -12,7 +12,10 @@ import {
 import type { FontData } from "../../lib/fonts";
 import { loadFonts } from "../../lib/fonts";
 import { useElementsStore } from "../../stores/elementsStore";
-import type { ExportRequest, ExportResponse } from "../../app/api/export/route";
+import type {
+  ExportRequest,
+  ExportResponse,
+} from "../../app/api/og/export/route";
 import { useImagesStore } from "../../stores/imagesStore";
 
 export function ExportSection() {
@@ -33,7 +36,7 @@ export function ExportSection() {
 
       setIsLoading(true);
 
-      const response = await fetch("/api/export", {
+      const response = await fetch("/api/og/export", {
         method: "POST",
         body: JSON.stringify({
           id: selectedImageId,
