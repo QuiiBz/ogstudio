@@ -18,9 +18,7 @@ if (process.env.VITEST_POOL_ID) {
   );
 } else {
   initWasmPromise = initWasm(
-    // @ts-expect-error incorrect types
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access -- incorrect types
-    import("./index_bg.wasm?module").then((module) => module.default),
+    fetch("https://unpkg.com/@resvg/resvg-wasm/index_bg.wasm"),
   );
 }
 
