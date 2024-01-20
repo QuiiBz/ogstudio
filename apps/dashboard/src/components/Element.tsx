@@ -34,9 +34,17 @@ export function Element({ element }: ElementProps) {
 
       event.preventDefault();
 
-      setSelectedElementsId(
-        event.shiftKey ? [...selectedElementsId, element.id] : [element.id],
-      );
+      // Allow to select multiple elements with shift key, but unselect
+      // them if they are already selected
+      if (event.shiftKey && selectedElementsId.includes(element.id)) {
+        setSelectedElementsId(
+          selectedElementsId.filter((id) => id !== element.id),
+        );
+      } else {
+        setSelectedElementsId(
+          event.shiftKey ? [...selectedElementsId, element.id] : [element.id],
+        );
+      }
 
       const target = event.target as HTMLElement;
       const isResizer = target.parentElement?.classList.contains("element");

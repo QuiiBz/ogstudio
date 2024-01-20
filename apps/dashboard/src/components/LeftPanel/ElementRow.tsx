@@ -1,6 +1,7 @@
 import { clsx } from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import type { MouseEvent } from "react";
 import { useState } from "react";
 import type { OGElement } from "../../lib/types";
 import { NotVisibleIcon } from "../icons/NotVisibleIcon";
@@ -68,6 +69,20 @@ export function ElementRow({ element }: ElementRowProps) {
     setIsEditing(false);
   }
 
+  function onSelectElement(event: MouseEvent<HTMLButtonElement>) {
+    // Allow to select multiple elements with shift key, but unselect
+    // them if they are already selected
+    if (event.shiftKey && selectedElementsId.includes(element.id)) {
+      setSelectedElementsId(
+        selectedElementsId.filter((id) => id !== element.id),
+      );
+    } else {
+      setSelectedElementsId(
+        event.shiftKey ? [...selectedElementsId, element.id] : [element.id],
+      );
+    }
+  }
+
   return (
     <div
       className="flex justify-between items-center cursor-auto group h-7"
@@ -82,11 +97,7 @@ export function ElementRow({ element }: ElementRowProps) {
           { "!text-blue-500": selectedElementsId.includes(element.id) },
           { "!text-gray-300": !element.visible },
         )}
-        onClick={(event) => {
-          setSelectedElementsId(
-            event.shiftKey ? [...selectedElementsId, element.id] : [element.id],
-          );
-        }}
+        onClick={onSelectElement}
         onDoubleClick={(event) => {
           if (isEditing || !element.visible) {
             return;
