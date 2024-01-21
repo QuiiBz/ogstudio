@@ -3,16 +3,19 @@ import type { OGElement } from "./types";
 
 export interface Template {
   name: string;
+  description: string;
   elements: OGElement[];
 }
 
 /**
  * The list of all available templates. Each template is composed of an array of
- * elements and a name.
+ * elements, a name and a description.
  */
 export const TEMPLATES = [
   {
     name: "Default",
+    description:
+      "A simple Open Graph image composed of a title and a subtitle, with a subtle blue gradient.",
     elements: [
       {
         tag: "div",
@@ -105,6 +108,8 @@ export const TEMPLATES = [
   },
   {
     name: "Space",
+    description:
+      'A deep-purple Open Graph image with a "space" vibe, composed of a title and a subtitle.',
     elements: [
       {
         tag: "div",
@@ -337,6 +342,8 @@ export const TEMPLATES = [
   },
   {
     name: "Blog post",
+    description:
+      "Perfect for blog posts, this Open Graph image has an illustration and displays the title and author name.",
     elements: [
       {
         tag: "div",

@@ -17,7 +17,7 @@ export function TemplatesSplash() {
         {TEMPLATES.map((template) => (
           <OgImage
             elements={template.elements}
-            href="/"
+            href={`/templates/${template.name.toLowerCase()}`}
             key={template.name}
             name={template.name}
           />
