@@ -12,8 +12,13 @@ export function generateStaticParams() {
 }
 
 export function generateMetadata({ params: { name } }: TemplateProps) {
+  const decodedName = decodeURIComponent(name);
+  const template = TEMPLATES.find(
+    (current) => current.name.toLowerCase() === decodedName,
+  );
+
   return {
-    title: `${name} template - OG Studio`,
+    title: `${template?.name} template - OG Studio`,
     description: "Pre-made Open Graph image templates.",
   };
 }
