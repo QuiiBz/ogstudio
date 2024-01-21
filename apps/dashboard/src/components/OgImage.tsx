@@ -2,6 +2,7 @@ import type { MouseEvent, ReactNode } from "react";
 import { Suspense } from "react";
 import Link from "next/link";
 import usePromise from "react-promise-suspense";
+import { clsx } from "clsx";
 import type { OGElement } from "../lib/types";
 import { renderToImg } from "../lib/export";
 import { CopyIcon } from "./icons/CopyIcon";
@@ -25,6 +26,7 @@ interface OgImageProps {
   name?: string;
   copiable?: (event: MouseEvent<HTMLSpanElement>) => void;
   deletable?: (event: MouseEvent<HTMLSpanElement>) => void;
+  size?: "small" | "medium";
 }
 
 export function OgImage({
@@ -35,12 +37,19 @@ export function OgImage({
   name,
   copiable,
   deletable,
+  size,
 }: OgImageProps) {
-  const Tag = href ? Link : "button";
+  const Tag = href ? Link : onClick ? "button" : "div";
 
   return (
     <Tag
-      className="h-[157px] w-[300px] min-w-[300px] flex items-center justify-center text-gray-600 border rounded border-gray-200 hover:border-gray-400 relative group overflow-hidden"
+      className={clsx(
+        "h-[157px] w-[300px] min-w-[300px] flex items-center justify-center text-gray-600 border rounded border-gray-200 hover:border-gray-400 relative group overflow-hidden",
+        {
+          "h-[157px] w-[300px] min-w-[300px]": size === "small",
+          "h-[252px] w-[480px] min-w-[480px]": size === "medium",
+        },
+      )}
       href={href ?? ""}
       onClick={onClick}
     >

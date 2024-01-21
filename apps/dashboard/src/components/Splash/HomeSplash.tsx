@@ -9,8 +9,7 @@ import { useImagesStore } from "../../stores/imagesStore";
 import { OgImage } from "../OgImage";
 
 export function HomeSplash() {
-  const { images, copyTemplate, createEmptyImage, copyImage, deleteImage } =
-    useImagesStore();
+  const { images, createEmptyImage, copyImage, deleteImage } = useImagesStore();
   const router = useRouter();
 
   return (
@@ -30,12 +29,9 @@ export function HomeSplash() {
           {TEMPLATES.slice(0, 3).map((template) => (
             <OgImage
               elements={template.elements}
+              href={`/templates/${template.name.toLowerCase()}`}
               key={template.name}
               name={template.name}
-              onClick={() => {
-                const { id } = copyTemplate(template);
-                router.push(`/?i=${id}`);
-              }}
             />
           ))}
         </div>

@@ -31,9 +31,9 @@ function SplashInner({ children }: OgSplashProps) {
       <OgEditor height={630} imageId={image ?? "splash"} width={1200} />
       {image ? null : (
         <div className="w-screen h-screen bg-black/10 flex justify-center items-center absolute top-0 left-0 z-10">
-          <div className="p-8 rounded-md bg-white shadow-lg shadow-gray-200 w-[980px] h-[702px]">
+          <div className="p-8 rounded-md bg-white shadow-lg shadow-gray-200 w-[980px] h-[686px]">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-6 -mt-2">
                 <Link
                   className="text-gray-900 text-2xl flex gap-2 items-center"
                   href="/"
@@ -85,7 +85,7 @@ function SplashInner({ children }: OgSplashProps) {
                 </CustomLink>
               )}
             </div>
-            <p className="text-sm text-gray-600 mt-2 w-2/3">
+            <p className="text-sm text-gray-600 w-2/3">
               Create static or dynamic Open Graph images with an intuitive,
               Figma-like visual editor. Browse ready-to-use templates, and
               export your images to SVG/PNG or to a dynamic URL.
