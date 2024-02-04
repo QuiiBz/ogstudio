@@ -3,6 +3,7 @@ import { type ReactNode, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import type { User } from "lucia";
 import { OgEditor } from "../OgEditor";
 import { CustomLink } from "../CustomLink";
 import { GitHubIcon } from "../icons/GitHubIcon";
@@ -10,11 +11,11 @@ import { useImagesStore } from "../../stores/imagesStore";
 import { useZoomStore } from "../../stores/zoomStore";
 
 interface OgSplashProps {
-  userPill: ReactNode;
+  user: User | null;
   children: ReactNode;
 }
 
-export function SplashInner({ userPill, children }: OgSplashProps) {
+export function SplashInner({ user, children }: OgSplashProps) {
   const searchParams = useSearchParams();
   const image = searchParams.get("i");
   // const { data } = useUser();
@@ -57,7 +58,33 @@ export function SplashInner({ userPill, children }: OgSplashProps) {
                   GitHub
                 </CustomLink>
               </div>
-              {userPill}
+              {user ? (
+                <CustomLink
+                  href="/profile"
+                  icon={
+                    <Image
+                      alt={`${user.name}'s avatar`}
+                      className="w-6 h-6 rounded-full"
+                      height={24}
+                      src={user.avatar}
+                      width={24}
+                    />
+                  }
+                  iconPosition="right"
+                >
+                  {user.name}
+                </CustomLink>
+              ) : (
+                <CustomLink
+                  href="/login"
+                  icon={
+                    <div className="w-6 h-6 rounded-full bg-gray-200 animate-pulse" />
+                  }
+                  iconPosition="right"
+                >
+                  Guest
+                </CustomLink>
+              )}
             </div>
             <p className="text-sm text-gray-600 w-2/3">
               Create static or dynamic Open Graph images with an intuitive,
