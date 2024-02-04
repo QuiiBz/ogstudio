@@ -10,8 +10,6 @@ import { logoutAction } from "./logoutAction";
 //   description: "Pre-made Open Graph image templates.",
 // };
 
-export const dynamic = "force-static";
-
 export default function Page() {
   const queryClient = useQueryClient();
 

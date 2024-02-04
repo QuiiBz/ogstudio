@@ -23,8 +23,6 @@ export function generateMetadata({ params: { name } }: TemplateProps) {
   };
 }
 
-export const dynamic = "force-static";
-
 export default function Template({ params: { name } }: TemplateProps) {
   const decodedName = decodeURIComponent(name);
   const template = TEMPLATES.find(

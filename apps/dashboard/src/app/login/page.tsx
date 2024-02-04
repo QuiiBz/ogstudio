@@ -7,8 +7,6 @@ export const metadata = {
   description: "Sign in to export your images and sync them across devices.",
 };
 
-export const dynamic = "force-static";
-
 export default function Page() {
   return (
     <div className="flex flex-col items-center justify-center gap-8 mt-32">
