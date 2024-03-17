@@ -5,7 +5,8 @@ import { RedoIcon } from "../icons/RedoIcon";
 import { UndoIcon } from "../icons/UndoIcon";
 
 export function ModificationSection() {
-  const { undo, redo, pastStates } = useElementsStore.temporal.getState();
+  const { undo, redo, pastStates, futureStates } =
+    useElementsStore.temporal.getState();
   const setElements = useElementsStore((state) => state.setElements);
 
   function reset() {
@@ -20,10 +21,22 @@ export function ModificationSection() {
     <>
       <p className="text-xs text-gray-600">Modifications</p>
       <div className="grid grid-cols-2 gap-2 w-full">
-        <Button icon={<UndoIcon />} onClick={undo}>
+        <Button
+          disabled={pastStates.length === 0}
+          icon={<UndoIcon />}
+          onClick={() => {
+            undo();
+          }}
+        >
           Undo
         </Button>
-        <Button icon={<RedoIcon />} onClick={redo}>
+        <Button
+          disabled={futureStates.length === 0}
+          icon={<RedoIcon />}
+          onClick={() => {
+            redo();
+          }}
+        >
           Redo
         </Button>
         <Button
