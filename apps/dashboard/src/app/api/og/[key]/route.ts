@@ -1,4 +1,5 @@
 import { kv } from "@vercel/kv";
+import { initWasm } from "@resvg/resvg-wasm";
 import type { OGElement } from "../../../../lib/types";
 import {
   elementsToReactElements,
@@ -6,6 +7,9 @@ import {
   exportToSvg,
 } from "../../../../lib/export";
 import { loadFonts } from "../../../../lib/fonts";
+import resvgWasm from "./resvg.wasm?module";
+
+const initWasmPromise = initWasm(resvgWasm);
 
 export const runtime = "edge";
 
@@ -22,6 +26,7 @@ export async function GET(
   const ogElements = elements as OGElement[];
 
   const reactElements = elementsToReactElements(ogElements);
+  await initWasmPromise;
   const fonts = await loadFonts(ogElements);
   const svg = await exportToSvg(reactElements, fonts);
   const png = await exportToPng(

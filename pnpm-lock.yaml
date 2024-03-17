@@ -39,8 +39,8 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4(lucia@3.1.1)
       '@resvg/resvg-wasm':
-        specifier: ^2.6.0
-        version: 2.6.0
+        specifier: ^2.4.0
+        version: 2.4.0
       '@tanstack/react-query':
         specifier: ^5.17.10
         version: 5.17.10(react@18.2.0)
@@ -1860,8 +1860,8 @@ packages:
       tslib: 2.6.2
     dev: true
 
-  /@resvg/resvg-wasm@2.6.0:
-    resolution: {integrity: sha512-iDkBM6Ivex8nULtBu8cX670/lfsGxq8U1cuqE+qS9xFpPQP1enPdVm/33Kq3+B+bAldA+AHNZnCgpmlHo/fZrQ==}
+  /@resvg/resvg-wasm@2.4.0:
+    resolution: {integrity: sha512-C7c51Nn4yTxXFKvgh2txJFNweaVcfUPQxwEUFw4aWsCmfiBDJsTSwviIF8EcwjQ6k8bPyMWCl1vw4BdxE569Cg==}
     engines: {node: '>= 10'}
     dev: false
 

@@ -16,7 +16,7 @@ if (process.env.VITEST_POOL_ID) {
       "node_modules/@resvg/resvg-wasm/index_bg.wasm",
     ),
   );
-} else {
+} else if (typeof EdgeRuntime !== "string") {
   initWasmPromise = initWasm(
     fetch("https://unpkg.com/@resvg/resvg-wasm/index_bg.wasm", {
       cache: "no-store",
