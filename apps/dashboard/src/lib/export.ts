@@ -20,7 +20,9 @@ if (process.env.VITEST_POOL_ID) {
   initWasmPromise = initWasm(
     fetch("https://unpkg.com/@resvg/resvg-wasm/index_bg.wasm", {
       cache: "no-store",
-    }),
+    })
+      .then((response) => response.arrayBuffer())
+      .then((buffer) => new WebAssembly.Module(buffer)),
   );
 }
 

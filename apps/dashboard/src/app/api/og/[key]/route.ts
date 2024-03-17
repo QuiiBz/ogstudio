@@ -7,6 +7,8 @@ import {
 } from "../../../../lib/export";
 import { loadFonts } from "../../../../lib/fonts";
 
+export const runtime = "edge";
+
 export async function GET(
   _: Request,
   { params: { key } }: { params: { key: string } },
@@ -27,7 +29,14 @@ export async function GET(
     fonts.map((font) => new Uint8Array(font.data)),
   );
 
-  return new Response(png, {
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(png);
+      controller.close();
+    },
+  });
+
+  return new Response(stream, {
     headers: {
       "Content-Type": "image/png",
     },
