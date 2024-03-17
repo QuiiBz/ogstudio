@@ -131,6 +131,7 @@ export function EditorToolbar() {
                 visible: true,
                 rotate: 0,
                 opacity: 100,
+                content: "dynamic",
                 color: "#000000",
                 fontFamily: "Inter",
                 fontWeight: 400,

@@ -36,11 +36,14 @@ export interface ReactElements {
 
 /**
  * Transform a list of OG elements to React Elements, to be used with Satori
- * since we're not using a JSX transformer.
+ * since we're not using a JSX transformer. Optionally replaces dynamic texts.
  *
  * See https://github.com/vercel/satori#use-without-jsx
  */
-export function elementsToReactElements(elements: OGElement[]): ReactElements {
+export function elementsToReactElements(
+  elements: OGElement[],
+  dynamicTexts?: Record<string, string>,
+): ReactElements {
   // We first render the wrapper element, then all the childrens
   return {
     type: "div",
@@ -54,6 +57,10 @@ export function elementsToReactElements(elements: OGElement[]): ReactElements {
         .filter((element) => element.visible)
         .map((element) => {
           const isImage = element.tag === "div" && element.backgroundImage;
+          const dynamicText =
+            element.tag === "span" && dynamicTexts
+              ? dynamicTexts[element.content]
+              : false;
 
           return {
             type: isImage ? "img" : element.tag,
@@ -66,6 +73,7 @@ export function elementsToReactElements(elements: OGElement[]): ReactElements {
                 : createElementStyle(element),
               ...(isImage ? { src: element.backgroundImage } : {}),
               ...(element.tag === "p" ? { children: [element.content] } : {}),
+              ...(dynamicText ? { children: [dynamicText] } : {}),
             },
           };
         }),

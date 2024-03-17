@@ -297,7 +297,7 @@ export function Element({ element }: ElementProps) {
       style={style}
     >
       {element.tag === "p" ? element.content : null}
-      {element.tag === "span" ? "[dynamic text]" : null}
+      {element.tag === "span" ? "Dynamic text" : null}
       {element.tag === "div" && element.backgroundImage ? (
         <img
           alt=""

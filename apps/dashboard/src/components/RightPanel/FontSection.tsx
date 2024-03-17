@@ -12,6 +12,8 @@ import { AlignLeftIcon } from "../icons/AlignLeftIcon";
 import { LetterSpacingIcon } from "../icons/LetterSpacingIcon";
 import { useElementsStore } from "../../stores/elementsStore";
 
+const SPACES_REGEX = /\s+/g;
+
 interface FontSectionProps {
   selectedElement: OGElement;
 }
@@ -134,6 +136,22 @@ export function FontSection({ selectedElement }: FontSectionProps) {
               });
             }}
             type="textarea"
+            value={selectedElement.content}
+          />
+        ) : null}
+        {selectedElement.tag === "span" ? (
+          <Input
+            className="col-span-full"
+            onChange={(value) => {
+              // Remove all spaces
+              const newValue = value.replaceAll(SPACES_REGEX, "");
+
+              updateElement({
+                ...selectedElement,
+                content: newValue,
+              });
+            }}
+            type="text"
             value={selectedElement.content}
           />
         ) : null}

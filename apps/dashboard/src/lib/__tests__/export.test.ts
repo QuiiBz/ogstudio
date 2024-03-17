@@ -73,6 +73,63 @@ describe("elementsToReactElements", () => {
     ]);
     expect(data).toMatchSnapshot();
   });
+
+  it("should ignore dynamic texts by default", () => {
+    const data = elementsToReactElements([
+      {
+        tag: "span",
+        id: createElementId(),
+        name: "Text",
+        width: 100,
+        height: 50,
+        x: 0,
+        y: 0,
+        visible: true,
+        rotate: 0,
+        opacity: 100,
+        content: "dynamic",
+        color: "#000000",
+        fontFamily: "Inter",
+        fontWeight: 400,
+        lineHeight: 1,
+        letterSpacing: 0,
+        fontSize: 50,
+        align: "left",
+      },
+    ]);
+    expect(data).toMatchSnapshot();
+  });
+
+  it("should replace dynamic texts if present", () => {
+    const data = elementsToReactElements(
+      [
+        {
+          tag: "span",
+          id: createElementId(),
+          name: "Text",
+          width: 100,
+          height: 50,
+          x: 0,
+          y: 0,
+          visible: true,
+          rotate: 0,
+          opacity: 100,
+          content: "dynamic",
+          color: "#000000",
+          fontFamily: "Inter",
+          fontWeight: 400,
+          lineHeight: 1,
+          letterSpacing: 0,
+          fontSize: 50,
+          align: "left",
+        },
+      ],
+      {
+        dynamic: "This is a dynamic text!",
+      },
+    );
+    expect(data).toMatchSnapshot();
+  });
 });
 
 describe("exportToSvg", () => {
