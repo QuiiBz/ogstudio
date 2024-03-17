@@ -1,11 +1,11 @@
 "use server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { getSession } from "../../lib/auth/api";
+import { getCachedSession } from "../../lib/auth/api";
 import { lucia } from "../../lib/auth/lucia";
 
 export async function logoutAction() {
-  const { session } = await getSession();
+  const { session } = await getCachedSession();
 
   if (!session) {
     return {
@@ -22,5 +22,5 @@ export async function logoutAction() {
     sessionCookie.attributes,
   );
 
-  return redirect("/login");
+  return redirect("/");
 }
