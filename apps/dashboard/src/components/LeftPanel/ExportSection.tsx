@@ -9,7 +9,6 @@ import {
   exportToPng,
   exportToSvg,
 } from "../../lib/export";
-import type { FontData } from "../../lib/fonts";
 import { loadFonts } from "../../lib/fonts";
 import { useElementsStore } from "../../stores/elementsStore";
 import type {
@@ -87,13 +86,10 @@ export function ExportSection() {
 
       setIsLoading(false);
 
-      return { fonts, svg };
+      return svg;
     }
 
-    return new Promise<{
-      fonts: FontData[];
-      svg: string;
-    }>((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
       if (showProgress) {
         let svg: string;
 
@@ -101,7 +97,7 @@ export function ExportSection() {
           loading: "Exporting to SVG...",
           success: (data) => {
             resolve(data);
-            svg = data.svg;
+            svg = data;
 
             return "SVG exported!";
           },
@@ -121,18 +117,13 @@ export function ExportSection() {
   }
 
   async function exportPng() {
-    const { svg, fonts } = await exportSvg(false);
+    const svg = await exportSvg(false);
 
     let png: Uint8Array;
 
     async function run() {
       setIsLoading(true);
-
-      png = await exportToPng(
-        svg,
-        fonts.map((font) => new Uint8Array(font.data)),
-      );
-
+      png = await exportToPng(svg);
       setIsLoading(false);
     }
 

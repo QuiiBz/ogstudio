@@ -1,4 +1,5 @@
 import { kv } from "@vercel/kv";
+import { initWasm } from "@resvg/resvg-wasm";
 import type { OGElement } from "../../../../lib/types";
 import {
   elementsToReactElements,
@@ -6,6 +7,13 @@ import {
   exportToSvg,
 } from "../../../../lib/export";
 import { loadFonts } from "../../../../lib/fonts";
+// @ts-expect-error -- this file does exist
+import resvgWasm from "./resvg.wasm?module";
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- wrong type
+const initWasmPromise = initWasm(resvgWasm);
+
+export const runtime = "edge";
 
 export async function GET(
   _: Request,
@@ -20,12 +28,10 @@ export async function GET(
   const ogElements = elements as OGElement[];
 
   const reactElements = elementsToReactElements(ogElements);
+  await initWasmPromise;
   const fonts = await loadFonts(ogElements);
   const svg = await exportToSvg(reactElements, fonts);
-  const png = await exportToPng(
-    svg,
-    fonts.map((font) => new Uint8Array(font.data)),
-  );
+  const png = await exportToPng(svg);
 
   return new Response(png, {
     headers: {

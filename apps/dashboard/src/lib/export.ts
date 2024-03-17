@@ -16,9 +16,10 @@ if (process.env.VITEST_POOL_ID) {
       "node_modules/@resvg/resvg-wasm/index_bg.wasm",
     ),
   );
-} else {
+  // @ts-expect-error -- only present in Edge Runtime
+} else if (typeof EdgeRuntime !== "string") {
   initWasmPromise = initWasm(
-    fetch("https://unpkg.com/@resvg/resvg-wasm/index_bg.wasm", {
+    fetch("https://unpkg.com/@resvg/resvg-wasm@2.4.0/index_bg.wasm", {
       cache: "no-store",
     }),
   );
@@ -110,17 +111,10 @@ export async function exportToSvg(
 /**
  * Export an SVG string to a PNG Uint8Array, using the provided font buffers.
  */
-export async function exportToPng(
-  svg: string,
-  fonts: Uint8Array[],
-): Promise<Uint8Array> {
+export async function exportToPng(svg: string): Promise<Uint8Array> {
   await initWasmPromise;
 
-  const resvgJS = new Resvg(svg, {
-    font: {
-      fontBuffers: fonts,
-    },
-  });
+  const resvgJS = new Resvg(svg);
   const pngData = resvgJS.render();
   const pngBuffer = pngData.asPng();
 
