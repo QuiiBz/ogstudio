@@ -36,7 +36,7 @@ export interface OGPElement {
   align: "left" | "center" | "right";
 }
 
-export type OGDynamicElement = Omit<OGPElement, "tag" | "content"> & {
+export type OGDynamicElement = Omit<OGPElement, "tag"> & {
   tag: "span";
 };
 

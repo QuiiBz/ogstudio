@@ -1,5 +1,42 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`elementsToReactElements > should ignore dynamic texts by default 1`] = `
+{
+  "props": {
+    "children": [
+      {
+        "props": {
+          "style": {
+            "color": "rgba(0, 0, 0, 1)",
+            "display": "flex",
+            "fontFamily": "Inter",
+            "fontSize": "50px",
+            "fontWeight": 400,
+            "height": "50px",
+            "justifyContent": "flex-start",
+            "left": "0px",
+            "letterSpacing": "0px",
+            "lineHeight": 1,
+            "marginBottom": 0,
+            "marginTop": 0,
+            "position": "absolute",
+            "top": "0px",
+            "width": "100px",
+          },
+        },
+        "type": "span",
+      },
+    ],
+    "style": {
+      "display": "flex",
+      "height": "100%",
+      "width": "100%",
+    },
+  },
+  "type": "div",
+}
+`;
+
 exports[`elementsToReactElements > should not render non-visible elements 1`] = `
 {
   "props": {
@@ -71,6 +108,46 @@ exports[`elementsToReactElements > should render to react elements 1`] = `
           },
         },
         "type": "div",
+      },
+    ],
+    "style": {
+      "display": "flex",
+      "height": "100%",
+      "width": "100%",
+    },
+  },
+  "type": "div",
+}
+`;
+
+exports[`elementsToReactElements > should replace dynamic texts if present 1`] = `
+{
+  "props": {
+    "children": [
+      {
+        "props": {
+          "children": [
+            "This is a dynamic text!",
+          ],
+          "style": {
+            "color": "rgba(0, 0, 0, 1)",
+            "display": "flex",
+            "fontFamily": "Inter",
+            "fontSize": "50px",
+            "fontWeight": 400,
+            "height": "50px",
+            "justifyContent": "flex-start",
+            "left": "0px",
+            "letterSpacing": "0px",
+            "lineHeight": 1,
+            "marginBottom": 0,
+            "marginTop": 0,
+            "position": "absolute",
+            "top": "0px",
+            "width": "100px",
+          },
+        },
+        "type": "span",
       },
     ],
     "style": {

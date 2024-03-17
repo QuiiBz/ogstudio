@@ -1,5 +1,6 @@
 import { kv } from "@vercel/kv";
 import { initWasm } from "@resvg/resvg-wasm";
+import type { NextRequest } from "next/server";
 import type { OGElement } from "../../../../lib/types";
 import {
   elementsToReactElements,
@@ -16,7 +17,7 @@ const initWasmPromise = initWasm(resvgWasm);
 export const runtime = "edge";
 
 export async function GET(
-  _: Request,
+  request: NextRequest,
   { params: { key } }: { params: { key: string } },
 ) {
   const elements = await kv.get(atob(key));
@@ -26,8 +27,11 @@ export async function GET(
   }
 
   const ogElements = elements as OGElement[];
+  const dynamicTexts = Object.fromEntries(
+    request.nextUrl.searchParams.entries(),
+  );
 
-  const reactElements = elementsToReactElements(ogElements);
+  const reactElements = elementsToReactElements(ogElements, dynamicTexts);
   await initWasmPromise;
   const fonts = await loadFonts(ogElements);
   const svg = await exportToSvg(reactElements, fonts);
