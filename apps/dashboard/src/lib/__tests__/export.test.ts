@@ -116,7 +116,6 @@ describe("exportToPng", () => {
         },
         [],
       ),
-      [],
     );
     expect(png).toMatchSnapshot();
 
