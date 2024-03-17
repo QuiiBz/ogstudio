@@ -33,14 +33,7 @@ export async function GET(
   const svg = await exportToSvg(reactElements, fonts);
   const png = await exportToPng(svg);
 
-  const stream = new ReadableStream({
-    start(controller) {
-      controller.enqueue(png);
-      controller.close();
-    },
-  });
-
-  return new Response(stream, {
+  return new Response(png, {
     headers: {
       "Content-Type": "image/png",
     },
