@@ -61,6 +61,10 @@ export function Input<Type extends InputType>({
             ) {
               return;
             }
+
+            // @ts-expect-error wtf?
+            onChange(valueNumber);
+            return;
           }
 
           // @ts-expect-error wtf?

@@ -22,7 +22,7 @@ export function HomeSplash() {
             icon={<ArrowRightIcon />}
             iconPosition="right"
           >
-            See all
+            See all ({TEMPLATES.length})
           </CustomLink>
         </div>
         <div className="flex gap-2">
@@ -45,7 +45,7 @@ export function HomeSplash() {
             icon={<ArrowRightIcon />}
             iconPosition="right"
           >
-            See all
+            See all ({images.length})
           </CustomLink>
         </div>
         <div className="flex gap-2">
