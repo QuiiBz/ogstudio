@@ -1,6 +1,6 @@
 import { generateCodeVerifier, generateState } from "arctic";
 import { cookies } from "next/headers";
-import { google } from "../../../../lib/auth/artic";
+import { google } from "../../../../lib/auth/arctic";
 
 export async function GET() {
   const state = generateState();

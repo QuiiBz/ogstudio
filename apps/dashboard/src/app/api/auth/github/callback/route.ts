@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
 import { generateId } from "lucia";
 import { eq } from "drizzle-orm";
-import { github } from "../../../../../lib/auth/artic";
+import { github } from "../../../../../lib/auth/arctic";
 import { db } from "../../../../../lib/db/db";
 import { lucia } from "../../../../../lib/auth/lucia";
 import { userTable } from "../../../../../lib/db/schema";
