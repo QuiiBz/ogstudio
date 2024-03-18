@@ -7,26 +7,44 @@ import { Select } from "../forms/Select";
 import { WidthIcon } from "../icons/WidthIcon";
 import { BorderStyleIcon } from "../icons/BorderStyleIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { setValue } from "../../lib/inputs";
+import { showMixed } from "../../lib/elements";
 
 interface BorderSectionProps {
-  selectedElement: OGElement;
+  selectedElements: OGElement[];
 }
 
-export function BorderSection({ selectedElement }: BorderSectionProps) {
-  const updateElement = useElementsStore((state) => state.updateElement);
+export function BorderSection({ selectedElements }: BorderSectionProps) {
+  const updateElements = useElementsStore((state) => state.updateElements);
+
+  if (
+    selectedElements[0].border &&
+    selectedElements.find((element) => !element.border)
+  )
+    return;
+
+  if (
+    !selectedElements[0].border &&
+    selectedElements.find((element) => element.border)
+  )
+    return;
 
   return (
     <>
+      <div className="h-[1px] w-full bg-gray-100" />
       <div className="flex items-center justify-between w-full">
         <p className="text-xs text-gray-600">Border</p>
-        {selectedElement.border ? (
+        {selectedElements[0].border ? (
           <button
             className="text-gray-600 hover:text-gray-900"
             onClick={() => {
-              updateElement({
-                ...selectedElement,
-                border: undefined,
-              });
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
+                  ...selectedElement,
+                  border: undefined,
+                }),
+              );
+              updateElements(updatedElements);
             }}
             type="button"
           >
@@ -36,14 +54,17 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
           <button
             className="text-gray-600 hover:text-gray-900"
             onClick={() => {
-              updateElement({
-                ...selectedElement,
-                border: {
-                  color: "#000000",
-                  width: 1,
-                  style: "outside",
-                },
-              });
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
+                  ...selectedElement,
+                  border: {
+                    color: "#000000",
+                    width: 1,
+                    style: "outside",
+                  },
+                }),
+              ) as OGElement[];
+              updateElements(updatedElements);
             }}
             type="button"
           >
@@ -51,21 +72,27 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
           </button>
         )}
       </div>
-      {selectedElement.border ? (
+      {selectedElements[0].border ? (
         <div className="grid grid-cols-2 gap-2 w-full">
           <Input
             onChange={(value) => {
-              updateElement({
-                ...selectedElement,
-                // @ts-expect-error wtf?
-                border: {
-                  ...selectedElement.border,
-                  color: value,
-                },
-              });
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
+                  ...selectedElement,
+                  border: {
+                    ...selectedElement.border,
+                    color: value,
+                  },
+                }),
+              ) as OGElement[];
+              updateElements(updatedElements);
             }}
             type="color"
-            value={selectedElement.border.color}
+            value={
+              showMixed(selectedElements, "color", "border")
+                ? "#ffffff"
+                : selectedElements[0].border.color
+            }
           >
             <ColorIcon />
           </Input>
@@ -73,34 +100,82 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
             max={99}
             min={0}
             onChange={(value) => {
-              updateElement({
-                ...selectedElement,
-                // @ts-expect-error wtf?
-                border: {
-                  ...selectedElement.border,
-                  width: value,
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
+                  ...selectedElement,
+                  border: {
+                    ...selectedElement.border,
+                    width: setValue(value),
+                  },
+                }),
+              ) as OGElement[];
+              updateElements(updatedElements);
+            }}
+            onKeyDown={(direction) => {
+              const updatedElements = selectedElements.map(
+                (selectedElement) => {
+                  if (!selectedElement.border) return selectedElement;
+
+                  if (selectedElement.border.width === 99 && direction === "up")
+                    return selectedElement;
+                  if (
+                    selectedElement.border.width === 0 &&
+                    direction === "down"
+                  )
+                    return selectedElement;
+
+                  return {
+                    ...selectedElement,
+                    border: {
+                      ...selectedElement.border,
+                      width:
+                        direction === "down"
+                          ? selectedElement.border.width - 1
+                          : selectedElement.border.width + 1,
+                    },
+                  };
                 },
-              });
+              );
+              updateElements(updatedElements);
             }}
             suffix="px"
-            type="number"
-            value={selectedElement.border.width}
+            trackArrowDirection
+            type={
+              showMixed(selectedElements, "width", "border") ? "text" : "number"
+            }
+            value={
+              showMixed(selectedElements, "width", "border")
+                ? "Mixed"
+                : selectedElements[0].border.width
+            }
           >
             <WidthIcon />
           </Input>
           <Select
             onChange={(value) => {
-              updateElement({
-                ...selectedElement,
-                border: {
-                  ...selectedElement.border,
-                  // @ts-expect-error wtf?
-                  style: value,
-                },
-              });
+              if (value === "Mixed") return;
+
+              const updatedElements = selectedElements.map(
+                (selectedElement) => ({
+                  ...selectedElement,
+                  border: {
+                    ...selectedElement.border,
+                    style: value as "outside" | "inside",
+                  },
+                }),
+              ) as OGElement[];
+              updateElements(updatedElements);
             }}
-            value={selectedElement.border.style}
-            values={["outside", "inside"]}
+            value={
+              showMixed(selectedElements, "style", "border")
+                ? "Mixed"
+                : selectedElements[0].border.style
+            }
+            values={
+              showMixed(selectedElements, "style", "border")
+                ? ["outside", "inside", "Mixed"]
+                : ["outside", "inside"]
+            }
           >
             <BorderStyleIcon />
           </Select>

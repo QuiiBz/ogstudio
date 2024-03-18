@@ -12,16 +12,16 @@ interface ElementProps {
 export function Element({ element }: ElementProps) {
   const elementRef = useRef<HTMLElement>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const selectedElementId = useElementsStore(
-    (state) => state.selectedElementId,
+  const selectedElementsId = useElementsStore(
+    (state) => state.selectedElementsId,
   );
-  const setSelectedElementId = useElementsStore(
-    (state) => state.setSelectedElementId,
+  const setSelectedElementsId = useElementsStore(
+    (state) => state.setSelectedElementsId,
   );
-  const updateElement = useElementsStore((state) => state.updateElement);
+  const updateElements = useElementsStore((state) => state.updateElements);
   const removeElement = useElementsStore((state) => state.removeElement);
 
-  const isSelected = selectedElementId === element.id;
+  const isSelected = selectedElementsId.includes(element.id);
   const Tag = element.tag;
 
   useEffect(() => {
@@ -34,7 +34,17 @@ export function Element({ element }: ElementProps) {
 
       event.preventDefault();
 
-      setSelectedElementId(element.id);
+      // Allow to select multiple elements with shift key, but unselect
+      // them if they are already selected
+      if (event.shiftKey && selectedElementsId.includes(element.id)) {
+        setSelectedElementsId(
+          selectedElementsId.filter((id) => id !== element.id),
+        );
+      } else {
+        setSelectedElementsId(
+          event.shiftKey ? [...selectedElementsId, element.id] : [element.id],
+        );
+      }
 
       const target = event.target as HTMLElement;
       const isResizer = target.parentElement?.classList.contains("element");
@@ -182,23 +192,27 @@ export function Element({ element }: ElementProps) {
             parent.style.transform.replace("rotate(", "").replace("deg)", ""),
           );
 
-          updateElement({
-            ...element,
-            x,
-            y,
-            width,
-            height,
-            rotate,
-          });
+          updateElements([
+            {
+              ...element,
+              x,
+              y,
+              width,
+              height,
+              rotate,
+            },
+          ]);
         } else {
           const x = Number(target.style.left.replace("px", ""));
           const y = Number(target.style.top.replace("px", ""));
 
-          updateElement({
-            ...element,
-            x,
-            y,
-          });
+          updateElements([
+            {
+              ...element,
+              x,
+              y,
+            },
+          ]);
         }
       }
 
@@ -237,11 +251,13 @@ export function Element({ element }: ElementProps) {
         target.contentEditable = "false";
         setIsEditing(false);
 
-        updateElement({
-          ...element,
-          // @ts-expect-error wtf?
-          content: target.innerText,
-        });
+        updateElements([
+          {
+            ...element,
+            // @ts-expect-error wtf?
+            content: target.innerText,
+          },
+        ]);
 
         target.removeEventListener("blur", onBlur);
         target.removeEventListener("keydown", onKeyDown);
@@ -269,10 +285,10 @@ export function Element({ element }: ElementProps) {
     element.tag,
     elementRef,
     isEditing,
-    setSelectedElementId,
-    updateElement,
+    setSelectedElementsId,
+    updateElements,
     removeElement,
-    selectedElementId,
+    selectedElementsId,
     isSelected,
     element,
   ]);
@@ -310,7 +326,8 @@ export function Element({ element }: ElementProps) {
           }}
         />
       ) : null}
-      {isSelected ? (
+      {/* suggestion: make multiple element manipulations? */}
+      {isSelected && selectedElementsId.length === 1 ? (
         <>
           <span className="handle top-left absolute w-2.5 h-2.5 rounded-full bg-white border border-blue-500" />
           <span className="handle top-right absolute w-2.5 h-2.5 rounded-full bg-white border border-blue-500" />

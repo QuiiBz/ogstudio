@@ -1,6 +1,9 @@
 import type { Font } from "./fonts";
 
-export type OGElement = (OGPElement | OGDynamicElement | OGDivElement) & {
+export type OGElement = (OGPElement | OGDynamicElement | OGDivElement) &
+  OGBaseElement;
+
+export interface OGBaseElement {
   id: string;
   name: string;
   x: number;
@@ -22,7 +25,7 @@ export type OGElement = (OGPElement | OGDynamicElement | OGDivElement) & {
     x: number;
     y: number;
   };
-};
+}
 
 export interface OGPElement {
   tag: "p";

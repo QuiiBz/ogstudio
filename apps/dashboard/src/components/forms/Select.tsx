@@ -17,12 +17,13 @@ export function Select({ value, values, onChange, children }: SelectProps) {
         {children}
       </label>
       <select
-        className="px-1 py-0.5 text-gray-900 rounded w-full h-full focus:outline-blue-500"
-        defaultValue={value}
         id={id}
         onChange={(event) => {
           onChange(event.target.value);
         }}
+        className="px-1 py-0.5 text-gray-900 rounded w-full h-full focus:outline-blue-500"
+        // defaultValue={value}
+        value={value}
       >
         {values.map((currentValue) => (
           <option key={currentValue} value={currentValue}>

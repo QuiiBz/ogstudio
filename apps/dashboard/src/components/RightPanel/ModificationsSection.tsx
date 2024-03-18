@@ -4,11 +4,11 @@ import { DeleteIcon } from "../icons/DeleteIcon";
 import { useElementsStore } from "../../stores/elementsStore";
 
 interface ModificationsSectionProps {
-  selectedElement: OGElement;
+  selectedElements: OGElement[];
 }
 
 export function ModificationsSection({
-  selectedElement,
+  selectedElements,
 }: ModificationsSectionProps) {
   const removeElement = useElementsStore((state) => state.removeElement);
 
@@ -19,7 +19,9 @@ export function ModificationsSection({
         <Button
           icon={<DeleteIcon />}
           onClick={() => {
-            removeElement(selectedElement.id);
+            selectedElements.forEach((selectedElement) => {
+              removeElement(selectedElement.id);
+            });
           }}
           variant="danger"
         >

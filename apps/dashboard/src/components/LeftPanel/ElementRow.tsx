@@ -1,6 +1,7 @@
 import { clsx } from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import type { MouseEvent } from "react";
 import { useState } from "react";
 import type { OGElement } from "../../lib/types";
 import { NotVisibleIcon } from "../icons/NotVisibleIcon";
@@ -17,13 +18,13 @@ interface ElementRowProps {
 }
 
 export function ElementRow({ element }: ElementRowProps) {
-  const selectedElementId = useElementsStore(
-    (state) => state.selectedElementId,
+  const selectedElementsId = useElementsStore(
+    (state) => state.selectedElementsId,
   );
-  const setSelectedElementId = useElementsStore(
-    (state) => state.setSelectedElementId,
+  const setSelectedElementsId = useElementsStore(
+    (state) => state.setSelectedElementsId,
   );
-  const updateElement = useElementsStore((state) => state.updateElement);
+  const updateElements = useElementsStore((state) => state.updateElements);
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: element.id });
   const [isEditing, setIsEditing] = useState(false);
@@ -58,12 +59,28 @@ export function ElementRow({ element }: ElementRowProps) {
       }
     }
 
-    updateElement({
-      ...element,
-      name: newName,
-    });
+    updateElements([
+      {
+        ...element,
+        name: newName,
+      },
+    ]);
 
     setIsEditing(false);
+  }
+
+  function onSelectElement(event: MouseEvent<HTMLButtonElement>) {
+    // Allow to select multiple elements with shift key, but unselect
+    // them if they are already selected
+    if (event.shiftKey && selectedElementsId.includes(element.id)) {
+      setSelectedElementsId(
+        selectedElementsId.filter((id) => id !== element.id),
+      );
+    } else {
+      setSelectedElementsId(
+        event.shiftKey ? [...selectedElementsId, element.id] : [element.id],
+      );
+    }
   }
 
   return (
@@ -77,12 +94,10 @@ export function ElementRow({ element }: ElementRowProps) {
       <button
         className={clsx(
           "flex items-center gap-2 select-none text-gray-600 hover:text-gray-900 w-full",
-          { "!text-blue-500": selectedElementId === element.id },
+          { "!text-blue-500": selectedElementsId.includes(element.id) },
           { "!text-gray-300": !element.visible },
         )}
-        onClick={() => {
-          setSelectedElementId(element.id);
-        }}
+        onClick={onSelectElement}
         onDoubleClick={(event) => {
           if (isEditing || !element.visible) {
             return;
@@ -112,7 +127,7 @@ export function ElementRow({ element }: ElementRowProps) {
           <input
             // eslint-disable-next-line -- Usability and accessibility for users is not reduced here
             autoFocus
-            className="w-52 outline-blue-500 outline-1 outline-offset-[3px] elementNameInput"
+            className="w-48 outline-blue-500 outline-1 outline-offset-[3px] elementNameInput"
             defaultValue={element.name}
             onBlur={(event) => {
               onSubmit(event.currentTarget.value);
@@ -133,10 +148,12 @@ export function ElementRow({ element }: ElementRowProps) {
           !element.visible ? "!block" : ""
         }`}
         onClick={() => {
-          updateElement({
-            ...element,
-            visible: !element.visible,
-          });
+          updateElements([
+            {
+              ...element,
+              visible: !element.visible,
+            },
+          ]);
         }}
         type="button"
       >

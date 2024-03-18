@@ -17,16 +17,16 @@ interface OgProviderProps {
   height: number;
 }
 
-let elementIdToCopy: string | undefined;
+let elementsIdToCopy: string[] | undefined;
 
 export function OgEditor({ imageId, width, height }: OgProviderProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const zoom = useZoomStore((state) => state.zoom);
   const {
-    selectedElementId,
-    setSelectedElementId,
+    selectedElementsId,
+    setSelectedElementsId,
     elements,
-    updateElement,
+    updateElements,
     removeElement,
     addElement,
     loadImage,
@@ -69,7 +69,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
         return;
       }
 
-      setSelectedElementId(null);
+      setSelectedElementsId([]);
     }
 
     function onKeyDown(event: KeyboardEvent) {
@@ -78,71 +78,83 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
         return;
       }
 
-      // Move down
-      if (event.key === "ArrowDown" && selectedElementId) {
-        event.preventDefault();
-        const element = elements.find((item) => item.id === selectedElementId);
+      const isSelected = Boolean(selectedElementsId.length);
 
-        if (element) {
-          updateElement({
-            ...element,
-            y: element.y + (event.shiftKey ? 10 : 1),
-          });
+      // Move down
+      if (event.key === "ArrowDown" && isSelected) {
+        event.preventDefault();
+        const selectedElements = elements.filter((item) =>
+          selectedElementsId.includes(item.id),
+        );
+        if (selectedElements.length) {
+          const updatedElements = selectedElements.map((selectedElement) => ({
+            ...selectedElement,
+            y: selectedElement.y + (event.shiftKey ? 10 : 1),
+          }));
+          updateElements(updatedElements);
         }
       }
 
       // Move up
-      if (event.key === "ArrowUp" && selectedElementId) {
+      if (event.key === "ArrowUp" && isSelected) {
         event.preventDefault();
-        const element = elements.find((item) => item.id === selectedElementId);
+        const selectedElements = elements.filter((item) =>
+          selectedElementsId.includes(item.id),
+        );
 
-        if (element) {
-          updateElement({
-            ...element,
-            y: element.y - (event.shiftKey ? 10 : 1),
-          });
+        if (selectedElements.length) {
+          const updatedElements = selectedElements.map((selectedElement) => ({
+            ...selectedElement,
+            y: selectedElement.y - (event.shiftKey ? 10 : 1),
+          }));
+          updateElements(updatedElements);
         }
       }
 
       // Move left
-      if (event.key === "ArrowLeft" && selectedElementId) {
+      if (event.key === "ArrowLeft" && isSelected) {
         event.preventDefault();
-        const element = elements.find((item) => item.id === selectedElementId);
+        const selectedElements = elements.filter((item) =>
+          selectedElementsId.includes(item.id),
+        );
 
-        if (element) {
-          updateElement({
-            ...element,
-            x: element.x - (event.shiftKey ? 10 : 1),
-          });
+        if (selectedElements.length) {
+          const updatedElements = selectedElements.map((selectedElement) => ({
+            ...selectedElement,
+            x: selectedElement.x - (event.shiftKey ? 10 : 1),
+          }));
+          updateElements(updatedElements);
         }
       }
 
       // Move right
-      if (event.key === "ArrowRight" && selectedElementId) {
+      if (event.key === "ArrowRight" && isSelected) {
         event.preventDefault();
-        const element = elements.find((item) => item.id === selectedElementId);
+        const selectedElements = elements.filter((item) =>
+          selectedElementsId.includes(item.id),
+        );
 
-        if (element) {
-          updateElement({
-            ...element,
-            x: element.x + (event.shiftKey ? 10 : 1),
-          });
+        if (selectedElements.length) {
+          const updatedElements = selectedElements.map((selectedElement) => ({
+            ...selectedElement,
+            x: selectedElement.x + (event.shiftKey ? 10 : 1),
+          }));
+          updateElements(updatedElements);
         }
       }
 
       // Delete any selected element
-      if (
-        (event.key === "Backspace" || event.key === "Delete") &&
-        selectedElementId
-      ) {
+      if ((event.key === "Backspace" || event.key === "Delete") && isSelected) {
         event.preventDefault();
-        removeElement(selectedElementId);
+        selectedElementsId.forEach((selectedElement) => {
+          removeElement(selectedElement);
+        });
       }
 
       // Unselect any selected element when pressing escape
-      if (event.key === "Escape" && selectedElementId) {
+      if (event.key === "Escape" && isSelected) {
         event.preventDefault();
-        setSelectedElementId(null);
+        setSelectedElementsId([]);
       }
 
       // Undo
@@ -158,33 +170,29 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
       }
 
       // Copy an element
-      if (
-        selectedElementId &&
-        event.key === "c" &&
-        (event.metaKey || event.ctrlKey)
-      ) {
+      if (isSelected && event.key === "c" && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
-        elementIdToCopy = selectedElementId;
+        elementsIdToCopy = selectedElementsId;
       }
 
       // Paste a copied element
       if (event.key === "v" && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
 
-        const elementToCopy = elements.find(
-          (item) => item.id === elementIdToCopy,
-        );
-
-        if (elementToCopy) {
-          const newElement: OGElement = {
-            ...elementToCopy,
-            x: elementToCopy.x + 10,
-            y: elementToCopy.y + 10,
-            id: createElementId(),
-          };
-
-          addElement(newElement);
-          elementIdToCopy = newElement.id;
+        if (elementsIdToCopy) {
+          const elementsToCopy = elements.filter(
+            (item) => elementsIdToCopy?.includes(item.id),
+          );
+          elementsToCopy.forEach((elementToCopy) => {
+            const newElement: OGElement = {
+              ...elementToCopy,
+              x: elementToCopy.x + 10,
+              y: elementToCopy.y + 10,
+              id: createElementId(),
+            };
+            addElement(newElement);
+          });
+          setSelectedElementsId(elementsIdToCopy);
         }
       }
     }
@@ -206,12 +214,12 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
     };
   }, [
     rootRef,
-    selectedElementId,
+    selectedElementsId,
     removeElement,
     addElement,
     elements,
-    setSelectedElementId,
-    updateElement,
+    setSelectedElementsId,
+    updateElements,
     redo,
     undo,
   ]);

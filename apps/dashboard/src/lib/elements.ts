@@ -142,3 +142,49 @@ export function createImgElementStyle(element: OGElement): CSSProperties {
     Object.entries(base).filter(([, value]) => value !== undefined),
   );
 }
+
+/**
+ * Check if all selected elements have similar value for one parameter.
+ */
+export function showMixed(
+  selectedElements: OGElement[],
+  paramName: string,
+  sectionName?: "border" | "shadow" | "gradient",
+) {
+  const elementsValues: (string | number)[] = [];
+  for (const selectedElement of selectedElements) {
+    if (!sectionName) {
+      elementsValues.push(
+        // @ts-expect-error can't describe paramName, it can contain param names from every element type (p, div, span)
+        selectedElement[paramName] as string | number,
+      );
+      continue;
+    }
+
+    if (sectionName === "border" && selectedElement.border) {
+      elementsValues.push(
+        selectedElement.border[paramName as "color" | "width" | "style"],
+      );
+      continue;
+    }
+    if (sectionName === "shadow" && selectedElement.shadow) {
+      elementsValues.push(
+        selectedElement.shadow[
+          paramName as "color" | "width" | "blur" | "x" | "y"
+        ],
+      );
+      continue;
+    }
+    // @ts-expect-error selectedElement can be type OGBaseElement & OGDivElement
+    if (sectionName === "gradient" && selectedElement.gradient) {
+      elementsValues.push(
+        // @ts-expect-error selectedElement's type is OGBaseElement & OGDivElement
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- can't describe paramName, gradient counts as any
+        selectedElement.gradient[paramName] as string | number,
+      );
+      continue;
+    }
+  }
+
+  return !elementsValues.every((value) => value === elementsValues[0]);
+}

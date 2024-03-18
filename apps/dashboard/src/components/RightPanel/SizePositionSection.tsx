@@ -1,15 +1,17 @@
 import { Input } from "../forms/Input";
 import type { OGElement } from "../../lib/types";
 import { useElementsStore } from "../../stores/elementsStore";
+import { setValue } from "../../lib/inputs";
+import { showMixed } from "../../lib/elements";
 
 interface SizePositionSectionProps {
-  selectedElement: OGElement;
+  selectedElements: OGElement[];
 }
 
 export function SizePositionSection({
-  selectedElement,
+  selectedElements,
 }: SizePositionSectionProps) {
-  const updateElement = useElementsStore((state) => state.updateElement);
+  const updateElements = useElementsStore((state) => state.updateElements);
 
   return (
     <>
@@ -17,53 +19,113 @@ export function SizePositionSection({
       <div className="grid grid-cols-2 gap-2">
         <Input
           onChange={(value) => {
-            updateElement({
+            const updatedElements = selectedElements.map((selectedElement) => ({
               ...selectedElement,
-              x: value,
-            });
+              x: setValue(value),
+            }));
+            updateElements(updatedElements);
+          }}
+          onKeyDown={(direction) => {
+            const updatedElements = selectedElements.map((selectedElement) => ({
+              ...selectedElement,
+              x:
+                direction === "down"
+                  ? selectedElement.x - 1
+                  : selectedElement.x + 1,
+            }));
+            updateElements(updatedElements);
           }}
           suffix="px"
-          type="number"
-          value={selectedElement.x}
+          trackArrowDirection
+          type={showMixed(selectedElements, "x") ? "text" : "number"}
+          value={
+            showMixed(selectedElements, "x") ? "Mixed" : selectedElements[0].x
+          }
         >
           X
         </Input>
         <Input
           onChange={(value) => {
-            updateElement({
+            const updatedElements = selectedElements.map((selectedElement) => ({
               ...selectedElement,
-              y: value,
-            });
+              y: setValue(value),
+            }));
+            updateElements(updatedElements);
+          }}
+          onKeyDown={(direction) => {
+            const updatedElements = selectedElements.map((selectedElement) => ({
+              ...selectedElement,
+              y:
+                direction === "down"
+                  ? selectedElement.y - 1
+                  : selectedElement.y + 1,
+            }));
+            updateElements(updatedElements);
           }}
           suffix="px"
-          type="number"
-          value={selectedElement.y}
+          trackArrowDirection
+          type={showMixed(selectedElements, "y") ? "text" : "number"}
+          value={
+            showMixed(selectedElements, "y") ? "Mixed" : selectedElements[0].y
+          }
         >
           Y
         </Input>
         <Input
           onChange={(value) => {
-            updateElement({
+            const updatedElements = selectedElements.map((selectedElement) => ({
               ...selectedElement,
-              width: value,
-            });
+              width: setValue(value),
+            }));
+            updateElements(updatedElements);
+          }}
+          onKeyDown={(direction) => {
+            const updatedElements = selectedElements.map((selectedElement) => ({
+              ...selectedElement,
+              width:
+                direction === "down"
+                  ? selectedElement.width - 1
+                  : selectedElement.width + 1,
+            }));
+            updateElements(updatedElements);
           }}
           suffix="px"
-          type="number"
-          value={selectedElement.width}
+          trackArrowDirection
+          type={showMixed(selectedElements, "width") ? "text" : "number"}
+          value={
+            showMixed(selectedElements, "width")
+              ? "Mixed"
+              : selectedElements[0].width
+          }
         >
           W
         </Input>
         <Input
           onChange={(value) => {
-            updateElement({
+            const updatedElements = selectedElements.map((selectedElement) => ({
               ...selectedElement,
-              height: value,
-            });
+              height: setValue(value),
+            }));
+            updateElements(updatedElements);
+          }}
+          onKeyDown={(direction) => {
+            const updatedElements = selectedElements.map((selectedElement) => ({
+              ...selectedElement,
+              height:
+                direction === "down"
+                  ? selectedElement.height - 1
+                  : selectedElement.height + 1,
+            }));
+            updateElements(updatedElements);
           }}
           suffix="px"
-          type="number"
-          value={selectedElement.height}
+          trackArrowDirection
+          type={showMixed(selectedElements, "height") ? "text" : "number"}
+          value={
+            showMixed(selectedElements, "height")
+              ? "Mixed"
+              : selectedElements[0].height
+          }
         >
           H
         </Input>

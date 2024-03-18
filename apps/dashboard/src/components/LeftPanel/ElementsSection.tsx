@@ -53,7 +53,7 @@ export function ElementsSection() {
   return (
     <>
       <p className="text-xs text-gray-600">Elements</p>
-      <div className="flex flex-col-reverse w-full max-h-[calc(100vh-420px)] overflow-y-scroll no-scrollbar">
+      <div className="flex flex-col-reverse w-full max-h-[calc(100vh-420px)] py-[5px] overflow-y-scroll no-scrollbar">
         <DndContext
           collisionDetection={closestCenter}
           modifiers={[restrictToVerticalAxis]}
