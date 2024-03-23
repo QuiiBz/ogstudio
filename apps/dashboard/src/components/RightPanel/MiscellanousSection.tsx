@@ -4,6 +4,9 @@ import { CornerIcon } from "../icons/CornerIcon";
 import { OpacityIcon } from "../icons/OpacityIcon";
 import { RotateIcon } from "../icons/RotateIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { Button } from "../forms/Button";
+import { MagicWandIcon } from "../icons/MagicWandIcon";
+import { TextIcon } from "../icons/TextIcon";
 
 interface MiscellanousSectionProps {
   selectedElement: OGElement;
@@ -48,6 +51,45 @@ export function MiscellanousSection({
         >
           <RotateIcon />
         </Input>
+        {selectedElement.tag === "p" ? (
+          <Button
+            className="col-span-full"
+            icon={<MagicWandIcon />}
+            onClick={() => {
+              updateElement({
+                ...selectedElement,
+                tag: "span",
+                content: selectedElement.content
+                  .toLowerCase()
+                  .replace(/\s/g, "-"),
+                name:
+                  selectedElement.name === "Text"
+                    ? "Dynamic text"
+                    : selectedElement.name,
+              });
+            }}
+          >
+            Turn into Dynamic text
+          </Button>
+        ) : null}
+        {selectedElement.tag === "span" ? (
+          <Button
+            className="col-span-full"
+            icon={<TextIcon />}
+            onClick={() => {
+              updateElement({
+                ...selectedElement,
+                tag: "p",
+                name:
+                  selectedElement.name === "Dynamic text"
+                    ? "Text"
+                    : selectedElement.name,
+              });
+            }}
+          >
+            Turn into normal text
+          </Button>
+        ) : null}
         {selectedElement.tag === "div" ? (
           <Input
             max={999}

@@ -1,5 +1,6 @@
 import type { ComponentPropsWithRef, ReactNode } from "react";
 import { clsx } from "clsx";
+import Link from "next/link";
 
 interface ButtonProps {
   icon?: ReactNode;
@@ -22,7 +23,7 @@ export function Button({
   className,
   children,
 }: ButtonProps) {
-  const Tag = href ? "a" : "button";
+  const Tag = href ? Link : "button";
 
   return (
     <Tag
@@ -39,7 +40,7 @@ export function Button({
         },
         className,
       )}
-      href={disabled ? undefined : href}
+      href={disabled ? "" : href ?? ""}
       onClick={disabled ? undefined : onClick}
       type={type}
     >

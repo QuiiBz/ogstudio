@@ -1,19 +1,41 @@
 import type { MouseEvent, ReactNode } from "react";
-import { Suspense } from "react";
+// eslint-disable-next-line import/named -- todo
+import { Suspense, use, useMemo } from "react";
 import Link from "next/link";
-import usePromise from "react-promise-suspense";
 import { clsx } from "clsx";
 import type { OGElement } from "../lib/types";
 import { renderToImg } from "../lib/export";
+import { getDynamicTextKeys } from "../lib/elements";
 import { CopyIcon } from "./icons/CopyIcon";
 import { DeleteIcon } from "./icons/DeleteIcon";
 
 interface OgImageInnerProps {
   elements: OGElement[];
+  dynamicTexts?: Record<string, string>;
+  mockDynamicTexts?: boolean;
 }
 
-function OgImageInner({ elements }: OgImageInnerProps) {
-  const src = usePromise(renderToImg, [elements]);
+function OgImageInner({
+  elements,
+  dynamicTexts,
+  mockDynamicTexts,
+}: OgImageInnerProps) {
+  const texts = useMemo(() => {
+    if (mockDynamicTexts) {
+      const keys = getDynamicTextKeys(elements);
+
+      return keys.reduce<Record<string, string>>((acc, key) => {
+        return {
+          ...acc,
+          [key]: "Dynamic text",
+        };
+      }, {});
+    }
+
+    return dynamicTexts;
+  }, [elements, dynamicTexts, mockDynamicTexts]);
+
+  const src = use(renderToImg(elements, texts));
 
   return <img alt="" src={src} />;
 }
@@ -22,6 +44,8 @@ interface OgImageProps {
   href?: string;
   onClick?: (event: MouseEvent<HTMLElement>) => void;
   elements?: OGElement[];
+  dynamicTexts?: Record<string, string>;
+  mockDynamicTexts?: boolean;
   children?: ReactNode;
   name?: string;
   copiable?: (event: MouseEvent<HTMLSpanElement>) => void;
@@ -33,6 +57,8 @@ export function OgImage({
   href,
   onClick,
   elements,
+  dynamicTexts,
+  mockDynamicTexts,
   children,
   name,
   copiable,
@@ -59,7 +85,11 @@ export function OgImage({
             <div className="animate-pulse w-3/4 h-1/6 bg-gray-100 rounded-full" />
           }
         >
-          <OgImageInner elements={elements} />
+          <OgImageInner
+            dynamicTexts={dynamicTexts}
+            elements={elements}
+            mockDynamicTexts={mockDynamicTexts}
+          />
         </Suspense>
       ) : null}
       {children}

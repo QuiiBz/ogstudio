@@ -56,6 +56,8 @@ export interface FontData {
   weight: number;
 }
 
+const fontsCache = new Map<string, FontData>();
+
 /**
  * Load all fonts used in the given elements from Bunny Fonts. The fonts are
  * returned as an `ArrayBuffer`, along with the font name and weight.
@@ -67,6 +69,14 @@ export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
       .filter((element) => element.tag === "p" || element.tag === "span")
       .map(async (element) => {
         // @ts-expect-error -- wrong inference
+        const cacheKey = `${element.fontFamily}-${element.fontWeight}`;
+        const fontCache = fontsCache.get(cacheKey);
+
+        if (fontCache) {
+          return fontCache;
+        }
+
+        // @ts-expect-error -- wrong inference
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- wrong inference
         const fontName = element.fontFamily.toLowerCase().replace(" ", "-");
         const data = await fetch(
@@ -74,7 +84,7 @@ export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
           `https://fonts.bunny.net/${fontName}/files/${fontName}-latin-${element.fontWeight}-normal.woff`,
         ).then((response) => response.arrayBuffer());
 
-        return {
+        const fontData: FontData = {
           // @ts-expect-error -- wrong inference
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- wrong inference
           name: element.fontFamily,
@@ -83,6 +93,9 @@ export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- wrong inference
           weight: element.fontWeight,
         };
+
+        fontsCache.set(cacheKey, fontData);
+        return fontData;
       }),
   );
 }
