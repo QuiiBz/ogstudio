@@ -31,6 +31,7 @@ export function HomeSplash() {
               elements={template.elements}
               href={`/templates/${template.name.toLowerCase()}`}
               key={template.name}
+              mockDynamicTexts
               name={template.name}
             />
           ))}
@@ -70,6 +71,7 @@ export function HomeSplash() {
               }
               href={`/?i=${image.id}`}
               key={image.id}
+              mockDynamicTexts
               name={image.name}
             />
           ))}

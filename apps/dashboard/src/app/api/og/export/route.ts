@@ -1,4 +1,5 @@
 import { kv } from "@vercel/kv";
+import { revalidatePath } from "next/cache";
 import { getSession } from "../../../../lib/auth/api";
 import type { OGElement } from "../../../../lib/types";
 
@@ -23,5 +24,8 @@ export async function POST(request: Request) {
 
   await kv.set(key, JSON.stringify(elements));
 
-  return Response.json({ key: btoa(key) });
+  const encodedKey = btoa(key);
+  revalidatePath(`/api/og/${encodedKey}`);
+
+  return Response.json({ key: encodedKey });
 }

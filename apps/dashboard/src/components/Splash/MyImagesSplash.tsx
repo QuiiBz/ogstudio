@@ -39,6 +39,7 @@ export function MyImagesSplash() {
             }
             href={`/?i=${image.id}`}
             key={image.id}
+            mockDynamicTexts
             name={image.name}
           />
         ))}

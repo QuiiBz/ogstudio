@@ -19,6 +19,7 @@ export function TemplatesSplash() {
             elements={template.elements}
             href={`/templates/${template.name.toLowerCase()}`}
             key={template.name}
+            mockDynamicTexts
             name={template.name}
           />
         ))}

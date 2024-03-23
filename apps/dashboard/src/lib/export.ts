@@ -133,8 +133,11 @@ export async function exportToPng(svg: string): Promise<Uint8Array> {
  * Render an array of OG elements to an image data URL, to be used within
  * the `src` attribute of an `img` element.
  */
-export async function renderToImg(elements: OGElement[]) {
-  const reactElements = elementsToReactElements(elements);
+export async function renderToImg(
+  elements: OGElement[],
+  dynamicTexts?: Record<string, string>,
+) {
+  const reactElements = elementsToReactElements(elements, dynamicTexts);
   const fonts = await loadFonts(elements);
   const svg = await exportToSvg(reactElements, fonts);
 

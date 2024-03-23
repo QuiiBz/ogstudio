@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import type { OGElement } from "./types";
+import type { OGDynamicElement, OGElement } from "./types";
 import { hexToRgba } from "./colors";
 
 /**
@@ -141,4 +141,10 @@ export function createImgElementStyle(element: OGElement): CSSProperties {
   return Object.fromEntries(
     Object.entries(base).filter(([, value]) => value !== undefined),
   );
+}
+
+export function getDynamicTextKeys(elements: OGElement[]) {
+  return elements
+    .filter((element) => element.tag === "span")
+    .map((element) => (element as OGDynamicElement).content);
 }
