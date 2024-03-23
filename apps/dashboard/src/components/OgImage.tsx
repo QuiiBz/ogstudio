@@ -1,4 +1,5 @@
 import type { MouseEvent, ReactNode } from "react";
+// eslint-disable-next-line import/named -- todo
 import { Suspense, use, useMemo } from "react";
 import Link from "next/link";
 import { clsx } from "clsx";

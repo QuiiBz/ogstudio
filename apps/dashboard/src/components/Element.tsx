@@ -251,18 +251,20 @@ export function Element({ element }: ElementProps) {
       target.addEventListener("keydown", onKeyDown);
     }
 
-    if (elementRef.current) {
-      elementRef.current.addEventListener("mousedown", onMouseDown);
+    const ref = elementRef.current;
+
+    if (ref) {
+      ref.addEventListener("mousedown", onMouseDown);
 
       if (element.tag === "p") {
-        elementRef.current.addEventListener("dblclick", onDoubleClick);
+        ref.addEventListener("dblclick", onDoubleClick);
       }
     }
 
     return () => {
-      if (elementRef.current) {
-        elementRef.current.removeEventListener("mousedown", onMouseDown);
-        elementRef.current.removeEventListener("dblclick", onDoubleClick);
+      if (ref) {
+        ref.removeEventListener("mousedown", onMouseDown);
+        ref.removeEventListener("dblclick", onDoubleClick);
       }
     };
   }, [

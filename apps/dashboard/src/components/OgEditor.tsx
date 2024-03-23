@@ -189,17 +189,19 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
       }
     }
 
-    if (rootRef.current) {
-      rootRef.current.addEventListener("contextmenu", onContextMenu);
-      rootRef.current.addEventListener("click", onClick);
+    const ref = rootRef.current;
+
+    if (ref) {
+      ref.addEventListener("contextmenu", onContextMenu);
+      ref.addEventListener("click", onClick);
     }
 
     document.addEventListener("keydown", onKeyDown);
 
     return () => {
-      if (rootRef.current) {
-        rootRef.current.removeEventListener("contextmenu", onContextMenu);
-        rootRef.current.removeEventListener("click", onClick);
+      if (ref) {
+        ref.removeEventListener("contextmenu", onContextMenu);
+        ref.removeEventListener("click", onClick);
       }
 
       document.removeEventListener("keydown", onKeyDown);

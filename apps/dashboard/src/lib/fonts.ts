@@ -1,4 +1,4 @@
-import type { OGDynamicElement, OGElement, OGPElement } from "./types";
+import type { OGElement } from "./types";
 
 export const FONTS = [
   "Roboto",
