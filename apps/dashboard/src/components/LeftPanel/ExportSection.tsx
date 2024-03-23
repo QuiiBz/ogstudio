@@ -1,6 +1,7 @@
 import { startTransition, useEffect, useMemo, useState } from "react";
 import { flushSync } from "react-dom";
 import { toast } from "sonner";
+import Link from "next/link";
 import { Button } from "../forms/Button";
 import { PngIcon } from "../icons/PngIcon";
 import { SvgIcon } from "../icons/SvgIcon";
@@ -22,6 +23,8 @@ import { getDynamicTextKeys } from "../../lib/elements";
 import { Input } from "../forms/Input";
 import { CustomLink } from "../CustomLink";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
+import { useUser } from "../../lib/hooks/useUser";
+import { Tooltip } from "../Tooltip";
 
 interface ExportModalProps {
   close: () => void;
@@ -39,10 +42,12 @@ function ExportModal({ close }: ExportModalProps) {
   );
   const [key, setKey] = useState<string | null>(null);
   const [type, setType] = useState<"html" | "url">("html");
+  const { data } = useUser();
+  const isSignedIn = Boolean(data && "user" in data);
 
   useEffect(() => {
     async function exportUrl() {
-      if (!selectedImageId) {
+      if (!selectedImageId || !isSignedIn) {
         return;
       }
 
@@ -65,7 +70,7 @@ function ExportModal({ close }: ExportModalProps) {
     }
 
     exportUrl().catch(console.error);
-  }, [selectedImageId, elements]);
+  }, [selectedImageId, elements, isSignedIn]);
 
   function changeType(newType: typeof type) {
     return () => {
@@ -75,15 +80,31 @@ function ExportModal({ close }: ExportModalProps) {
     };
   }
 
-  let url = `${window.location.origin}/api/og/${key ?? "x".repeat(32)}`;
+  const finalKey = key ? (
+    key
+  ) : (
+    <span className="blur-sm">{"x".repeat(32)}</span>
+  );
+  let url = (
+    <>
+      {window.location.origin}/api/og/{finalKey}
+    </>
+  );
 
   if (dynamicTextKeys.length > 0) {
-    url += "?";
-
-    const queryParams = dynamicTextKeys
-      .map((dynamicKey) => `${dynamicKey}=${dynamicTexts[dynamicKey]}`)
-      .join("&");
-    url += encodeURI(queryParams);
+    url = (
+      <>
+        {url}
+        <b>
+          ?
+          {encodeURI(
+            dynamicTextKeys
+              .map((current) => `${current}=${dynamicTexts[current]}`)
+              .join("&"),
+          )}
+        </b>
+      </>
+    );
   }
 
   return (
@@ -142,16 +163,36 @@ function ExportModal({ close }: ExportModalProps) {
             </Button>
           </div>
         </div>
-        <pre
-          className="font-mono p-3 rounded text-gray-900 bg-gray-50 text-wrap"
-          style={{ wordBreak: "break-all" }}
+        <Tooltip
+          content={
+            isSignedIn ? undefined : (
+              <>
+                <Link className="underline" href="/login" onClick={close}>
+                  Sign in
+                </Link>
+                &nbsp;to export to an URL
+              </>
+            )
+          }
         >
-          {type === "html"
-            ? `<head>
-  <meta property="og:image" content="${url}" />
-</head>`
-            : url}
-        </pre>
+          <pre
+            className="font-mono p-3 rounded text-gray-900 bg-gray-50 text-wrap"
+            style={{ wordBreak: "break-all" }}
+          >
+            {type === "html" ? (
+              <>
+                &lt;head&gt;
+                <br />
+                &nbsp;&nbsp;&lt;meta property=&quot;og:image&quot;
+                content=&quot;
+                {url}&quot;&gt;
+                <br />
+                &lt;/head&gt;
+              </>
+            ) : null}
+            {type === "url" ? url : null}
+          </pre>
+        </Tooltip>
       </div>
     </>
   );
