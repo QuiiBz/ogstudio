@@ -21,6 +21,7 @@ export function MiscellanousSection({
       <Text size="1">Miscellanous</Text>
       <Grid columns="2" gap="2">
         <TextField.Root
+          color="gray"
           max={100}
           min={0}
           onChange={(event) => {
@@ -31,6 +32,7 @@ export function MiscellanousSection({
           }}
           type="number"
           value={selectedElement.opacity}
+          variant="soft"
         >
           <TextField.Slot>
             <OpacityIcon />
@@ -38,6 +40,7 @@ export function MiscellanousSection({
           <TextField.Slot>%</TextField.Slot>
         </TextField.Root>
         <TextField.Root
+          color="gray"
           max={360}
           min={-360}
           onChange={(event) => {
@@ -48,6 +51,7 @@ export function MiscellanousSection({
           }}
           type="number"
           value={selectedElement.rotate}
+          variant="soft"
         >
           <TextField.Slot>
             <RotateIcon />
@@ -56,6 +60,7 @@ export function MiscellanousSection({
         </TextField.Root>
         {selectedElement.tag === "div" ? (
           <TextField.Root
+            color="gray"
             max={999}
             min={0}
             onChange={(event) => {
@@ -66,6 +71,7 @@ export function MiscellanousSection({
             }}
             type="number"
             value={selectedElement.radius}
+            variant="soft"
           >
             <TextField.Slot>
               <CornerIcon />

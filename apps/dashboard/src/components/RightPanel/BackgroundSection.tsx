@@ -41,9 +41,11 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                     backgroundColor: event.target.value,
                   });
                 }}
+                value={selectedElement.backgroundColor}
+                variant="soft"
+                color="gray"
                 // @ts-expect-error wtf?
                 type="color"
-                value={selectedElement.backgroundColor}
               >
                 <TextField.Slot>
                   <ColorIcon />
@@ -101,15 +103,18 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                     },
                   });
                 }}
+                value={selectedElement.gradient.start}
+                variant="soft"
+                color="gray"
                 // @ts-expect-error wtf?
                 type="color"
-                value={selectedElement.gradient.start}
               >
                 <TextField.Slot>
                   <StartIcon />
                 </TextField.Slot>
               </TextField.Root>
               <TextField.Root
+                color="gray"
                 onChange={(event) => {
                   updateElement({
                     ...selectedElement,
@@ -120,9 +125,10 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                     },
                   });
                 }}
+                value={selectedElement.gradient.end}
+                variant="soft"
                 // @ts-expect-error wtf?
                 type="color"
-                value={selectedElement.gradient.end}
               >
                 <TextField.Slot>
                   <EndIcon />
@@ -141,7 +147,7 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                 }}
                 value={selectedElement.gradient.type}
               >
-                <Select.Trigger />
+                <Select.Trigger color="gray" variant="soft" />
                 <Select.Content>
                   <Select.Item value="linear">Linear</Select.Item>
                   <Select.Item value="radial">Radial</Select.Item>
@@ -149,6 +155,7 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
               </Select.Root>
               {selectedElement.gradient.type === "linear" ? (
                 <TextField.Root
+                  color="gray"
                   max={360}
                   min={-360}
                   onChange={(event) => {
@@ -163,6 +170,7 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                   }}
                   type="number"
                   value={selectedElement.gradient.angle}
+                  variant="soft"
                 >
                   <TextField.Slot>
                     <SquareIcon />
@@ -213,6 +221,7 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
             <Grid columns="2" gap="2">
               <TextField.Root
                 className="col-span-full"
+                color="gray"
                 onChange={(event) => {
                   updateElement({
                     ...selectedElement,
@@ -220,6 +229,7 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                   });
                 }}
                 value={selectedElement.backgroundImage}
+                variant="soft"
               >
                 <TextField.Slot>
                   <LinkIcon />
@@ -235,7 +245,7 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                 }}
                 value={selectedElement.backgroundSize}
               >
-                <Select.Trigger />
+                <Select.Trigger color="gray" variant="soft" />
                 <Select.Content>
                   <Select.Item value="contain">Contain</Select.Item>
                   <Select.Item value="cover">Cover</Select.Item>

@@ -16,6 +16,7 @@ export function SizePositionSection({
       <Text size="1">Size & position</Text>
       <Grid columns="2" gap="2">
         <TextField.Root
+          color="gray"
           onChange={(event) => {
             updateElement({
               ...selectedElement,
@@ -24,11 +25,13 @@ export function SizePositionSection({
           }}
           type="number"
           value={selectedElement.x}
+          variant="soft"
         >
           <TextField.Slot>X</TextField.Slot>
           <TextField.Slot>px</TextField.Slot>
         </TextField.Root>
         <TextField.Root
+          color="gray"
           onChange={(event) => {
             updateElement({
               ...selectedElement,
@@ -37,6 +40,7 @@ export function SizePositionSection({
           }}
           type="number"
           value={selectedElement.y}
+          variant="soft"
         >
           <TextField.Slot>Y</TextField.Slot>
           <TextField.Slot>px</TextField.Slot>
@@ -50,6 +54,7 @@ export function SizePositionSection({
             });
           }}
           value={selectedElement.width}
+          variant="soft"
         >
           <TextField.Slot>W</TextField.Slot>
           <TextField.Slot>px</TextField.Slot>
@@ -63,6 +68,7 @@ export function SizePositionSection({
             });
           }}
           value={selectedElement.height}
+          variant="soft"
         >
           <TextField.Slot>H</TextField.Slot>
           <TextField.Slot>px</TextField.Slot>

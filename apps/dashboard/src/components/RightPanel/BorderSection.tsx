@@ -71,15 +71,18 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
                 },
               });
             }}
+            value={selectedElement.border.color}
+            variant="soft"
+            color="gray"
             // @ts-expect-error wtf?
             type="color"
-            value={selectedElement.border.color}
           >
             <TextField.Slot>
               <ColorIcon />
             </TextField.Slot>
           </TextField.Root>
           <TextField.Root
+            color="gray"
             max={99}
             min={0}
             onChange={(event) => {
@@ -94,6 +97,7 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
             }}
             type="number"
             value={selectedElement.border.width}
+            variant="soft"
           >
             <TextField.Slot>
               <WidthIcon />
@@ -113,7 +117,7 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
             }}
             value={selectedElement.border.style}
           >
-            <Select.Trigger />
+            <Select.Trigger color="gray" variant="soft" />
             <Select.Content>
               <Select.Item value="outside">Outside</Select.Item>
               <Select.Item value="inside">Inside</Select.Item>

@@ -59,6 +59,7 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
           {selectedElement.tag === "p" ||
           selectedElement.tag === "span" ? null : (
             <TextField.Root
+              color="gray"
               max={99}
               min={0}
               onChange={(event) => {
@@ -73,6 +74,7 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
               }}
               type="number"
               value={selectedElement.shadow.width}
+              variant="soft"
             >
               <TextField.Slot>
                 <WidthIcon />
@@ -81,6 +83,7 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
             </TextField.Root>
           )}
           <TextField.Root
+            color="gray"
             max={99}
             min={0}
             onChange={(event) => {
@@ -95,6 +98,7 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
             }}
             type="number"
             value={selectedElement.shadow.blur}
+            variant="soft"
           >
             <TextField.Slot>
               <GradientIcon />
@@ -102,6 +106,7 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
             <TextField.Slot>px</TextField.Slot>
           </TextField.Root>
           <TextField.Root
+            color="gray"
             onChange={(event) => {
               updateElement({
                 ...selectedElement,
@@ -114,11 +119,13 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
             }}
             type="number"
             value={selectedElement.shadow.x}
+            variant="soft"
           >
             <TextField.Slot>X</TextField.Slot>
             <TextField.Slot>px</TextField.Slot>
           </TextField.Root>
           <TextField.Root
+            color="gray"
             onChange={(event) => {
               updateElement({
                 ...selectedElement,
@@ -131,6 +138,7 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
             }}
             type="number"
             value={selectedElement.shadow.y}
+            variant="soft"
           >
             <TextField.Slot>Y</TextField.Slot>
             <TextField.Slot>px</TextField.Slot>
@@ -146,9 +154,11 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
                 },
               });
             }}
+            value={selectedElement.shadow.color}
+            variant="soft"
+            color="gray"
             // @ts-expect-error wtf?
             type="color"
-            value={selectedElement.shadow.color}
           >
             <TextField.Slot>
               <ColorIcon />

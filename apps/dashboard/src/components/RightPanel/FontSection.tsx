@@ -48,7 +48,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           }}
           value={selectedElement.fontFamily}
         >
-          <Select.Trigger />
+          <Select.Trigger color="gray" variant="soft" />
           <Select.Content>
             {FONTS.map((font) => (
               <Select.Item key={font} value={font}>
@@ -66,7 +66,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           }}
           value={String(selectedElement.fontWeight)}
         >
-          <Select.Trigger />
+          <Select.Trigger color="gray" variant="soft" />
           <Select.Content>
             {FONT_WEIGHTS[selectedElement.fontFamily].map((weight) => (
               <Select.Item key={weight} value={String(weight)}>
@@ -76,6 +76,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           </Select.Content>
         </Select.Root>
         <TextField.Root
+          color="gray"
           onChange={(event) => {
             updateElement({
               ...selectedElement,
@@ -84,6 +85,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           }}
           type="number"
           value={selectedElement.fontSize}
+          variant="soft"
         >
           <TextField.Slot>
             <FontSizeIcon />
@@ -91,21 +93,24 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           <TextField.Slot>px</TextField.Slot>
         </TextField.Root>
         <TextField.Root
+          color="gray"
           onChange={(event) => {
             updateElement({
               ...selectedElement,
               color: event.target.value,
             });
           }}
+          value={selectedElement.color}
+          variant="soft"
           // @ts-expect-error wtf?
           type="color"
-          value={selectedElement.color}
         >
           <TextField.Slot>
             <ColorIcon />
           </TextField.Slot>
         </TextField.Root>
         <TextField.Root
+          color="gray"
           max={5}
           min={0}
           onChange={(event) => {
@@ -116,12 +121,14 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           }}
           type="number"
           value={selectedElement.lineHeight}
+          variant="soft"
         >
           <TextField.Slot>
             <LineHeightIcon />
           </TextField.Slot>
         </TextField.Root>
         <TextField.Root
+          color="gray"
           max={10}
           min={-10}
           onChange={(event) => {
@@ -132,6 +139,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           }}
           type="number"
           value={selectedElement.letterSpacing}
+          variant="soft"
         >
           <TextField.Slot>
             <LetterSpacingIcon />
@@ -148,7 +156,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           }}
           value={selectedElement.align}
         >
-          <Select.Trigger />
+          <Select.Trigger color="gray" variant="soft" />
           <Select.Content>
             <Select.Item value="left">Left</Select.Item>
             <Select.Item value="right">Right</Select.Item>
@@ -170,6 +178,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
         {selectedElement.tag === "span" ? (
           <TextField.Root
             className="col-span-full"
+            color="gray"
             onChange={(event) => {
               // Remove all spaces
               const newValue = event.target.value.replaceAll(SPACES_REGEX, "");
@@ -180,6 +189,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
               });
             }}
             value={selectedElement.content}
+            variant="soft"
           />
         ) : null}
       </Grid>
