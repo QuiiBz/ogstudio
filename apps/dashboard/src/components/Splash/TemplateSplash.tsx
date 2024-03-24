@@ -39,7 +39,6 @@ export function TemplateSplash({ template }: TemplateSplashProps) {
             className="w-fit"
             color="green"
             onClick={useTemplate}
-            size="3"
             variant="soft"
           >
             Start with this template

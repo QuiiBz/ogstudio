@@ -1,4 +1,5 @@
-import { Button } from "../../components/forms/Button";
+import { Button, Flex, Text } from "@radix-ui/themes";
+import Link from "next/link";
 import { GitHubIcon } from "../../components/icons/GitHubIcon";
 import { GoogleIcon } from "../../components/icons/GoogleIcon";
 
@@ -11,22 +12,28 @@ export const dynamic = "force-static";
 
 export default function Page() {
   return (
-    <div className="flex flex-col items-center justify-center gap-8 mt-32">
-      <div className="flex flex-col items-center gap-2">
-        <h2 className="text-gray-800 text-xl">Sign in</h2>
-        <p className="text-sm text-gray-600 text-center">
+    <Flex align="center" direction="column" gap="6" justify="center" mx="9">
+      <Flex align="center" direction="column" gap="2">
+        <Text size="5">Sign in</Text>
+        <Text align="center" as="p" size="2">
           Create an account to export your images to URLs <br /> and make them
           available in all your devices.
-        </p>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <Button href="/api/auth/github" icon={<GitHubIcon />}>
-          Sign in with GitHub
+        </Text>
+      </Flex>
+      <Flex align="center" direction="column" gap="2">
+        <Button asChild color="gray" variant="soft">
+          <Link href="/api/auth/github">
+            <GitHubIcon />
+            Sign in with GitHub
+          </Link>
         </Button>
-        <Button href="/api/auth/google" icon={<GoogleIcon />}>
-          Sign in with Google
+        <Button asChild color="gray" variant="soft">
+          <Link href="/api/auth/google">
+            <GoogleIcon />
+            Sign in with Google
+          </Link>
         </Button>
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 }

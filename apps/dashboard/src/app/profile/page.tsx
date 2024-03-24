@@ -1,7 +1,7 @@
 "use client";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Button } from "../../components/forms/Button";
+import { Button } from "@radix-ui/themes";
 import { LogoutIcon } from "../../components/icons/LogoutIcon";
 import { logoutAction } from "./logoutAction";
 
@@ -24,7 +24,8 @@ export default function Page() {
 
   return (
     <form action={logout}>
-      <Button icon={<LogoutIcon />} type="submit" variant="danger">
+      <Button color="red" type="submit" variant="soft">
+        <LogoutIcon />
         Sign out
       </Button>
     </form>
