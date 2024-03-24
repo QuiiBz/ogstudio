@@ -1,14 +1,17 @@
-import { Input } from "../forms/Input";
-import { Select } from "../forms/Select";
+import {
+  Flex,
+  Grid,
+  Text,
+  Select,
+  TextField,
+  TextArea,
+} from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
-import { TextIcon } from "../icons/TextIcon";
 import type { Font } from "../../lib/fonts";
 import { FONTS, FONT_WEIGHTS } from "../../lib/fonts";
-import { BoldIcon } from "../icons/BoldIcon";
 import { FontSizeIcon } from "../icons/FontSizeIcon";
 import { ColorIcon } from "../icons/ColorIcon";
 import { LineHeightIcon } from "../icons/LineHeightIcon";
-import { AlignLeftIcon } from "../icons/AlignLeftIcon";
 import { LetterSpacingIcon } from "../icons/LetterSpacingIcon";
 import { useElementsStore } from "../../stores/elementsStore";
 
@@ -26,11 +29,11 @@ export function FontSection({ selectedElement }: FontSectionProps) {
   }
 
   return (
-    <>
-      <p className="text-xs text-gray-600">Font</p>
-      <div className="grid grid-cols-2 gap-2">
-        <Select
-          onChange={(value) => {
+    <Flex direction="column" gap="2">
+      <Text size="1">Font</Text>
+      <Grid columns="2" gap="2">
+        <Select.Root
+          onValueChange={(value) => {
             const font = value as unknown as Font;
 
             updateElement({
@@ -44,77 +47,107 @@ export function FontSection({ selectedElement }: FontSectionProps) {
             });
           }}
           value={selectedElement.fontFamily}
-          values={[...FONTS]}
         >
-          <TextIcon />
-        </Select>
-        <Select
-          onChange={(value) => {
+          <Select.Trigger color="gray" variant="soft" />
+          <Select.Content>
+            {FONTS.map((font) => (
+              <Select.Item key={font} value={font}>
+                {font}
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select.Root>
+        <Select.Root
+          onValueChange={(value) => {
             updateElement({
               ...selectedElement,
               fontWeight: Number(value),
             });
           }}
           value={String(selectedElement.fontWeight)}
-          values={FONT_WEIGHTS[selectedElement.fontFamily].map(String)}
         >
-          <BoldIcon />
-        </Select>
-        <Input
-          onChange={(value) => {
+          <Select.Trigger color="gray" variant="soft" />
+          <Select.Content>
+            {FONT_WEIGHTS[selectedElement.fontFamily].map((weight) => (
+              <Select.Item key={weight} value={String(weight)}>
+                {weight}
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select.Root>
+        <TextField.Root
+          color="gray"
+          onChange={(event) => {
             updateElement({
               ...selectedElement,
-              fontSize: value,
+              fontSize: event.target.valueAsNumber,
             });
           }}
-          suffix="px"
           type="number"
           value={selectedElement.fontSize}
+          variant="soft"
         >
-          <FontSizeIcon />
-        </Input>
-        <Input
-          onChange={(value) => {
+          <TextField.Slot>
+            <FontSizeIcon />
+          </TextField.Slot>
+          <TextField.Slot>px</TextField.Slot>
+        </TextField.Root>
+        <TextField.Root
+          color="gray"
+          onChange={(event) => {
             updateElement({
               ...selectedElement,
-              color: value,
+              color: event.target.value,
             });
           }}
-          type="color"
           value={selectedElement.color}
+          variant="soft"
+          // @ts-expect-error wtf?
+          type="color"
         >
-          <ColorIcon />
-        </Input>
-        <Input
+          <TextField.Slot>
+            <ColorIcon />
+          </TextField.Slot>
+        </TextField.Root>
+        <TextField.Root
+          color="gray"
           max={5}
           min={0}
-          onChange={(value) => {
+          onChange={(event) => {
             updateElement({
               ...selectedElement,
-              lineHeight: value,
+              lineHeight: event.target.valueAsNumber,
             });
           }}
           type="number"
           value={selectedElement.lineHeight}
+          variant="soft"
         >
-          <LineHeightIcon />
-        </Input>
-        <Input
+          <TextField.Slot>
+            <LineHeightIcon />
+          </TextField.Slot>
+        </TextField.Root>
+        <TextField.Root
+          color="gray"
           max={10}
           min={-10}
-          onChange={(value) => {
+          onChange={(event) => {
             updateElement({
               ...selectedElement,
-              letterSpacing: value,
+              letterSpacing: event.target.valueAsNumber,
             });
           }}
           type="number"
           value={selectedElement.letterSpacing}
+          variant="soft"
         >
-          <LetterSpacingIcon />
-        </Input>
-        <Select
-          onChange={(value) => {
+          <TextField.Slot>
+            <LetterSpacingIcon />
+          </TextField.Slot>
+          <TextField.Slot>px</TextField.Slot>
+        </TextField.Root>
+        <Select.Root
+          onValueChange={(value) => {
             updateElement({
               ...selectedElement,
               // @ts-expect-error wtf?
@@ -122,40 +155,44 @@ export function FontSection({ selectedElement }: FontSectionProps) {
             });
           }}
           value={selectedElement.align}
-          values={["left", "right", "center"]}
         >
-          <AlignLeftIcon />
-        </Select>
+          <Select.Trigger color="gray" variant="soft" />
+          <Select.Content>
+            <Select.Item value="left">Left</Select.Item>
+            <Select.Item value="right">Right</Select.Item>
+            <Select.Item value="center">Center</Select.Item>
+          </Select.Content>
+        </Select.Root>
         {selectedElement.tag === "p" ? (
-          <Input
+          <TextArea
             className="col-span-full"
-            onChange={(value) => {
+            onChange={(event) => {
               updateElement({
                 ...selectedElement,
-                content: value,
+                content: event.target.value,
               });
             }}
-            type="textarea"
             value={selectedElement.content}
           />
         ) : null}
         {selectedElement.tag === "span" ? (
-          <Input
+          <TextField.Root
             className="col-span-full"
-            onChange={(value) => {
+            color="gray"
+            onChange={(event) => {
               // Remove all spaces
-              const newValue = value.replaceAll(SPACES_REGEX, "");
+              const newValue = event.target.value.replaceAll(SPACES_REGEX, "");
 
               updateElement({
                 ...selectedElement,
                 content: newValue,
               });
             }}
-            type="text"
             value={selectedElement.content}
+            variant="soft"
           />
         ) : null}
-      </div>
-    </>
+      </Grid>
+    </Flex>
   );
 }

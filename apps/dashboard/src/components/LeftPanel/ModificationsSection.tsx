@@ -1,5 +1,5 @@
+import { Text, Button, Grid, Flex } from "@radix-ui/themes";
 import { useElementsStore } from "../../stores/elementsStore";
-import { Button } from "../forms/Button";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { RedoIcon } from "../icons/RedoIcon";
 import { UndoIcon } from "../icons/UndoIcon";
@@ -18,38 +18,40 @@ export function ModificationSection() {
   }
 
   return (
-    <>
-      <p className="text-xs text-gray-600">Modifications</p>
-      <div className="grid grid-cols-2 gap-2 w-full">
+    <Flex direction="column" gap="2">
+      <Text size="1">Modifications</Text>
+      <Grid columns="2" gap="2">
         <Button
+          color="gray"
           disabled={pastStates.length === 0}
-          icon={<UndoIcon />}
           onClick={() => {
             undo();
           }}
+          variant="soft"
         >
-          Undo
+          <UndoIcon /> Undo
         </Button>
         <Button
+          color="gray"
           disabled={futureStates.length === 0}
-          icon={<RedoIcon />}
           onClick={() => {
             redo();
           }}
+          variant="soft"
         >
-          Redo
+          <RedoIcon /> Redo
         </Button>
         <Button
           className="col-span-full"
-          icon={<DeleteIcon />}
+          color="red"
           onClick={() => {
             reset();
           }}
-          variant="danger"
+          variant="soft"
         >
-          Reset
+          <DeleteIcon /> Reset
         </Button>
-      </div>
-    </>
+      </Grid>
+    </Flex>
   );
 }

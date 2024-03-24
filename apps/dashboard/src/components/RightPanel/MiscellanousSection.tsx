@@ -1,10 +1,9 @@
+import { Flex, Button, Grid, Text, TextField } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
-import { Input } from "../forms/Input";
 import { CornerIcon } from "../icons/CornerIcon";
 import { OpacityIcon } from "../icons/OpacityIcon";
 import { RotateIcon } from "../icons/RotateIcon";
 import { useElementsStore } from "../../stores/elementsStore";
-import { Button } from "../forms/Button";
 import { MagicWandIcon } from "../icons/MagicWandIcon";
 import { TextIcon } from "../icons/TextIcon";
 
@@ -18,43 +17,72 @@ export function MiscellanousSection({
   const updateElement = useElementsStore((state) => state.updateElement);
 
   return (
-    <>
-      <p className="text-xs text-gray-600">Miscellaneous</p>
-      <div className="grid grid-cols-2 gap-2 w-full">
-        <Input
+    <Flex direction="column" gap="2">
+      <Text size="1">Miscellanous</Text>
+      <Grid columns="2" gap="2">
+        <TextField.Root
+          color="gray"
           max={100}
           min={0}
-          onChange={(value) => {
+          onChange={(event) => {
             updateElement({
               ...selectedElement,
-              opacity: value,
+              opacity: event.target.valueAsNumber,
             });
           }}
-          suffix="%"
           type="number"
           value={selectedElement.opacity}
+          variant="soft"
         >
-          <OpacityIcon />
-        </Input>
-        <Input
+          <TextField.Slot>
+            <OpacityIcon />
+          </TextField.Slot>
+          <TextField.Slot>%</TextField.Slot>
+        </TextField.Root>
+        <TextField.Root
+          color="gray"
           max={360}
           min={-360}
-          onChange={(value) => {
+          onChange={(event) => {
             updateElement({
               ...selectedElement,
-              rotate: value,
+              rotate: event.target.valueAsNumber,
             });
           }}
-          suffix="deg"
           type="number"
           value={selectedElement.rotate}
+          variant="soft"
         >
-          <RotateIcon />
-        </Input>
+          <TextField.Slot>
+            <RotateIcon />
+          </TextField.Slot>
+          <TextField.Slot>deg</TextField.Slot>
+        </TextField.Root>
+        {selectedElement.tag === "div" ? (
+          <TextField.Root
+            color="gray"
+            max={999}
+            min={0}
+            onChange={(event) => {
+              updateElement({
+                ...selectedElement,
+                radius: event.target.valueAsNumber,
+              });
+            }}
+            type="number"
+            value={selectedElement.radius}
+            variant="soft"
+          >
+            <TextField.Slot>
+              <CornerIcon />
+            </TextField.Slot>
+            <TextField.Slot>px</TextField.Slot>
+          </TextField.Root>
+        ) : null}
         {selectedElement.tag === "p" ? (
           <Button
             className="col-span-full"
-            icon={<MagicWandIcon />}
+            color="gray"
             onClick={() => {
               updateElement({
                 ...selectedElement,
@@ -68,14 +96,15 @@ export function MiscellanousSection({
                     : selectedElement.name,
               });
             }}
+            variant="soft"
           >
-            Turn into Dynamic text
+            <MagicWandIcon /> Turn in Dynamic text
           </Button>
         ) : null}
         {selectedElement.tag === "span" ? (
           <Button
             className="col-span-full"
-            icon={<TextIcon />}
+            color="gray"
             onClick={() => {
               updateElement({
                 ...selectedElement,
@@ -86,28 +115,13 @@ export function MiscellanousSection({
                     : selectedElement.name,
               });
             }}
+            variant="soft"
           >
+            <TextIcon />
             Turn into normal text
           </Button>
         ) : null}
-        {selectedElement.tag === "div" ? (
-          <Input
-            max={999}
-            min={0}
-            onChange={(value) => {
-              updateElement({
-                ...selectedElement,
-                radius: value,
-              });
-            }}
-            suffix="px"
-            type="number"
-            value={selectedElement.radius ?? 0}
-          >
-            <CornerIcon />
-          </Input>
-        ) : null}
-      </div>
-    </>
+      </Grid>
+    </Flex>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { CustomLink } from "../CustomLink";
+import { Button, Separator, Text } from "@radix-ui/themes";
+import Link from "next/link";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 import { AddIcon } from "../icons/AddIcon";
 import type { OGElement } from "../../lib/types";
@@ -16,14 +17,13 @@ export function HomeSplash() {
     <>
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <h2 className="text-gray-800 text-xl">Templates</h2>
-          <CustomLink
-            href="/templates"
-            icon={<ArrowRightIcon />}
-            iconPosition="right"
-          >
-            See all ({TEMPLATES.length})
-          </CustomLink>
+          <Text size="5">Templates</Text>
+          <Button asChild color="gray" radius="full" variant="ghost">
+            <Link href="/templates">
+              See all ({TEMPLATES.length})
+              <ArrowRightIcon />
+            </Link>
+          </Button>
         </div>
         <div className="flex gap-2">
           {TEMPLATES.slice(0, 3).map((template) => (
@@ -37,23 +37,22 @@ export function HomeSplash() {
           ))}
         </div>
       </div>
-      <div className="h-[1px] w-full bg-gray-100 my-8" />
+      <Separator className="opacity-50" my="6" size="4" />
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <h2 className="text-gray-800 text-xl">My images</h2>
-          <CustomLink
-            href="/my-images"
-            icon={<ArrowRightIcon />}
-            iconPosition="right"
-          >
-            See all ({images.length})
-          </CustomLink>
+          <Text size="5">My images</Text>
+          <Button asChild color="gray" radius="full" variant="ghost">
+            <Link href="/my-images">
+              See all ({images.length})
+              <ArrowRightIcon />
+            </Link>
+          </Button>
         </div>
         <div className="flex gap-2">
           <OgImage
             onClick={() => {
               const { id } = createEmptyImage();
-              router.push(`/?i=${id}`);
+              router.push(`/editor?i=${id}`);
             }}
           >
             <AddIcon height="1.4em" width="1.4em" /> Start from scratch
@@ -69,7 +68,7 @@ export function HomeSplash() {
                   localStorage.getItem(image.id) || "[]",
                 ) as OGElement[]
               }
-              href={`/?i=${image.id}`}
+              href={`/editor?i=${image.id}`}
               key={image.id}
               mockDynamicTexts
               name={image.name}

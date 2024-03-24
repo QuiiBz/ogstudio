@@ -1,6 +1,7 @@
 @import url('https://fonts.bunny.net/css?family=inter:400');
+@import "tailwindcss/base";
+@import "@radix-ui/themes/styles.css";
 
-@tailwind base;
 @tailwind components;
 @tailwind utilities;
 

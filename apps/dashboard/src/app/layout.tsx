@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Splash } from "../components/Splash";
 import { Providers } from "../components/Providers";
+// import "@radix-ui/themes/styles.css";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });

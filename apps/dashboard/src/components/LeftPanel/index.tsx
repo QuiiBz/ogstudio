@@ -1,3 +1,4 @@
+import { Flex, Separator } from "@radix-ui/themes";
 import { ExportSection } from "./ExportSection";
 import { ModificationSection } from "./ModificationsSection";
 import { ElementsSection } from "./ElementsSection";
@@ -5,17 +6,17 @@ import { SplashSection } from "./SplashSection";
 
 export function LeftPanel() {
   return (
-    <div className="flex flex-col justify-between p-4 h-full">
-      <div className="flex flex-col items-start gap-4">
+    <Flex direction="column" gap="4" height="100vh" justify="between" p="4">
+      <Flex direction="column" gap="4">
         <SplashSection />
-        <div className="h-[1px] w-full bg-gray-100" />
+        <Separator className="opacity-50" size="4" />
         <ElementsSection />
-      </div>
-      <div className="flex flex-col items-start gap-4">
+      </Flex>
+      <Flex direction="column" gap="4">
         <ModificationSection />
-        <div className="h-[1px] w-full bg-gray-100" />
+        <Separator className="opacity-50" size="4" />
         <ExportSection />
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 }

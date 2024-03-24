@@ -1,3 +1,4 @@
+import { Flex, Separator } from "@radix-ui/themes";
 import { useElementsStore } from "../../stores/elementsStore";
 import { BackgroundSection } from "./BackgroundSection";
 import { BorderSection } from "./BorderSection";
@@ -14,33 +15,24 @@ export function RightPanel() {
   );
 
   if (!selectedElementData) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <p className="text-sm text-gray-600 text-center">
-          Create or select an element <br /> to get started.
-        </p>
-      </div>
-    );
+    return null;
   }
 
   return (
-    <div className="flex flex-col justify-between p-4 h-full">
-      <div className="flex flex-col items-start gap-4">
+    <Flex direction="column" gap="4" height="100vh" justify="between" p="4">
+      <Flex direction="column" gap="4">
         <SizePositionSection selectedElement={selectedElementData} />
-        <div className="h-[1px] w-full bg-gray-100" />
+        <Separator className="opacity-50" size="4" />
         <FontSection selectedElement={selectedElementData} />
         <BackgroundSection selectedElement={selectedElementData} />
-        <div className="h-[1px] w-full bg-gray-100" />
+        <Separator className="opacity-50" size="4" />
         <BorderSection selectedElement={selectedElementData} />
-        <div className="h-[1px] w-full bg-gray-100" />
+        <Separator className="opacity-50" size="4" />
         <ShadowSection selectedElement={selectedElementData} />
-        <div className="h-[1px] w-full bg-gray-100" />
+        <Separator className="opacity-50" size="4" />
         <MiscellanousSection selectedElement={selectedElementData} />
-      </div>
-      <div className="flex flex-col items-start gap-4">
-        <div className="h-[1px] w-full bg-gray-100" />
-        <ModificationsSection selectedElement={selectedElementData} />
-      </div>
-    </div>
+      </Flex>
+      <ModificationsSection selectedElement={selectedElementData} />
+    </Flex>
   );
 }

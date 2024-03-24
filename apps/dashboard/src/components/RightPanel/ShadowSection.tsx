@@ -1,8 +1,8 @@
+import { Flex, Grid, IconButton, Text, TextField } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { AddIcon } from "../icons/AddIcon";
 import { ColorIcon } from "../icons/ColorIcon";
-import { Input } from "../forms/Input";
 import { WidthIcon } from "../icons/WidthIcon";
 import { GradientIcon } from "../icons/GradientIcon";
 import { useElementsStore } from "../../stores/elementsStore";
@@ -15,25 +15,26 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
   const updateElement = useElementsStore((state) => state.updateElement);
 
   return (
-    <>
-      <div className="flex items-center justify-between w-full">
-        <p className="text-xs text-gray-600">Shadow</p>
+    <Flex direction="column" gap="2">
+      <Flex justify="between">
+        <Text size="1">Shadow</Text>
         {selectedElement.shadow ? (
-          <button
-            className="text-gray-600 hover:text-gray-900"
+          <IconButton
+            color="gray"
             onClick={() => {
               updateElement({
                 ...selectedElement,
                 shadow: undefined,
               });
             }}
-            type="button"
+            size="1"
+            variant="ghost"
           >
             <DeleteIcon />
-          </button>
+          </IconButton>
         ) : (
-          <button
-            className="text-gray-600 hover:text-gray-900"
+          <IconButton
+            color="gray"
             onClick={() => {
               updateElement({
                 ...selectedElement,
@@ -46,107 +47,125 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
                 },
               });
             }}
-            type="button"
+            size="1"
+            variant="ghost"
           >
             <AddIcon />
-          </button>
+          </IconButton>
         )}
-      </div>
+      </Flex>
       {selectedElement.shadow ? (
-        <div className="grid grid-cols-2 gap-2 w-full">
+        <Grid columns="2" gap="2">
           {selectedElement.tag === "p" ||
           selectedElement.tag === "span" ? null : (
-            <Input
+            <TextField.Root
+              color="gray"
               max={99}
               min={0}
-              onChange={(value) => {
+              onChange={(event) => {
                 updateElement({
                   ...selectedElement,
                   // @ts-expect-error wtf?
                   shadow: {
                     ...selectedElement.shadow,
-                    width: value,
+                    width: event.target.valueAsNumber,
                   },
                 });
               }}
-              suffix="px"
               type="number"
               value={selectedElement.shadow.width}
+              variant="soft"
             >
-              <WidthIcon />
-            </Input>
+              <TextField.Slot>
+                <WidthIcon />
+              </TextField.Slot>
+              <TextField.Slot>px</TextField.Slot>
+            </TextField.Root>
           )}
-          <Input
+          <TextField.Root
+            color="gray"
             max={99}
             min={0}
-            onChange={(value) => {
+            onChange={(event) => {
               updateElement({
                 ...selectedElement,
                 // @ts-expect-error wtf?
                 shadow: {
                   ...selectedElement.shadow,
-                  blur: value,
+                  blur: event.target.valueAsNumber,
                 },
               });
             }}
-            suffix="px"
             type="number"
             value={selectedElement.shadow.blur}
+            variant="soft"
           >
-            <GradientIcon />
-          </Input>
-          <Input
-            onChange={(value) => {
+            <TextField.Slot>
+              <GradientIcon />
+            </TextField.Slot>
+            <TextField.Slot>px</TextField.Slot>
+          </TextField.Root>
+          <TextField.Root
+            color="gray"
+            onChange={(event) => {
               updateElement({
                 ...selectedElement,
                 // @ts-expect-error wtf?
                 shadow: {
                   ...selectedElement.shadow,
-                  x: value,
+                  x: event.target.valueAsNumber,
                 },
               });
             }}
-            suffix="px"
             type="number"
             value={selectedElement.shadow.x}
+            variant="soft"
           >
-            X
-          </Input>
-          <Input
-            onChange={(value) => {
+            <TextField.Slot>X</TextField.Slot>
+            <TextField.Slot>px</TextField.Slot>
+          </TextField.Root>
+          <TextField.Root
+            color="gray"
+            onChange={(event) => {
               updateElement({
                 ...selectedElement,
                 // @ts-expect-error wtf?
                 shadow: {
                   ...selectedElement.shadow,
-                  y: value,
+                  y: event.target.valueAsNumber,
                 },
               });
             }}
-            suffix="px"
             type="number"
             value={selectedElement.shadow.y}
+            variant="soft"
           >
-            Y
-          </Input>
-          <Input
-            onChange={(value) => {
+            <TextField.Slot>Y</TextField.Slot>
+            <TextField.Slot>px</TextField.Slot>
+          </TextField.Root>
+          <TextField.Root
+            onChange={(event) => {
               updateElement({
                 ...selectedElement,
                 // @ts-expect-error wtf?
                 shadow: {
                   ...selectedElement.shadow,
-                  color: value,
+                  color: event.target.value,
                 },
               });
             }}
-            type="color"
             value={selectedElement.shadow.color}
+            variant="soft"
+            color="gray"
+            // @ts-expect-error wtf?
+            type="color"
           >
-            <ColorIcon />
-          </Input>
-        </div>
+            <TextField.Slot>
+              <ColorIcon />
+            </TextField.Slot>
+          </TextField.Root>
+        </Grid>
       ) : null}
-    </>
+    </Flex>
   );
 }

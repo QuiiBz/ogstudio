@@ -1,9 +1,9 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { CustomLink } from "../CustomLink";
+import Link from "next/link";
+import { Button, Text } from "@radix-ui/themes";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import type { Template } from "../../lib/templates";
-import { Button } from "../forms/Button";
 import { useImagesStore } from "../../stores/imagesStore";
 import { OgImage } from "../OgImage";
 
@@ -17,22 +17,30 @@ export function TemplateSplash({ template }: TemplateSplashProps) {
 
   function useTemplate() {
     const { id } = copyTemplate(template);
-    router.push(`/?i=${id}`);
+    router.push(`/editor?i=${id}`);
   }
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-gray-800 text-xl">{template.name} template</h2>
-        <CustomLink href="/templates" icon={<ArrowLeftIcon />}>
-          Back
-        </CustomLink>
+        <Text size="5">{template.name} template</Text>
+        <Button asChild color="gray" radius="full" variant="ghost">
+          <Link href="/">
+            <ArrowLeftIcon />
+            Back
+          </Link>
+        </Button>
       </div>
       <div className="flex gap-4 justify-between">
         <OgImage elements={template.elements} size="medium" />
         <div className="flex flex-col gap-8">
           <p className="text-sm text-gray-600">{template.description}</p>
-          <Button className="w-fit" onClick={useTemplate} variant="success">
+          <Button
+            className="w-fit"
+            color="green"
+            onClick={useTemplate}
+            variant="soft"
+          >
             Start with this template
           </Button>
         </div>

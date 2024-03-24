@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { CustomLink } from "../CustomLink";
+import { Button, Text } from "@radix-ui/themes";
+import Link from "next/link";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { AddIcon } from "../icons/AddIcon";
 import { useImagesStore } from "../../stores/imagesStore";
@@ -14,16 +15,19 @@ export function MyImagesSplash() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-gray-800 text-xl">My images</h2>
-        <CustomLink href="/" icon={<ArrowLeftIcon />}>
-          Back
-        </CustomLink>
+        <Text size="5">My images</Text>
+        <Button asChild color="gray" radius="full" variant="ghost">
+          <Link href="/">
+            <ArrowLeftIcon />
+            Back
+          </Link>
+        </Button>
       </div>
       <div className="grid grid-cols-3 gap-2 max-h-[427px] overflow-y-scroll no-scrollbar">
         <OgImage
           onClick={() => {
             const { id } = createEmptyImage();
-            router.push(`/?i=${id}`);
+            router.push(`/editor?i=${id}`);
           }}
         >
           <AddIcon height="1.4em" width="1.4em" /> Start from scratch
@@ -37,7 +41,7 @@ export function MyImagesSplash() {
             elements={
               JSON.parse(localStorage.getItem(image.id) || "[]") as OGElement[]
             }
-            href={`/?i=${image.id}`}
+            href={`/editor?i=${image.id}`}
             key={image.id}
             mockDynamicTexts
             name={image.name}

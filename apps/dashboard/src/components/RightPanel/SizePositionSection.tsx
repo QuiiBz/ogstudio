@@ -1,4 +1,4 @@
-import { Input } from "../forms/Input";
+import { Flex, Grid, Text, TextField } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { useElementsStore } from "../../stores/elementsStore";
 
@@ -12,62 +12,68 @@ export function SizePositionSection({
   const updateElement = useElementsStore((state) => state.updateElement);
 
   return (
-    <>
-      <p className="text-xs text-gray-600">Size & Position</p>
-      <div className="grid grid-cols-2 gap-2">
-        <Input
-          onChange={(value) => {
+    <Flex direction="column" gap="2">
+      <Text size="1">Size & position</Text>
+      <Grid columns="2" gap="2">
+        <TextField.Root
+          color="gray"
+          onChange={(event) => {
             updateElement({
               ...selectedElement,
-              x: value,
+              x: event.target.valueAsNumber,
             });
           }}
-          suffix="px"
           type="number"
           value={selectedElement.x}
+          variant="soft"
         >
-          X
-        </Input>
-        <Input
-          onChange={(value) => {
+          <TextField.Slot>X</TextField.Slot>
+          <TextField.Slot>px</TextField.Slot>
+        </TextField.Root>
+        <TextField.Root
+          color="gray"
+          onChange={(event) => {
             updateElement({
               ...selectedElement,
-              y: value,
+              y: event.target.valueAsNumber,
             });
           }}
-          suffix="px"
           type="number"
           value={selectedElement.y}
+          variant="soft"
         >
-          Y
-        </Input>
-        <Input
-          onChange={(value) => {
+          <TextField.Slot>Y</TextField.Slot>
+          <TextField.Slot>px</TextField.Slot>
+        </TextField.Root>
+        <TextField.Root
+          color="gray"
+          onChange={(event) => {
             updateElement({
               ...selectedElement,
-              width: value,
+              width: event.target.valueAsNumber,
             });
           }}
-          suffix="px"
-          type="number"
           value={selectedElement.width}
+          variant="soft"
         >
-          W
-        </Input>
-        <Input
-          onChange={(value) => {
+          <TextField.Slot>W</TextField.Slot>
+          <TextField.Slot>px</TextField.Slot>
+        </TextField.Root>
+        <TextField.Root
+          color="gray"
+          onChange={(event) => {
             updateElement({
               ...selectedElement,
-              height: value,
+              height: event.target.valueAsNumber,
             });
           }}
-          suffix="px"
-          type="number"
           value={selectedElement.height}
+          variant="soft"
         >
-          H
-        </Input>
-      </div>
-    </>
+          <TextField.Slot>H</TextField.Slot>
+          <TextField.Slot>px</TextField.Slot>
+        </TextField.Root>
+      </Grid>
+    </Flex>
   );
 }

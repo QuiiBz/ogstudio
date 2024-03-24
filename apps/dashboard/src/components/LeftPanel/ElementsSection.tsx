@@ -14,6 +14,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { Flex, Text } from "@radix-ui/themes";
 import { useElementsStore } from "../../stores/elementsStore";
 import { ElementRow } from "./ElementRow";
 
@@ -51,9 +52,12 @@ export function ElementsSection() {
   }
 
   return (
-    <>
-      <p className="text-xs text-gray-600">Elements</p>
-      <div className="flex flex-col-reverse w-full max-h-[calc(100vh-420px)] overflow-y-scroll no-scrollbar">
+    <Flex direction="column" gap="2">
+      <Text size="1">Elements</Text>
+      <Flex
+        className="no-scrollbar overflow-y-scroll max-h-[calc(100vh-380px)]"
+        direction="column-reverse"
+      >
         <DndContext
           collisionDetection={closestCenter}
           modifiers={[restrictToVerticalAxis]}
@@ -70,7 +74,7 @@ export function ElementsSection() {
             ))}
           </SortableContext>
         </DndContext>
-      </div>
-    </>
+      </Flex>
+    </Flex>
   );
 }

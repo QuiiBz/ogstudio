@@ -1,11 +1,16 @@
+import {
+  Flex,
+  Grid,
+  IconButton,
+  Select,
+  Text,
+  TextField,
+} from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { AddIcon } from "../icons/AddIcon";
 import { ColorIcon } from "../icons/ColorIcon";
-import { Input } from "../forms/Input";
-import { Select } from "../forms/Select";
 import { WidthIcon } from "../icons/WidthIcon";
-import { BorderStyleIcon } from "../icons/BorderStyleIcon";
 import { useElementsStore } from "../../stores/elementsStore";
 
 interface BorderSectionProps {
@@ -16,25 +21,26 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
   const updateElement = useElementsStore((state) => state.updateElement);
 
   return (
-    <>
-      <div className="flex items-center justify-between w-full">
-        <p className="text-xs text-gray-600">Border</p>
+    <Flex direction="column" gap="2">
+      <Flex justify="between">
+        <Text size="1">Border</Text>
         {selectedElement.border ? (
-          <button
-            className="text-gray-600 hover:text-gray-900"
+          <IconButton
+            color="gray"
             onClick={() => {
               updateElement({
                 ...selectedElement,
                 border: undefined,
               });
             }}
-            type="button"
+            size="1"
+            variant="ghost"
           >
             <DeleteIcon />
-          </button>
+          </IconButton>
         ) : (
-          <button
-            className="text-gray-600 hover:text-gray-900"
+          <IconButton
+            color="gray"
             onClick={() => {
               updateElement({
                 ...selectedElement,
@@ -45,51 +51,61 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
                 },
               });
             }}
-            type="button"
+            size="1"
+            variant="ghost"
           >
             <AddIcon />
-          </button>
+          </IconButton>
         )}
-      </div>
+      </Flex>
       {selectedElement.border ? (
-        <div className="grid grid-cols-2 gap-2 w-full">
-          <Input
-            onChange={(value) => {
+        <Grid columns="2" gap="2">
+          <TextField.Root
+            onChange={(event) => {
               updateElement({
                 ...selectedElement,
                 // @ts-expect-error wtf?
                 border: {
                   ...selectedElement.border,
-                  color: value,
+                  color: event.target.value,
                 },
               });
             }}
-            type="color"
             value={selectedElement.border.color}
+            variant="soft"
+            color="gray"
+            // @ts-expect-error wtf?
+            type="color"
           >
-            <ColorIcon />
-          </Input>
-          <Input
+            <TextField.Slot>
+              <ColorIcon />
+            </TextField.Slot>
+          </TextField.Root>
+          <TextField.Root
+            color="gray"
             max={99}
             min={0}
-            onChange={(value) => {
+            onChange={(event) => {
               updateElement({
                 ...selectedElement,
                 // @ts-expect-error wtf?
                 border: {
                   ...selectedElement.border,
-                  width: value,
+                  width: event.target.valueAsNumber,
                 },
               });
             }}
-            suffix="px"
             type="number"
             value={selectedElement.border.width}
+            variant="soft"
           >
-            <WidthIcon />
-          </Input>
-          <Select
-            onChange={(value) => {
+            <TextField.Slot>
+              <WidthIcon />
+            </TextField.Slot>
+            <TextField.Slot>px</TextField.Slot>
+          </TextField.Root>
+          <Select.Root
+            onValueChange={(value) => {
               updateElement({
                 ...selectedElement,
                 border: {
@@ -100,12 +116,15 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
               });
             }}
             value={selectedElement.border.style}
-            values={["outside", "inside"]}
           >
-            <BorderStyleIcon />
-          </Select>
-        </div>
+            <Select.Trigger color="gray" variant="soft" />
+            <Select.Content>
+              <Select.Item value="outside">Outside</Select.Item>
+              <Select.Item value="inside">Inside</Select.Item>
+            </Select.Content>
+          </Select.Root>
+        </Grid>
       ) : null}
-    </>
+    </Flex>
   );
 }
