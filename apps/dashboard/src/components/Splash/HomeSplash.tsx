@@ -52,7 +52,7 @@ export function HomeSplash() {
           <OgImage
             onClick={() => {
               const { id } = createEmptyImage();
-              router.push(`/?i=${id}`);
+              router.push(`/editor?i=${id}`);
             }}
           >
             <AddIcon height="1.4em" width="1.4em" /> Start from scratch
@@ -68,7 +68,7 @@ export function HomeSplash() {
                   localStorage.getItem(image.id) || "[]",
                 ) as OGElement[]
               }
-              href={`/?i=${image.id}`}
+              href={`/editor?i=${image.id}`}
               key={image.id}
               mockDynamicTexts
               name={image.name}

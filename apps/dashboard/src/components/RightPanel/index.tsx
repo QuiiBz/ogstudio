@@ -15,13 +15,7 @@ export function RightPanel() {
   );
 
   if (!selectedElementData) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <p className="text-sm text-gray-600 text-center">
-          Create or select an element <br /> to get started.
-        </p>
-      </div>
-    );
+    return null;
   }
 
   return (

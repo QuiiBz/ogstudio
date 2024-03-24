@@ -4,12 +4,17 @@ import { toast } from "sonner";
 import Link from "next/link";
 import {
   Text,
-  Button as RadixButton,
+  Button,
   Grid,
   Spinner,
   Flex,
+  Dialog,
+  Separator,
+  SegmentedControl,
+  TextField,
+  Code,
+  Tooltip,
 } from "@radix-ui/themes";
-import { Button } from "../forms/Button";
 import { PngIcon } from "../icons/PngIcon";
 import { SvgIcon } from "../icons/SvgIcon";
 import {
@@ -24,20 +29,12 @@ import type {
   ExportResponse,
 } from "../../app/api/og/export/route";
 import { useImagesStore } from "../../stores/imagesStore";
-import { Modal } from "../Modal";
 import { OgImage } from "../OgImage";
 import { getDynamicTextKeys } from "../../lib/elements";
-import { Input } from "../forms/Input";
-import { CustomLink } from "../CustomLink";
-import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { useUser } from "../../lib/hooks/useUser";
-import { Tooltip } from "../Tooltip";
+import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 
-interface ExportModalProps {
-  close: () => void;
-}
-
-function ExportModal({ close }: ExportModalProps) {
+function ExportModal() {
   const elements = useElementsStore((state) => state.elements);
   const selectedImageId = useImagesStore((state) => state.selectedImageId);
   const dynamicTextKeys = useMemo(
@@ -79,14 +76,6 @@ function ExportModal({ close }: ExportModalProps) {
     void exportUrl();
   }, [selectedImageId, elements, isSignedIn]);
 
-  function changeType(newType: typeof type) {
-    return () => {
-      startTransition(() => {
-        setType(newType);
-      });
-    };
-  }
-
   const finalKey = key ? (
     key
   ) : (
@@ -114,93 +103,110 @@ function ExportModal({ close }: ExportModalProps) {
     );
   }
 
+  const code = (
+    <Code
+      className="p-3"
+      color="gray"
+      highContrast
+      size="4"
+      style={{ wordBreak: "break-all" }}
+    >
+      {type === "html" ? (
+        <>
+          &lt;head&gt;
+          <br />
+          &nbsp;&nbsp;&lt;meta property=&quot;og:image&quot; content=&quot;
+          {url}&quot;&gt;
+          <br />
+          &lt;/head&gt;
+        </>
+      ) : null}
+      {type === "url" ? url : null}
+    </Code>
+  );
+
   return (
     <>
-      <div className="flex items-center justify-between">
-        <h2 className="text-gray-900 text-2xl">Export to URL</h2>
-        <CustomLink icon={<ArrowLeftIcon />} onClick={close}>
-          Continue editing
-        </CustomLink>
-      </div>
-      <p className="text-sm text-gray-600 w-2/3 mt-2">
-        Export your Open Graph image to an URL that you can then use in your
-        website. You can also see a preview of the OG Image and edit any dynamic
-        text in real-time.
-      </p>
-      <div className="h-[1px] w-full bg-gray-100 my-8" />
-      <div className="flex flex-col gap-4">
-        <h2 className="text-gray-800 text-xl">Preview</h2>
-        <div className="flex justify-between gap-8">
+      <Flex direction="column" gap="4">
+        <Flex align="center" justify="between">
+          <Text size="6">Export to URL</Text>
+          <Dialog.Close>
+            <Button color="gray" radius="full" variant="ghost">
+              <ArrowLeftIcon />
+              Continue editing
+            </Button>
+          </Dialog.Close>
+        </Flex>
+        <Text as="p" className="w-2/3" size="2">
+          Export your Open Graph image to an URL that you can then use in your
+          website. You can also see a preview of the OG Image and edit any
+          dynamic text in real-time.
+        </Text>
+      </Flex>
+      <Separator className="opacity-50" my="6" size="4" />
+      <Flex direction="column" gap="4">
+        <Text size="5">Preview</Text>
+        <Flex gap="6" justify="between">
           <OgImage
             dynamicTexts={dynamicTexts}
             elements={elements}
             size="medium"
           />
-          <div className="flex flex-col gap-4 w-full">
+          <Flex direction="column" flexGrow="1" gap="4">
             {dynamicTextKeys.map((dynamicKey) => (
-              <div className="flex flex-col gap-2" key={dynamicKey}>
-                <p className="text-gray-600 text-xs">{dynamicKey}</p>
-                <Input
-                  onChange={(value) => {
+              <Flex direction="column" gap="2" key={dynamicKey}>
+                <Text size="1">{dynamicKey}</Text>
+                <TextField.Root
+                  onChange={(event) => {
                     startTransition(() => {
                       setDynamicTexts((prev) => ({
                         ...prev,
-                        [dynamicKey]: value,
+                        [dynamicKey]: event.target.value,
                       }));
                     });
                   }}
-                  type="text"
                   value={dynamicTexts[dynamicKey]}
                 />
-              </div>
+              </Flex>
             ))}
-          </div>
-        </div>
-      </div>
-      <div className="h-[1px] w-full bg-gray-100 my-8" />
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-gray-800 text-xl">Embed</h2>
-          <div className="flex gap-2">
-            <Button disabled={type === "html"} onClick={changeType("html")}>
-              HTML
-            </Button>
-            <Button disabled={type === "url"} onClick={changeType("url")}>
-              URL
-            </Button>
-          </div>
-        </div>
-        <Tooltip
-          content={
-            isSignedIn ? undefined : (
+          </Flex>
+        </Flex>
+      </Flex>
+      <Separator className="opacity-50" my="6" size="4" />
+      <Flex direction="column" gap="4">
+        <Flex align="center" justify="between">
+          <Text size="5">Embed</Text>
+          <SegmentedControl.Root
+            onValueChange={(value) => {
+              startTransition(() => {
+                setType(value as typeof type);
+              });
+            }}
+            value={type}
+          >
+            <SegmentedControl.Item value="html">HTML</SegmentedControl.Item>
+            <SegmentedControl.Item value="url">URL</SegmentedControl.Item>
+          </SegmentedControl.Root>
+        </Flex>
+        {isSignedIn ? (
+          <>{code}</>
+        ) : (
+          <Tooltip
+            content={
               <>
-                <Link className="underline" href="/login" onClick={close}>
-                  Sign in
-                </Link>
+                <Dialog.Close>
+                  <Link className="underline" href="/login">
+                    Sign in
+                  </Link>
+                </Dialog.Close>
                 &nbsp;to export to an URL
               </>
-            )
-          }
-        >
-          <pre
-            className="font-mono p-3 rounded text-gray-900 bg-gray-50 text-wrap"
-            style={{ wordBreak: "break-all" }}
+            }
           >
-            {type === "html" ? (
-              <>
-                &lt;head&gt;
-                <br />
-                &nbsp;&nbsp;&lt;meta property=&quot;og:image&quot;
-                content=&quot;
-                {url}&quot;&gt;
-                <br />
-                &lt;/head&gt;
-              </>
-            ) : null}
-            {type === "url" ? url : null}
-          </pre>
-        </Tooltip>
-      </div>
+            {code}
+          </Tooltip>
+        )}
+      </Flex>
     </>
   );
 }
@@ -286,19 +292,20 @@ export function ExportSection() {
     <Flex direction="column" gap="2">
       <Text size="1">Export</Text>
       <Grid columns="2" gap="2">
-        <Modal
-          action={
-            <RadixButton className="col-span-full" color="green" variant="soft">
+        <Dialog.Root>
+          <Dialog.Trigger>
+            <Button className="col-span-full" color="green" variant="soft">
               <Spinner loading={isLoading}>
                 <PngIcon />
               </Spinner>
               Export to URL
-            </RadixButton>
-          }
-        >
-          {({ close }) => <ExportModal close={close} />}
-        </Modal>
-        <RadixButton
+            </Button>
+          </Dialog.Trigger>
+          <Dialog.Content minWidth="980px" size="4">
+            <ExportModal />
+          </Dialog.Content>
+        </Dialog.Root>
+        <Button
           color="gray"
           disabled={isLoading}
           onClick={() => {
@@ -310,8 +317,8 @@ export function ExportSection() {
             <SvgIcon />
           </Spinner>
           SVG
-        </RadixButton>
-        <RadixButton
+        </Button>
+        <Button
           color="gray"
           disabled={isLoading}
           onClick={() => {
@@ -323,7 +330,7 @@ export function ExportSection() {
             <PngIcon />
           </Spinner>
           PNG
-        </RadixButton>
+        </Button>
       </Grid>
     </Flex>
   );

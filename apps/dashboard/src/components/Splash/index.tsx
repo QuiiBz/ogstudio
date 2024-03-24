@@ -20,10 +20,8 @@ function SplashInner({ children }: OgSplashProps) {
   const { data } = useUser();
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises -- we don't want to wait for this
-    useImagesStore.persist.rehydrate();
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises -- we don't want to wait for this
-    useZoomStore.persist.rehydrate();
+    void useImagesStore.persist.rehydrate();
+    void useZoomStore.persist.rehydrate();
   }, []);
 
   return (
