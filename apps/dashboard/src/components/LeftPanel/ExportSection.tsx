@@ -2,6 +2,13 @@ import { startTransition, useEffect, useMemo, useState } from "react";
 import { flushSync } from "react-dom";
 import { toast } from "sonner";
 import Link from "next/link";
+import {
+  Text,
+  Button as RadixButton,
+  Grid,
+  Spinner,
+  Flex,
+} from "@radix-ui/themes";
 import { Button } from "../forms/Button";
 import { PngIcon } from "../icons/PngIcon";
 import { SvgIcon } from "../icons/SvgIcon";
@@ -69,7 +76,7 @@ function ExportModal({ close }: ExportModalProps) {
       setKey(json.key);
     }
 
-    exportUrl().catch(console.error);
+    void exportUrl();
   }, [selectedImageId, elements, isSignedIn]);
 
   function changeType(newType: typeof type) {
@@ -206,7 +213,7 @@ export function ExportSection() {
   const [isLoading, setIsLoading] = useState(false);
 
   async function exportSvg(showProgress = true) {
-    // Immediately deselect any selected element to remove the outline
+    // Immediately deselect any selected element to remove the soft
     flushSync(() => {
       setSelectedElementId(null);
     });
@@ -276,30 +283,48 @@ export function ExportSection() {
   }
 
   return (
-    <>
-      <p className="text-xs text-gray-600">Export</p>
-      <div className="grid grid-cols-2 gap-2 w-full">
+    <Flex direction="column" gap="2">
+      <Text size="1">Export</Text>
+      <Grid columns="2" gap="2">
         <Modal
           action={
-            <Button
-              className="col-span-full"
-              disabled={isLoading}
-              icon={<PngIcon />}
-              variant="success"
-            >
+            <RadixButton className="col-span-full" color="green" variant="soft">
+              <Spinner loading={isLoading}>
+                <PngIcon />
+              </Spinner>
               Export to URL
-            </Button>
+            </RadixButton>
           }
         >
           {({ close }) => <ExportModal close={close} />}
         </Modal>
-        <Button disabled={isLoading} icon={<SvgIcon />} onClick={exportSvg}>
+        <RadixButton
+          color="gray"
+          disabled={isLoading}
+          onClick={() => {
+            void exportSvg();
+          }}
+          variant="soft"
+        >
+          <Spinner loading={isLoading}>
+            <SvgIcon />
+          </Spinner>
           SVG
-        </Button>
-        <Button disabled={isLoading} icon={<PngIcon />} onClick={exportPng}>
+        </RadixButton>
+        <RadixButton
+          color="gray"
+          disabled={isLoading}
+          onClick={() => {
+            void exportPng();
+          }}
+          variant="soft"
+        >
+          <Spinner loading={isLoading}>
+            <PngIcon />
+          </Spinner>
           PNG
-        </Button>
-      </div>
-    </>
+        </RadixButton>
+      </Grid>
+    </Flex>
   );
 }

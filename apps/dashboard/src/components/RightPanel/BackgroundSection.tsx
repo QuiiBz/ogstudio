@@ -1,15 +1,19 @@
-import { Input } from "../forms/Input";
-import { Select } from "../forms/Select";
+import {
+  Grid,
+  Text,
+  Select,
+  TextField,
+  Flex,
+  IconButton,
+} from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { ColorIcon } from "../icons/ColorIcon";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { StartIcon } from "../icons/StartIcon";
 import { AddIcon } from "../icons/AddIcon";
 import { EndIcon } from "../icons/EndIcon";
-import { GradientIcon } from "../icons/GradientIcon";
 import { SquareIcon } from "../icons/SquareIcon";
 import { LinkIcon } from "../icons/LinkIcon";
-import { ImageSizeIcon } from "../icons/ImageSizeIcon";
 import { useElementsStore } from "../../stores/elementsStore";
 
 interface BackgroundSectionProps {
@@ -24,46 +28,48 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
   }
 
   return (
-    <>
+    <Flex direction="column" gap="2">
       {!selectedElement.backgroundImage ? (
         <>
           {!selectedElement.gradient ? (
             <>
-              <p className="text-xs text-gray-600">Background color</p>
-              <div className="grid grid-cols-1 gap-2 w-full">
-                <Input
-                  onChange={(value) => {
-                    updateElement({
-                      ...selectedElement,
-                      backgroundColor: value,
-                    });
-                  }}
-                  type="color"
-                  value={selectedElement.backgroundColor}
-                >
+              <Text size="1">Background color</Text>
+              <TextField.Root
+                onChange={(event) => {
+                  updateElement({
+                    ...selectedElement,
+                    backgroundColor: event.target.value,
+                  });
+                }}
+                // @ts-expect-error wtf?
+                type="color"
+                value={selectedElement.backgroundColor}
+              >
+                <TextField.Slot>
                   <ColorIcon />
-                </Input>
-              </div>
+                </TextField.Slot>
+              </TextField.Root>
             </>
           ) : null}
-          <div className="flex items-center justify-between w-full">
-            <p className="text-xs text-gray-600">Background gradient</p>
+          <Flex justify="between">
+            <Text size="1">Background gradient</Text>
             {selectedElement.gradient ? (
-              <button
-                className="text-gray-600 hover:text-gray-900"
+              <IconButton
+                color="gray"
                 onClick={() => {
                   updateElement({
                     ...selectedElement,
                     gradient: undefined,
                   });
                 }}
-                type="button"
+                size="1"
+                variant="ghost"
               >
                 <DeleteIcon />
-              </button>
+              </IconButton>
             ) : (
-              <button
-                className="text-gray-600 hover:text-gray-900"
+              <IconButton
+                color="gray"
                 onClick={() => {
                   updateElement({
                     ...selectedElement,
@@ -75,48 +81,55 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                     },
                   });
                 }}
-                type="button"
+                size="1"
+                variant="ghost"
               >
                 <AddIcon />
-              </button>
+              </IconButton>
             )}
-          </div>
+          </Flex>
           {selectedElement.gradient ? (
-            <div className="grid grid-cols-2 gap-2 w-full">
-              <Input
-                onChange={(value) => {
+            <Grid columns="2" gap="2">
+              <TextField.Root
+                onChange={(event) => {
                   updateElement({
                     ...selectedElement,
                     // @ts-expect-error wtf?
                     gradient: {
                       ...selectedElement.gradient,
-                      start: value,
+                      start: event.target.value,
                     },
                   });
                 }}
+                // @ts-expect-error wtf?
                 type="color"
                 value={selectedElement.gradient.start}
               >
-                <StartIcon />
-              </Input>
-              <Input
-                onChange={(value) => {
+                <TextField.Slot>
+                  <StartIcon />
+                </TextField.Slot>
+              </TextField.Root>
+              <TextField.Root
+                onChange={(event) => {
                   updateElement({
                     ...selectedElement,
                     // @ts-expect-error wtf?
                     gradient: {
                       ...selectedElement.gradient,
-                      end: value,
+                      end: event.target.value,
                     },
                   });
                 }}
+                // @ts-expect-error wtf?
                 type="color"
                 value={selectedElement.gradient.end}
               >
-                <EndIcon />
-              </Input>
-              <Select
-                onChange={(value) => {
+                <TextField.Slot>
+                  <EndIcon />
+                </TextField.Slot>
+              </TextField.Root>
+              <Select.Root
+                onValueChange={(value) => {
                   updateElement({
                     ...selectedElement,
                     gradient: {
@@ -127,55 +140,61 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                   });
                 }}
                 value={selectedElement.gradient.type}
-                values={["linear", "radial"]}
               >
-                <GradientIcon />
-              </Select>
+                <Select.Trigger />
+                <Select.Content>
+                  <Select.Item value="linear">Linear</Select.Item>
+                  <Select.Item value="radial">Radial</Select.Item>
+                </Select.Content>
+              </Select.Root>
               {selectedElement.gradient.type === "linear" ? (
-                <Input
+                <TextField.Root
                   max={360}
                   min={-360}
-                  onChange={(value) => {
+                  onChange={(event) => {
                     updateElement({
                       ...selectedElement,
                       // @ts-expect-error wtf?
                       gradient: {
                         ...selectedElement.gradient,
-                        angle: value,
+                        angle: event.target.valueAsNumber,
                       },
                     });
                   }}
-                  suffix="deg"
                   type="number"
                   value={selectedElement.gradient.angle}
                 >
-                  <SquareIcon />
-                </Input>
+                  <TextField.Slot>
+                    <SquareIcon />
+                  </TextField.Slot>
+                  <TextField.Slot>deg</TextField.Slot>
+                </TextField.Root>
               ) : null}
-            </div>
+            </Grid>
           ) : null}
         </>
       ) : null}
       {!selectedElement.gradient ? (
         <>
-          <div className="flex items-center justify-between w-full">
-            <p className="text-xs text-gray-600">Background image</p>
+          <Flex justify="between">
+            <Text size="1">Background image</Text>
             {selectedElement.backgroundImage ? (
-              <button
-                className="text-gray-600 hover:text-gray-900"
+              <IconButton
+                color="gray"
                 onClick={() => {
                   updateElement({
                     ...selectedElement,
                     backgroundImage: undefined,
                   });
                 }}
-                type="button"
+                size="1"
+                variant="ghost"
               >
                 <DeleteIcon />
-              </button>
+              </IconButton>
             ) : (
-              <button
-                className="text-gray-600 hover:text-gray-900"
+              <IconButton
+                color="gray"
                 onClick={() => {
                   updateElement({
                     ...selectedElement,
@@ -183,40 +202,45 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                     backgroundSize: "cover",
                   });
                 }}
-                type="button"
+                size="1"
+                variant="ghost"
               >
                 <AddIcon />
-              </button>
+              </IconButton>
             )}
-          </div>
+          </Flex>
           {selectedElement.backgroundImage ? (
-            <div className="grid grid-cols-2 gap-2 w-full">
-              <Input
+            <Grid columns="2" gap="2">
+              <TextField.Root
                 className="col-span-full"
-                onChange={(value) => {
+                onChange={(event) => {
                   updateElement({
                     ...selectedElement,
-                    backgroundImage: value,
+                    backgroundImage: event.target.value,
                   });
                 }}
-                type="text"
                 value={selectedElement.backgroundImage}
               >
-                <LinkIcon />
-              </Input>
-              <Select
-                onChange={(value) => {
+                <TextField.Slot>
+                  <LinkIcon />
+                </TextField.Slot>
+              </TextField.Root>
+              <Select.Root
+                onValueChange={(value) => {
                   updateElement({
                     ...selectedElement,
                     // @ts-expect-error wtf?
                     backgroundSize: value,
                   });
                 }}
-                value={selectedElement.backgroundSize ?? ""}
-                values={["contain", "cover"]}
+                value={selectedElement.backgroundSize}
               >
-                <ImageSizeIcon />
-              </Select>
+                <Select.Trigger />
+                <Select.Content>
+                  <Select.Item value="contain">Contain</Select.Item>
+                  <Select.Item value="cover">Cover</Select.Item>
+                </Select.Content>
+              </Select.Root>
               {/* TODO: image position */}
               {/* Needs https://github.com/vercel/satori/pull/464 */}
               {/* <Select */}
@@ -228,10 +252,10 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
               {/* > */}
               {/*   <ImagePositionIcon /> */}
               {/* </Select> */}
-            </div>
+            </Grid>
           ) : null}
         </>
       ) : null}
-    </>
+    </Flex>
   );
 }
