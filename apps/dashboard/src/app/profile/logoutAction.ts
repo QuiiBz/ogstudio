@@ -1,8 +1,8 @@
 "use server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { getCachedSession } from "../../lib/auth/api";
-import { lucia } from "../../lib/auth/lucia";
+import { getCachedSession } from "@ogstudio/auth/api";
+import { lucia } from "@ogstudio/auth/lucia";
 
 export async function logoutAction() {
   const { session } = await getCachedSession();
@@ -19,7 +19,7 @@ export async function logoutAction() {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes,
+    sessionCookie.attributes
   );
 
   return redirect("/");
