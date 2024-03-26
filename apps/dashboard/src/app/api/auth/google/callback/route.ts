@@ -2,10 +2,10 @@ import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
 import { generateId } from "lucia";
 import { eq } from "drizzle-orm";
-import { google } from "../../../../../lib/auth/arctic";
-import { db } from "../../../../../lib/db/db";
-import { lucia } from "../../../../../lib/auth/lucia";
-import { userTable } from "../../../../../lib/db/schema";
+import { db } from "@ogstudio/db";
+import { userTable } from "@ogstudio/db/schema";
+import { google } from "@ogstudio/auth/arctic";
+import { lucia } from "@ogstudio/auth/lucia";
 
 // https://developers.google.com/identity/openid-connect/openid-connect#an-id-tokens-payload
 interface GoogleUser {
@@ -37,7 +37,7 @@ export async function GET(request: Request): Promise<Response> {
   try {
     const tokens = await google.validateAuthorizationCode(
       code,
-      storedCodeVerifier,
+      storedCodeVerifier
     );
     const googleUserResponse = await fetch(
       "https://openidconnect.googleapis.com/v1/userinfo",
@@ -45,7 +45,7 @@ export async function GET(request: Request): Promise<Response> {
         headers: {
           Authorization: `Bearer ${tokens.accessToken}`,
         },
-      },
+      }
     );
 
     const googleUser = (await googleUserResponse.json()) as GoogleUser;
@@ -61,7 +61,7 @@ export async function GET(request: Request): Promise<Response> {
       cookies().set(
         sessionCookie.name,
         sessionCookie.value,
-        sessionCookie.attributes,
+        sessionCookie.attributes
       );
 
       return new Response(null, {
@@ -85,7 +85,7 @@ export async function GET(request: Request): Promise<Response> {
     cookies().set(
       sessionCookie.name,
       sessionCookie.value,
-      sessionCookie.attributes,
+      sessionCookie.attributes
     );
 
     return new Response(null, {

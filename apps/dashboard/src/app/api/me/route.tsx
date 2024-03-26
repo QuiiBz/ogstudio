@@ -1,5 +1,5 @@
-import type { SessionObject } from "../../../lib/auth/api";
-import { getSession } from "../../../lib/auth/api";
+import type { SessionObject } from "@ogstudio/auth/api";
+import { getSession } from "@ogstudio/auth/api";
 
 export type MeResponse = SessionObject;
 
