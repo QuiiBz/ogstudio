@@ -31,10 +31,12 @@ export function TemplateSplash({ template }: TemplateSplashProps) {
           </Link>
         </Button>
       </Flex>
-      <div className="flex gap-4 justify-between">
+      <Flex gap="4" justify="between">
         <OgImage elements={template.elements} size="medium" />
-        <div className="flex flex-col gap-8">
-          <p className="text-sm text-gray-600">{template.description}</p>
+        <Flex direction="column" gap="4">
+          <Text as="p" size="2">
+            {template.description}
+          </Text>
           <Button
             className="w-fit"
             color="green"
@@ -43,8 +45,8 @@ export function TemplateSplash({ template }: TemplateSplashProps) {
           >
             Start with this template
           </Button>
-        </div>
-      </div>
+        </Flex>
+      </Flex>
     </Flex>
   );
 }
