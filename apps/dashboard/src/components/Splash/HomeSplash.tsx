@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Button, Separator, Text } from "@radix-ui/themes";
+import { Button, Flex, Separator, Text } from "@radix-ui/themes";
 import Link from "next/link";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 import { AddIcon } from "../icons/AddIcon";
@@ -15,8 +15,8 @@ export function HomeSplash() {
 
   return (
     <>
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between items-center">
+      <Flex direction="column" gap="4">
+        <Flex align="center" justify="between">
           <Text size="5">Templates</Text>
           <Button asChild color="gray" radius="full" variant="ghost">
             <Link href="/templates">
@@ -24,8 +24,8 @@ export function HomeSplash() {
               <ArrowRightIcon />
             </Link>
           </Button>
-        </div>
-        <div className="flex gap-2">
+        </Flex>
+        <Flex gap="2">
           {TEMPLATES.slice(0, 3).map((template) => (
             <OgImage
               elements={template.elements}
@@ -35,11 +35,11 @@ export function HomeSplash() {
               name={template.name}
             />
           ))}
-        </div>
-      </div>
+        </Flex>
+      </Flex>
       <Separator className="opacity-50" my="6" size="4" />
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between items-center">
+      <Flex direction="column" gap="4">
+        <Flex align="center" justify="between">
           <Text size="5">My images</Text>
           <Button asChild color="gray" radius="full" variant="ghost">
             <Link href="/my-images">
@@ -47,8 +47,8 @@ export function HomeSplash() {
               <ArrowRightIcon />
             </Link>
           </Button>
-        </div>
-        <div className="flex gap-2">
+        </Flex>
+        <Flex gap="2">
           <OgImage
             onClick={() => {
               const { id } = createEmptyImage();
@@ -74,8 +74,8 @@ export function HomeSplash() {
               name={image.name}
             />
           ))}
-        </div>
-      </div>
+        </Flex>
+      </Flex>
     </>
   );
 }
