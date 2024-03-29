@@ -42,7 +42,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           value={selectedElement.fontFamily}
         >
           <Select.Trigger color="gray" variant="soft" />
-          <Select.Content>
+          <Select.Content variant="soft">
             {FONTS.map((font) => (
               <Select.Item key={font} value={font}>
                 {font}
@@ -60,7 +60,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           value={String(selectedElement.fontWeight)}
         >
           <Select.Trigger color="gray" variant="soft" />
-          <Select.Content>
+          <Select.Content variant="soft">
             {FONT_WEIGHTS[selectedElement.fontFamily].map((weight) => (
               <Select.Item key={weight} value={String(weight)}>
                 {weight}
@@ -150,7 +150,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           value={selectedElement.align}
         >
           <Select.Trigger color="gray" variant="soft" />
-          <Select.Content>
+          <Select.Content variant="soft">
             <Select.Item value="left">Left</Select.Item>
             <Select.Item value="right">Right</Select.Item>
             <Select.Item value="center">Center</Select.Item>

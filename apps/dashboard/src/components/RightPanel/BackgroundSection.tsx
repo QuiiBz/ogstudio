@@ -148,7 +148,7 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                 value={selectedElement.gradient.type}
               >
                 <Select.Trigger color="gray" variant="soft" />
-                <Select.Content>
+                <Select.Content variant="soft">
                   <Select.Item value="linear">Linear</Select.Item>
                   <Select.Item value="radial">Radial</Select.Item>
                 </Select.Content>
@@ -246,7 +246,7 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                 value={selectedElement.backgroundSize}
               >
                 <Select.Trigger color="gray" variant="soft" />
-                <Select.Content>
+                <Select.Content variant="soft">
                   <Select.Item value="contain">Contain</Select.Item>
                   <Select.Item value="cover">Cover</Select.Item>
                 </Select.Content>

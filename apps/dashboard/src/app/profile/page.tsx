@@ -1,9 +1,7 @@
 "use client";
-import { useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
 import { Button } from "@radix-ui/themes";
 import { LogoutIcon } from "../../components/icons/LogoutIcon";
-import { logoutAction } from "./logoutAction";
+import { useLogout } from "../../lib/hooks/useLogout";
 
 // export const metadata = {
 //   title: "Profile - OG Studio",
@@ -13,14 +11,7 @@ import { logoutAction } from "./logoutAction";
 export const dynamic = "force-static";
 
 export default function Page() {
-  const queryClient = useQueryClient();
-
-  async function logout() {
-    await logoutAction();
-    await queryClient.invalidateQueries();
-
-    toast("You have been logged out!");
-  }
+  const logout = useLogout();
 
   return (
     <form action={logout}>
