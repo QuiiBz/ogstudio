@@ -1,11 +1,4 @@
-import {
-  Flex,
-  Grid,
-  Text,
-  Select,
-  TextField,
-  TextArea,
-} from "@radix-ui/themes";
+import { Flex, Grid, Text, Select, TextField } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import type { Font } from "../../lib/fonts";
 import { FONTS, FONT_WEIGHTS } from "../../lib/fonts";
@@ -163,35 +156,22 @@ export function FontSection({ selectedElement }: FontSectionProps) {
             <Select.Item value="center">Center</Select.Item>
           </Select.Content>
         </Select.Root>
-        {selectedElement.tag === "p" ? (
-          <TextArea
-            className="col-span-full"
-            onChange={(event) => {
-              updateElement({
-                ...selectedElement,
-                content: event.target.value,
-              });
-            }}
-            value={selectedElement.content}
-          />
-        ) : null}
-        {selectedElement.tag === "span" ? (
-          <TextField.Root
-            className="col-span-full"
-            color="gray"
-            onChange={(event) => {
-              // Remove all spaces
-              const newValue = event.target.value.replaceAll(SPACES_REGEX, "");
+        <TextField.Root
+          className="col-span-full"
+          color="gray"
+          onChange={(event) => {
+            const content =
+              selectedElement.tag === "span"
+                ? event.target.value.replaceAll(SPACES_REGEX, "")
+                : event.target.value;
 
-              updateElement({
-                ...selectedElement,
-                content: newValue,
-              });
-            }}
-            value={selectedElement.content}
-            variant="soft"
-          />
-        ) : null}
+            updateElement({
+              ...selectedElement,
+              content,
+            });
+          }}
+          value={selectedElement.content}
+        />
       </Grid>
     </Flex>
   );

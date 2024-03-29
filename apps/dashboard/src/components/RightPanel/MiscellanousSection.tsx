@@ -82,7 +82,6 @@ export function MiscellanousSection({
         {selectedElement.tag === "p" ? (
           <Button
             className="col-span-full"
-            color="gray"
             onClick={() => {
               updateElement({
                 ...selectedElement,

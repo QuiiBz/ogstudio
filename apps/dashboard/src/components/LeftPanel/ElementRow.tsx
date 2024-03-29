@@ -2,6 +2,7 @@ import { clsx } from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useState } from "react";
+import { Button, Flex, IconButton, TextField } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { NotVisibleIcon } from "../icons/NotVisibleIcon";
 import { TextIcon } from "../icons/TextIcon";
@@ -67,19 +68,22 @@ export function ElementRow({ element }: ElementRowProps) {
   }
 
   return (
-    <div
-      className="flex justify-between items-center cursor-auto group h-7"
+    <Flex
+      align="center"
+      className="cursor-auto group"
+      height="28px"
+      justify="between"
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
     >
-      <button
-        className={clsx(
-          "flex items-center gap-2 select-none text-gray-600 hover:text-gray-900 w-full",
-          { "!text-blue-500": selectedElementId === element.id },
-          { "!text-gray-300": !element.visible },
-        )}
+      <Button
+        className="grow justify-start"
+        color={selectedElementId === element.id ? undefined : "gray"}
+        disabled={!element.visible}
+        ml="2"
+        mr="4"
         onClick={() => {
           setSelectedElementId(element.id);
         }}
@@ -91,7 +95,9 @@ export function ElementRow({ element }: ElementRowProps) {
           event.preventDefault();
           setIsEditing(true);
         }}
+        size="2"
         type="button"
+        variant="ghost"
       >
         {element.tag === "p" ? <TextIcon height="1.4em" width="1.4em" /> : null}
         {element.tag === "div" && element.backgroundImage ? (
@@ -109,10 +115,8 @@ export function ElementRow({ element }: ElementRowProps) {
           <MagicWandIcon height="1.4em" width="1.4em" />
         ) : null}
         {isEditing ? (
-          <input
-            // eslint-disable-next-line -- Usability and accessibility for users is not reduced here
-            autoFocus
-            className="w-52 outline-blue-500 outline-1 outline-offset-[3px] elementNameInput"
+          <TextField.Root
+            className="w-full elementNameInput"
             defaultValue={element.name}
             onBlur={(event) => {
               onSubmit(event.currentTarget.value);
@@ -122,26 +126,31 @@ export function ElementRow({ element }: ElementRowProps) {
                 event.currentTarget.blur();
               }
             }}
-            type="text"
+            size="1"
+            // eslint-disable-next-line -- Usability and accessibility for users is not reduced here
+            autoFocus
           />
         ) : (
           element.name
         )}
-      </button>
-      <button
-        className={`text-gray-600 hover:text-gray-900 hidden group-hover:block ${
-          !element.visible ? "!block" : ""
-        }`}
+      </Button>
+      <IconButton
+        className={clsx("opacity-0 group-hover:opacity-100", {
+          "!opacity-100": !element.visible,
+        })}
+        color="gray"
+        mr="1"
         onClick={() => {
           updateElement({
             ...element,
             visible: !element.visible,
           });
         }}
-        type="button"
+        size="1"
+        variant="ghost"
       >
         {element.visible ? <VisibleIcon /> : <NotVisibleIcon />}
-      </button>
-    </div>
+      </IconButton>
+    </Flex>
   );
 }

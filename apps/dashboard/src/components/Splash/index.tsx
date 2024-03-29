@@ -3,7 +3,15 @@ import { Suspense, type ReactNode, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Avatar, Badge, Button, Flex, Separator, Text } from "@radix-ui/themes";
+import {
+  Avatar,
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Separator,
+  Text,
+} from "@radix-ui/themes";
 import { OgEditor } from "../OgEditor";
 import { GitHubIcon } from "../icons/GitHubIcon";
 import { useImagesStore } from "../../stores/imagesStore";
@@ -28,10 +36,28 @@ function SplashInner({ children }: OgSplashProps) {
     <>
       <OgEditor height={630} imageId={image ?? "splash"} width={1200} />
       {image ? null : (
-        <div className="w-screen h-screen bg-black/10 flex justify-center items-center absolute top-0 left-0 z-10">
-          <div className="p-8 rounded-md bg-white shadow-lg shadow-gray-200 w-[980px]">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-6 -mt-2">
+        <Flex
+          align="center"
+          className="z-10"
+          height="100vh"
+          justify="center"
+          left="0"
+          position="absolute"
+          style={{ backgroundColor: "var(--color-overlay)" }}
+          top="0"
+          width="100vw"
+        >
+          <Box
+            p="6"
+            style={{
+              boxShadow: "var(--shadow-6)",
+              backgroundColor: "var(--color-panel-solid)",
+              borderRadius: "var(--radius-5)",
+            }}
+            width="980px"
+          >
+            <Flex align="center" justify="between">
+              <Flex align="center" className="-mt-2" gap="6">
                 <Text asChild size="6">
                   <Link className="flex gap-2 items-center" href="/">
                     <Image
@@ -55,7 +81,7 @@ function SplashInner({ children }: OgSplashProps) {
                     GitHub
                   </Link>
                 </Button>
-              </div>
+              </Flex>
               <Flex align="center" justify="between" mx="2">
                 <Button asChild color="gray" radius="full" variant="ghost">
                   <Link href={data?.user ? "/profile" : "/login"}>
@@ -69,7 +95,7 @@ function SplashInner({ children }: OgSplashProps) {
                   </Link>
                 </Button>
               </Flex>
-            </div>
+            </Flex>
             <Text as="p" className="w-2/3" size="2">
               Create static or dynamic Open Graph images with an intuitive,
               Figma-like visual editor. Browse ready-to-use templates, and
@@ -77,8 +103,8 @@ function SplashInner({ children }: OgSplashProps) {
             </Text>
             <Separator className="opacity-50" my="6" size="4" />
             {children}
-          </div>
-        </div>
+          </Box>
+        </Flex>
       )}
     </>
   );

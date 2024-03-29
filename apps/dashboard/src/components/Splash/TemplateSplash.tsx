@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Button, Text } from "@radix-ui/themes";
+import { Button, Flex, Text } from "@radix-ui/themes";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import type { Template } from "../../lib/templates";
 import { useImagesStore } from "../../stores/imagesStore";
@@ -21,8 +21,8 @@ export function TemplateSplash({ template }: TemplateSplashProps) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex justify-between items-center">
+    <Flex direction="column" gap="4">
+      <Flex align="center" justify="between">
         <Text size="5">{template.name} template</Text>
         <Button asChild color="gray" radius="full" variant="ghost">
           <Link href="/">
@@ -30,11 +30,13 @@ export function TemplateSplash({ template }: TemplateSplashProps) {
             Back
           </Link>
         </Button>
-      </div>
-      <div className="flex gap-4 justify-between">
+      </Flex>
+      <Flex gap="4" justify="between">
         <OgImage elements={template.elements} size="medium" />
-        <div className="flex flex-col gap-8">
-          <p className="text-sm text-gray-600">{template.description}</p>
+        <Flex direction="column" gap="4">
+          <Text as="p" size="2">
+            {template.description}
+          </Text>
           <Button
             className="w-fit"
             color="green"
@@ -43,8 +45,8 @@ export function TemplateSplash({ template }: TemplateSplashProps) {
           >
             Start with this template
           </Button>
-        </div>
-      </div>
-    </div>
+        </Flex>
+      </Flex>
+    </Flex>
   );
 }
