@@ -118,7 +118,7 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
             value={selectedElement.border.style}
           >
             <Select.Trigger color="gray" variant="soft" />
-            <Select.Content>
+            <Select.Content variant="soft">
               <Select.Item value="outside">Outside</Select.Item>
               <Select.Item value="inside">Inside</Select.Item>
             </Select.Content>

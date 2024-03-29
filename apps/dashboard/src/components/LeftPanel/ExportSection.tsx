@@ -159,10 +159,10 @@ function ExportModal() {
                 <TextField.Root
                   onChange={(event) => {
                     startTransition(() => {
-                      setDynamicTexts((prev) => ({
-                        ...prev,
+                      setDynamicTexts({
+                        ...dynamicTexts,
                         [dynamicKey]: event.target.value,
-                      }));
+                      });
                     });
                   }}
                   value={dynamicTexts[dynamicKey]}
