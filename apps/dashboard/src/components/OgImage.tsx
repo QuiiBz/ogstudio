@@ -71,7 +71,7 @@ export function OgImage({
   return (
     <Tag
       className={clsx(
-        "h-[157px] w-[300px] min-w-[300px] flex items-center justify-center text-gray-600 border rounded border-gray-200 hover:border-gray-400 relative group overflow-hidden",
+        "h-[157px] w-[300px] min-w-[300px] flex items-center justify-center rounded relative group overflow-hidden",
         {
           "h-[157px] w-[300px] min-w-[300px]": size === "small",
           "h-[252px] w-[480px] min-w-[480px]": size === "medium",
@@ -79,6 +79,7 @@ export function OgImage({
       )}
       href={href ?? ""}
       onClick={onClick}
+      style={{ border: "1px solid var(--gray-6)" }}
     >
       {elements ? (
         <Suspense fallback={<Skeleton height="10%" width="60%" />}>

@@ -55,7 +55,10 @@ export function HomeSplash() {
               router.push(`/editor?i=${id}`);
             }}
           >
-            <AddIcon height="1.4em" width="1.4em" /> Start from scratch
+            <AddIcon height="1.4em" width="1.4em" />
+            <Text as="span" size="2">
+              Start from scratch
+            </Text>
           </OgImage>
           {images.slice(0, 2).map((image) => (
             <OgImage
