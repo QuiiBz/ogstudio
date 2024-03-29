@@ -3,7 +3,7 @@ import type { MouseEvent, ReactNode } from "react";
 import { Suspense, use, useMemo } from "react";
 import Link from "next/link";
 import { clsx } from "clsx";
-import { IconButton, Text } from "@radix-ui/themes";
+import { IconButton, Skeleton, Text } from "@radix-ui/themes";
 import type { OGElement } from "../lib/types";
 import { renderToImg } from "../lib/export";
 import { getDynamicTextKeys } from "../lib/elements";
@@ -81,11 +81,7 @@ export function OgImage({
       onClick={onClick}
     >
       {elements ? (
-        <Suspense
-          fallback={
-            <div className="animate-pulse w-3/4 h-1/6 bg-gray-100 rounded-full" />
-          }
-        >
+        <Suspense fallback={<Skeleton height="10%" width="60%" />}>
           <OgImageInner
             dynamicTexts={dynamicTexts}
             elements={elements}

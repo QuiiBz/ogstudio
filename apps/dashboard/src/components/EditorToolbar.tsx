@@ -16,7 +16,7 @@ export function EditorToolbar() {
 
   return (
     <Flex gap="4">
-      <Card>
+      <Card variant="classic">
         <Flex align="center" gap="4">
           <IconButton
             color="gray"
@@ -141,7 +141,7 @@ export function EditorToolbar() {
           </IconButton>
         </Flex>
       </Card>
-      <Card>
+      <Card variant="classic">
         <Flex align="center" gap="4">
           <IconButton
             color="gray"
