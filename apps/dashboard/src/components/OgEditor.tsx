@@ -54,11 +54,6 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
   }, [imageId, loadImage, setSelectedImageId]);
 
   useEffect(() => {
-    function onContextMenu(event: MouseEvent) {
-      event.preventDefault();
-      // TODO
-    }
-
     function onClick(event: MouseEvent) {
       const element = event.target as HTMLElement;
 
@@ -193,19 +188,17 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
     const ref = rootRef.current;
 
     if (ref) {
-      ref.addEventListener("contextmenu", onContextMenu);
       ref.addEventListener("click", onClick);
     }
 
-    document.addEventListener("keydown", onKeyDown);
+    document.body.addEventListener("keydown", onKeyDown);
 
     return () => {
       if (ref) {
-        ref.removeEventListener("contextmenu", onContextMenu);
         ref.removeEventListener("click", onClick);
       }
 
-      document.removeEventListener("keydown", onKeyDown);
+      document.body.removeEventListener("keydown", onKeyDown);
     };
   }, [
     rootRef,
