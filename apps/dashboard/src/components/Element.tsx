@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion -- we know it's defined */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { clsx } from "clsx";
+import { Box } from "@radix-ui/themes";
 import type { OGElement } from "../lib/types";
 import { createElementStyle, createImgElementStyle } from "../lib/elements";
 import { useElementsStore } from "../stores/elementsStore";
@@ -288,15 +289,15 @@ export function Element({ element }: ElementProps) {
   return (
     <Tag
       className={clsx(
-        "element cursor-default select-none !outline-blue-500 outline-1 outline-offset-[3px] hover:outline",
+        "element cursor-default select-none outline-1 outline-offset-[3px] hover:outline",
         { "outline cursor-move": isSelected },
         { "!outline !cursor-text": isEditing },
         { "!outline-dashed": element.tag === "span" },
       )}
+      style={{ ...style, outlineColor: "var(--accent-track)" }}
       id={`element-${element.id}`}
       // @ts-expect-error wtf?
       ref={elementRef}
-      style={style}
     >
       {element.tag === "p" ? element.content : null}
       {element.tag === "span" ? "Dynamic text" : null}
@@ -314,11 +315,66 @@ export function Element({ element }: ElementProps) {
       ) : null}
       {isSelected ? (
         <>
-          <span className="handle top-left absolute w-2.5 h-2.5 rounded-full bg-white border border-blue-500" />
-          <span className="handle top-right absolute w-2.5 h-2.5 rounded-full bg-white border border-blue-500" />
-          <span className="handle bottom-left absolute w-2.5 h-2.5 rounded-full bg-white border border-blue-500" />
-          <span className="handle bottom-right absolute w-2.5 h-2.5 rounded-full bg-white border border-blue-500" />
-          <span className="handle top-center absolute w-2.5 h-2.5 rounded-full bg-white border border-blue-500" />
+          <Box
+            as="span"
+            className="handle top-left"
+            height="10px"
+            position="absolute"
+            style={{
+              border: "1px solid var(--accent-track)",
+              borderRadius: "100%",
+              backgroundColor: "var(--gray-contrast)",
+            }}
+            width="10px"
+          />
+          <Box
+            as="span"
+            className="handle top-right"
+            height="10px"
+            position="absolute"
+            style={{
+              border: "1px solid var(--accent-track)",
+              borderRadius: "100%",
+              backgroundColor: "var(--gray-contrast)",
+            }}
+            width="10px"
+          />
+          <Box
+            as="span"
+            className="handle bottom-left"
+            height="10px"
+            position="absolute"
+            style={{
+              border: "1px solid var(--accent-track)",
+              borderRadius: "100%",
+              backgroundColor: "var(--gray-contrast)",
+            }}
+            width="10px"
+          />
+          <Box
+            as="span"
+            className="handle bottom-right"
+            height="10px"
+            position="absolute"
+            style={{
+              border: "1px solid var(--accent-track)",
+              borderRadius: "100%",
+              backgroundColor: "var(--gray-contrast)",
+            }}
+            width="10px"
+          />
+          <Box
+            as="span"
+            className="handle top-center"
+            height="10px"
+            position="absolute"
+            style={{
+              border: "1px solid var(--accent-track)",
+              borderRadius: "100%",
+              backgroundColor: "var(--gray-contrast)",
+            }}
+            width="10px"
+          />
         </>
       ) : null}
     </Tag>
