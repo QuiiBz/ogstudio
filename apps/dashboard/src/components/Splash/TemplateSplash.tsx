@@ -17,7 +17,7 @@ export function TemplateSplash({ template }: TemplateSplashProps) {
 
   function useTemplate() {
     const { id } = copyTemplate(template);
-    router.push(`/editor?i=${id}`);
+    router.push(`/editor/${id}`);
   }
 
   return (

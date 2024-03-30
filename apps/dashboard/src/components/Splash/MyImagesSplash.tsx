@@ -31,7 +31,7 @@ export function MyImagesSplash() {
         <OgImage
           onClick={() => {
             const { id } = createEmptyImage();
-            router.push(`/editor?i=${id}`);
+            router.push(`/editor/${id}`);
           }}
         >
           <AddIcon height="1.4em" width="1.4em" />
@@ -48,7 +48,7 @@ export function MyImagesSplash() {
             elements={
               JSON.parse(localStorage.getItem(image.id) || "[]") as OGElement[]
             }
-            href={`/editor?i=${image.id}`}
+            href={`/editor/${image.id}`}
             key={image.id}
             mockDynamicTexts
             name={image.name}

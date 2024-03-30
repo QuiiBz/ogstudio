@@ -30,6 +30,9 @@ const nextConfig = {
         pathname: '/a/*',
       },
     ]
+  },
+  experimental: {
+    ppr: true,
   }
 }
 

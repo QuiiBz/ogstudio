@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@radix-ui/themes";
-import { LogoutIcon } from "../../components/icons/LogoutIcon";
-import { useLogout } from "../../lib/hooks/useLogout";
+import { LogoutIcon } from "../../../components/icons/LogoutIcon";
+import { useLogout } from "../../../lib/hooks/useLogout";
 
 // export const metadata = {
 //   title: "Profile - OG Studio",

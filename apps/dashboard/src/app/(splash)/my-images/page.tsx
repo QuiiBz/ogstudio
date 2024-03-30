@@ -1,4 +1,4 @@
-import { MyImagesSplash } from "../../components/Splash/MyImagesSplash";
+import { MyImagesSplash } from "../../../components/Splash/MyImagesSplash";
 
 export const metadata = {
   title: "My images - OG Studio",
