@@ -1,8 +1,14 @@
-import "dotenv/config";
+import { config } from "dotenv";
 import type { Config } from "drizzle-kit";
 
+if (!process.env.DATABASE_URL) {
+  config({
+    path: "../../apps/dashboard/.env",
+  });
+}
+
 export default {
-  schema: "./src/lib/db/schema.ts",
+  schema: "./schema.ts",
   out: "./drizzle",
   driver: "turso",
   dbCredentials: {
