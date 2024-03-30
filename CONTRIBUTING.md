@@ -27,7 +27,7 @@ Thanks for your interest in contributing to next-international!
         brew tap libsql/sqld
         brew install sqld
         ```
-    3. Navigate to `apps/dashboard` and run `pnpm db:db`, then `pnpm db:migrate` in a separate terminal
+    3. Navigate to `packages/db` and run `pnpm db:dev`, then `pnpm db:migrate` in a separate terminal
 5. Navigate to `apps/dashboard` and run `pnpm dev`
 
 Before submitting a PR, run the `test`, `lint`, and `typecheck` scripts from the root of the repository.
