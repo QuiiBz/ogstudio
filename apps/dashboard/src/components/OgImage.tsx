@@ -14,9 +14,10 @@ interface OgImageInnerProps {
   elements: OGElement[];
   dynamicTexts?: Record<string, string>;
   mockDynamicTexts?: boolean;
+  client?: boolean;
 }
 
-function OgImageInner({
+function OgImageInnerClient({
   elements,
   dynamicTexts,
   mockDynamicTexts,
@@ -36,7 +37,34 @@ function OgImageInner({
     return dynamicTexts;
   }, [elements, dynamicTexts, mockDynamicTexts]);
 
-  const src = use(renderToImg(elements, texts));
+  const src = use(
+    useMemo(() => renderToImg(elements, texts), [elements, texts]),
+  );
+
+  return <img alt="" src={src} />;
+}
+
+async function OgImageInnerServer({
+  elements,
+  dynamicTexts,
+  mockDynamicTexts,
+}: OgImageInnerProps) {
+  const texts = useMemo(() => {
+    if (mockDynamicTexts) {
+      const keys = getDynamicTextKeys(elements);
+
+      return keys.reduce<Record<string, string>>((acc, key) => {
+        return {
+          ...acc,
+          [key]: "Dynamic text",
+        };
+      }, {});
+    }
+
+    return dynamicTexts;
+  }, [elements, dynamicTexts, mockDynamicTexts]);
+
+  const src = await renderToImg(elements, texts);
 
   return <img alt="" src={src} />;
 }
@@ -52,6 +80,7 @@ interface OgImageProps {
   copiable?: (event: MouseEvent<HTMLSpanElement>) => void;
   deletable?: (event: MouseEvent<HTMLSpanElement>) => void;
   size?: "small" | "medium";
+  client?: boolean;
 }
 
 export function OgImage({
@@ -65,6 +94,7 @@ export function OgImage({
   copiable,
   deletable,
   size,
+  client,
 }: OgImageProps) {
   const Tag = href ? Link : onClick ? "button" : "div";
 
@@ -81,14 +111,21 @@ export function OgImage({
       onClick={onClick}
       style={{ border: "1px solid var(--gray-6)" }}
     >
-      {elements ? (
+      {elements && client ? (
         <Suspense fallback={<Skeleton height="10%" width="60%" />}>
-          <OgImageInner
+          <OgImageInnerClient
             dynamicTexts={dynamicTexts}
             elements={elements}
             mockDynamicTexts={mockDynamicTexts}
           />
         </Suspense>
+      ) : null}
+      {elements && !client ? (
+        <OgImageInnerServer
+          dynamicTexts={dynamicTexts}
+          elements={elements}
+          mockDynamicTexts={mockDynamicTexts}
+        />
       ) : null}
       {children}
       {name ? (

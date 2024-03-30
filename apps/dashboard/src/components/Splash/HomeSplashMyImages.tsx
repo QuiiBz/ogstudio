@@ -1,14 +1,14 @@
 "use client";
+import { Button, Flex, Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
-import { Button, Flex, Grid, Text } from "@radix-ui/themes";
 import Link from "next/link";
-import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
-import { AddIcon } from "../icons/AddIcon";
 import { useImagesStore } from "../../stores/imagesStore";
-import type { OGElement } from "../../lib/types";
 import { OgImage } from "../OgImage";
+import { AddIcon } from "../icons/AddIcon";
+import type { OGElement } from "../../lib/types";
+import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 
-export function MyImagesSplash() {
+export function HomeSplashMyImages() {
   const { images, createEmptyImage, copyImage, deleteImage } = useImagesStore();
   const router = useRouter();
 
@@ -17,17 +17,13 @@ export function MyImagesSplash() {
       <Flex align="center" justify="between">
         <Text size="5">My images</Text>
         <Button asChild color="gray" radius="full" variant="ghost">
-          <Link href="/">
-            <ArrowLeftIcon />
-            Back
+          <Link href="/my-images">
+            See all ({images.length})
+            <ArrowRightIcon />
           </Link>
         </Button>
       </Flex>
-      <Grid
-        className="max-h-[427px] overflow-y-scroll no-scrollbar"
-        columns="3"
-        gap="2"
-      >
+      <Flex gap="2">
         <OgImage
           onClick={() => {
             const { id } = createEmptyImage();
@@ -39,7 +35,7 @@ export function MyImagesSplash() {
             Start from scratch
           </Text>
         </OgImage>
-        {images.map((image) => (
+        {images.slice(0, 2).map((image) => (
           <OgImage
             client
             copiable={() => {
@@ -57,7 +53,7 @@ export function MyImagesSplash() {
             name={image.name}
           />
         ))}
-      </Grid>
+      </Flex>
     </Flex>
   );
 }

@@ -1,5 +1,5 @@
-import { TemplateSplash } from "../../../components/Splash/TemplateSplash";
-import { TEMPLATES } from "../../../lib/templates";
+import { TemplateSplash } from "../../../../components/Splash/TemplateSplash";
+import { TEMPLATES } from "../../../../lib/templates";
 
 interface TemplateProps {
   params: {

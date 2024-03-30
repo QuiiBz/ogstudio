@@ -1,4 +1,4 @@
-import { HomeSplash } from "../components/Splash/HomeSplash";
+import { HomeSplash } from "../../components/Splash/HomeSplash";
 
 export const metadata = {
   title: "OG Studio",
