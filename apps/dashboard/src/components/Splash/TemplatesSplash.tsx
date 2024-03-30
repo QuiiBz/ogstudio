@@ -1,4 +1,3 @@
-"use client";
 import { Button, Flex, Grid, Text } from "@radix-ui/themes";
 import Link from "next/link";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";

@@ -148,6 +148,7 @@ function ExportModal() {
         <Text size="5">Preview</Text>
         <Flex gap="6" justify="between">
           <OgImage
+            client
             dynamicTexts={dynamicTexts}
             elements={elements}
             size="medium"
