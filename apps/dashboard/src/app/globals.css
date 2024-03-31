@@ -94,12 +94,14 @@ input[type=number]::-webkit-inner-spin-button {
   box-shadow: var(--shadow-4) !important;
 }
 
-.react-colorful__hue {
+.react-colorful__hue,
+.react-colorful__alpha {
   height: 20px !important;
   border-radius: 0 0 3px 3px !important;
 }
 
-.react-colorful__hue-pointer {
+.react-colorful__hue-pointer,
+.react-colorful__alpha-pointer {
   width: 16px !important;
   height: 16px !important;
   border: 2px solid var(--gray-contrast) !important;

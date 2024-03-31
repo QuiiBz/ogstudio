@@ -84,48 +84,36 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
           </Flex>
           {selectedElement.gradient ? (
             <Grid columns="2" gap="2">
-              <TextField.Root
-                onChange={(event) => {
+              <ColorPicker
+                onChange={(start) => {
                   updateElement({
                     ...selectedElement,
                     // @ts-expect-error wtf?
                     gradient: {
                       ...selectedElement.gradient,
-                      start: event.target.value,
+                      start,
                     },
                   });
                 }}
                 value={selectedElement.gradient.start}
-                variant="soft"
-                color="gray"
-                // @ts-expect-error wtf?
-                type="color"
               >
-                <TextField.Slot>
-                  <StartIcon />
-                </TextField.Slot>
-              </TextField.Root>
-              <TextField.Root
-                color="gray"
-                onChange={(event) => {
+                <StartIcon />
+              </ColorPicker>
+              <ColorPicker
+                onChange={(end) => {
                   updateElement({
                     ...selectedElement,
                     // @ts-expect-error wtf?
                     gradient: {
                       ...selectedElement.gradient,
-                      end: event.target.value,
+                      end,
                     },
                   });
                 }}
                 value={selectedElement.gradient.end}
-                variant="soft"
-                // @ts-expect-error wtf?
-                type="color"
               >
-                <TextField.Slot>
-                  <EndIcon />
-                </TextField.Slot>
-              </TextField.Root>
+                <EndIcon />
+              </ColorPicker>
               <Select.Root
                 onValueChange={(value) => {
                   updateElement({

@@ -2,7 +2,6 @@ import { Flex, Grid, IconButton, Text, TextField } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { AddIcon } from "../icons/AddIcon";
-import { ColorIcon } from "../icons/ColorIcon";
 import { WidthIcon } from "../icons/WidthIcon";
 import { GradientIcon } from "../icons/GradientIcon";
 import { useElementsStore } from "../../stores/elementsStore";

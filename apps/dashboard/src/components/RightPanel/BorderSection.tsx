@@ -9,7 +9,6 @@ import {
 import type { OGElement } from "../../lib/types";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { AddIcon } from "../icons/AddIcon";
-import { ColorIcon } from "../icons/ColorIcon";
 import { WidthIcon } from "../icons/WidthIcon";
 import { useElementsStore } from "../../stores/elementsStore";
 import { ColorPicker } from "../ColorPicker";

@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import type { OGDynamicElement, OGElement } from "./types";
-import { hexToRgba } from "./colors";
+import { hexAlphaToRgba } from "./colors";
 
 /**
  * The initial elements to render in the editor.
@@ -19,7 +19,6 @@ export const INITIAL_ELEMENTS: OGElement[] = [
     height: 630,
     visible: true,
     rotate: 0,
-    opacity: 100,
     backgroundColor: "#ffffff",
   },
 ];
@@ -86,7 +85,7 @@ export function createElementStyle(element: OGElement): CSSProperties {
     base = {
       ...base,
       display: "flex",
-      color: hexToRgba(element.color, element.opacity),
+      color: hexAlphaToRgba(element.color),
       fontFamily: element.fontFamily,
       fontWeight: element.fontWeight,
       fontSize: `${element.fontSize}px`,
@@ -117,7 +116,7 @@ export function createElementStyle(element: OGElement): CSSProperties {
           ? element.gradient.type === "radial"
             ? `radial-gradient(${element.gradient.start}, ${element.gradient.end})`
             : `linear-gradient(${element.gradient.angle}deg, ${element.gradient.start}, ${element.gradient.end})`
-          : hexToRgba(element.backgroundColor, element.opacity),
+          : hexAlphaToRgba(element.backgroundColor),
     };
   }
 

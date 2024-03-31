@@ -3,10 +3,10 @@ import type { OGElement } from "../../lib/types";
 import type { Font } from "../../lib/fonts";
 import { FONTS, FONT_WEIGHTS } from "../../lib/fonts";
 import { FontSizeIcon } from "../icons/FontSizeIcon";
-import { ColorIcon } from "../icons/ColorIcon";
 import { LineHeightIcon } from "../icons/LineHeightIcon";
 import { LetterSpacingIcon } from "../icons/LetterSpacingIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { ColorPicker } from "../ColorPicker";
 
 const SPACES_REGEX = /\s+/g;
 
@@ -85,23 +85,15 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           </TextField.Slot>
           <TextField.Slot>px</TextField.Slot>
         </TextField.Root>
-        <TextField.Root
-          color="gray"
-          onChange={(event) => {
+        <ColorPicker
+          onChange={(color) => {
             updateElement({
               ...selectedElement,
-              color: event.target.value,
+              color,
             });
           }}
           value={selectedElement.color}
-          variant="soft"
-          // @ts-expect-error wtf?
-          type="color"
-        >
-          <TextField.Slot>
-            <ColorIcon />
-          </TextField.Slot>
-        </TextField.Root>
+        />
         <TextField.Root
           color="gray"
           max={5}

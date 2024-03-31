@@ -1,7 +1,6 @@
 import { Flex, Button, Grid, Text, TextField } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { CornerIcon } from "../icons/CornerIcon";
-import { OpacityIcon } from "../icons/OpacityIcon";
 import { RotateIcon } from "../icons/RotateIcon";
 import { useElementsStore } from "../../stores/elementsStore";
 import { MagicWandIcon } from "../icons/MagicWandIcon";
@@ -20,25 +19,6 @@ export function MiscellanousSection({
     <Flex direction="column" gap="2">
       <Text size="1">Miscellanous</Text>
       <Grid columns="2" gap="2">
-        <TextField.Root
-          color="gray"
-          max={100}
-          min={0}
-          onChange={(event) => {
-            updateElement({
-              ...selectedElement,
-              opacity: event.target.valueAsNumber,
-            });
-          }}
-          type="number"
-          value={selectedElement.opacity}
-          variant="soft"
-        >
-          <TextField.Slot>
-            <OpacityIcon />
-          </TextField.Slot>
-          <TextField.Slot>%</TextField.Slot>
-        </TextField.Root>
         <TextField.Root
           color="gray"
           max={360}
