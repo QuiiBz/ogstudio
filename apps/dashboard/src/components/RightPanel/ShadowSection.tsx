@@ -56,55 +56,6 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
       </Flex>
       {selectedElement.shadow ? (
         <Grid columns="2" gap="2">
-          {selectedElement.tag === "p" ||
-          selectedElement.tag === "span" ? null : (
-            <TextField.Root
-              color="gray"
-              max={99}
-              min={0}
-              onChange={(event) => {
-                updateElement({
-                  ...selectedElement,
-                  // @ts-expect-error wtf?
-                  shadow: {
-                    ...selectedElement.shadow,
-                    width: event.target.valueAsNumber,
-                  },
-                });
-              }}
-              type="number"
-              value={selectedElement.shadow.width}
-              variant="soft"
-            >
-              <TextField.Slot>
-                <WidthIcon />
-              </TextField.Slot>
-              <TextField.Slot>px</TextField.Slot>
-            </TextField.Root>
-          )}
-          <TextField.Root
-            color="gray"
-            max={99}
-            min={0}
-            onChange={(event) => {
-              updateElement({
-                ...selectedElement,
-                // @ts-expect-error wtf?
-                shadow: {
-                  ...selectedElement.shadow,
-                  blur: event.target.valueAsNumber,
-                },
-              });
-            }}
-            type="number"
-            value={selectedElement.shadow.blur}
-            variant="soft"
-          >
-            <TextField.Slot>
-              <GradientIcon />
-            </TextField.Slot>
-            <TextField.Slot>px</TextField.Slot>
-          </TextField.Root>
           <TextField.Root
             color="gray"
             onChange={(event) => {
@@ -143,6 +94,55 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
             <TextField.Slot>Y</TextField.Slot>
             <TextField.Slot>px</TextField.Slot>
           </TextField.Root>
+          <TextField.Root
+            color="gray"
+            max={99}
+            min={0}
+            onChange={(event) => {
+              updateElement({
+                ...selectedElement,
+                // @ts-expect-error wtf?
+                shadow: {
+                  ...selectedElement.shadow,
+                  blur: event.target.valueAsNumber,
+                },
+              });
+            }}
+            type="number"
+            value={selectedElement.shadow.blur}
+            variant="soft"
+          >
+            <TextField.Slot>
+              <GradientIcon />
+            </TextField.Slot>
+            <TextField.Slot>px</TextField.Slot>
+          </TextField.Root>
+          {selectedElement.tag === "p" ||
+          selectedElement.tag === "span" ? null : (
+            <TextField.Root
+              color="gray"
+              max={99}
+              min={0}
+              onChange={(event) => {
+                updateElement({
+                  ...selectedElement,
+                  // @ts-expect-error wtf?
+                  shadow: {
+                    ...selectedElement.shadow,
+                    width: event.target.valueAsNumber,
+                  },
+                });
+              }}
+              type="number"
+              value={selectedElement.shadow.width}
+              variant="soft"
+            >
+              <TextField.Slot>
+                <WidthIcon />
+              </TextField.Slot>
+              <TextField.Slot>px</TextField.Slot>
+            </TextField.Root>
+          )}
           <ColorPicker
             onChange={(color) => {
               updateElement({
