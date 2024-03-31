@@ -7,7 +7,6 @@ import {
   IconButton,
 } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
-import { ColorIcon } from "../icons/ColorIcon";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { StartIcon } from "../icons/StartIcon";
 import { AddIcon } from "../icons/AddIcon";
@@ -15,6 +14,7 @@ import { EndIcon } from "../icons/EndIcon";
 import { SquareIcon } from "../icons/SquareIcon";
 import { LinkIcon } from "../icons/LinkIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { ColorPicker } from "../ColorPicker";
 
 interface BackgroundSectionProps {
   selectedElement: OGElement;
@@ -34,23 +34,15 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
           {!selectedElement.gradient ? (
             <>
               <Text size="1">Background color</Text>
-              <TextField.Root
-                onChange={(event) => {
+              <ColorPicker
+                onChange={(backgroundColor) => {
                   updateElement({
                     ...selectedElement,
-                    backgroundColor: event.target.value,
+                    backgroundColor,
                   });
                 }}
                 value={selectedElement.backgroundColor}
-                variant="soft"
-                color="gray"
-                // @ts-expect-error wtf?
-                type="color"
-              >
-                <TextField.Slot>
-                  <ColorIcon />
-                </TextField.Slot>
-              </TextField.Root>
+              />
             </>
           ) : null}
           <Flex justify="between">
@@ -92,48 +84,36 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
           </Flex>
           {selectedElement.gradient ? (
             <Grid columns="2" gap="2">
-              <TextField.Root
-                onChange={(event) => {
+              <ColorPicker
+                onChange={(start) => {
                   updateElement({
                     ...selectedElement,
                     // @ts-expect-error wtf?
                     gradient: {
                       ...selectedElement.gradient,
-                      start: event.target.value,
+                      start,
                     },
                   });
                 }}
                 value={selectedElement.gradient.start}
-                variant="soft"
-                color="gray"
-                // @ts-expect-error wtf?
-                type="color"
               >
-                <TextField.Slot>
-                  <StartIcon />
-                </TextField.Slot>
-              </TextField.Root>
-              <TextField.Root
-                color="gray"
-                onChange={(event) => {
+                <StartIcon />
+              </ColorPicker>
+              <ColorPicker
+                onChange={(end) => {
                   updateElement({
                     ...selectedElement,
                     // @ts-expect-error wtf?
                     gradient: {
                       ...selectedElement.gradient,
-                      end: event.target.value,
+                      end,
                     },
                   });
                 }}
                 value={selectedElement.gradient.end}
-                variant="soft"
-                // @ts-expect-error wtf?
-                type="color"
               >
-                <TextField.Slot>
-                  <EndIcon />
-                </TextField.Slot>
-              </TextField.Root>
+                <EndIcon />
+              </ColorPicker>
               <Select.Root
                 onValueChange={(value) => {
                   updateElement({

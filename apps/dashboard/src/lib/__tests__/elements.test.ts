@@ -55,13 +55,12 @@ describe("createElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
-      opacity: 80,
       backgroundColor: "#ffffff",
     });
 
     expect(style).toMatchInlineSnapshot(`
       {
-        "background": "rgba(255, 255, 255, 0.8)",
+        "background": "rgba(255, 255, 255, 1)",
         "display": "flex",
         "height": "200px",
         "left": "10px",
@@ -83,13 +82,12 @@ describe("createElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 120,
-      opacity: 80,
       backgroundColor: "#ffffff",
     });
 
     expect(style).toMatchInlineSnapshot(`
       {
-        "background": "rgba(255, 255, 255, 0.8)",
+        "background": "rgba(255, 255, 255, 1)",
         "display": "flex",
         "height": "200px",
         "left": "10px",
@@ -113,7 +111,6 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
-        opacity: 80,
         border: {
           color: "blue",
           width: 2,
@@ -124,7 +121,7 @@ describe("createElementStyle", () => {
 
       expect(style).toMatchInlineSnapshot(`
         {
-          "background": "rgba(255, 255, 255, 0.8)",
+          "background": "rgba(255, 255, 255, 1)",
           "boxShadow": "0 0 0 2px blue",
           "display": "flex",
           "height": "200px",
@@ -147,7 +144,6 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
-        opacity: 80,
         border: {
           color: "green",
           width: 4,
@@ -158,7 +154,7 @@ describe("createElementStyle", () => {
 
       expect(style).toMatchInlineSnapshot(`
         {
-          "background": "rgba(255, 255, 255, 0.8)",
+          "background": "rgba(255, 255, 255, 1)",
           "boxShadow": "0 0 0 4px inset green",
           "display": "flex",
           "height": "200px",
@@ -182,7 +178,6 @@ describe("createElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
-      opacity: 80,
       shadow: {
         color: "blue",
         width: 2,
@@ -195,7 +190,7 @@ describe("createElementStyle", () => {
 
     expect(style).toMatchInlineSnapshot(`
       {
-        "background": "rgba(255, 255, 255, 0.8)",
+        "background": "rgba(255, 255, 255, 1)",
         "boxShadow": "2px 2px 4px 2px blue",
         "display": "flex",
         "height": "200px",
@@ -218,7 +213,6 @@ describe("createElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
-      opacity: 80,
       border: {
         color: "green",
         width: 4,
@@ -236,7 +230,7 @@ describe("createElementStyle", () => {
 
     expect(style).toMatchInlineSnapshot(`
       {
-        "background": "rgba(255, 255, 255, 0.8)",
+        "background": "rgba(255, 255, 255, 1)",
         "boxShadow": "0 0 0 4px inset green, 2px 2px 4px 2px blue",
         "display": "flex",
         "height": "200px",
@@ -260,7 +254,6 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
-        opacity: 80,
         content: "Hello",
         color: "#ffffff",
         fontFamily: "Inter",
@@ -273,7 +266,7 @@ describe("createElementStyle", () => {
 
       expect(style).toMatchInlineSnapshot(`
         {
-          "color": "rgba(255, 255, 255, 0.8)",
+          "color": "rgba(255, 255, 255, 1)",
           "display": "flex",
           "fontFamily": "Inter",
           "fontSize": "12px",
@@ -303,7 +296,6 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
-        opacity: 80,
         shadow: {
           color: "blue",
           width: 2,
@@ -323,7 +315,7 @@ describe("createElementStyle", () => {
 
       expect(style).toMatchInlineSnapshot(`
         {
-          "color": "rgba(255, 255, 255, 0.8)",
+          "color": "rgba(255, 255, 255, 1)",
           "display": "flex",
           "fontFamily": "Inter",
           "fontSize": "12px",
@@ -354,7 +346,6 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
-        opacity: 80,
         content: "Hello",
         color: "#ffffff",
         fontFamily: "Inter",
@@ -367,7 +358,7 @@ describe("createElementStyle", () => {
 
       expect(style).toMatchInlineSnapshot(`
         {
-          "color": "rgba(255, 255, 255, 0.8)",
+          "color": "rgba(255, 255, 255, 1)",
           "display": "flex",
           "fontFamily": "Inter",
           "fontSize": "12px",
@@ -397,7 +388,6 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
-        opacity: 80,
         content: "Hello",
         color: "#ffffff",
         fontFamily: "Inter",
@@ -410,7 +400,7 @@ describe("createElementStyle", () => {
 
       expect(style).toMatchInlineSnapshot(`
         {
-          "color": "rgba(255, 255, 255, 0.8)",
+          "color": "rgba(255, 255, 255, 1)",
           "display": "flex",
           "fontFamily": "Inter",
           "fontSize": "12px",
@@ -442,14 +432,13 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
-        opacity: 80,
         radius: 4,
         backgroundColor: "#ffffff",
       });
 
       expect(style).toMatchInlineSnapshot(`
         {
-          "background": "rgba(255, 255, 255, 0.8)",
+          "background": "rgba(255, 255, 255, 1)",
           "borderRadius": "4px",
           "display": "flex",
           "height": "200px",
@@ -473,7 +462,6 @@ describe("createElementStyle", () => {
           height: 200,
           visible: true,
           rotate: 0,
-          opacity: 80,
           backgroundColor: "#ffffff",
           gradient: {
             start: "#ff0000",
@@ -507,7 +495,6 @@ describe("createElementStyle", () => {
           height: 200,
           visible: true,
           rotate: 0,
-          opacity: 80,
           backgroundColor: "#ffffff",
           gradient: {
             start: "#ff0000",
@@ -545,7 +532,6 @@ describe("createImgElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
-      opacity: 80,
       backgroundColor: "#ffffff",
       backgroundImage: "https://via.placeholder.com/150",
       backgroundSize: "cover",
@@ -569,7 +555,6 @@ describe("createImgElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
-      opacity: 80,
       backgroundColor: "#ffffff",
       backgroundImage: "https://via.placeholder.com/150",
       backgroundSize: "contain",

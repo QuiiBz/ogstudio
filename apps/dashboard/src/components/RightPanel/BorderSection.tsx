@@ -9,9 +9,9 @@ import {
 import type { OGElement } from "../../lib/types";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { AddIcon } from "../icons/AddIcon";
-import { ColorIcon } from "../icons/ColorIcon";
 import { WidthIcon } from "../icons/WidthIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { ColorPicker } from "../ColorPicker";
 
 interface BorderSectionProps {
   selectedElement: OGElement;
@@ -60,27 +60,19 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
       </Flex>
       {selectedElement.border ? (
         <Grid columns="2" gap="2">
-          <TextField.Root
-            onChange={(event) => {
+          <ColorPicker
+            onChange={(color) => {
               updateElement({
                 ...selectedElement,
                 // @ts-expect-error wtf?
                 border: {
                   ...selectedElement.border,
-                  color: event.target.value,
+                  color,
                 },
               });
             }}
             value={selectedElement.border.color}
-            variant="soft"
-            color="gray"
-            // @ts-expect-error wtf?
-            type="color"
-          >
-            <TextField.Slot>
-              <ColorIcon />
-            </TextField.Slot>
-          </TextField.Root>
+          />
           <TextField.Root
             color="gray"
             max={99}
