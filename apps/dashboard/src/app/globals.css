@@ -78,3 +78,30 @@ input[type=number]::-webkit-inner-spin-button {
   height: 12px;
   @apply bg-blue-500;
 }
+
+.react-colorful {
+  width: 100% !important;
+}
+
+.react-colorful__saturation {
+  border-radius: 3px 3px 0 0 !important;
+}
+
+.react-colorful__saturation-pointer {
+  width: 20px !important;
+  height: 20px !important;
+  border: 2px solid var(--gray-contrast) !important;
+  box-shadow: var(--shadow-4) !important;
+}
+
+.react-colorful__hue {
+  height: 20px !important;
+  border-radius: 0 0 3px 3px !important;
+}
+
+.react-colorful__hue-pointer {
+  width: 16px !important;
+  height: 16px !important;
+  border: 2px solid var(--gray-contrast) !important;
+  box-shadow: var(--shadow-4) !important;
+}

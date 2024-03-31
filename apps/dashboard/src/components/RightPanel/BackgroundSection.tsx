@@ -7,7 +7,6 @@ import {
   IconButton,
 } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
-import { ColorIcon } from "../icons/ColorIcon";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { StartIcon } from "../icons/StartIcon";
 import { AddIcon } from "../icons/AddIcon";
@@ -15,6 +14,7 @@ import { EndIcon } from "../icons/EndIcon";
 import { SquareIcon } from "../icons/SquareIcon";
 import { LinkIcon } from "../icons/LinkIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { ColorPicker } from "../ColorPicker";
 
 interface BackgroundSectionProps {
   selectedElement: OGElement;
@@ -34,23 +34,15 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
           {!selectedElement.gradient ? (
             <>
               <Text size="1">Background color</Text>
-              <TextField.Root
-                onChange={(event) => {
+              <ColorPicker
+                onChange={(backgroundColor) => {
                   updateElement({
                     ...selectedElement,
-                    backgroundColor: event.target.value,
+                    backgroundColor,
                   });
                 }}
                 value={selectedElement.backgroundColor}
-                variant="soft"
-                color="gray"
-                // @ts-expect-error wtf?
-                type="color"
-              >
-                <TextField.Slot>
-                  <ColorIcon />
-                </TextField.Slot>
-              </TextField.Root>
+              />
             </>
           ) : null}
           <Flex justify="between">

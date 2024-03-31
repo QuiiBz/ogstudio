@@ -6,6 +6,7 @@ import { ColorIcon } from "../icons/ColorIcon";
 import { WidthIcon } from "../icons/WidthIcon";
 import { GradientIcon } from "../icons/GradientIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { ColorPicker } from "../ColorPicker";
 
 interface ShadowSectionProps {
   selectedElement: OGElement;
@@ -143,27 +144,19 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
             <TextField.Slot>Y</TextField.Slot>
             <TextField.Slot>px</TextField.Slot>
           </TextField.Root>
-          <TextField.Root
-            onChange={(event) => {
+          <ColorPicker
+            onChange={(color) => {
               updateElement({
                 ...selectedElement,
                 // @ts-expect-error wtf?
                 shadow: {
                   ...selectedElement.shadow,
-                  color: event.target.value,
+                  color,
                 },
               });
             }}
             value={selectedElement.shadow.color}
-            variant="soft"
-            color="gray"
-            // @ts-expect-error wtf?
-            type="color"
-          >
-            <TextField.Slot>
-              <ColorIcon />
-            </TextField.Slot>
-          </TextField.Root>
+          />
         </Grid>
       ) : null}
     </Flex>
