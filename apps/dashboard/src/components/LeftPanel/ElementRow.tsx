@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Button, Flex, IconButton, TextField } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { NotVisibleIcon } from "../icons/NotVisibleIcon";
@@ -17,7 +17,8 @@ interface ElementRowProps {
   element: OGElement;
 }
 
-export function ElementRow({ element }: ElementRowProps) {
+// eslint-disable-next-line react/display-name -- todo
+export const ElementRow = memo(({ element }: ElementRowProps) => {
   const selectedElementId = useElementsStore(
     (state) => state.selectedElementId,
   );
@@ -25,8 +26,14 @@ export function ElementRow({ element }: ElementRowProps) {
     (state) => state.setSelectedElementId,
   );
   const updateElement = useElementsStore((state) => state.updateElement);
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: element.id });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: element.id });
   const [isEditing, setIsEditing] = useState(false);
 
   const style = {
@@ -80,7 +87,9 @@ export function ElementRow({ element }: ElementRowProps) {
     >
       <Button
         className="grow justify-start"
-        color={selectedElementId === element.id ? undefined : "gray"}
+        color={
+          selectedElementId === element.id || isDragging ? undefined : "gray"
+        }
         disabled={!element.visible}
         ml="2"
         mr="4"
@@ -97,7 +106,7 @@ export function ElementRow({ element }: ElementRowProps) {
         }}
         size="2"
         type="button"
-        variant="ghost"
+        variant={isDragging ? "surface" : "ghost"}
       >
         {element.tag === "p" ? <TextIcon height="1.4em" width="1.4em" /> : null}
         {element.tag === "div" && element.backgroundImage ? (
@@ -153,4 +162,4 @@ export function ElementRow({ element }: ElementRowProps) {
       </IconButton>
     </Flex>
   );
-}
+});

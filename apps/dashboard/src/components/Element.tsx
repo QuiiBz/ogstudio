@@ -282,7 +282,30 @@ export function Element({ element }: ElementProps) {
     element,
   ]);
 
-  const style = useMemo(() => createElementStyle(element), [element]);
+  const style = useMemo(() => {
+    const styles = createElementStyle(element);
+    const elementStyle: typeof styles = {
+      outlineColor: "var(--accent-track)",
+      position: "absolute",
+      top: styles.top,
+      left: styles.left,
+      width: styles.width,
+      height: styles.height,
+      transform: styles.transform,
+    };
+    const tagStyle: typeof styles = {
+      ...styles,
+      position: "relative",
+      top: undefined,
+      left: undefined,
+      width: "100%",
+      height: "100%",
+      transform: undefined,
+      pointerEvents: "none",
+    };
+
+    return { elementStyle, tagStyle };
+  }, [element]);
 
   if (!element.visible) {
     return null;
@@ -291,37 +314,39 @@ export function Element({ element }: ElementProps) {
   return (
     <ContextMenu.Root>
       <ContextMenu.Trigger>
-        <Tag
+        <div
           className={clsx(
             "element cursor-default select-none outline-1 outline-offset-[3px] hover:outline",
             { "outline cursor-move": isSelected },
             { "!outline !cursor-text": isEditing },
             { "!outline-dashed": element.tag === "span" },
           )}
-          style={{ ...style, outlineColor: "var(--accent-track)" }}
           id={`element-${element.id}`}
+          style={style.elementStyle}
           // @ts-expect-error wtf?
           ref={elementRef}
         >
-          {element.tag === "p" ? element.content : null}
-          {element.tag === "span" ? "Dynamic text" : null}
-          {element.tag === "div" && element.backgroundImage ? (
-            <img
-              alt=""
-              src={element.backgroundImage}
-              style={{
-                pointerEvents: "none",
-                ...createImgElementStyle(element),
-                width: "100%",
-                height: "100%",
-              }}
-            />
-          ) : null}
+          <Tag style={style.tagStyle}>
+            {element.tag === "p" ? element.content : null}
+            {element.tag === "span" ? "Dynamic text" : null}
+            {element.tag === "div" && element.backgroundImage ? (
+              <img
+                alt=""
+                src={element.backgroundImage}
+                style={{
+                  pointerEvents: "none",
+                  ...createImgElementStyle(element),
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+            ) : null}
+          </Tag>
           {isSelected ? (
             <>
               <Box
                 as="span"
-                className="handle top-left"
+                className="handle top-left filter-none"
                 height="10px"
                 position="absolute"
                 style={{
@@ -333,7 +358,7 @@ export function Element({ element }: ElementProps) {
               />
               <Box
                 as="span"
-                className="handle top-right"
+                className="handle top-right filter-none"
                 height="10px"
                 position="absolute"
                 style={{
@@ -345,7 +370,7 @@ export function Element({ element }: ElementProps) {
               />
               <Box
                 as="span"
-                className="handle bottom-left"
+                className="handle bottom-left filter-none"
                 height="10px"
                 position="absolute"
                 style={{
@@ -357,7 +382,7 @@ export function Element({ element }: ElementProps) {
               />
               <Box
                 as="span"
-                className="handle bottom-right"
+                className="handle bottom-right filter-none"
                 height="10px"
                 position="absolute"
                 style={{
@@ -369,7 +394,7 @@ export function Element({ element }: ElementProps) {
               />
               <Box
                 as="span"
-                className="handle top-center"
+                className="handle top-center filter-none"
                 height="10px"
                 position="absolute"
                 style={{
@@ -381,7 +406,7 @@ export function Element({ element }: ElementProps) {
               />
             </>
           ) : null}
-        </Tag>
+        </div>
       </ContextMenu.Trigger>
       <ContextMenu.Content variant="soft">
         <ContextMenu.Item

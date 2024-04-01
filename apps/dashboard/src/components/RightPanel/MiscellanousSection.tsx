@@ -5,6 +5,7 @@ import { RotateIcon } from "../icons/RotateIcon";
 import { useElementsStore } from "../../stores/elementsStore";
 import { MagicWandIcon } from "../icons/MagicWandIcon";
 import { TextIcon } from "../icons/TextIcon";
+import { BlurIcon } from "../icons/BlurIcon";
 
 interface MiscellanousSectionProps {
   selectedElement: OGElement;
@@ -37,6 +38,26 @@ export function MiscellanousSection({
             <RotateIcon />
           </TextField.Slot>
           <TextField.Slot>deg</TextField.Slot>
+        </TextField.Root>
+        <TextField.Root
+          color="gray"
+          max={99}
+          min={0}
+          onChange={(event) => {
+            updateElement({
+              ...selectedElement,
+              blur: event.target.valueAsNumber,
+            });
+          }}
+          step={0.1}
+          type="number"
+          value={selectedElement.blur}
+          variant="soft"
+        >
+          <TextField.Slot>
+            <BlurIcon />
+          </TextField.Slot>
+          <TextField.Slot>px</TextField.Slot>
         </TextField.Root>
         {selectedElement.tag === "div" ? (
           <TextField.Root
@@ -77,7 +98,7 @@ export function MiscellanousSection({
             }}
             variant="soft"
           >
-            <MagicWandIcon /> Turn in Dynamic text
+            <MagicWandIcon /> Turn into Dynamic text
           </Button>
         ) : null}
         {selectedElement.tag === "span" ? (
