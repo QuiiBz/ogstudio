@@ -55,6 +55,7 @@ describe("createElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
+      blur: 0,
       backgroundColor: "#ffffff",
     });
 
@@ -82,6 +83,7 @@ describe("createElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 120,
+      blur: 0,
       backgroundColor: "#ffffff",
     });
 
@@ -99,6 +101,35 @@ describe("createElementStyle", () => {
     `);
   });
 
+  it("should generate base style with blur", () => {
+    const style = createElementStyle({
+      tag: "div",
+      id: createElementId(),
+      name: "Box",
+      x: 10,
+      y: 20,
+      width: 100,
+      height: 200,
+      visible: true,
+      rotate: 0,
+      blur: 10,
+      backgroundColor: "#ffffff",
+    });
+
+    expect(style).toMatchInlineSnapshot(`
+      {
+        "background": "rgba(255, 255, 255, 1)",
+        "display": "flex",
+        "filter": "blur(10px)",
+        "height": "200px",
+        "left": "10px",
+        "position": "absolute",
+        "top": "20px",
+        "width": "100px",
+      }
+    `);
+  });
+
   describe("border", () => {
     it("should generate base style with border outside", () => {
       const style = createElementStyle({
@@ -111,6 +142,7 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
+        blur: 0,
         border: {
           color: "blue",
           width: 2,
@@ -144,6 +176,7 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
+        blur: 0,
         border: {
           color: "green",
           width: 4,
@@ -178,6 +211,7 @@ describe("createElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
+      blur: 0,
       shadow: {
         color: "blue",
         width: 2,
@@ -213,6 +247,7 @@ describe("createElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
+      blur: 0,
       border: {
         color: "green",
         width: 4,
@@ -254,6 +289,7 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
+        blur: 0,
         content: "Hello",
         color: "#ffffff",
         fontFamily: "Inter",
@@ -296,6 +332,7 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
+        blur: 0,
         shadow: {
           color: "blue",
           width: 2,
@@ -346,6 +383,7 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
+        blur: 0,
         content: "Hello",
         color: "#ffffff",
         fontFamily: "Inter",
@@ -388,6 +426,7 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
+        blur: 0,
         content: "Hello",
         color: "#ffffff",
         fontFamily: "Inter",
@@ -432,6 +471,7 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
+        blur: 0,
         radius: 4,
         backgroundColor: "#ffffff",
       });
@@ -462,6 +502,7 @@ describe("createElementStyle", () => {
           height: 200,
           visible: true,
           rotate: 0,
+          blur: 0,
           backgroundColor: "#ffffff",
           gradient: {
             start: "#ff0000",
@@ -495,6 +536,7 @@ describe("createElementStyle", () => {
           height: 200,
           visible: true,
           rotate: 0,
+          blur: 0,
           backgroundColor: "#ffffff",
           gradient: {
             start: "#ff0000",
@@ -532,6 +574,7 @@ describe("createImgElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
+      blur: 0,
       backgroundColor: "#ffffff",
       backgroundImage: "https://via.placeholder.com/150",
       backgroundSize: "cover",
@@ -555,6 +598,7 @@ describe("createImgElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
+      blur: 0,
       backgroundColor: "#ffffff",
       backgroundImage: "https://via.placeholder.com/150",
       backgroundSize: "contain",

@@ -19,6 +19,7 @@ export const INITIAL_ELEMENTS: OGElement[] = [
     height: 630,
     visible: true,
     rotate: 0,
+    blur: 0,
     backgroundColor: "#ffffff",
   },
 ];
@@ -79,6 +80,7 @@ export function createElementStyle(element: OGElement): CSSProperties {
     transform:
       element.rotate !== 0 ? `rotate(${element.rotate}deg)` : undefined,
     boxShadow: boxShadows.length ? boxShadows.join(", ") : undefined,
+    filter: element.blur !== 0 ? `blur(${element.blur}px)` : undefined,
   };
 
   if (element.tag === "p" || element.tag === "span") {

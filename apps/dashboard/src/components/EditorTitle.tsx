@@ -19,7 +19,7 @@ export function EditorTitle() {
       top="0"
     >
       <Text as="p" size="1">
-        {selectedImage.name}(1200x630)
+        {selectedImage.name} (1200x630)
       </Text>
     </Box>
   );
