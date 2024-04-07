@@ -5,6 +5,7 @@ import {
   TextField,
   Flex,
   IconButton,
+  Tooltip,
 } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { DeleteIcon } from "../icons/DeleteIcon";
@@ -152,9 +153,11 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                   value={selectedElement.gradient.angle}
                   variant="soft"
                 >
-                  <TextField.Slot>
-                    <SquareIcon />
-                  </TextField.Slot>
+                  <Tooltip content="Direction">
+                    <TextField.Slot>
+                      <SquareIcon />
+                    </TextField.Slot>
+                  </Tooltip>
                   <TextField.Slot>deg</TextField.Slot>
                 </TextField.Root>
               ) : null}

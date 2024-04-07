@@ -1,4 +1,4 @@
-import { Flex, Button, Grid, Text, TextField } from "@radix-ui/themes";
+import { Flex, Button, Grid, Text, TextField, Tooltip } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { CornerIcon } from "../icons/CornerIcon";
 import { RotateIcon } from "../icons/RotateIcon";
@@ -34,9 +34,11 @@ export function MiscellanousSection({
           value={selectedElement.rotate}
           variant="soft"
         >
-          <TextField.Slot>
-            <RotateIcon />
-          </TextField.Slot>
+          <Tooltip content="Rotate">
+            <TextField.Slot>
+              <RotateIcon />
+            </TextField.Slot>
+          </Tooltip>
           <TextField.Slot>deg</TextField.Slot>
         </TextField.Root>
         <TextField.Root
@@ -54,9 +56,11 @@ export function MiscellanousSection({
           value={selectedElement.blur}
           variant="soft"
         >
-          <TextField.Slot>
-            <BlurIcon />
-          </TextField.Slot>
+          <Tooltip content="Blur">
+            <TextField.Slot>
+              <BlurIcon />
+            </TextField.Slot>
+          </Tooltip>
           <TextField.Slot>px</TextField.Slot>
         </TextField.Root>
         {selectedElement.tag === "div" ? (
@@ -74,9 +78,11 @@ export function MiscellanousSection({
             value={selectedElement.radius}
             variant="soft"
           >
-            <TextField.Slot>
-              <CornerIcon />
-            </TextField.Slot>
+            <Tooltip content="Radius">
+              <TextField.Slot>
+                <CornerIcon />
+              </TextField.Slot>
+            </Tooltip>
             <TextField.Slot>px</TextField.Slot>
           </TextField.Root>
         ) : null}

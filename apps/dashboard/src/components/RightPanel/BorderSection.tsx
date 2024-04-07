@@ -5,6 +5,7 @@ import {
   Select,
   Text,
   TextField,
+  Tooltip,
 } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { DeleteIcon } from "../icons/DeleteIcon";
@@ -91,9 +92,11 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
             value={selectedElement.border.width}
             variant="soft"
           >
-            <TextField.Slot>
-              <WidthIcon />
-            </TextField.Slot>
+            <Tooltip content="Width">
+              <TextField.Slot>
+                <WidthIcon />
+              </TextField.Slot>
+            </Tooltip>
             <TextField.Slot>px</TextField.Slot>
           </TextField.Root>
           <Select.Root

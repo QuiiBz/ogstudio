@@ -1,4 +1,4 @@
-import { Flex, Grid, Text, Select, TextField } from "@radix-ui/themes";
+import { Flex, Grid, Text, Select, TextField, Tooltip } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import type { Font } from "../../lib/fonts";
 import { FONTS, FONT_WEIGHTS } from "../../lib/fonts";
@@ -81,9 +81,11 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           value={selectedElement.fontSize}
           variant="soft"
         >
-          <TextField.Slot>
-            <FontSizeIcon />
-          </TextField.Slot>
+          <Tooltip content="Font size">
+            <TextField.Slot>
+              <FontSizeIcon />
+            </TextField.Slot>
+          </Tooltip>
           <TextField.Slot>px</TextField.Slot>
         </TextField.Root>
         <ColorPicker
@@ -105,13 +107,16 @@ export function FontSection({ selectedElement }: FontSectionProps) {
               lineHeight: event.target.valueAsNumber,
             });
           }}
+          step={0.1}
           type="number"
           value={selectedElement.lineHeight}
           variant="soft"
         >
-          <TextField.Slot>
-            <LineHeightIcon />
-          </TextField.Slot>
+          <Tooltip content="Line height">
+            <TextField.Slot>
+              <LineHeightIcon />
+            </TextField.Slot>
+          </Tooltip>
         </TextField.Root>
         <TextField.Root
           color="gray"
@@ -127,9 +132,11 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           value={selectedElement.letterSpacing}
           variant="soft"
         >
-          <TextField.Slot>
-            <LetterSpacingIcon />
-          </TextField.Slot>
+          <Tooltip content="Letter spacing">
+            <TextField.Slot>
+              <LetterSpacingIcon />
+            </TextField.Slot>
+          </Tooltip>
           <TextField.Slot>px</TextField.Slot>
         </TextField.Root>
         <Select.Root

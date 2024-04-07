@@ -1,4 +1,11 @@
-import { Flex, Grid, IconButton, Text, TextField } from "@radix-ui/themes";
+import {
+  Flex,
+  Grid,
+  IconButton,
+  Text,
+  TextField,
+  Tooltip,
+} from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { AddIcon } from "../icons/AddIcon";
@@ -112,9 +119,11 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
             value={selectedElement.shadow.blur}
             variant="soft"
           >
-            <TextField.Slot>
-              <GradientIcon />
-            </TextField.Slot>
+            <Tooltip content="Blur">
+              <TextField.Slot>
+                <GradientIcon />
+              </TextField.Slot>
+            </Tooltip>
             <TextField.Slot>px</TextField.Slot>
           </TextField.Root>
           {selectedElement.tag === "p" ||
@@ -137,9 +146,11 @@ export function ShadowSection({ selectedElement }: ShadowSectionProps) {
               value={selectedElement.shadow.width}
               variant="soft"
             >
-              <TextField.Slot>
-                <WidthIcon />
-              </TextField.Slot>
+              <Tooltip content="Spread">
+                <TextField.Slot>
+                  <WidthIcon />
+                </TextField.Slot>
+              </Tooltip>
               <TextField.Slot>px</TextField.Slot>
             </TextField.Root>
           )}
