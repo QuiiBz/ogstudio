@@ -88,7 +88,7 @@ export function Splash({ children }: OgSplashProps) {
             </Button>
           </Flex>
           <Text as="p" className="w-2/3" size="2">
-            Create static or dynamic Open Graph images with an intuitive,
+            Create static or dynamic OG (Open Graph) images with an intuitive,
             Figma-like visual editor. Browse ready-to-use templates, and export
             your images to SVG/PNG or to a dynamic URL.
           </Text>

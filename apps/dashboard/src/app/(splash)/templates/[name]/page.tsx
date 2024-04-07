@@ -19,7 +19,7 @@ export function generateMetadata({ params: { name } }: TemplateProps) {
 
   return {
     title: `${template?.name} template - OG Studio`,
-    description: "Pre-made Open Graph image templates.",
+    description: template?.description,
   };
 }
 
