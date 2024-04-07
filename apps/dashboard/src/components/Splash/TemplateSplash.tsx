@@ -15,7 +15,7 @@ export function TemplateSplash({ template }: TemplateSplashProps) {
       <Flex align="center" justify="between">
         <Text size="5">{template.name} template</Text>
         <Button asChild color="gray" radius="full" variant="ghost">
-          <Link href="/">
+          <Link href="/templates">
             <ArrowLeftIcon />
             Back
           </Link>
