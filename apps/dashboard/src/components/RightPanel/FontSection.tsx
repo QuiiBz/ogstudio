@@ -7,6 +7,7 @@ import { LineHeightIcon } from "../icons/LineHeightIcon";
 import { LetterSpacingIcon } from "../icons/LetterSpacingIcon";
 import { useElementsStore } from "../../stores/elementsStore";
 import { ColorPicker } from "../ColorPicker";
+import { FontPreview } from "../FontPreview";
 
 const SPACES_REGEX = /\s+/g;
 
@@ -45,7 +46,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           <Select.Content variant="soft">
             {FONTS.map((font) => (
               <Select.Item key={font} value={font}>
-                {font}
+                <FontPreview font={font} />
               </Select.Item>
             ))}
           </Select.Content>
