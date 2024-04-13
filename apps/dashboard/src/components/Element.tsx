@@ -12,6 +12,7 @@ interface ElementProps {
 
 export function Element({ element }: ElementProps) {
   const elementRef = useRef<HTMLElement>(null);
+  const tagRef = useRef<HTMLElement>(null);
   const [isEditing, setIsEditing] = useState(false);
   const selectedElementId = useElementsStore(
     (state) => state.selectedElementId,
@@ -212,13 +213,7 @@ export function Element({ element }: ElementProps) {
     function onDoubleClick(event: MouseEvent) {
       event.preventDefault();
 
-      const target = event.target as HTMLElement;
-
-      // Prevent double-clicking on resizers
-      if (!target.className.includes("element")) {
-        return;
-      }
-
+      const target = tagRef.current!;
       target.contentEditable = "true";
       target.focus();
       setIsEditing(true);
@@ -230,10 +225,6 @@ export function Element({ element }: ElementProps) {
           keyDownEvent.preventDefault();
           target.blur();
         }
-
-        // TODO: prevent deleting spans
-        // if (event.key === 'Backspace') {
-        // }
       }
 
       function onBlur() {
@@ -326,7 +317,12 @@ export function Element({ element }: ElementProps) {
           // @ts-expect-error wtf?
           ref={elementRef}
         >
-          <Tag style={style.tagStyle}>
+          <Tag
+            className="outline-none"
+            style={style.tagStyle}
+            // @ts-expect-error wtf?
+            ref={tagRef}
+          >
             {element.tag === "p" ? element.content : null}
             {element.tag === "span" ? "Dynamic text" : null}
             {element.tag === "div" && element.backgroundImage ? (
