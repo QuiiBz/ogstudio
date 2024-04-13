@@ -1,0 +1,13 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": [
+    "//"
+  ],
+  "pipeline": {
+    "migrate": {
+      "inputs": [
+        "./schema.ts"
+      ]
+    }
+  }
+}

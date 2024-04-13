@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/libsql";
 import { createClient } from "@libsql/client";
-
 import { config } from "dotenv";
+
 if (!process.env.DATABASE_URL) {
   config({
     path: "../../apps/dashboard/.env",
@@ -14,3 +14,4 @@ export const client = createClient({
 });
 
 export const db = drizzle(client);
+export { eq } from 'drizzle-orm'

@@ -20,6 +20,8 @@ export const lucia = new Lucia(adapter, {
   },
 });
 
+export { generateId } from 'lucia'
+
 declare module "lucia" {
   interface Register {
     Lucia: typeof lucia;
