@@ -81,6 +81,7 @@ interface OgImageProps {
   deletable?: (event: MouseEvent<HTMLSpanElement>) => void;
   size?: "small" | "medium";
   client?: boolean;
+  preview?: "x" | "linkedin" | "facebook";
 }
 
 export function OgImage({
@@ -95,6 +96,7 @@ export function OgImage({
   deletable,
   size,
   client,
+  preview,
 }: OgImageProps) {
   const Tag = href ? Link : onClick ? "button" : "div";
 
@@ -105,6 +107,7 @@ export function OgImage({
         {
           "h-[157px] w-[300px] min-w-[300px]": size === "small",
           "h-[252px] w-[480px] min-w-[480px]": size === "medium",
+          "rounded-2xl": preview === "x", // X has a 16px border radius
         },
       )}
       href={href ?? ""}
@@ -172,6 +175,14 @@ export function OgImage({
         >
           <DeleteIcon />
         </IconButton>
+      ) : null}
+      {preview === "x" ? (
+        <span
+          className="absolute bottom-3 left-3 text-white h-5 px-1 rounded text-[13px]"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.77)" }}
+        >
+          Your page title
+        </span>
       ) : null}
     </Tag>
   );
