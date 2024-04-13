@@ -1,0 +1,24 @@
+{
+  "name": "@ogstudio/auth",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --cache",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@lucia-auth/adapter-drizzle": "^1.0.4",
+    "arctic": "^1.2.1",
+    "lucia": "^3.1.1",
+    "@ogstudio/db": "workspace:*"
+  },
+  "peerDependencies": {
+    "next": "14.2.1",
+    "react": "^18"
+  },
+  "devDependencies": {
+    "@types/react": "^18",
+    "@ogstudio/eslint": "workspace:*",
+    "@ogstudio/typescript": "workspace:*"
+  }
+}

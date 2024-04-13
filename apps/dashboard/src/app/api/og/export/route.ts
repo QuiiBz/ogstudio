@@ -1,6 +1,6 @@
 import { kv } from "@vercel/kv";
 import { revalidatePath } from "next/cache";
-import { getSession } from "../../../../lib/auth/api";
+import { getSession } from "@ogstudio/auth/api";
 import type { OGElement } from "../../../../lib/types";
 
 export interface ExportRequest {

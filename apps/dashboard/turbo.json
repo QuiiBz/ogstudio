@@ -19,6 +19,11 @@
         ".next/**",
         "!.next/cache/**"
       ]
+    },
+    "dev": {
+      "dependsOn": [
+        "@ogstudio/db#migrate"
+      ]
     }
   }
 }

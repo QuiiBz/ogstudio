@@ -1,6 +1,13 @@
-import "dotenv/config";
+import { config } from "dotenv";
+
 import { migrate } from "drizzle-orm/libsql/migrator";
-import { client, db } from "../src/lib/db/db";
+import { client, db } from "../db";
+
+if (!process.env.DATABASE_URL) {
+  config({
+    path: "../../apps/dashboard/.env",
+  });
+}
 
 async function run() {
   // This will run migrations on the database, skipping the ones already applied

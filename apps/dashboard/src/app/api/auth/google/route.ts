@@ -1,6 +1,9 @@
-import { generateCodeVerifier, generateState } from "arctic";
 import { cookies } from "next/headers";
-import { google } from "../../../../lib/auth/arctic";
+import {
+  google,
+  generateCodeVerifier,
+  generateState,
+} from "@ogstudio/auth/arctic";
 
 export async function GET() {
   const state = generateState();
