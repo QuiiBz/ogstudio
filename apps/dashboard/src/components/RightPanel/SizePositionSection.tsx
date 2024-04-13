@@ -53,6 +53,7 @@ export function SizePositionSection({
               width: event.target.valueAsNumber,
             });
           }}
+          type="number"
           value={selectedElement.width}
           variant="soft"
         >
@@ -67,6 +68,7 @@ export function SizePositionSection({
               height: event.target.valueAsNumber,
             });
           }}
+          type="number"
           value={selectedElement.height}
           variant="soft"
         >

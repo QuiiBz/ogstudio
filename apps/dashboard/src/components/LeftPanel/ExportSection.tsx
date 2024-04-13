@@ -148,6 +148,7 @@ function ExportModal() {
         <Text size="5">Preview</Text>
         <Flex gap="6" justify="between">
           <OgImage
+            client
             dynamicTexts={dynamicTexts}
             elements={elements}
             size="medium"
@@ -159,10 +160,10 @@ function ExportModal() {
                 <TextField.Root
                   onChange={(event) => {
                     startTransition(() => {
-                      setDynamicTexts((prev) => ({
-                        ...prev,
+                      setDynamicTexts({
+                        ...dynamicTexts,
                         [dynamicKey]: event.target.value,
-                      }));
+                      });
                     });
                   }}
                   value={dynamicTexts[dynamicKey]}

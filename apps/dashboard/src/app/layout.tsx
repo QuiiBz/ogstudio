@@ -2,10 +2,19 @@ import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Splash } from "../components/Splash";
 import { Providers } from "../components/Providers";
-// import "@radix-ui/themes/styles.css";
 import "./globals.css";
+
+export const metadata = {
+  title: "OG Studio",
+  description:
+    "Create static or dynamic OG (Open Graph) images with an intuitive, Figma-like visual editor. Browse ready-to-use templates, and export your images to SVG/PNG or to a dynamic URL.",
+  openGraph: {
+    images: [
+      "https://github.com/QuiiBz/ogstudio/blob/main/assets/builder.jpeg?raw=true",
+    ],
+  },
+};
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,11 +24,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <Providers>
-          <Splash>{children}</Splash>
-        </Providers>
+        <Providers>{children}</Providers>
         <Toaster closeButton richColors />
         <Analytics />
         <SpeedInsights />

@@ -5,13 +5,14 @@ import {
   Select,
   Text,
   TextField,
+  Tooltip,
 } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { AddIcon } from "../icons/AddIcon";
-import { ColorIcon } from "../icons/ColorIcon";
 import { WidthIcon } from "../icons/WidthIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { ColorPicker } from "../ColorPicker";
 
 interface BorderSectionProps {
   selectedElement: OGElement;
@@ -60,27 +61,19 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
       </Flex>
       {selectedElement.border ? (
         <Grid columns="2" gap="2">
-          <TextField.Root
-            onChange={(event) => {
+          <ColorPicker
+            onChange={(color) => {
               updateElement({
                 ...selectedElement,
                 // @ts-expect-error wtf?
                 border: {
                   ...selectedElement.border,
-                  color: event.target.value,
+                  color,
                 },
               });
             }}
             value={selectedElement.border.color}
-            variant="soft"
-            color="gray"
-            // @ts-expect-error wtf?
-            type="color"
-          >
-            <TextField.Slot>
-              <ColorIcon />
-            </TextField.Slot>
-          </TextField.Root>
+          />
           <TextField.Root
             color="gray"
             max={99}
@@ -99,9 +92,11 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
             value={selectedElement.border.width}
             variant="soft"
           >
-            <TextField.Slot>
-              <WidthIcon />
-            </TextField.Slot>
+            <Tooltip content="Width">
+              <TextField.Slot>
+                <WidthIcon />
+              </TextField.Slot>
+            </Tooltip>
             <TextField.Slot>px</TextField.Slot>
           </TextField.Root>
           <Select.Root
@@ -118,7 +113,7 @@ export function BorderSection({ selectedElement }: BorderSectionProps) {
             value={selectedElement.border.style}
           >
             <Select.Trigger color="gray" variant="soft" />
-            <Select.Content>
+            <Select.Content variant="soft">
               <Select.Item value="outside">Outside</Select.Item>
               <Select.Item value="inside">Inside</Select.Item>
             </Select.Content>

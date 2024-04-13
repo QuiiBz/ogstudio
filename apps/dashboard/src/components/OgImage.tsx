@@ -3,7 +3,7 @@ import type { MouseEvent, ReactNode } from "react";
 import { Suspense, use, useMemo } from "react";
 import Link from "next/link";
 import { clsx } from "clsx";
-import { IconButton, Text } from "@radix-ui/themes";
+import { IconButton, Skeleton, Text } from "@radix-ui/themes";
 import type { OGElement } from "../lib/types";
 import { renderToImg } from "../lib/export";
 import { getDynamicTextKeys } from "../lib/elements";
@@ -14,9 +14,10 @@ interface OgImageInnerProps {
   elements: OGElement[];
   dynamicTexts?: Record<string, string>;
   mockDynamicTexts?: boolean;
+  client?: boolean;
 }
 
-function OgImageInner({
+function OgImageInnerClient({
   elements,
   dynamicTexts,
   mockDynamicTexts,
@@ -36,7 +37,34 @@ function OgImageInner({
     return dynamicTexts;
   }, [elements, dynamicTexts, mockDynamicTexts]);
 
-  const src = use(renderToImg(elements, texts));
+  const src = use(
+    useMemo(() => renderToImg(elements, texts), [elements, texts]),
+  );
+
+  return <img alt="" src={src} />;
+}
+
+async function OgImageInnerServer({
+  elements,
+  dynamicTexts,
+  mockDynamicTexts,
+}: OgImageInnerProps) {
+  const texts = useMemo(() => {
+    if (mockDynamicTexts) {
+      const keys = getDynamicTextKeys(elements);
+
+      return keys.reduce<Record<string, string>>((acc, key) => {
+        return {
+          ...acc,
+          [key]: "Dynamic text",
+        };
+      }, {});
+    }
+
+    return dynamicTexts;
+  }, [elements, dynamicTexts, mockDynamicTexts]);
+
+  const src = await renderToImg(elements, texts);
 
   return <img alt="" src={src} />;
 }
@@ -52,6 +80,7 @@ interface OgImageProps {
   copiable?: (event: MouseEvent<HTMLSpanElement>) => void;
   deletable?: (event: MouseEvent<HTMLSpanElement>) => void;
   size?: "small" | "medium";
+  client?: boolean;
 }
 
 export function OgImage({
@@ -65,13 +94,14 @@ export function OgImage({
   copiable,
   deletable,
   size,
+  client,
 }: OgImageProps) {
   const Tag = href ? Link : onClick ? "button" : "div";
 
   return (
     <Tag
       className={clsx(
-        "h-[157px] w-[300px] min-w-[300px] flex items-center justify-center text-gray-600 border rounded border-gray-200 hover:border-gray-400 relative group overflow-hidden",
+        "h-[157px] w-[300px] min-w-[300px] flex items-center justify-center rounded relative group overflow-hidden",
         {
           "h-[157px] w-[300px] min-w-[300px]": size === "small",
           "h-[252px] w-[480px] min-w-[480px]": size === "medium",
@@ -79,19 +109,23 @@ export function OgImage({
       )}
       href={href ?? ""}
       onClick={onClick}
+      style={{ border: "1px solid var(--gray-6)" }}
     >
-      {elements ? (
-        <Suspense
-          fallback={
-            <div className="animate-pulse w-3/4 h-1/6 bg-gray-100 rounded-full" />
-          }
-        >
-          <OgImageInner
+      {elements && client ? (
+        <Suspense fallback={<Skeleton height="10%" width="60%" />}>
+          <OgImageInnerClient
             dynamicTexts={dynamicTexts}
             elements={elements}
             mockDynamicTexts={mockDynamicTexts}
           />
         </Suspense>
+      ) : null}
+      {elements && !client ? (
+        <OgImageInnerServer
+          dynamicTexts={dynamicTexts}
+          elements={elements}
+          mockDynamicTexts={mockDynamicTexts}
+        />
       ) : null}
       {children}
       {name ? (

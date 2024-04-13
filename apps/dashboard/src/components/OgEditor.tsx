@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { Box, Flex } from "@radix-ui/themes";
 import type { OGElement } from "../lib/types";
 import { createElementId } from "../lib/elements";
 import { useZoomStore } from "../stores/zoomStore";
@@ -53,11 +54,6 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
   }, [imageId, loadImage, setSelectedImageId]);
 
   useEffect(() => {
-    function onContextMenu(event: MouseEvent) {
-      event.preventDefault();
-      // TODO
-    }
-
     function onClick(event: MouseEvent) {
       const element = event.target as HTMLElement;
 
@@ -192,19 +188,17 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
     const ref = rootRef.current;
 
     if (ref) {
-      ref.addEventListener("contextmenu", onContextMenu);
       ref.addEventListener("click", onClick);
     }
 
-    document.addEventListener("keydown", onKeyDown);
+    document.body.addEventListener("keydown", onKeyDown);
 
     return () => {
       if (ref) {
-        ref.removeEventListener("contextmenu", onContextMenu);
         ref.removeEventListener("click", onClick);
       }
 
-      document.removeEventListener("keydown", onKeyDown);
+      document.body.removeEventListener("keydown", onKeyDown);
     };
   }, [
     rootRef,
@@ -219,15 +213,43 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
   ]);
 
   return (
-    <div className="w-screen h-screen flex flex-row justify-between items-center bg-gray-50 overflow-hidden">
-      <div className="w-[300px] min-w-[300px] h-screen border-r border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
+    <Flex
+      align="center"
+      className="overflow-hidden"
+      height="100vh"
+      justify="between"
+      style={{ backgroundColor: "var(--gray-2)" }}
+      width="100vw"
+    >
+      <Box
+        className="z-10"
+        height="100vh"
+        style={{
+          backgroundColor: "var(--gray-1)",
+          boxShadow: "var(--shadow-3)",
+        }}
+        width="300px"
+      >
         <LeftPanel />
-      </div>
+      </Box>
       <EditorTitle />
-      <div className="flex flex-col items-center gap-4 fixed transform left-1/2 -translate-x-1/2">
-        <div
-          className="bg-white shadow-lg shadow-gray-100 relative"
-          style={{ width, height, transform: `scale(${zoom / 100})` }}
+      <Flex
+        align="center"
+        className="transform  -translate-x-1/2"
+        direction="column"
+        gap="4"
+        left="50%"
+        position="fixed"
+      >
+        <Box
+          position="relative"
+          style={{
+            width,
+            height,
+            transform: `scale(${zoom / 100})`,
+            boxShadow: "var(--shadow-3)",
+            backgroundColor: "var(--gray-1)",
+          }}
         >
           <div
             ref={rootRef}
@@ -237,20 +259,30 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
               <Element element={element} key={element.id} />
             ))}
           </div>
-        </div>
-        <div
-          className="border border-gray-100 absolute pointer-events-none"
+        </Box>
+        <Box
+          className="pointer-events-none"
+          position="absolute"
           style={{
             width,
             height,
             transform: `scale(${zoom / 100})`,
+            border: "1px solid var(--gray-contrast)",
           }}
         />
         <EditorToolbar />
-      </div>
-      <div className="w-[300px] min-w-[300px] h-screen flex flex-col border-l border-gray-100 shadow-lg shadow-gray-100 bg-white z-10">
+      </Flex>
+      <Box
+        className="z-10"
+        height="100vh"
+        style={{
+          backgroundColor: "var(--gray-1)",
+          boxShadow: "var(--shadow-3)",
+        }}
+        width="300px"
+      >
         <RightPanel />
-      </div>
-    </div>
+      </Box>
+    </Flex>
   );
 }

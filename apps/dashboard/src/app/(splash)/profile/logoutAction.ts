@@ -19,7 +19,7 @@ export async function logoutAction() {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes
+    sessionCookie.attributes,
   );
 
   return redirect("/");

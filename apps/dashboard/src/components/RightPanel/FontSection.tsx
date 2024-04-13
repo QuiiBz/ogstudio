@@ -1,19 +1,13 @@
-import {
-  Flex,
-  Grid,
-  Text,
-  Select,
-  TextField,
-  TextArea,
-} from "@radix-ui/themes";
+import { Flex, Grid, Text, Select, TextField, Tooltip } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import type { Font } from "../../lib/fonts";
 import { FONTS, FONT_WEIGHTS } from "../../lib/fonts";
 import { FontSizeIcon } from "../icons/FontSizeIcon";
-import { ColorIcon } from "../icons/ColorIcon";
 import { LineHeightIcon } from "../icons/LineHeightIcon";
 import { LetterSpacingIcon } from "../icons/LetterSpacingIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { ColorPicker } from "../ColorPicker";
+import { FontPreview } from "../FontPreview";
 
 const SPACES_REGEX = /\s+/g;
 
@@ -49,10 +43,10 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           value={selectedElement.fontFamily}
         >
           <Select.Trigger color="gray" variant="soft" />
-          <Select.Content>
+          <Select.Content variant="soft">
             {FONTS.map((font) => (
               <Select.Item key={font} value={font}>
-                {font}
+                <FontPreview font={font} />
               </Select.Item>
             ))}
           </Select.Content>
@@ -67,7 +61,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           value={String(selectedElement.fontWeight)}
         >
           <Select.Trigger color="gray" variant="soft" />
-          <Select.Content>
+          <Select.Content variant="soft">
             {FONT_WEIGHTS[selectedElement.fontFamily].map((weight) => (
               <Select.Item key={weight} value={String(weight)}>
                 {weight}
@@ -87,28 +81,22 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           value={selectedElement.fontSize}
           variant="soft"
         >
-          <TextField.Slot>
-            <FontSizeIcon />
-          </TextField.Slot>
+          <Tooltip content="Font size">
+            <TextField.Slot>
+              <FontSizeIcon />
+            </TextField.Slot>
+          </Tooltip>
           <TextField.Slot>px</TextField.Slot>
         </TextField.Root>
-        <TextField.Root
-          color="gray"
-          onChange={(event) => {
+        <ColorPicker
+          onChange={(color) => {
             updateElement({
               ...selectedElement,
-              color: event.target.value,
+              color,
             });
           }}
           value={selectedElement.color}
-          variant="soft"
-          // @ts-expect-error wtf?
-          type="color"
-        >
-          <TextField.Slot>
-            <ColorIcon />
-          </TextField.Slot>
-        </TextField.Root>
+        />
         <TextField.Root
           color="gray"
           max={5}
@@ -119,13 +107,16 @@ export function FontSection({ selectedElement }: FontSectionProps) {
               lineHeight: event.target.valueAsNumber,
             });
           }}
+          step={0.1}
           type="number"
           value={selectedElement.lineHeight}
           variant="soft"
         >
-          <TextField.Slot>
-            <LineHeightIcon />
-          </TextField.Slot>
+          <Tooltip content="Line height">
+            <TextField.Slot>
+              <LineHeightIcon />
+            </TextField.Slot>
+          </Tooltip>
         </TextField.Root>
         <TextField.Root
           color="gray"
@@ -141,9 +132,11 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           value={selectedElement.letterSpacing}
           variant="soft"
         >
-          <TextField.Slot>
-            <LetterSpacingIcon />
-          </TextField.Slot>
+          <Tooltip content="Letter spacing">
+            <TextField.Slot>
+              <LetterSpacingIcon />
+            </TextField.Slot>
+          </Tooltip>
           <TextField.Slot>px</TextField.Slot>
         </TextField.Root>
         <Select.Root
@@ -157,41 +150,28 @@ export function FontSection({ selectedElement }: FontSectionProps) {
           value={selectedElement.align}
         >
           <Select.Trigger color="gray" variant="soft" />
-          <Select.Content>
+          <Select.Content variant="soft">
             <Select.Item value="left">Left</Select.Item>
             <Select.Item value="right">Right</Select.Item>
             <Select.Item value="center">Center</Select.Item>
           </Select.Content>
         </Select.Root>
-        {selectedElement.tag === "p" ? (
-          <TextArea
-            className="col-span-full"
-            onChange={(event) => {
-              updateElement({
-                ...selectedElement,
-                content: event.target.value,
-              });
-            }}
-            value={selectedElement.content}
-          />
-        ) : null}
-        {selectedElement.tag === "span" ? (
-          <TextField.Root
-            className="col-span-full"
-            color="gray"
-            onChange={(event) => {
-              // Remove all spaces
-              const newValue = event.target.value.replaceAll(SPACES_REGEX, "");
+        <TextField.Root
+          className="col-span-full"
+          color="gray"
+          onChange={(event) => {
+            const content =
+              selectedElement.tag === "span"
+                ? event.target.value.replaceAll(SPACES_REGEX, "")
+                : event.target.value;
 
-              updateElement({
-                ...selectedElement,
-                content: newValue,
-              });
-            }}
-            value={selectedElement.content}
-            variant="soft"
-          />
-        ) : null}
+            updateElement({
+              ...selectedElement,
+              content,
+            });
+          }}
+          value={selectedElement.content}
+        />
       </Grid>
     </Flex>
   );

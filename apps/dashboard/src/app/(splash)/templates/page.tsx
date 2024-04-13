@@ -1,4 +1,4 @@
-import { TemplatesSplash } from "../../components/Splash/TemplatesSplash";
+import { TemplatesSplash } from "../../../components/Splash/TemplatesSplash";
 
 export const metadata = {
   title: "Templates - OG Studio",

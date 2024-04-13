@@ -2,8 +2,6 @@
   "name": "@ogstudio/auth",
   "version": "0.1.0",
   "private": true,
-  "main": "./index.ts",
-  "types": "./index.ts",
   "dependencies": {
     "@lucia-auth/adapter-drizzle": "^1.0.4",
     "@radix-ui/themes": "^3.0.0",

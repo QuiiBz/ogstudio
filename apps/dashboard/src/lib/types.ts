@@ -9,7 +9,7 @@ export type OGElement = (OGPElement | OGDynamicElement | OGDivElement) & {
   height: number;
   visible: boolean;
   rotate: number;
-  opacity: number;
+  blur: number;
   border?: {
     color: string;
     width: number;

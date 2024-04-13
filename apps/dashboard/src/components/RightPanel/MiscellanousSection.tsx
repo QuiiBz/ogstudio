@@ -1,11 +1,11 @@
-import { Flex, Button, Grid, Text, TextField } from "@radix-ui/themes";
+import { Flex, Button, Grid, Text, TextField, Tooltip } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { CornerIcon } from "../icons/CornerIcon";
-import { OpacityIcon } from "../icons/OpacityIcon";
 import { RotateIcon } from "../icons/RotateIcon";
 import { useElementsStore } from "../../stores/elementsStore";
 import { MagicWandIcon } from "../icons/MagicWandIcon";
 import { TextIcon } from "../icons/TextIcon";
+import { BlurIcon } from "../icons/BlurIcon";
 
 interface MiscellanousSectionProps {
   selectedElement: OGElement;
@@ -22,25 +22,6 @@ export function MiscellanousSection({
       <Grid columns="2" gap="2">
         <TextField.Root
           color="gray"
-          max={100}
-          min={0}
-          onChange={(event) => {
-            updateElement({
-              ...selectedElement,
-              opacity: event.target.valueAsNumber,
-            });
-          }}
-          type="number"
-          value={selectedElement.opacity}
-          variant="soft"
-        >
-          <TextField.Slot>
-            <OpacityIcon />
-          </TextField.Slot>
-          <TextField.Slot>%</TextField.Slot>
-        </TextField.Root>
-        <TextField.Root
-          color="gray"
           max={360}
           min={-360}
           onChange={(event) => {
@@ -53,10 +34,34 @@ export function MiscellanousSection({
           value={selectedElement.rotate}
           variant="soft"
         >
-          <TextField.Slot>
-            <RotateIcon />
-          </TextField.Slot>
+          <Tooltip content="Rotate">
+            <TextField.Slot>
+              <RotateIcon />
+            </TextField.Slot>
+          </Tooltip>
           <TextField.Slot>deg</TextField.Slot>
+        </TextField.Root>
+        <TextField.Root
+          color="gray"
+          max={99}
+          min={0}
+          onChange={(event) => {
+            updateElement({
+              ...selectedElement,
+              blur: event.target.valueAsNumber,
+            });
+          }}
+          step={0.1}
+          type="number"
+          value={selectedElement.blur}
+          variant="soft"
+        >
+          <Tooltip content="Blur">
+            <TextField.Slot>
+              <BlurIcon />
+            </TextField.Slot>
+          </Tooltip>
+          <TextField.Slot>px</TextField.Slot>
         </TextField.Root>
         {selectedElement.tag === "div" ? (
           <TextField.Root
@@ -73,16 +78,17 @@ export function MiscellanousSection({
             value={selectedElement.radius}
             variant="soft"
           >
-            <TextField.Slot>
-              <CornerIcon />
-            </TextField.Slot>
+            <Tooltip content="Radius">
+              <TextField.Slot>
+                <CornerIcon />
+              </TextField.Slot>
+            </Tooltip>
             <TextField.Slot>px</TextField.Slot>
           </TextField.Root>
         ) : null}
         {selectedElement.tag === "p" ? (
           <Button
             className="col-span-full"
-            color="gray"
             onClick={() => {
               updateElement({
                 ...selectedElement,
@@ -98,7 +104,7 @@ export function MiscellanousSection({
             }}
             variant="soft"
           >
-            <MagicWandIcon /> Turn in Dynamic text
+            <MagicWandIcon /> Turn into Dynamic text
           </Button>
         ) : null}
         {selectedElement.tag === "span" ? (

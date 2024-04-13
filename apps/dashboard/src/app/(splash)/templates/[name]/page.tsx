@@ -1,5 +1,5 @@
-import { TemplateSplash } from "../../../components/Splash/TemplateSplash";
-import { TEMPLATES } from "../../../lib/templates";
+import { TemplateSplash } from "../../../../components/Splash/TemplateSplash";
+import { TEMPLATES } from "../../../../lib/templates";
 
 interface TemplateProps {
   params: {
@@ -19,7 +19,7 @@ export function generateMetadata({ params: { name } }: TemplateProps) {
 
   return {
     title: `${template?.name} template - OG Studio`,
-    description: "Pre-made Open Graph image templates.",
+    description: template?.description,
   };
 }
 

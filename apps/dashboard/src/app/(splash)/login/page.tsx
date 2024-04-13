@@ -1,11 +1,10 @@
 import { Button, Flex, Text } from "@radix-ui/themes";
 import Link from "next/link";
-import { GitHubIcon } from "../../components/icons/GitHubIcon";
-import { GoogleIcon } from "../../components/icons/GoogleIcon";
+import { GitHubIcon } from "../../../components/icons/GitHubIcon";
+import { GoogleIcon } from "../../../components/icons/GoogleIcon";
 
 export const metadata = {
-  title: "Templates - OG Studio",
-  description: "Sign in to export your images and sync them across devices.",
+  title: "Sign in - OG Studio",
 };
 
 export const dynamic = "force-static";

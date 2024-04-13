@@ -1,10 +1,9 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { OgEditor } from "./OgEditor";
 
 export function Editor() {
-  const searchParams = useSearchParams();
-  const image = searchParams.get("i");
+  const { image } = useParams<{ image: string }>();
 
-  return <OgEditor height={630} imageId={image ?? "splash"} width={1200} />;
+  return <OgEditor height={630} imageId={image} width={1200} />;
 }

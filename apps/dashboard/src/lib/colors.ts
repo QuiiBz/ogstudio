@@ -9,3 +9,16 @@ export function hexToRgba(hex: string, alpha: number) {
 
   return `rgba(${r}, ${g}, ${b}, ${alpha / 100})`;
 }
+
+/**
+ * Parse an hex color with alpha to rgba.
+ */
+export function hexAlphaToRgba(hexAlpha: string) {
+  const hex = hexAlpha.slice(0, 7);
+  const tempAlpha = hexAlpha.slice(7);
+  const alpha = Math.round(
+    parseInt(tempAlpha === "" ? "ff" : tempAlpha, 16) / 2.55,
+  );
+
+  return hexToRgba(hex, Number(alpha));
+}

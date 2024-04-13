@@ -16,7 +16,7 @@ export function EditorToolbar() {
 
   return (
     <Flex gap="4">
-      <Card>
+      <Card variant="classic">
         <Flex align="center" gap="4">
           <IconButton
             color="gray"
@@ -29,7 +29,6 @@ export function EditorToolbar() {
                   height: 50,
                   visible: true,
                   rotate: 0,
-                  opacity: 100,
                   content: "Text",
                   color: "#000000",
                   fontFamily: "Inter",
@@ -57,7 +56,6 @@ export function EditorToolbar() {
                   height: 200,
                   visible: true,
                   rotate: 0,
-                  opacity: 100,
                   backgroundColor: "#000000",
                 }),
               );
@@ -78,7 +76,6 @@ export function EditorToolbar() {
                   height: 150,
                   visible: true,
                   rotate: 0,
-                  opacity: 100,
                   backgroundColor: "#000000",
                   radius: 999,
                 }),
@@ -100,7 +97,6 @@ export function EditorToolbar() {
                   height: 150,
                   visible: true,
                   rotate: 0,
-                  opacity: 100,
                   backgroundColor: "#000000",
                   backgroundImage: "https://source.unsplash.com/random",
                   backgroundSize: "cover",
@@ -123,7 +119,6 @@ export function EditorToolbar() {
                   height: 50,
                   visible: true,
                   rotate: 0,
-                  opacity: 100,
                   content: "dynamic",
                   color: "#000000",
                   fontFamily: "Inter",
@@ -141,7 +136,7 @@ export function EditorToolbar() {
           </IconButton>
         </Flex>
       </Card>
-      <Card>
+      <Card variant="classic">
         <Flex align="center" gap="4">
           <IconButton
             color="gray"

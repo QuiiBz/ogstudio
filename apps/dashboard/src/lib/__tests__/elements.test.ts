@@ -55,13 +55,13 @@ describe("createElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
-      opacity: 80,
+      blur: 0,
       backgroundColor: "#ffffff",
     });
 
     expect(style).toMatchInlineSnapshot(`
       {
-        "background": "rgba(255, 255, 255, 0.8)",
+        "background": "rgba(255, 255, 255, 1)",
         "display": "flex",
         "height": "200px",
         "left": "10px",
@@ -83,19 +83,48 @@ describe("createElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 120,
-      opacity: 80,
+      blur: 0,
       backgroundColor: "#ffffff",
     });
 
     expect(style).toMatchInlineSnapshot(`
       {
-        "background": "rgba(255, 255, 255, 0.8)",
+        "background": "rgba(255, 255, 255, 1)",
         "display": "flex",
         "height": "200px",
         "left": "10px",
         "position": "absolute",
         "top": "20px",
         "transform": "rotate(120deg)",
+        "width": "100px",
+      }
+    `);
+  });
+
+  it("should generate base style with blur", () => {
+    const style = createElementStyle({
+      tag: "div",
+      id: createElementId(),
+      name: "Box",
+      x: 10,
+      y: 20,
+      width: 100,
+      height: 200,
+      visible: true,
+      rotate: 0,
+      blur: 10,
+      backgroundColor: "#ffffff",
+    });
+
+    expect(style).toMatchInlineSnapshot(`
+      {
+        "background": "rgba(255, 255, 255, 1)",
+        "display": "flex",
+        "filter": "blur(10px)",
+        "height": "200px",
+        "left": "10px",
+        "position": "absolute",
+        "top": "20px",
         "width": "100px",
       }
     `);
@@ -113,7 +142,7 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
-        opacity: 80,
+        blur: 0,
         border: {
           color: "blue",
           width: 2,
@@ -124,7 +153,7 @@ describe("createElementStyle", () => {
 
       expect(style).toMatchInlineSnapshot(`
         {
-          "background": "rgba(255, 255, 255, 0.8)",
+          "background": "rgba(255, 255, 255, 1)",
           "boxShadow": "0 0 0 2px blue",
           "display": "flex",
           "height": "200px",
@@ -147,7 +176,7 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
-        opacity: 80,
+        blur: 0,
         border: {
           color: "green",
           width: 4,
@@ -158,7 +187,7 @@ describe("createElementStyle", () => {
 
       expect(style).toMatchInlineSnapshot(`
         {
-          "background": "rgba(255, 255, 255, 0.8)",
+          "background": "rgba(255, 255, 255, 1)",
           "boxShadow": "0 0 0 4px inset green",
           "display": "flex",
           "height": "200px",
@@ -182,7 +211,7 @@ describe("createElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
-      opacity: 80,
+      blur: 0,
       shadow: {
         color: "blue",
         width: 2,
@@ -195,7 +224,7 @@ describe("createElementStyle", () => {
 
     expect(style).toMatchInlineSnapshot(`
       {
-        "background": "rgba(255, 255, 255, 0.8)",
+        "background": "rgba(255, 255, 255, 1)",
         "boxShadow": "2px 2px 4px 2px blue",
         "display": "flex",
         "height": "200px",
@@ -218,7 +247,7 @@ describe("createElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
-      opacity: 80,
+      blur: 0,
       border: {
         color: "green",
         width: 4,
@@ -236,7 +265,7 @@ describe("createElementStyle", () => {
 
     expect(style).toMatchInlineSnapshot(`
       {
-        "background": "rgba(255, 255, 255, 0.8)",
+        "background": "rgba(255, 255, 255, 1)",
         "boxShadow": "0 0 0 4px inset green, 2px 2px 4px 2px blue",
         "display": "flex",
         "height": "200px",
@@ -260,7 +289,7 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
-        opacity: 80,
+        blur: 0,
         content: "Hello",
         color: "#ffffff",
         fontFamily: "Inter",
@@ -273,7 +302,7 @@ describe("createElementStyle", () => {
 
       expect(style).toMatchInlineSnapshot(`
         {
-          "color": "rgba(255, 255, 255, 0.8)",
+          "color": "rgba(255, 255, 255, 1)",
           "display": "flex",
           "fontFamily": "Inter",
           "fontSize": "12px",
@@ -303,7 +332,7 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
-        opacity: 80,
+        blur: 0,
         shadow: {
           color: "blue",
           width: 2,
@@ -323,7 +352,7 @@ describe("createElementStyle", () => {
 
       expect(style).toMatchInlineSnapshot(`
         {
-          "color": "rgba(255, 255, 255, 0.8)",
+          "color": "rgba(255, 255, 255, 1)",
           "display": "flex",
           "fontFamily": "Inter",
           "fontSize": "12px",
@@ -354,7 +383,7 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
-        opacity: 80,
+        blur: 0,
         content: "Hello",
         color: "#ffffff",
         fontFamily: "Inter",
@@ -367,7 +396,7 @@ describe("createElementStyle", () => {
 
       expect(style).toMatchInlineSnapshot(`
         {
-          "color": "rgba(255, 255, 255, 0.8)",
+          "color": "rgba(255, 255, 255, 1)",
           "display": "flex",
           "fontFamily": "Inter",
           "fontSize": "12px",
@@ -397,7 +426,7 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
-        opacity: 80,
+        blur: 0,
         content: "Hello",
         color: "#ffffff",
         fontFamily: "Inter",
@@ -410,7 +439,7 @@ describe("createElementStyle", () => {
 
       expect(style).toMatchInlineSnapshot(`
         {
-          "color": "rgba(255, 255, 255, 0.8)",
+          "color": "rgba(255, 255, 255, 1)",
           "display": "flex",
           "fontFamily": "Inter",
           "fontSize": "12px",
@@ -442,14 +471,14 @@ describe("createElementStyle", () => {
         height: 200,
         visible: true,
         rotate: 0,
-        opacity: 80,
+        blur: 0,
         radius: 4,
         backgroundColor: "#ffffff",
       });
 
       expect(style).toMatchInlineSnapshot(`
         {
-          "background": "rgba(255, 255, 255, 0.8)",
+          "background": "rgba(255, 255, 255, 1)",
           "borderRadius": "4px",
           "display": "flex",
           "height": "200px",
@@ -473,7 +502,7 @@ describe("createElementStyle", () => {
           height: 200,
           visible: true,
           rotate: 0,
-          opacity: 80,
+          blur: 0,
           backgroundColor: "#ffffff",
           gradient: {
             start: "#ff0000",
@@ -507,7 +536,7 @@ describe("createElementStyle", () => {
           height: 200,
           visible: true,
           rotate: 0,
-          opacity: 80,
+          blur: 0,
           backgroundColor: "#ffffff",
           gradient: {
             start: "#ff0000",
@@ -545,7 +574,7 @@ describe("createImgElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
-      opacity: 80,
+      blur: 0,
       backgroundColor: "#ffffff",
       backgroundImage: "https://via.placeholder.com/150",
       backgroundSize: "cover",
@@ -569,7 +598,7 @@ describe("createImgElementStyle", () => {
       height: 200,
       visible: true,
       rotate: 0,
-      opacity: 80,
+      blur: 0,
       backgroundColor: "#ffffff",
       backgroundImage: "https://via.placeholder.com/150",
       backgroundSize: "contain",
