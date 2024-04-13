@@ -1,5 +1,5 @@
 "use client";
-import { type ReactNode, useEffect } from "react";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -13,8 +13,6 @@ import {
 } from "@radix-ui/themes";
 import { OgEditor } from "../OgEditor";
 import { GitHubIcon } from "../icons/GitHubIcon";
-import { useImagesStore } from "../../stores/imagesStore";
-import { useZoomStore } from "../../stores/zoomStore";
 import { useUser } from "../../lib/hooks/useUser";
 
 interface OgSplashProps {
@@ -23,11 +21,6 @@ interface OgSplashProps {
 
 export function Splash({ children }: OgSplashProps) {
   const { data } = useUser();
-
-  useEffect(() => {
-    void useImagesStore.persist.rehydrate();
-    void useZoomStore.persist.rehydrate();
-  }, []);
 
   return (
     <>
@@ -44,6 +37,7 @@ export function Splash({ children }: OgSplashProps) {
         width="100vw"
       >
         <Box
+          minHeight="678px"
           p="6"
           style={{
             boxShadow: "var(--shadow-6)",
