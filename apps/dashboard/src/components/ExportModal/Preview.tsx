@@ -9,7 +9,7 @@ interface PreviewProps {
 }
 
 export function Preview({ dynamicTexts, setDynamicTexts }: PreviewProps) {
-  const [preview, setPreview] = useState<"x" | "linkedin" | "facebook">("x");
+  const [preview, setPreview] = useState<"x" | "linkedin">("x");
   const elements = useElementsStore((state) => state.elements);
 
   return (
@@ -28,9 +28,6 @@ export function Preview({ dynamicTexts, setDynamicTexts }: PreviewProps) {
             <SegmentedControl.Item value="x">X (Twitter)</SegmentedControl.Item>
             <SegmentedControl.Item value="linkedin">
               LinkedIn
-            </SegmentedControl.Item>
-            <SegmentedControl.Item value="facebook">
-              Facebook
             </SegmentedControl.Item>
           </SegmentedControl.Root>
         </Flex>
