@@ -25,7 +25,7 @@ export function generateMetadata({
     title: `${template.name} template - OG Studio`,
     description: template.description,
     openGraph: {
-      images: `https://www.ogstudio.app/api/og/MWI5enZ0YmJ6M3A2c3hzOnlkN21nNDl5eA==?title=${encodeURI(
+      images: `https://ogstudio.app/api/og/MWI5enZ0YmJ6M3A2c3hzOnlkN21nNDl5eA==?title=${encodeURI(
         `${template.name} template`,
       )}&description=${encodeURI(template.description)}&image=${encodeURI(
         `https://ogstudio.app/api/og/template/${template.name.toLowerCase()}`,
