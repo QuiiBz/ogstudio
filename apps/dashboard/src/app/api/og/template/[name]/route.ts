@@ -12,7 +12,7 @@ import { loadFonts } from "../../../../../lib/fonts";
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- wrong type
 const initWasmPromise = initWasm(resvgWasm);
 
-export const dynamic = "force-static";
+export const runtime = "edge";
 
 export async function GET(
   _: Request,
