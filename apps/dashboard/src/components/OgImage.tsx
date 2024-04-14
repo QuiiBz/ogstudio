@@ -44,7 +44,7 @@ function OgImageInnerClient({
   return <img alt="" src={src} />;
 }
 
-async function OgImageInnerServer({
+export async function OgImageInnerServer({
   elements,
   dynamicTexts,
   mockDynamicTexts,

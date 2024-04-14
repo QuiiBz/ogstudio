@@ -34,10 +34,12 @@ export function MyImagesSplash() {
             router.push(`/editor/${id}`);
           }}
         >
-          <AddIcon height="1.4em" width="1.4em" />
-          <Text as="span" size="2">
-            Start from scratch
-          </Text>
+          <Flex align="center" gap="1">
+            <AddIcon height="1.4em" width="1.4em" />
+            <Text as="span" size="2">
+              Start from scratch
+            </Text>
+          </Flex>
         </OgImage>
         {images.map((image) => (
           <OgImage

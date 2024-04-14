@@ -1,7 +1,8 @@
-import { Flex, SegmentedControl, Text, TextField } from "@radix-ui/themes";
-import { startTransition, useState } from "react";
+import { Flex, Text, TextField } from "@radix-ui/themes";
+import { startTransition } from "react";
 import { OgImage } from "../OgImage";
 import { useElementsStore } from "../../stores/elementsStore";
+import { usePreviewControls } from "../../lib/hooks/usePreviewControls";
 
 interface PreviewProps {
   dynamicTexts: Record<string, string>;
@@ -9,28 +10,14 @@ interface PreviewProps {
 }
 
 export function Preview({ dynamicTexts, setDynamicTexts }: PreviewProps) {
-  const [preview, setPreview] = useState<"x" | "linkedin">("x");
+  const { preview, PreviewControls } = usePreviewControls();
   const elements = useElementsStore((state) => state.elements);
 
   return (
     <Flex direction="column" gap="4">
       <Flex align="center" justify="between">
         <Text size="5">Preview</Text>
-        <Flex align="center" gap="4">
-          <SegmentedControl.Root
-            onValueChange={(value) => {
-              startTransition(() => {
-                setPreview(value as typeof preview);
-              });
-            }}
-            value={preview}
-          >
-            <SegmentedControl.Item value="x">X (Twitter)</SegmentedControl.Item>
-            <SegmentedControl.Item value="linkedin">
-              LinkedIn
-            </SegmentedControl.Item>
-          </SegmentedControl.Root>
-        </Flex>
+        <PreviewControls />
       </Flex>
       <Flex gap="6" justify="between">
         <OgImage
