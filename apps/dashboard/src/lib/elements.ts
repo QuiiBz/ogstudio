@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import type { OGDynamicElement, OGElement } from "./types";
+import type { OGElement } from "./types";
 import { hexAlphaToRgba } from "./colors";
 
 /**
@@ -135,6 +135,7 @@ export function createImgElementStyle(element: OGElement): CSSProperties {
     base = {
       ...base,
       objectFit: element.backgroundSize === "cover" ? "cover" : "contain",
+      borderRadius: element.radius ? `${element.radius}px` : undefined,
     };
   }
 
@@ -146,6 +147,19 @@ export function createImgElementStyle(element: OGElement): CSSProperties {
 
 export function getDynamicTextKeys(elements: OGElement[]) {
   return elements
-    .filter((element) => element.tag === "span")
-    .map((element) => (element as OGDynamicElement).content);
+    .filter(
+      (element) =>
+        element.tag === "span" ||
+        (element.tag === "div" &&
+          element.backgroundImage &&
+          !element.backgroundImage.startsWith("http")),
+    )
+    .map((element) => {
+      if (element.tag === "div") {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- We know it's not null
+        return element.backgroundImage!;
+      }
+
+      return element.content;
+    });
 }

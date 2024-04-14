@@ -57,10 +57,21 @@ export function elementsToReactElements(
         .filter((element) => element.visible)
         .map((element) => {
           const isImage = element.tag === "div" && element.backgroundImage;
-          const dynamicText =
-            element.tag === "span" && dynamicTexts
-              ? dynamicTexts[element.content]
-              : false;
+          let dynamicText;
+
+          if (dynamicTexts) {
+            if (element.tag === "span") {
+              dynamicText = dynamicTexts[element.content];
+            }
+
+            if (
+              element.tag === "div" &&
+              element.backgroundImage &&
+              !element.backgroundImage.startsWith("http")
+            ) {
+              dynamicText = dynamicTexts[element.backgroundImage];
+            }
+          }
 
           return {
             type: isImage ? "img" : element.tag,
@@ -71,9 +82,11 @@ export function elementsToReactElements(
                     ...createImgElementStyle(element),
                   }
                 : createElementStyle(element),
-              ...(isImage ? { src: element.backgroundImage } : {}),
+              ...(isImage
+                ? { src: dynamicText ? dynamicText : element.backgroundImage }
+                : {}),
               ...(element.tag === "p" ? { children: [element.content] } : {}),
-              ...(dynamicText ? { children: [dynamicText] } : {}),
+              ...(!isImage && dynamicText ? { children: [dynamicText] } : {}),
             },
           };
         }),
