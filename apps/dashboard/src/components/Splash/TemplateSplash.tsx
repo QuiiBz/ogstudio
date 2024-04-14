@@ -2,8 +2,9 @@ import Link from "next/link";
 import { Button, Flex, Text } from "@radix-ui/themes";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import type { Template } from "../../lib/templates";
-import { OgImage } from "../OgImage";
+import { OgImageInnerServer } from "../OgImage";
 import { TemplateSplashButton } from "./TemplateSplashButton";
+import { TemplateSplashPreview } from "./TemplateSplashPreview";
 
 interface TemplateSplashProps {
   template: Template;
@@ -21,8 +22,10 @@ export function TemplateSplash({ template }: TemplateSplashProps) {
           </Link>
         </Button>
       </Flex>
-      <Flex gap="4" justify="between">
-        <OgImage elements={template.elements} size="medium" />
+      <Flex gap="8" justify="between">
+        <TemplateSplashPreview
+          image={<OgImageInnerServer elements={template.elements} />}
+        />
         <Flex direction="column" gap="4">
           <Text as="p" size="2">
             {template.description}

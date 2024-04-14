@@ -10,6 +10,7 @@ import {
   Tooltip,
   IconButton,
 } from "@radix-ui/themes";
+import { toast } from "sonner";
 import { useUser } from "../../lib/hooks/useUser";
 import { CopyIcon } from "../icons/CopyIcon";
 
@@ -69,6 +70,8 @@ export function Embed({ exportedKey, dynamicTexts }: EmbedProps) {
 
     if (embed?.textContent) {
       void navigator.clipboard.writeText(embed.textContent);
+
+      toast.success("Copied to clipboard!");
     }
   }
 
