@@ -10,9 +10,8 @@ export const metadata = {
   description:
     "Create static or dynamic OG (Open Graph) images with an intuitive, Figma-like visual editor. Browse ready-to-use templates, and export your images to SVG/PNG or to a dynamic URL.",
   openGraph: {
-    images: [
+    images:
       "https://github.com/QuiiBz/ogstudio/blob/main/assets/builder.jpeg?raw=true",
-    ],
   },
 };
 

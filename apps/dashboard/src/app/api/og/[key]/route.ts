@@ -9,7 +9,7 @@ import {
 } from "../../../../lib/export";
 import { loadFonts } from "../../../../lib/fonts";
 // @ts-expect-error -- this file does exist
-import resvgWasm from "./resvg.wasm?module";
+import resvgWasm from "../resvg.wasm?module";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- wrong type
 const initWasmPromise = initWasm(resvgWasm);

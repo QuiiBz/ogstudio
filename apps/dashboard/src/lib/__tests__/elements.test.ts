@@ -610,4 +610,30 @@ describe("createImgElementStyle", () => {
       }
     `);
   });
+
+  it("should generate style with radius", () => {
+    const style = createImgElementStyle({
+      tag: "div",
+      id: createElementId(),
+      name: "Box",
+      x: 10,
+      y: 20,
+      width: 100,
+      height: 200,
+      visible: true,
+      rotate: 0,
+      blur: 0,
+      radius: 10,
+      backgroundColor: "#ffffff",
+      backgroundImage: "https://via.placeholder.com/150",
+      backgroundSize: "cover",
+    });
+
+    expect(style).toMatchInlineSnapshot(`
+      {
+        "borderRadius": "10px",
+        "objectFit": "cover",
+      }
+    `);
+  });
 });
