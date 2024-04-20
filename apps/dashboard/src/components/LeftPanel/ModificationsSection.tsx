@@ -44,6 +44,7 @@ export function ModificationSection() {
         <Button
           className="col-span-full"
           color="red"
+          disabled={pastStates.length === 0}
           onClick={() => {
             reset();
           }}

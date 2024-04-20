@@ -9,8 +9,9 @@ import { useImagesStore } from "../../stores/imagesStore";
 import { getDynamicTextKeys } from "../../lib/elements";
 import { useUser } from "../../lib/hooks/useUser";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
-import { Embed } from "./Embed";
+import { ExportURL } from "./ExportURL";
 import { Preview } from "./Preview";
+import { Download } from "./Download";
 
 export function ExportModal() {
   const elements = useElementsStore((state) => state.elements);
@@ -57,7 +58,7 @@ export function ExportModal() {
     <>
       <Flex direction="column" gap="4">
         <Flex align="center" justify="between">
-          <Text size="6">Export to URL</Text>
+          <Text size="6">Export image</Text>
           <Dialog.Close>
             <Button color="gray" radius="full" variant="ghost">
               <ArrowLeftIcon />
@@ -66,15 +67,18 @@ export function ExportModal() {
           </Dialog.Close>
         </Flex>
         <Text as="p" className="w-2/3" size="2">
-          Export your Open Graph image to an URL that you can then use in your
-          website. You can also see a preview of the OG Image and edit any
-          dynamic text in real-time.
+          Export your Open Graph image to SVG, PNG or an URL that you can then
+          use in your website. You can also see a preview of the OG Image and
+          edit any dynamic text in real-time.
         </Text>
       </Flex>
       <Separator className="opacity-50" my="6" size="4" />
       <Preview dynamicTexts={dynamicTexts} setDynamicTexts={setDynamicTexts} />
       <Separator className="opacity-50" my="6" size="4" />
-      <Embed dynamicTexts={dynamicTexts} exportedKey={exportedKey} />
+      <Flex gap="4" justify="between">
+        <Download dynamicTexts={dynamicTexts} />
+        <ExportURL dynamicTexts={dynamicTexts} exportedKey={exportedKey} />
+      </Flex>
     </>
   );
 }
