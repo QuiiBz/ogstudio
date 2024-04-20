@@ -14,12 +14,12 @@ import { toast } from "sonner";
 import { useUser } from "../../lib/hooks/useUser";
 import { CopyIcon } from "../icons/CopyIcon";
 
-interface EmbedProps {
+interface ExportURLProps {
   exportedKey: ReactNode;
   dynamicTexts: Record<string, string>;
 }
 
-export function Embed({ exportedKey, dynamicTexts }: EmbedProps) {
+export function ExportURL({ exportedKey, dynamicTexts }: ExportURLProps) {
   const [type, setType] = useState<"html" | "url">("html");
   const { data } = useUser();
   const isSignedIn = Boolean(data && "user" in data);
@@ -76,9 +76,9 @@ export function Embed({ exportedKey, dynamicTexts }: EmbedProps) {
   }
 
   return (
-    <Flex direction="column" gap="4">
+    <Flex direction="column" gap="4" maxWidth="70%">
       <Flex align="center" justify="between">
-        <Text size="5">Embed</Text>
+        <Text size="5">Export to URL</Text>
         <Flex align="center" gap="4">
           <Tooltip content="Copy">
             <IconButton color="gray" onClick={copy} size="2" variant="ghost">
