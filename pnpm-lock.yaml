@@ -32,6 +32,9 @@ importers:
       '@dnd-kit/utilities':
         specifier: ^3.2.2
         version: 3.2.2(react@18.2.0)
+      '@libsql/client':
+        specifier: ^0.6.0
+        version: 0.6.0
       '@ogstudio/auth':
         specifier: workspace:*
         version: link:../../packages/auth

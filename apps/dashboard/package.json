@@ -15,6 +15,9 @@
     "@dnd-kit/modifiers": "^7.0.0",
     "@dnd-kit/sortable": "^8.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@libsql/client": "^0.6.0",
+    "@ogstudio/auth": "workspace:*",
+    "@ogstudio/db": "workspace:*",
     "@radix-ui/themes": "^3.0.3",
     "@resvg/resvg-wasm": "2.4.0",
     "@tanstack/react-query": "^5.35.1",
@@ -30,9 +33,7 @@
     "satori": "^0.10.13",
     "sonner": "^1.4.41",
     "zundo": "^2.1.0",
-    "zustand": "^4.5.2",
-    "@ogstudio/db": "workspace:*",
-    "@ogstudio/auth": "workspace:*"
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.2.3",
