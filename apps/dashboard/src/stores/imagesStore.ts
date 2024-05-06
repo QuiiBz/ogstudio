@@ -64,7 +64,7 @@ export const useImagesStore = create(
         return newImage;
       },
       deleteImage: (image) => {
-        const deletedElements = localStorage.getItem(image.id) || "[]";
+        const deletedElements = localStorage.getItem(image.id) ?? "[]";
         localStorage.removeItem(image.id);
         set((state) => ({
           images: state.images.filter(({ id }) => id !== image.id),

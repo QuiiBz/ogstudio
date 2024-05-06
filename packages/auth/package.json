@@ -7,13 +7,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@lucia-auth/adapter-drizzle": "^1.0.4",
-    "arctic": "^1.2.1",
-    "lucia": "^3.1.1",
+    "@lucia-auth/adapter-drizzle": "^1.0.7",
+    "arctic": "^1.8.0",
+    "lucia": "^3.2.0",
     "@ogstudio/db": "workspace:*"
   },
   "peerDependencies": {
-    "next": "14.2.1",
+    "next": "14.2.3",
     "react": "^18"
   },
   "devDependencies": {

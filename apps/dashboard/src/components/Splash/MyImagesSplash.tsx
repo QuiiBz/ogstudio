@@ -51,7 +51,7 @@ export function MyImagesSplash() {
               deleteImage(image);
             }}
             elements={
-              JSON.parse(localStorage.getItem(image.id) || "[]") as OGElement[]
+              JSON.parse(localStorage.getItem(image.id) ?? "[]") as OGElement[]
             }
             href={`/editor/${image.id}`}
             key={image.id}

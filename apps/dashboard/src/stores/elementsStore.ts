@@ -25,7 +25,7 @@ export const useElementsStore = create<ElementsState>()(
       },
       loadImage: (imageId) => {
         const elements = JSON.parse(
-          localStorage.getItem(imageId) || "[]",
+          localStorage.getItem(imageId) ?? "[]",
         ) as OGElement[];
 
         set({ imageId, elements, selectedElementId: null });
