@@ -48,5 +48,7 @@ module.exports = {
     "react/hook-use-state": "off",
     "prefer-named-capture-group": "off",
     "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
   },
 };
