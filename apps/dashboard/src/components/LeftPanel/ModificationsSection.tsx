@@ -1,8 +1,10 @@
-import { Text, Button, Grid, Flex } from "@radix-ui/themes";
+import { Text, Button, Grid, Flex, Dialog } from "@radix-ui/themes";
 import { useElementsStore } from "../../stores/elementsStore";
 import { DeleteIcon } from "../icons/DeleteIcon";
 import { RedoIcon } from "../icons/RedoIcon";
 import { UndoIcon } from "../icons/UndoIcon";
+import { MagicWandIcon } from "../icons/MagicWandIcon";
+import { AIGenerateModal } from "../AIGenerateModal";
 
 export function ModificationSection() {
   const { undo, redo, pastStates, futureStates } =
@@ -52,6 +54,17 @@ export function ModificationSection() {
         >
           <DeleteIcon /> Reset
         </Button>
+        <Dialog.Root>
+          <Dialog.Trigger>
+            <Button className="col-span-full" color="blue" variant="soft">
+              <MagicWandIcon />
+              Generate image with AI
+            </Button>
+          </Dialog.Trigger>
+          <Dialog.Content minWidth="980px" size="4">
+            <AIGenerateModal />
+          </Dialog.Content>
+        </Dialog.Root>
       </Grid>
     </Flex>
   );
