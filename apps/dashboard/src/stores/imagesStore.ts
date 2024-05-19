@@ -13,7 +13,7 @@ interface ImagesState {
   images: OGImage[];
   selectedImageId: string | null;
   setSelectedImageId: (id: string | null) => void;
-  createEmptyImage: () => OGImage;
+  createImage: (image: OGImage) => void;
   copyTemplate: (template: Template) => OGImage;
   copyImage: (image: OGImage) => OGImage;
   updateImage: (image: OGImage) => void;
@@ -28,16 +28,9 @@ export const useImagesStore = create(
       setSelectedImageId: (id) => {
         set({ selectedImageId: id });
       },
-      createEmptyImage: () => {
-        const image: OGImage = {
-          name: "New Image",
-          id: createElementId(),
-        };
-
+      createImage: (image) => {
         localStorage.setItem(image.id, JSON.stringify(INITIAL_ELEMENTS));
         set((state) => ({ images: [image, ...state.images] }));
-
-        return image;
       },
       copyTemplate: (template) => {
         const image: OGImage = {

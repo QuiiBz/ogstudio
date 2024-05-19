@@ -2,14 +2,16 @@
 import { Button, Flex, Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useImagesStore } from "../../stores/imagesStore";
+import { type OGImage, useImagesStore } from "../../stores/imagesStore";
 import { OgImage } from "../OgImage";
 import { AddIcon } from "../icons/AddIcon";
 import type { OGElement } from "../../lib/types";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
+import { createElementId } from "../../lib/elements";
 
 export function HomeSplashMyImages() {
-  const { images, createEmptyImage, copyImage, deleteImage } = useImagesStore();
+  const { images, createImage, copyImage, deleteImage } = useImagesStore();
+
   const router = useRouter();
 
   return (
@@ -26,8 +28,12 @@ export function HomeSplashMyImages() {
       <Flex gap="2">
         <OgImage
           onClick={() => {
-            const { id } = createEmptyImage();
-            router.push(`/editor/${id}`);
+            const image: OGImage = {
+              name: "New Image",
+              id: createElementId(),
+            };
+            router.push(`/editor/${image.id}`);
+            createImage(image);
           }}
         >
           <Flex align="center" gap="1">
