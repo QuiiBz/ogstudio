@@ -16,6 +16,7 @@ interface ImagesState {
   createEmptyImage: () => OGImage;
   copyTemplate: (template: Template) => OGImage;
   copyImage: (image: OGImage) => OGImage;
+  updateImage: (image: OGImage) => void;
   deleteImage: (image: OGImage) => void;
 }
 
@@ -62,6 +63,13 @@ export const useImagesStore = create(
 
         toast("Image duplicated!");
         return newImage;
+      },
+      updateImage: (image) => {
+        set((state) => ({
+          images: state.images.map((currentImage) =>
+            currentImage.id === image.id ? image : currentImage,
+          ),
+        }));
       },
       deleteImage: (image) => {
         const deletedElements = localStorage.getItem(image.id) ?? "[]";
