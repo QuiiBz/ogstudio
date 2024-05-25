@@ -8,6 +8,14 @@ export interface Template {
 }
 
 /**
+ * Returns the slug of a template to be used in URLs. It returns the name of the
+ * template in lowercase and with spaces replaced by dashes.
+ */
+export function toTemplateSlug(template: Template): string {
+  return template.name.toLowerCase().replaceAll(" ", "-");
+}
+
+/**
  * The list of all available templates. Each template is composed of an array of
  * elements, a name and a description.
  */

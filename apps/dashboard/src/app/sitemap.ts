@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { TEMPLATES } from "../lib/templates";
+import { TEMPLATES, toTemplateSlug } from "../lib/templates";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -17,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     ...TEMPLATES.map<MetadataRoute.Sitemap[number]>((template) => ({
       url: `https://ogstudio.app/templates/${encodeURIComponent(
-        template.name.toLowerCase(),
+        toTemplateSlug(template),
       )}`,
       lastModified: new Date(),
       changeFrequency: "weekly",
