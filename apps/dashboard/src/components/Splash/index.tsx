@@ -44,10 +44,11 @@ export function Splash({ children }: OgSplashProps) {
             backgroundColor: "var(--color-panel-solid)",
             borderRadius: "var(--radius-5)",
           }}
+          maxWidth="100vw"
           width="980px"
         >
-          <Flex align="center" justify="between">
-            <Flex align="center" className="-mt-2" gap="6">
+          <Flex align="center" justify="between" className="-mt-2">
+            <Flex align="center" gap="6">
               <Text asChild size="6">
                 <Link className="flex gap-2 items-center" href="/">
                   <Image
@@ -59,7 +60,12 @@ export function Splash({ children }: OgSplashProps) {
                   Studio
                 </Link>
               </Text>
-              <Badge color="orange" radius="full" size="2">
+              <Badge
+                color="orange"
+                radius="full"
+                size="2"
+                className="hidden sm:block"
+              >
                 Early preview
               </Badge>
               <Button asChild color="gray" radius="full" variant="ghost">
@@ -81,7 +87,7 @@ export function Splash({ children }: OgSplashProps) {
               </Link>
             </Button>
           </Flex>
-          <Text as="p" className="w-2/3" size="2">
+          <Text as="p" className="lg:w-2/3" size="2">
             Create static or dynamic OG (Open Graph) images with an intuitive,
             Figma-like visual editor. Browse ready-to-use templates, and export
             your images to SVG/PNG or to a dynamic URL.

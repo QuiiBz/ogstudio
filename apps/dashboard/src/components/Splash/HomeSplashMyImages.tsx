@@ -25,7 +25,7 @@ export function HomeSplashMyImages() {
           </Link>
         </Button>
       </Flex>
-      <Flex gap="2">
+      <Flex gap="2" className="overflow-x-scroll max-w-[100vw] no-scrollbar">
         <OgImage
           onClick={() => {
             const image: OGImage = {

@@ -18,7 +18,7 @@ export function HomeSplash() {
             </Link>
           </Button>
         </Flex>
-        <Flex gap="2">
+        <Flex gap="2" className="overflow-x-scroll max-w-[100vw] no-scrollbar">
           {TEMPLATES.slice(0, 3).map((template) => (
             <OgImage
               elements={template.elements}
