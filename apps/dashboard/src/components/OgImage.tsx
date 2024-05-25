@@ -82,6 +82,7 @@ interface OgImageProps {
   size?: "small" | "medium";
   client?: boolean;
   preview?: "x" | "linkedin";
+  className?: string;
 }
 
 export function OgImage({
@@ -97,12 +98,14 @@ export function OgImage({
   size,
   client,
   preview,
+  className,
 }: OgImageProps) {
   const Tag = href ? Link : onClick ? "button" : "div";
 
   return (
     <Tag
       className={clsx(
+        className,
         "min-h-[157px] w-[300px] min-w-[300px] flex flex-col items-center justify-center rounded relative group overflow-hidden",
         {
           "min-h-[157px] w-[300px] min-w-[300px]": size === "small",
