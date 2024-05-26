@@ -37,7 +37,7 @@ export function Splash({ children }: OgSplashProps) {
         width="100vw"
       >
         <Box
-          minHeight="678px"
+          height="680px"
           p="6"
           style={{
             boxShadow: "var(--shadow-6)",
