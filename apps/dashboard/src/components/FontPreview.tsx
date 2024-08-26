@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { maybeLoadFont, type Font } from "../lib/fonts";
+import { maybeLoadFont } from "../lib/fonts";
 
 interface FontPreviewProps {
-  font: Font;
+  font: string;
 }
 
 export function FontPreview({ font }: FontPreviewProps) {

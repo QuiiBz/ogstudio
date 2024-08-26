@@ -1,13 +1,12 @@
 import { Flex, Grid, Text, Select, TextField, Tooltip } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
-import type { Font } from "../../lib/fonts";
-import { FONTS, FONT_WEIGHTS } from "../../lib/fonts";
 import { FontSizeIcon } from "../icons/FontSizeIcon";
 import { LineHeightIcon } from "../icons/LineHeightIcon";
 import { LetterSpacingIcon } from "../icons/LetterSpacingIcon";
 import { useElementsStore } from "../../stores/elementsStore";
 import { ColorPicker } from "../ColorPicker";
 import { FontPreview } from "../FontPreview";
+import { useFontsStore } from "../../stores/fontsStore";
 
 const SPACES_REGEX = /\s+/g;
 
@@ -17,6 +16,7 @@ interface FontSectionProps {
 
 export function FontSection({ selectedElement }: FontSectionProps) {
   const updateElement = useElementsStore((state) => state.updateElement);
+  const { allFonts, installedFonts, installFont } = useFontsStore(({ allFonts, installedFonts, installFont }) => ({ allFonts, installedFonts, installFont }));
 
   if (selectedElement.tag !== "p" && selectedElement.tag !== "span") {
     return null;
@@ -28,12 +28,17 @@ export function FontSection({ selectedElement }: FontSectionProps) {
       <Grid columns="2" gap="2">
         <Select.Root
           onValueChange={(value) => {
-            const font = value as unknown as Font;
+            const font = value;
+            const weights = allFonts.find((f) => f.name === font)?.weights;
+
+            if (!installedFonts.has(font)) {
+              installFont(font);
+            }
 
             updateElement({
               ...selectedElement,
               fontFamily: font,
-              fontWeight: FONT_WEIGHTS[font].includes(
+              fontWeight: weights?.includes(
                 selectedElement.fontWeight,
               )
                 ? selectedElement.fontWeight
@@ -44,13 +49,26 @@ export function FontSection({ selectedElement }: FontSectionProps) {
         >
           <Select.Trigger color="gray" variant="soft" />
           <Select.Content variant="soft">
-            {FONTS.map((font) => (
-              <Select.Item key={font} value={font}>
-                <FontPreview font={font} />
-              </Select.Item>
-            ))}
+            <Select.Group>
+              <Select.Label>Installed fonts</Select.Label>
+              {Array.from(installedFonts.values()).map((font) => (
+                <Select.Item key={font} value={font}>
+                  <FontPreview font={font} />
+                </Select.Item>
+              ))}
+            </Select.Group>
+            <Select.Separator />
+            <Select.Group>
+              <Select.Label>All fonts (from FontSource)</Select.Label>
+              {allFonts.filter((font) => !installedFonts.has(font.name)).map((font) => (
+                <Select.Item key={font.name} value={font.name}>
+                  <FontPreview font={font.name} />
+                </Select.Item>
+              ))}
+            </Select.Group>
           </Select.Content>
         </Select.Root>
+
         <Select.Root
           onValueChange={(value) => {
             updateElement({
@@ -62,7 +80,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
         >
           <Select.Trigger color="gray" variant="soft" />
           <Select.Content variant="soft">
-            {FONT_WEIGHTS[selectedElement.fontFamily].map((weight) => (
+            {allFonts.find(({ name }) => name === selectedElement.fontFamily)?.weights?.map((weight) => (
               <Select.Item key={weight} value={String(weight)}>
                 {weight}
               </Select.Item>

@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { temporal } from "zundo";
 import type { OGElement } from "../lib/types";
 import { maybeLoadFont } from "../lib/fonts";
+import { useFontsStore } from "./fontsStore";
 
 interface ElementsState {
   imageId: string;
@@ -36,6 +37,7 @@ export const useElementsStore = create<ElementsState>()(
         elements.forEach((element) => {
           if (element.tag === "p" || element.tag === "span") {
             maybeLoadFont(element.fontFamily, element.fontWeight);
+            useFontsStore.getState().installFont(element.fontFamily);
           }
         });
 

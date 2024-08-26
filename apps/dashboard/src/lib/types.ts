@@ -1,5 +1,3 @@
-import type { Font } from "./fonts";
-
 export type OGElement = (OGPElement | OGDynamicElement | OGDivElement) & {
   id: string;
   name: string;
@@ -28,7 +26,7 @@ export interface OGPElement {
   tag: "p";
   content: string;
   color: string;
-  fontFamily: Font;
+  fontFamily: string;
   fontWeight: number;
   fontSize: number;
   lineHeight: number;

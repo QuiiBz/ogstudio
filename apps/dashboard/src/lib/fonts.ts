@@ -1,6 +1,7 @@
 import type { OGElement } from "./types";
+import { unstable_cache } from "next/cache";
 
-export const FONTS = [
+export const DEFAULT_FONTS = [
   "Roboto",
   "Open Sans",
   "Montserrat",
@@ -11,43 +12,42 @@ export const FONTS = [
   "Raleway",
   "Nunito",
   "Ubuntu",
-] as const;
-
-export type Font = (typeof FONTS)[number];
-
-export const FONT_WEIGHTS = {
-  Roboto: [100, 300, 400, 500, 700, 900],
-  "Open Sans": [300, 400, 600, 700, 800],
-  Montserrat: [100, 200, 300, 400, 500, 600, 700, 800, 900],
-  Lato: [100, 300, 400, 700, 900],
-  Poppins: [100, 200, 300, 400, 500, 600, 700, 800, 900],
-  Inter: [100, 200, 300, 400, 500, 600, 700, 800, 900],
-  Oswald: [200, 300, 400, 500, 600, 700],
-  Raleway: [100, 200, 300, 400, 500, 600, 700, 800, 900],
-  Nunito: [200, 300, 400, 500, 600, 700, 800, 900],
-  Ubuntu: [300, 400, 500, 700],
-} satisfies Record<Font, number[]>;
+];
 
 /**
- * Try to load a font from Bunny Fonts, if the font is not already loaded.
+ * Adds the font stylesheet to the document body
  * The font is loaded asynchronously, so it may not be available immediately
  * and the caller should make sure to wait for the font to be loaded before
  * using it.
  */
 export function maybeLoadFont(font: string, weight: number) {
-  const id = `font-${font}-${weight}`;
+  const fontID = font.toLowerCase().replaceAll(" ", "-");
+  const fontURL = getFontURL(font, weight);
 
-  if (document.getElementById(id)) {
-    return;
+  // Check if we've already added this font
+  if (document.getElementById(fontID)) {
+    return; // Font style has already been added, no need to add it again
   }
 
-  const link = document.createElement("link");
-  link.id = id;
-  link.rel = "stylesheet";
-  link.href = `https://fonts.bunny.net/css?family=${font
-    .toLowerCase()
-    .replace(" ", "-")}:${weight}`;
-  document.head.appendChild(link);
+  // Create a style element
+  const style = document.createElement("style");
+  style.id = fontID;
+
+  // Define the @font-face rule
+  const fontFace = `
+    @font-face {
+      font-family: "${font}";
+      src: url("${fontURL}") format("woff");
+      font-weight: ${weight};
+      font-style: normal;
+    }
+  `;
+
+  // Add the @font-face rule to the style element
+  style.appendChild(document.createTextNode(fontFace));
+
+  // Append the style element to the head of the document
+  document.head.appendChild(style);
 }
 
 export interface FontData {
@@ -75,10 +75,10 @@ export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
           return fontCache;
         }
 
-        const fontName = element.fontFamily.toLowerCase().replace(" ", "-");
+        if (element.tag !== "p" && element.tag !== "span") throw "unreachable!";
+
         const data = await fetch(
-          `https://fonts.bunny.net/${fontName}/files/${fontName}-latin-${element.fontWeight}-normal.woff`,
-          { cache: "no-store" },
+          getFontURL(element.fontFamily, element.fontWeight),
         ).then((response) => response.arrayBuffer());
 
         const fontData: FontData = {
@@ -92,4 +92,45 @@ export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
         return fontData;
       }),
   );
+}
+
+async function getFontDataInternal() {
+  interface FontsourceFont {
+    id: string;
+    family: string;
+    subsets: string[];
+    weights: number[];
+    styles: string[];
+    defSubset: string;
+    variable: boolean;
+    lastModified: Date;
+    category: string;
+    license: string;
+    type: string;
+  }
+
+  const res = await fetch("https://api.fontsource.org/v1/fonts", {
+    cache: "no-store",
+  });
+
+  const data: FontsourceFont[] = await res.json();
+
+  return data
+    .filter(({ styles }) => styles.includes("normal"))
+    .filter(({ defSubset }) => defSubset === "latin")
+    .map((font) => ({
+      name: font.family,
+      weights: font.weights,
+    }));
+}
+
+export const getFontData = unstable_cache(getFontDataInternal, ["font-data"], {
+  revalidate: 60 * 60 * 24 * 7,
+});
+
+export type Font = Awaited<ReturnType<typeof getFontData>>[number];
+
+export function getFontURL(fontName: string, weight: number) {
+  const fontID = fontName.toLowerCase().replaceAll(" ", "-");
+  return `https://cdn.jsdelivr.net/fontsource/fonts/${fontID}@latest/latin-${weight}-normal.woff`;
 }
