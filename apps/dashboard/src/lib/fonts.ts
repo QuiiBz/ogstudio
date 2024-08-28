@@ -1,5 +1,4 @@
 import type { OGElement } from "./types";
-import { unstable_cache } from "next/cache";
 
 export const DEFAULT_FONTS = [
   "Roboto",
@@ -31,7 +30,7 @@ export function maybeLoadFont(font: string, weight: number) {
 
   // Create a style element
   const style = document.createElement("style");
-  style.id = fontID;
+  style.id = `${fontID}-${weight}`;
 
   // Define the @font-face rule
   const fontFace = `
@@ -75,7 +74,8 @@ export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
           return fontCache;
         }
 
-        if (element.tag !== "p" && element.tag !== "span") throw "unreachable!";
+        if (element.tag !== "p" && element.tag !== "span")
+          throw new Error("unreachable!");
 
         const data = await fetch(
           getFontURL(element.fontFamily, element.fontWeight),
@@ -94,7 +94,7 @@ export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
   );
 }
 
-async function getFontDataInternal() {
+export async function getFontData() {
   interface FontsourceFont {
     id: string;
     family: string;
@@ -113,7 +113,7 @@ async function getFontDataInternal() {
     cache: "no-store",
   });
 
-  const data: FontsourceFont[] = await res.json();
+  const data = (await res.json()) as FontsourceFont[];
 
   return data
     .filter(({ styles }) => styles.includes("normal"))
@@ -123,10 +123,6 @@ async function getFontDataInternal() {
       weights: font.weights,
     }));
 }
-
-export const getFontData = unstable_cache(getFontDataInternal, ["font-data"], {
-  revalidate: 60 * 60 * 24 * 7,
-});
 
 export type Font = Awaited<ReturnType<typeof getFontData>>[number];
 

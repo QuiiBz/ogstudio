@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { DEFAULT_FONTS, Font, maybeLoadFont } from "../lib/fonts";
+import { DEFAULT_FONTS, type Font } from "../lib/fonts";
 
 interface FontsState {
   installedFonts: Set<string>;
@@ -9,10 +9,10 @@ interface FontsState {
 }
 
 if (typeof window !== "undefined") {
-  fetch("/api/fonts")
+  void fetch("/api/fonts")
     .then((res) => res.json())
     .then((fonts) => {
-      useFontsStore.getState().allFonts = fonts;
+      useFontsStore.getState().allFonts = fonts as Font[];
     });
 }
 

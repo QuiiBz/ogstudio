@@ -7,6 +7,7 @@ import { useElementsStore } from "../../stores/elementsStore";
 import { ColorPicker } from "../ColorPicker";
 import { FontPreview } from "../FontPreview";
 import { useFontsStore } from "../../stores/fontsStore";
+import { AddFont } from "./AddFont";
 
 const SPACES_REGEX = /\s+/g;
 
@@ -16,7 +17,7 @@ interface FontSectionProps {
 
 export function FontSection({ selectedElement }: FontSectionProps) {
   const updateElement = useElementsStore((state) => state.updateElement);
-  const { allFonts, installedFonts, installFont } = useFontsStore(({ allFonts, installedFonts, installFont }) => ({ allFonts, installedFonts, installFont }));
+  const { allFonts, installedFonts, installFont } = useFontsStore();
 
   if (selectedElement.tag !== "p" && selectedElement.tag !== "span") {
     return null;
@@ -25,7 +26,7 @@ export function FontSection({ selectedElement }: FontSectionProps) {
   return (
     <Flex direction="column" gap="2">
       <Text size="1">Font</Text>
-      <Grid columns="2" gap="2">
+      <Flex direction="row" gap="2" className="justify-between">
         <Select.Root
           onValueChange={(value) => {
             const font = value;
@@ -38,37 +39,27 @@ export function FontSection({ selectedElement }: FontSectionProps) {
             updateElement({
               ...selectedElement,
               fontFamily: font,
-              fontWeight: weights?.includes(
-                selectedElement.fontWeight,
-              )
+              fontWeight: weights?.includes(selectedElement.fontWeight)
                 ? selectedElement.fontWeight
                 : 400,
             });
           }}
           value={selectedElement.fontFamily}
         >
-          <Select.Trigger color="gray" variant="soft" />
+          <Select.Trigger color="gray" variant="soft" className="flex-1" />
           <Select.Content variant="soft">
-            <Select.Group>
-              <Select.Label>Installed fonts</Select.Label>
-              {Array.from(installedFonts.values()).map((font) => (
-                <Select.Item key={font} value={font}>
-                  <FontPreview font={font} />
-                </Select.Item>
-              ))}
-            </Select.Group>
-            <Select.Separator />
-            <Select.Group>
-              <Select.Label>All fonts (from FontSource)</Select.Label>
-              {allFonts.filter((font) => !installedFonts.has(font.name)).map((font) => (
-                <Select.Item key={font.name} value={font.name}>
-                  <FontPreview font={font.name} />
-                </Select.Item>
-              ))}
-            </Select.Group>
+            {Array.from(installedFonts).map((font) => (
+              <Select.Item key={font} value={font}>
+                <FontPreview font={font} />
+              </Select.Item>
+            ))}
           </Select.Content>
         </Select.Root>
 
+        <AddFont selectedElement={selectedElement} />
+      </Flex>
+
+      <Grid columns="2" gap="2">
         <Select.Root
           onValueChange={(value) => {
             updateElement({
@@ -80,11 +71,14 @@ export function FontSection({ selectedElement }: FontSectionProps) {
         >
           <Select.Trigger color="gray" variant="soft" />
           <Select.Content variant="soft">
-            {allFonts.find(({ name }) => name === selectedElement.fontFamily)?.weights?.map((weight) => (
-              <Select.Item key={weight} value={String(weight)}>
-                {weight}
-              </Select.Item>
-            ))}
+            {allFonts
+              .find(({ name }) => name === selectedElement.fontFamily)
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- the ? is definitely required
+              ?.weights?.map((weight) => (
+                <Select.Item key={weight} value={String(weight)}>
+                  {weight}
+                </Select.Item>
+              ))}
           </Select.Content>
         </Select.Root>
         <TextField.Root
