@@ -2,7 +2,7 @@ import { Popover, Button, TextField, Flex, Badge } from "@radix-ui/themes";
 import Fuse from "fuse.js";
 import { useFontsStore } from "../../stores/fontsStore";
 import { useElementsStore } from "../../stores/elementsStore";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FontPreview } from "../FontPreview";
 import { OGElement } from "../../lib/types";
 
@@ -21,9 +21,10 @@ export function AddFont({
   );
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
+  const debouncedSearch = useDebounce(search, 200);
 
   const searchedFonts = fuse
-    .search(search)
+    .search(debouncedSearch)
     .slice(0, 5)
     .map(({ item }) => item.name);
 
@@ -76,4 +77,21 @@ export function AddFont({
       </Popover.Content>
     </Popover.Root>
   );
+}
+
+// source: https://github.com/uidotdev/usehooks/blob/90fbbb4cc085e74e50c36a62a5759a40c62bb98e/index.js#L239
+function useDebounce<T>(value: T, delay: number) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
 }
