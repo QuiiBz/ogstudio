@@ -22,17 +22,15 @@ export const DEFAULT_FONTS = [
 export function maybeLoadFont(font: string, weight: number) {
   const fontID = font.toLowerCase().replaceAll(" ", "-");
   const fontURL = getFontURL(font, weight);
+  const id = `font-${fontID}-${weight}`;
 
-  // Check if we've already added this font
-  if (document.getElementById(fontID)) {
-    return; // Font style has already been added, no need to add it again
+  if (document.getElementById(id)) {
+    return;
   }
 
-  // Create a style element
   const style = document.createElement("style");
-  style.id = `${fontID}-${weight}`;
+  style.id = id;
 
-  // Define the @font-face rule
   const fontFace = `
     @font-face {
       font-family: "${font}";
@@ -42,10 +40,7 @@ export function maybeLoadFont(font: string, weight: number) {
     }
   `;
 
-  // Add the @font-face rule to the style element
   style.appendChild(document.createTextNode(fontFace));
-
-  // Append the style element to the head of the document
   document.head.appendChild(style);
 }
 
