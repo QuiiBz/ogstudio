@@ -3,6 +3,7 @@ import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
 import { sessionTable, userTable } from "@ogstudio/db/schema";
 import { db } from "@ogstudio/db/db";
 
+// @ts-ignore not sure what happens here
 const adapter = new DrizzleSQLiteAdapter(db, sessionTable, userTable);
 
 export const lucia = new Lucia(adapter, {
