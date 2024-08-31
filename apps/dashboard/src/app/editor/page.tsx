@@ -1,5 +1,11 @@
-import { redirect } from "next/navigation";
+import { Editor } from "../../components/Editor";
 
-export default function Editor() {
-  return redirect("/");
+export const metadata = {
+  title: "Editor - OG Studio",
+};
+
+export const dynamic = "force-static";
+
+export default function EditorPage() {
+  return <Editor />;
 }

@@ -1,9 +1,17 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { OgEditor } from "./OgEditor";
 
 export function Editor() {
-  const { image } = useParams<{ image: string }>();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const imageId = searchParams.get("i");
 
-  return <OgEditor height={630} imageId={image} width={1200} />;
+  // If there isn't any image id, redirect to the images page
+  if (!imageId) {
+    router.push("/my-images");
+    return null;
+  }
+
+  return <OgEditor height={630} imageId={imageId} width={1200} />;
 }
