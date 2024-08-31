@@ -30,7 +30,7 @@ const nextConfig = {
         pathname: '/a/*',
       },
     ]
-  },
+  }
 }
 
 module.exports = nextConfig

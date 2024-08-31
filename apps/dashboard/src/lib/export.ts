@@ -16,11 +16,11 @@ if (process.env.VITEST_POOL_ID) {
       "node_modules/@resvg/resvg-wasm/index_bg.wasm",
     ),
   );
-} {
+} else {
   initWasmPromise = initWasm(
     fetch("https://unpkg.com/@resvg/resvg-wasm@2.4.0/index_bg.wasm", {
       cache: "no-store",
-    })
+    }),
   );
 }
 
@@ -77,9 +77,9 @@ export function elementsToReactElements(
             props: {
               style: isImage
                 ? {
-                  ...createElementStyle(element),
-                  ...createImgElementStyle(element),
-                }
+                    ...createElementStyle(element),
+                    ...createImgElementStyle(element),
+                  }
                 : createElementStyle(element),
               ...(isImage
                 ? { src: dynamicText ? dynamicText : element.backgroundImage }
