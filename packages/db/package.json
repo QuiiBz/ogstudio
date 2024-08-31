@@ -5,20 +5,20 @@
   "scripts": {
     "lint": "eslint --cache",
     "typecheck": "tsc --noEmit",
-    "generate": "drizzle-kit generate:sqlite",
+    "generate": "drizzle-kit generate",
     "migrate": "tsx drizzle/migrate.ts",
     "studio": "drizzle-kit studio",
     "dev": "turso dev --db-file ./db.sqlite"
   },
   "dependencies": {
-    "@libsql/client": "^0.6.0",
-    "drizzle-orm": "^0.30.10"
+    "@libsql/client": "^0.10.0",
+    "drizzle-orm": "^0.33.0"
   },
   "devDependencies": {
     "@ogstudio/eslint": "workspace:*",
     "@ogstudio/typescript": "workspace:*",
     "dotenv": "^16.4.5",
-    "drizzle-kit": "^0.20.17",
-    "tsx": "^4.9.3"
+    "drizzle-kit": "^0.24.2",
+    "tsx": "^4.19.0"
   }
 }
