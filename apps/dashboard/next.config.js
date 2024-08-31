@@ -30,6 +30,12 @@ const nextConfig = {
         pathname: '/a/*',
       },
     ]
+  },
+  experimental: {
+    outputFileTracingIncludes: {
+      '/api/og/*': ['./src/app/api/og/resvg.wasm'],
+      '/api/og/template/*': ['./src/app/api/og/resvg.wasm'],
+    }
   }
 }
 
