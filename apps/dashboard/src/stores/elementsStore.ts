@@ -25,11 +25,11 @@ export const useElementsStore = create<ElementsState>()(
       },
       loadImage: (imageId) => {
         const item = localStorage.getItem(imageId);
-        if (!item) {
+        if (!item && imageId !== "splash") {
           return false;
         }
 
-        const elements = JSON.parse(item) as OGElement[];
+        const elements = JSON.parse(item ?? "[]") as OGElement[];
         set({ imageId, elements, selectedElementId: null });
 
         // Immediately load fonts for elements that will be visible on the page.
