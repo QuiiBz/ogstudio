@@ -11,7 +11,7 @@ import path from "node:path";
 import url from "node:url";
 
 const resvg = fs.readFileSync(
-  url.fileURLToPath(path.join(import.meta.url, '../../resvg.wasm'))
+  url.fileURLToPath(path.join(import.meta.url, '../../../resvg.wasm'))
 )
 const initWasmPromise = initWasm(resvg);
 
