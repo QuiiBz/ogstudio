@@ -45,8 +45,8 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@resvg/resvg-wasm':
-        specifier: 2.4.0
-        version: 2.4.0
+        specifier: 2.6.2
+        version: 2.6.2
       '@tanstack/react-query':
         specifier: ^5.35.1
         version: 5.35.1(react@18.2.0)
@@ -1777,8 +1777,8 @@ packages:
       '@types/react-dom':
         optional: true
 
-  '@resvg/resvg-wasm@2.4.0':
-    resolution: {integrity: sha512-C7c51Nn4yTxXFKvgh2txJFNweaVcfUPQxwEUFw4aWsCmfiBDJsTSwviIF8EcwjQ6k8bPyMWCl1vw4BdxE569Cg==}
+  '@resvg/resvg-wasm@2.6.2':
+    resolution: {integrity: sha512-FqALmHI8D4o6lk/LRWDnhw95z5eO+eAa6ORjVg09YRR7BkcM6oPHU9uyC0gtQG5vpFLvgpeU4+zEAz2H8APHNw==}
     engines: {node: '>= 10'}
 
   '@rollup/rollup-android-arm-eabi@4.9.1':
@@ -6199,7 +6199,7 @@ snapshots:
       '@types/react': 18.2.45
       '@types/react-dom': 18.2.18
 
-  '@resvg/resvg-wasm@2.4.0': {}
+  '@resvg/resvg-wasm@2.6.2': {}
 
   '@rollup/rollup-android-arm-eabi@4.9.1':
     optional: true
