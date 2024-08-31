@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { Box, Flex } from "@radix-ui/themes";
+import { useRouter } from "next/navigation";
 import type { OGElement } from "../lib/types";
 import { createElementId } from "../lib/elements";
 import { useZoomStore } from "../stores/zoomStore";
@@ -21,6 +22,7 @@ interface OgProviderProps {
 let elementIdToCopy: string | undefined;
 
 export function OgEditor({ imageId, width, height }: OgProviderProps) {
+  const router = useRouter();
   const rootRef = useRef<HTMLDivElement>(null);
   const zoom = useZoomStore((state) => state.zoom);
   const {
@@ -42,7 +44,11 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
    * state, and load the elements and fonts.
    */
   useEffect(() => {
-    loadImage(imageId);
+    // If the image doesn't exist, redirect to the images page
+    if (!loadImage(imageId)) {
+      router.push("/my-images");
+      return;
+    }
 
     if (useImagesStore.persist.hasHydrated()) {
       setSelectedImageId(imageId);
@@ -51,7 +57,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
     useImagesStore.persist.onFinishHydration(() => {
       setSelectedImageId(imageId);
     });
-  }, [imageId, loadImage, setSelectedImageId]);
+  }, [imageId, loadImage, router, setSelectedImageId]);
 
   useEffect(() => {
     function onClick(event: MouseEvent) {
