@@ -82,6 +82,7 @@ export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
         const data = await fetch(
           // @ts-expect-error -- wrong inference
           `https://fonts.bunny.net/${fontName}/files/${fontName}-latin-${element.fontWeight}-normal.woff`,
+          { cache: "no-store" },
         ).then((response) => response.arrayBuffer());
 
         const fontData: FontData = {
