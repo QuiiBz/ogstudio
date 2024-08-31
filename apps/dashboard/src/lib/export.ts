@@ -6,25 +6,6 @@ import type { OGElement } from "./types";
 import { loadFonts } from "./fonts";
 import { createElementStyle, createImgElementStyle } from "./elements";
 
-let initWasmPromise: Promise<void> | undefined;
-
-// eslint-disable-next-line turbo/no-undeclared-env-vars -- it's always true for tests
-if (process.env.VITEST_POOL_ID) {
-  initWasmPromise = initWasm(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-member-access -- it actually works fine in tests
-    require("node:fs/promises").readFile(
-      "node_modules/@resvg/resvg-wasm/index_bg.wasm",
-    ),
-  );
-  // @ts-expect-error -- only present in Edge Runtime
-} else if (typeof EdgeRuntime !== "string") {
-  initWasmPromise = initWasm(
-    fetch("https://unpkg.com/@resvg/resvg-wasm@2.4.0/index_bg.wasm", {
-      cache: "no-store",
-    }),
-  );
-}
-
 export interface ReactElements {
   type: OGElement["tag"] | "img";
   props: {
@@ -78,9 +59,9 @@ export function elementsToReactElements(
             props: {
               style: isImage
                 ? {
-                    ...createElementStyle(element),
-                    ...createImgElementStyle(element),
-                  }
+                  ...createElementStyle(element),
+                  ...createImgElementStyle(element),
+                }
                 : createElementStyle(element),
               ...(isImage
                 ? { src: dynamicText ? dynamicText : element.backgroundImage }
@@ -133,7 +114,14 @@ export async function exportToSvg(
  * Export an SVG string to a PNG Uint8Array, using the provided font buffers.
  */
 export async function exportToPng(svg: string): Promise<Uint8Array> {
-  await initWasmPromise;
+  if (process.env.VITEST_POOL_ID) {
+    await initWasm(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-member-access -- it actually works fine in tests
+      require("node:fs/promises").readFile(
+        "node_modules/@resvg/resvg-wasm/index_bg.wasm",
+      ),
+    );
+  }
 
   const resvgJS = new Resvg(svg);
   const pngData = resvgJS.render();

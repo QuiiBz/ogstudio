@@ -8,13 +8,14 @@ import {
   exportToSvg,
 } from "../../../../lib/export";
 import { loadFonts } from "../../../../lib/fonts";
-// @ts-expect-error -- this file does exist
-import resvgWasm from "../resvg.wasm?module";
+import fs from "node:fs";
+import path from "node:path";
+import url from "node:url";
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- wrong type
-const initWasmPromise = initWasm(resvgWasm);
-
-export const runtime = "edge";
+const resvg = fs.readFileSync(
+  url.fileURLToPath(path.join(import.meta.url, '../resvg.wasm'))
+)
+const initWasmPromise = initWasm(resvg);
 
 export async function GET(
   request: NextRequest,
