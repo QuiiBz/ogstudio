@@ -1,9 +1,20 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { OgEditor } from "./OgEditor";
 
-export function Editor() {
-  const { image } = useParams<{ image: string }>();
+interface EditorProps {
+  isSplash?: boolean;
+}
 
-  return <OgEditor height={630} imageId={image} width={1200} />;
+export function Editor({ isSplash }: EditorProps) {
+  const searchParams = useSearchParams();
+  const imageId = searchParams.get("i");
+
+  return (
+    <OgEditor
+      height={630}
+      imageId={imageId ?? (isSplash ? "splash" : "")}
+      width={1200}
+    />
+  );
 }

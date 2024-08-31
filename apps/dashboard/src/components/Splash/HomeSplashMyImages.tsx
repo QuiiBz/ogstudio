@@ -32,7 +32,7 @@ export function HomeSplashMyImages() {
               name: "New Image",
               id: createElementId(),
             };
-            router.push(`/editor/${image.id}`);
+            router.push(`/editor?i=${image.id}`);
             createImage(image);
           }}
         >
@@ -55,7 +55,7 @@ export function HomeSplashMyImages() {
             elements={
               JSON.parse(localStorage.getItem(image.id) ?? "[]") as OGElement[]
             }
-            href={`/editor/${image.id}`}
+            href={`/editor?i=${image.id}`}
             key={image.id}
             mockDynamicTexts
             name={image.name}
