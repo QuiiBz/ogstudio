@@ -1,5 +1,4 @@
 import { kv } from "@vercel/kv";
-import { initWasm } from "@resvg/resvg-wasm";
 import type { NextRequest } from "next/server";
 import type { OGElement } from "../../../../lib/types";
 import {
@@ -8,14 +7,6 @@ import {
   exportToSvg,
 } from "../../../../lib/export";
 import { loadFonts } from "../../../../lib/fonts";
-import fs from "node:fs";
-import path from "node:path";
-import url from "node:url";
-
-const resvg = fs.readFileSync(
-  url.fileURLToPath(path.join(import.meta.url, '../../resvg.wasm'))
-)
-const initWasmPromise = initWasm(resvg);
 
 export async function GET(
   request: NextRequest,
@@ -33,7 +24,6 @@ export async function GET(
   );
 
   const reactElements = elementsToReactElements(ogElements, dynamicTexts);
-  await initWasmPromise;
   const fonts = await loadFonts(ogElements);
   const svg = await exportToSvg(reactElements, fonts);
   const png = await exportToPng(svg);
