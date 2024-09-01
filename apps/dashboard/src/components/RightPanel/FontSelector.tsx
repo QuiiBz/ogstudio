@@ -38,7 +38,7 @@ export function FontSelector({ selectedElement }: FontSelectorProps) {
       <Popover.Content width="300px">
         <Flex gap="3" direction="column">
           <TextField.Root
-            placeholder="Search ny fontsource font..."
+            placeholder="Search any fontsource font..."
             value={search}
             onChange={(event) => {
               setSearch(event.target.value);
