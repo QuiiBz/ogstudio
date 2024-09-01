@@ -8,6 +8,14 @@ export interface Template {
 }
 
 /**
+ * Returns the slug of a template to be used in URLs. It returns the name of the
+ * template in lowercase and with spaces replaced by dashes.
+ */
+export function toTemplateSlug(template: Template): string {
+  return template.name.toLowerCase().replaceAll(" ", "-");
+}
+
+/**
  * The list of all available templates. Each template is composed of an array of
  * elements, a name and a description.
  */
@@ -451,7 +459,7 @@ export const TEMPLATES = [
         blur: 0,
         backgroundColor: "#000000",
         backgroundImage:
-          "https://images.unsplash.com/reserve/bOvf94dPRxWu0u3QsPjF_tree.jpg?q=80&w=2976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1280&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         backgroundSize: "cover",
         x: 668,
         y: -35,
@@ -474,7 +482,7 @@ export const TEMPLATES = [
         fontSize: 80,
         align: "left",
         x: 59,
-        y: 475,
+        y: 455,
       },
       {
         tag: "p",
@@ -494,31 +502,32 @@ export const TEMPLATES = [
         fontSize: 30,
         align: "left",
         x: 61,
-        y: 416,
+        y: 396,
       },
       {
         tag: "div",
         id: createElementId(),
         name: "Box",
         width: 224,
-        height: 2,
+        height: 3,
         visible: true,
         rotate: 0,
         blur: 0,
-        backgroundColor: "#7ba71d",
-        x: 60,
-        y: 460,
+        backgroundColor: "#aad749",
+        x: 61,
+        y: 438,
+        radius: 2,
       },
       {
         tag: "div",
         id: createElementId(),
         name: "Box",
-        width: 2,
+        width: 3,
         height: 700,
         visible: true,
         rotate: -2,
         blur: 0,
-        backgroundColor: "#7ba71d",
+        backgroundColor: "#aad749",
         x: 665,
         y: -34,
       },

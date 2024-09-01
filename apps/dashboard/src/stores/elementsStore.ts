@@ -2,12 +2,13 @@ import { create } from "zustand";
 import { temporal } from "zundo";
 import type { OGElement } from "../lib/types";
 import { maybeLoadFont } from "../lib/fonts";
+import { useFontsStore } from "./fontsStore";
 
 interface ElementsState {
   imageId: string;
   elements: OGElement[];
   setElements: (elements: OGElement[]) => void;
-  loadImage: (imageId: string) => void;
+  loadImage: (imageId: string) => boolean;
   selectedElementId: string | null;
   setSelectedElementId: (id: string | null) => void;
   addElement: (element: OGElement) => void;
@@ -24,20 +25,24 @@ export const useElementsStore = create<ElementsState>()(
         set({ elements });
       },
       loadImage: (imageId) => {
-        const elements = JSON.parse(
-          localStorage.getItem(imageId) ?? "[]",
-        ) as OGElement[];
+        const item = localStorage.getItem(imageId);
+        if (!item && imageId !== "splash") {
+          return false;
+        }
 
+        const elements = JSON.parse(item ?? "[]") as OGElement[];
         set({ imageId, elements, selectedElementId: null });
 
         // Immediately load fonts for elements that will be visible on the page.
         elements.forEach((element) => {
           if (element.tag === "p" || element.tag === "span") {
             maybeLoadFont(element.fontFamily, element.fontWeight);
+            useFontsStore.getState().installFont(element.fontFamily);
           }
         });
 
         useElementsStore.temporal.getState().clear();
+        return true;
       },
       selectedElementId: null,
       setSelectedElementId: (id) => {

@@ -2,14 +2,16 @@
 import { Button, Flex, Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useImagesStore } from "../../stores/imagesStore";
+import { type OGImage, useImagesStore } from "../../stores/imagesStore";
 import { OgImage } from "../OgImage";
 import { AddIcon } from "../icons/AddIcon";
 import type { OGElement } from "../../lib/types";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
+import { createElementId } from "../../lib/elements";
 
 export function HomeSplashMyImages() {
-  const { images, createEmptyImage, copyImage, deleteImage } = useImagesStore();
+  const { images, createImage, copyImage, deleteImage } = useImagesStore();
+
   const router = useRouter();
 
   return (
@@ -23,11 +25,15 @@ export function HomeSplashMyImages() {
           </Link>
         </Button>
       </Flex>
-      <Flex gap="2">
+      <Flex gap="2" className="overflow-x-scroll max-w-[100vw] no-scrollbar">
         <OgImage
           onClick={() => {
-            const { id } = createEmptyImage();
-            router.push(`/editor/${id}`);
+            const image: OGImage = {
+              name: "New Image",
+              id: createElementId(),
+            };
+            router.push(`/editor?i=${image.id}`);
+            createImage(image);
           }}
         >
           <Flex align="center" gap="1">
@@ -49,7 +55,7 @@ export function HomeSplashMyImages() {
             elements={
               JSON.parse(localStorage.getItem(image.id) ?? "[]") as OGElement[]
             }
-            href={`/editor/${image.id}`}
+            href={`/editor?i=${image.id}`}
             key={image.id}
             mockDynamicTexts
             name={image.name}

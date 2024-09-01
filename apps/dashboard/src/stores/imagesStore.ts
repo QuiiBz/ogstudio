@@ -13,9 +13,10 @@ interface ImagesState {
   images: OGImage[];
   selectedImageId: string | null;
   setSelectedImageId: (id: string | null) => void;
-  createEmptyImage: () => OGImage;
+  createImage: (image: OGImage) => void;
   copyTemplate: (template: Template) => OGImage;
   copyImage: (image: OGImage) => OGImage;
+  updateImage: (image: OGImage) => void;
   deleteImage: (image: OGImage) => void;
 }
 
@@ -27,16 +28,9 @@ export const useImagesStore = create(
       setSelectedImageId: (id) => {
         set({ selectedImageId: id });
       },
-      createEmptyImage: () => {
-        const image: OGImage = {
-          name: "New Image",
-          id: createElementId(),
-        };
-
+      createImage: (image) => {
         localStorage.setItem(image.id, JSON.stringify(INITIAL_ELEMENTS));
         set((state) => ({ images: [image, ...state.images] }));
-
-        return image;
       },
       copyTemplate: (template) => {
         const image: OGImage = {
@@ -62,6 +56,13 @@ export const useImagesStore = create(
 
         toast("Image duplicated!");
         return newImage;
+      },
+      updateImage: (image) => {
+        set((state) => ({
+          images: state.images.map((currentImage) =>
+            currentImage.id === image.id ? image : currentImage,
+          ),
+        }));
       },
       deleteImage: (image) => {
         const deletedElements = localStorage.getItem(image.id) ?? "[]";

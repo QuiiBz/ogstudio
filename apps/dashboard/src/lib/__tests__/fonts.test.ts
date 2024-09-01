@@ -7,7 +7,16 @@ describe("maybeLoadFont", () => {
     maybeLoadFont("Roboto", 400);
 
     expect(document.head.innerHTML).toMatchInlineSnapshot(
-      `"<link id="font-Roboto-400" rel="stylesheet" href="https://fonts.bunny.net/css?family=roboto:400">"`,
+      `
+      "<style id="font-roboto-400">
+          @font-face {
+            font-family: "Roboto";
+            src: url("https://cdn.jsdelivr.net/fontsource/fonts/roboto@latest/latin-400-normal.woff") format("woff");
+            font-weight: 400;
+            font-style: normal;
+          }
+        </style>"
+    `,
     );
   });
 
@@ -16,7 +25,16 @@ describe("maybeLoadFont", () => {
     maybeLoadFont("Roboto", 400);
 
     expect(document.head.innerHTML).toMatchInlineSnapshot(
-      `"<link id="font-Roboto-400" rel="stylesheet" href="https://fonts.bunny.net/css?family=roboto:400">"`,
+      `
+      "<style id="font-roboto-400">
+          @font-face {
+            font-family: "Roboto";
+            src: url("https://cdn.jsdelivr.net/fontsource/fonts/roboto@latest/latin-400-normal.woff") format("woff");
+            font-weight: 400;
+            font-style: normal;
+          }
+        </style>"
+    `,
     );
   });
 
@@ -26,7 +44,30 @@ describe("maybeLoadFont", () => {
     maybeLoadFont("Roboto", 700);
 
     expect(document.head.innerHTML).toMatchInlineSnapshot(
-      `"<link id="font-Roboto-400" rel="stylesheet" href="https://fonts.bunny.net/css?family=roboto:400"><link id="font-Roboto-500" rel="stylesheet" href="https://fonts.bunny.net/css?family=roboto:500"><link id="font-Roboto-700" rel="stylesheet" href="https://fonts.bunny.net/css?family=roboto:700">"`,
+      `
+      "<style id="font-roboto-400">
+          @font-face {
+            font-family: "Roboto";
+            src: url("https://cdn.jsdelivr.net/fontsource/fonts/roboto@latest/latin-400-normal.woff") format("woff");
+            font-weight: 400;
+            font-style: normal;
+          }
+        </style><style id="font-roboto-500">
+          @font-face {
+            font-family: "Roboto";
+            src: url("https://cdn.jsdelivr.net/fontsource/fonts/roboto@latest/latin-500-normal.woff") format("woff");
+            font-weight: 500;
+            font-style: normal;
+          }
+        </style><style id="font-roboto-700">
+          @font-face {
+            font-family: "Roboto";
+            src: url("https://cdn.jsdelivr.net/fontsource/fonts/roboto@latest/latin-700-normal.woff") format("woff");
+            font-weight: 700;
+            font-style: normal;
+          }
+        </style>"
+    `,
     );
   });
 });
@@ -74,6 +115,26 @@ describe("loadFonts", () => {
         fontSize: 50,
         align: "left",
       },
+      {
+        id: createElementId(),
+        tag: "p",
+        name: "Text",
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 50,
+        visible: true,
+        rotate: 0,
+        blur: 0,
+        content: "Text",
+        color: "#000000",
+        fontFamily: "Monaspace Radon",
+        fontWeight: 500,
+        lineHeight: 1,
+        letterSpacing: 0,
+        fontSize: 50,
+        align: "left",
+      },
     ]);
 
     expect(data).toMatchInlineSnapshot(`
@@ -86,6 +147,11 @@ describe("loadFonts", () => {
         {
           "data": ArrayBuffer [],
           "name": "Roboto",
+          "weight": 500,
+        },
+        {
+          "data": ArrayBuffer [],
+          "name": "Monaspace Radon",
           "weight": 500,
         },
       ]

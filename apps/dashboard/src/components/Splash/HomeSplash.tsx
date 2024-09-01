@@ -1,7 +1,7 @@
 import { Button, Flex, Separator, Text } from "@radix-ui/themes";
 import Link from "next/link";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
-import { TEMPLATES } from "../../lib/templates";
+import { TEMPLATES, toTemplateSlug } from "../../lib/templates";
 import { OgImage } from "../OgImage";
 import { HomeSplashMyImages } from "./HomeSplashMyImages";
 
@@ -18,11 +18,11 @@ export function HomeSplash() {
             </Link>
           </Button>
         </Flex>
-        <Flex gap="2">
+        <Flex gap="2" className="overflow-x-scroll max-w-[100vw] no-scrollbar">
           {TEMPLATES.slice(0, 3).map((template) => (
             <OgImage
               elements={template.elements}
-              href={`/templates/${template.name.toLowerCase()}`}
+              href={`/templates/${toTemplateSlug(template)}`}
               key={template.name}
               mockDynamicTexts
               name={template.name}

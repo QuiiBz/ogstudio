@@ -1,7 +1,7 @@
 import { Button, Flex, Grid, Text } from "@radix-ui/themes";
 import Link from "next/link";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
-import { TEMPLATES } from "../../lib/templates";
+import { TEMPLATES, toTemplateSlug } from "../../lib/templates";
 import { OgImage } from "../OgImage";
 
 export function TemplatesSplash() {
@@ -24,7 +24,7 @@ export function TemplatesSplash() {
         {TEMPLATES.map((template) => (
           <OgImage
             elements={template.elements}
-            href={`/templates/${template.name.toLowerCase()}`}
+            href={`/templates/${toTemplateSlug(template)}`}
             key={template.name}
             mockDynamicTexts
             name={template.name}

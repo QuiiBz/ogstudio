@@ -7,18 +7,18 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@lucia-auth/adapter-drizzle": "^1.0.7",
-    "arctic": "^1.8.0",
-    "lucia": "^3.2.0",
-    "@ogstudio/db": "workspace:*"
+    "@lucia-auth/adapter-drizzle": "^1.1.0",
+    "@ogstudio/db": "workspace:*",
+    "arctic": "^1.9.2",
+    "lucia": "^3.2.0"
   },
   "peerDependencies": {
-    "next": "14.2.3",
+    "next": "14.2.7",
     "react": "^18"
   },
   "devDependencies": {
-    "@types/react": "^18",
     "@ogstudio/eslint": "workspace:*",
-    "@ogstudio/typescript": "workspace:*"
+    "@ogstudio/typescript": "workspace:*",
+    "@types/react": "^18"
   }
 }

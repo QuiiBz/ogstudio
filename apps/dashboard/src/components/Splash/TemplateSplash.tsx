@@ -22,7 +22,7 @@ export function TemplateSplash({ template }: TemplateSplashProps) {
           </Link>
         </Button>
       </Flex>
-      <Flex gap="8" justify="between">
+      <Flex gap="8" justify="between" className="flex-col sm:flex-row">
         <TemplateSplashPreview
           image={<OgImageInnerServer elements={template.elements} />}
         />
