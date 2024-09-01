@@ -9,4 +9,5 @@ db.sqlite*
 .DS_Store
 *.log
 .env
+.env*
 *.tsbuildinfo
