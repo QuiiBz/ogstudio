@@ -7,7 +7,7 @@ import { useElementsStore } from "../../stores/elementsStore";
 import { ColorPicker } from "../ColorPicker";
 import { FontPreview } from "../FontPreview";
 import { useFontsStore } from "../../stores/fontsStore";
-import { AddFont } from "./AddFont";
+import { FontSelector } from "./FontSelector";
 
 const SPACES_REGEX = /\s+/g;
 
@@ -28,10 +28,8 @@ export function FontSection({ selectedElement }: FontSectionProps) {
       <Text size="1">Font</Text>
       <Flex direction="row" gap="2" className="justify-between">
         <Select.Root
-          onValueChange={(value) => {
-            const font = value;
-            const weights = allFonts.find((f) => f.name === font)?.weights;
-
+          onValueChange={(font) => {
+            const weights = allFonts.find(({ name }) => name === font)?.weights;
             if (!installedFonts.has(font)) {
               installFont(font);
             }
@@ -55,11 +53,28 @@ export function FontSection({ selectedElement }: FontSectionProps) {
             ))}
           </Select.Content>
         </Select.Root>
-
-        <AddFont selectedElement={selectedElement} />
+        <FontSelector selectedElement={selectedElement} />
       </Flex>
-
       <Grid columns="2" gap="2">
+        <TextField.Root
+          color="gray"
+          onChange={(event) => {
+            updateElement({
+              ...selectedElement,
+              fontSize: event.target.valueAsNumber,
+            });
+          }}
+          type="number"
+          value={selectedElement.fontSize}
+          variant="soft"
+        >
+          <Tooltip content="Font size">
+            <TextField.Slot>
+              <FontSizeIcon />
+            </TextField.Slot>
+          </Tooltip>
+          <TextField.Slot>px</TextField.Slot>
+        </TextField.Root>
         <Select.Root
           onValueChange={(value) => {
             updateElement({
@@ -81,25 +96,6 @@ export function FontSection({ selectedElement }: FontSectionProps) {
               ))}
           </Select.Content>
         </Select.Root>
-        <TextField.Root
-          color="gray"
-          onChange={(event) => {
-            updateElement({
-              ...selectedElement,
-              fontSize: event.target.valueAsNumber,
-            });
-          }}
-          type="number"
-          value={selectedElement.fontSize}
-          variant="soft"
-        >
-          <Tooltip content="Font size">
-            <TextField.Slot>
-              <FontSizeIcon />
-            </TextField.Slot>
-          </Tooltip>
-          <TextField.Slot>px</TextField.Slot>
-        </TextField.Root>
         <ColorPicker
           onChange={(color) => {
             updateElement({

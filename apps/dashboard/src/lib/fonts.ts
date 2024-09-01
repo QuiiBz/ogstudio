@@ -1,5 +1,21 @@
 import type { OGElement } from "./types";
 
+export interface Font {
+  name: string;
+  weights: number[];
+}
+
+export interface FontData {
+  name: string;
+  data: ArrayBuffer;
+  weight: number;
+}
+
+const fontsCache = new Map<string, FontData>();
+
+/**
+ * Default fonts that are available in the editor.
+ */
 export const DEFAULT_FONTS = [
   "Roboto",
   "Open Sans",
@@ -14,7 +30,8 @@ export const DEFAULT_FONTS = [
 ];
 
 /**
- * Adds the font stylesheet to the document body
+ * Adds the font stylesheet to the document body.
+ *
  * The font is loaded asynchronously, so it may not be available immediately
  * and the caller should make sure to wait for the font to be loaded before
  * using it.
@@ -44,16 +61,8 @@ export function maybeLoadFont(font: string, weight: number) {
   document.head.appendChild(style);
 }
 
-export interface FontData {
-  name: string;
-  data: ArrayBuffer;
-  weight: number;
-}
-
-const fontsCache = new Map<string, FontData>();
-
 /**
- * Load all fonts used in the given elements from Bunny Fonts. The fonts are
+ * Load all fonts used in the given elements from sourcefonts. The fonts are
  * returned as an `ArrayBuffer`, along with the font name and weight.
  */
 export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
@@ -69,9 +78,6 @@ export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
           return fontCache;
         }
 
-        if (element.tag !== "p" && element.tag !== "span")
-          throw new Error("unreachable!");
-
         const data = await fetch(
           getFontURL(element.fontFamily, element.fontWeight),
         ).then((response) => response.arrayBuffer());
@@ -79,7 +85,6 @@ export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
         const fontData: FontData = {
           name: element.fontFamily,
           data,
-
           weight: element.fontWeight,
         };
 
@@ -89,26 +94,21 @@ export async function loadFonts(elements: OGElement[]): Promise<FontData[]> {
   );
 }
 
-export async function getFontData() {
+/**
+ * Get a list of all available fonts from Fontsource.
+ */
+export async function getFontData(): Promise<Font[]> {
   interface FontsourceFont {
-    id: string;
     family: string;
-    subsets: string[];
     weights: number[];
     styles: string[];
     defSubset: string;
-    variable: boolean;
-    lastModified: Date;
-    category: string;
-    license: string;
-    type: string;
   }
 
-  const res = await fetch("https://api.fontsource.org/v1/fonts", {
+  const response = await fetch("https://api.fontsource.org/v1/fonts", {
     cache: "no-store",
   });
-
-  const data = (await res.json()) as FontsourceFont[];
+  const data = (await response.json()) as FontsourceFont[];
 
   return data
     .filter(({ styles }) => styles.includes("normal"))
@@ -118,8 +118,6 @@ export async function getFontData() {
       weights: font.weights,
     }));
 }
-
-export type Font = Awaited<ReturnType<typeof getFontData>>[number];
 
 export function getFontURL(fontName: string, weight: number) {
   const fontID = fontName.toLowerCase().replaceAll(" ", "-");
