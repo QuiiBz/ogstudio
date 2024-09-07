@@ -24,7 +24,7 @@ export function EditorTitle() {
 
   return (
     <Box
-      className="transform -translate-x-1/2"
+      className="transform -translate-x-1/2 z-50"
       left="50%"
       p="6"
       position="absolute"
