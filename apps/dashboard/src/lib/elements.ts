@@ -168,6 +168,7 @@ export function createElementStyle(element: OGElement): CSSProperties {
       element.rotate !== 0 ? `rotate(${element.rotate}deg)` : undefined,
     boxShadow: boxShadows.length ? boxShadows.join(", ") : undefined,
     filter: element.blur !== 0 ? `blur(${element.blur}px)` : undefined,
+    willChange: element.blur !== 0 ? "filter" : undefined,
   };
 
   if (element.tag === "p" || element.tag === "span") {

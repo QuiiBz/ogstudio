@@ -126,6 +126,7 @@ describe("createElementStyle", () => {
         "position": "absolute",
         "top": "20px",
         "width": "100px",
+        "willChange": "filter",
       }
     `);
   });
