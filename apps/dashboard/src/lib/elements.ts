@@ -95,7 +95,7 @@ export function createDefaultElement(type: ElementType): OGElement {
         visible: true,
         rotate: 0,
         blur: 0,
-        radius: 10,
+        radius: 999,
         backgroundColor: "#000000",
       });
     }
