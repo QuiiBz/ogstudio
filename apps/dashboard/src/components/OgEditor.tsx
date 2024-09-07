@@ -4,11 +4,7 @@ import { Box, Flex } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import type { OGElement } from "../lib/types";
-import {
-  createDefaultElement,
-  createElement,
-  createElementId,
-} from "../lib/elements";
+import { createDefaultElement, createElementId } from "../lib/elements";
 import { useZoomStore } from "../stores/zoomStore";
 import { useElementsStore } from "../stores/elementsStore";
 import { useImagesStore } from "../stores/imagesStore";
