@@ -83,7 +83,7 @@ export function ColorPicker({ value, onChange, children }: ColorPickerProps) {
           <Separator className="opacity-50" size="4" />
           <Flex direction="column" gap="2">
             <Text size="1">Recently used</Text>
-            <Grid columns="6">
+            <Grid columns="8" gap="2">
               {colors.map((color) => (
                 <button
                   type="button"
