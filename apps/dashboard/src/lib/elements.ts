@@ -41,6 +41,93 @@ export function createElement(element: Partial<OGElement>): OGElement {
   };
 }
 
+// All different types of elements that can be added to the canvas.
+export type ElementType =
+  | "text"
+  | "box"
+  | "rounded-box"
+  | "image"
+  | "dynamic-text";
+
+/**
+ * Create a new element with default values based on its type.
+ */
+export function createDefaultElement(type: ElementType): OGElement {
+  switch (type) {
+    case "text": {
+      return createElement({
+        tag: "p",
+        name: "Text",
+        width: 100,
+        height: 50,
+        visible: true,
+        rotate: 0,
+        blur: 0,
+        content: "Text",
+        color: "#000000",
+        fontFamily: "Inter",
+        fontWeight: 400,
+        lineHeight: 1,
+        letterSpacing: 0,
+        fontSize: 50,
+        align: "left",
+      });
+    }
+    case "box": {
+      return createElement({
+        tag: "div",
+        name: "Box",
+        width: 200,
+        height: 200,
+        visible: true,
+        rotate: 0,
+        blur: 0,
+        radius: 0,
+        backgroundColor: "#000000",
+      });
+    }
+    case "rounded-box": {
+      return createElement({
+        tag: "div",
+        name: "Rounded box",
+        width: 150,
+        height: 150,
+        visible: true,
+        rotate: 0,
+        blur: 0,
+        radius: 10,
+        backgroundColor: "#000000",
+      });
+    }
+    case "image": {
+      return createElement({
+        tag: "div",
+        name: "Image",
+        width: 200,
+        height: 200,
+        visible: true,
+        rotate: 0,
+        blur: 0,
+        radius: 0,
+        backgroundImage: "",
+      });
+    }
+    case "dynamic-text": {
+      return createElement({
+        tag: "div",
+        name: "Dynamic text",
+        width: 200,
+        height: 200,
+        visible: true,
+        rotate: 0,
+        blur: 0,
+        radius: 0,
+        backgroundImage: "",
+      });
+    }
+  }
+}
+
 /**
  * Generate the CSS styles for an element. This will also be used by Satori to
  * render the elements to an SVG, so we have to only use CSS properties that

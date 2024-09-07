@@ -2,8 +2,13 @@
 import { useEffect, useRef } from "react";
 import { Box, Flex } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import type { OGElement } from "../lib/types";
-import { createElementId } from "../lib/elements";
+import {
+  createDefaultElement,
+  createElement,
+  createElementId,
+} from "../lib/elements";
 import { useZoomStore } from "../stores/zoomStore";
 import { useElementsStore } from "../stores/elementsStore";
 import { useImagesStore } from "../stores/imagesStore";
@@ -188,6 +193,38 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
           addElement(newElement);
           elementIdToCopy = newElement.id;
         }
+      }
+
+      // When trying to save the document, show a toast
+      if (event.key === "s" && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        toast("Your work is saved automatically!");
+      }
+
+      // Insert elements with keyboard shortcuts
+      if (event.key === "t") {
+        event.preventDefault();
+        addElement(createDefaultElement("text"));
+      }
+
+      if (event.key === "b") {
+        event.preventDefault();
+        addElement(createDefaultElement("box"));
+      }
+
+      if (event.key === "o") {
+        event.preventDefault();
+        addElement(createDefaultElement("rounded-box"));
+      }
+
+      if (event.key === "i") {
+        event.preventDefault();
+        addElement(createDefaultElement("image"));
+      }
+
+      if (event.key === "d") {
+        event.preventDefault();
+        addElement(createDefaultElement("dynamic-text"));
       }
     }
 
