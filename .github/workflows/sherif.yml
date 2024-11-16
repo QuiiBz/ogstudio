@@ -11,4 +11,4 @@ jobs:
       - uses: actions/checkout@v4
       - uses: QuiiBz/sherif@v1
         with:
-          version: 1.0.1
+          version: v1.0.1
