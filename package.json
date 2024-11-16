@@ -1,6 +1,5 @@
 {
   "name": "ogstudio",
-  "private": true,
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
