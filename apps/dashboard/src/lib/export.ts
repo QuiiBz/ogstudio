@@ -18,9 +18,7 @@ if (process.env.VITEST_POOL_ID) {
   );
 } else {
   initWasmPromise = initWasm(
-    fetch("https://unpkg.com/@resvg/resvg-wasm@2.6.2/index_bg.wasm", {
-      cache: "no-store",
-    }),
+    fetch("https://unpkg.com/@resvg/resvg-wasm@2.6.2/index_bg.wasm"),
   );
 }
 

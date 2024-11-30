@@ -8,10 +8,13 @@ import {
 } from "../../../../lib/export";
 import { loadFonts } from "../../../../lib/fonts";
 
-export async function GET(
-  request: NextRequest,
-  { params: { key } }: { params: { key: string } },
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ key: string }> }) {
+  const params = await props.params;
+
+  const {
+    key
+  } = params;
+
   const elements = await kv.get(atob(key));
 
   if (elements === null) {
