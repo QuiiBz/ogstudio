@@ -4,18 +4,20 @@ import { TemplateSplash } from "../../../../components/Splash/TemplateSplash";
 import { TEMPLATES, toTemplateSlug } from "../../../../lib/templates";
 
 interface TemplateProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export function generateStaticParams() {
-  return TEMPLATES.map((template) => template.name.toLowerCase());
+  return TEMPLATES.map((template) => ({ slug: template.name.toLowerCase() }));
 }
 
-export function generateMetadata({
-  params: { slug },
-}: TemplateProps): Metadata {
+export async function generateMetadata({
+  params,
+}: TemplateProps): Promise<Metadata> {
+  const { slug } = await params;
+
   const decodedSlug = decodeURIComponent(slug);
   const template = TEMPLATES.find(
     (current) => toTemplateSlug(current) === decodedSlug,
@@ -43,7 +45,9 @@ export function generateMetadata({
 
 export const dynamic = "force-static";
 
-export default function Template({ params: { slug } }: TemplateProps) {
+export default async function Template({ params }: TemplateProps) {
+  const { slug } = await params;
+
   const decodedSlug = decodeURIComponent(slug);
   const template = TEMPLATES.find(
     (current) => toTemplateSlug(current) === decodedSlug,

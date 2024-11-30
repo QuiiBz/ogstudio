@@ -15,9 +15,10 @@ export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
-  const storedState = cookies().get("google_oauth_state")?.value ?? null;
+  const storedState =
+    (await cookies()).get("google_oauth_state")?.value ?? null;
   const storedCodeVerifier =
-    cookies().get("google_oauth_code_verifier")?.value ?? null;
+    (await cookies()).get("google_oauth_code_verifier")?.value ?? null;
 
   if (
     !code ||
@@ -55,7 +56,7 @@ export async function GET(request: Request): Promise<Response> {
     if (existingUser) {
       const session = await lucia.createSession(existingUser.id, {});
       const sessionCookie = lucia.createSessionCookie(session.id);
-      cookies().set(
+      (await cookies()).set(
         sessionCookie.name,
         sessionCookie.value,
         sessionCookie.attributes,
@@ -79,7 +80,7 @@ export async function GET(request: Request): Promise<Response> {
 
     const session = await lucia.createSession(userId, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(
+    (await cookies()).set(
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes,

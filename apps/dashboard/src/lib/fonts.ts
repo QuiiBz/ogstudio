@@ -105,9 +105,7 @@ export async function getFontData(): Promise<Font[]> {
     defSubset: string;
   }
 
-  const response = await fetch("https://api.fontsource.org/v1/fonts", {
-    cache: "no-store",
-  });
+  const response = await fetch("https://api.fontsource.org/v1/fonts");
   const data = (await response.json()) as FontsourceFont[];
 
   return data

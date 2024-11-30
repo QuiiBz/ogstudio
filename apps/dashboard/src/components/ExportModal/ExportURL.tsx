@@ -27,7 +27,7 @@ export function ExportURL({ exportedKey, dynamicTexts }: ExportURLProps) {
   const key = exportedKey ?? <span className="blur-sm">{"x".repeat(32)}</span>;
   let url = (
     <>
-      {window.location.origin}/api/og/{key}
+      {typeof window !== "undefined" ? window.location.origin : ""}/api/og/{key}
     </>
   );
 
