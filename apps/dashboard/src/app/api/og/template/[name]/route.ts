@@ -6,12 +6,13 @@ import {
 import { TEMPLATES } from "../../../../../lib/templates";
 import { loadFonts } from "../../../../../lib/fonts";
 
-export async function GET(_: Request, props: { params: Promise<{ name: string }> }) {
-  const params = await props.params;
-  const decodedName = decodeURIComponent(params.name);
-  const template = TEMPLATES.find(
-    ({ name }) => name.toLowerCase() === decodedName,
-  );
+export async function GET(
+  _: Request,
+  props: { params: Promise<{ name: string }> },
+) {
+  const { name } = await props.params;
+  const decodedName = decodeURIComponent(name);
+  const template = TEMPLATES.find((t) => t.name.toLowerCase() === decodedName);
 
   if (!template) {
     return new Response("Template not found", { status: 404 });
