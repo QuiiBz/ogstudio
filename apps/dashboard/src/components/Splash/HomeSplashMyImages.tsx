@@ -11,7 +11,6 @@ import { createElementId } from "../../lib/elements";
 
 export function HomeSplashMyImages() {
   const { images, createImage, copyImage, deleteImage } = useImagesStore();
-
   const router = useRouter();
 
   return (

@@ -1,5 +1,4 @@
 import type { MouseEvent, ReactNode } from "react";
-// eslint-disable-next-line import/named -- todo
 import { Suspense, use, useMemo } from "react";
 import Link from "next/link";
 import { clsx } from "clsx";
@@ -114,7 +113,8 @@ export function OgImage({
           "rounded-md": preview === "linkedin",
         },
       )}
-      href={href ?? ""}
+      // @ts-expect-error - href is not a valid prop for button
+      href={href}
       onClick={onClick}
       style={{ border: "1px solid var(--gray-6)" }}
     >
