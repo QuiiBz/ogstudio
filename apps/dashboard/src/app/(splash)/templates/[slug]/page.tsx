@@ -10,13 +10,13 @@ interface TemplateProps {
 }
 
 export function generateStaticParams() {
-  return TEMPLATES.map((template) => template.name.toLowerCase());
+  return TEMPLATES.map((template) => ({ slug: template.name.toLowerCase() }));
 }
 
-export async function generateMetadata(
-  props: TemplateProps,
-): Promise<Metadata> {
-  const { slug } = await props.params;
+export async function generateMetadata({
+  params,
+}: TemplateProps): Promise<Metadata> {
+  const { slug } = await params;
 
   const decodedSlug = decodeURIComponent(slug);
   const template = TEMPLATES.find(
@@ -45,8 +45,8 @@ export async function generateMetadata(
 
 export const dynamic = "force-static";
 
-export default async function Template(props: TemplateProps) {
-  const { slug } = await props.params;
+export default async function Template({ params }: TemplateProps) {
+  const { slug } = await params;
 
   const decodedSlug = decodeURIComponent(slug);
   const template = TEMPLATES.find(

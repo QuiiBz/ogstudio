@@ -8,9 +8,9 @@ import { loadFonts } from "../../../../../lib/fonts";
 
 export async function GET(
   _: Request,
-  props: { params: Promise<{ name: string }> },
+  { params }: { params: Promise<{ name: string }> },
 ) {
-  const { name } = await props.params;
+  const { name } = await params;
   const decodedName = decodeURIComponent(name);
   const template = TEMPLATES.find((t) => t.name.toLowerCase() === decodedName);
 
