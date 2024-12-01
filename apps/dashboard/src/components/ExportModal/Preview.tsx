@@ -15,22 +15,29 @@ export function Preview({ dynamicTexts, setDynamicTexts }: PreviewProps) {
 
   return (
     <Flex direction="column" gap="4">
-      <Flex align="center" justify="between">
-        <Text size="5">Preview</Text>
-        <PreviewControls />
-      </Flex>
-      <Flex gap="6" justify="between">
-        <OgImage
-          client
-          dynamicTexts={dynamicTexts}
-          elements={elements}
-          preview={preview}
-          size="medium"
-        />
-        <Flex direction="column" flexGrow="1" gap="4">
+      <Text size="5">Live Preview</Text>
+      <Flex gap="6" justify="between" align="start" minHeight="353px">
+        <Flex direction="column" gap="2">
+          <PreviewControls />
+          <OgImage
+            client
+            dynamicTexts={dynamicTexts}
+            elements={elements}
+            preview={preview}
+            size="medium"
+          />
+        </Flex>
+        <Flex direction="column" flexGrow="1" gap="4" mt="7">
+          {Object.keys(dynamicTexts).length === 0 ? (
+            <Text as="p" size="2">
+              No dynamic texts found.
+            </Text>
+          ) : null}
           {Object.entries(dynamicTexts).map(([key, value]) => (
-            <Flex direction="column" gap="2" key={key}>
-              <Text size="1">{key}</Text>
+            <Flex direction="column" gap="1" key={key}>
+              <Text as="p" size="1">
+                {key}
+              </Text>
               <TextField.Root
                 defaultValue={value}
                 onChange={(event) => {

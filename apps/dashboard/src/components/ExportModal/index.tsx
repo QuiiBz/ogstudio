@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Text, Button, Flex, Dialog, Separator } from "@radix-ui/themes";
+import { Button, Flex, Dialog, Separator } from "@radix-ui/themes";
 import { useElementsStore } from "../../stores/elementsStore";
 import type {
   ExportRequest,
@@ -58,7 +58,9 @@ export function ExportModal() {
     <>
       <Flex direction="column" gap="4">
         <Flex align="center" justify="between">
-          <Text size="6">Export image</Text>
+          <Dialog.Title size="6" weight="regular" mb="0">
+            Export image
+          </Dialog.Title>
           <Dialog.Close>
             <Button color="gray" radius="full" variant="ghost">
               <ArrowLeftIcon />
@@ -66,11 +68,11 @@ export function ExportModal() {
             </Button>
           </Dialog.Close>
         </Flex>
-        <Text as="p" className="w-2/3" size="2">
+        <Dialog.Description className="w-2/3" size="2">
           Export your Open Graph image to SVG, PNG or an URL that you can then
           use in your website. You can also see a preview of the OG Image and
           edit any dynamic text in real-time.
-        </Text>
+        </Dialog.Description>
       </Flex>
       <Separator className="opacity-50" my="6" size="4" />
       <Preview dynamicTexts={dynamicTexts} setDynamicTexts={setDynamicTexts} />
