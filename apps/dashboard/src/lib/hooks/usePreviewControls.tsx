@@ -19,7 +19,7 @@ export function usePreviewControls() {
           <SegmentedControl.Item value="x">
             <Flex align="center" gap="1">
               <Image
-                alt="X (Twitter) logo"
+                alt="X logo"
                 height="16"
                 src={
                   resolvedTheme === "dark"
@@ -28,7 +28,7 @@ export function usePreviewControls() {
                 }
                 width="16"
               />
-              X (Twitter)
+              X
             </Flex>
           </SegmentedControl.Item>
           <SegmentedControl.Item value="slack">
