@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@radix-ui/themes";
+import { Button, Flex, Heading } from "@radix-ui/themes";
 import { useState } from "react";
 import { flushSync } from "react-dom";
 import { PngIcon } from "../icons/PngIcon";
@@ -57,7 +57,9 @@ export function Download({ dynamicTexts }: DownloadProps) {
 
   return (
     <Flex direction="column" gap="4">
-      <Text size="5">Download</Text>
+      <Heading as="h2" size="5" weight="regular">
+        Download
+      </Heading>
       <Flex gap="2" mt="2">
         <Button
           color="green"

@@ -2,13 +2,13 @@ import type { ReactNode } from "react";
 import { startTransition, useState } from "react";
 import Link from "next/link";
 import {
-  Text,
   Flex,
   Dialog,
   SegmentedControl,
   Code,
   Tooltip,
   IconButton,
+  Heading,
 } from "@radix-ui/themes";
 import { toast } from "sonner";
 import { useUser } from "../../lib/hooks/useUser";
@@ -78,7 +78,9 @@ export function ExportURL({ exportedKey, dynamicTexts }: ExportURLProps) {
   return (
     <Flex direction="column" gap="4" maxWidth="60%">
       <Flex align="center" justify="between">
-        <Text size="5">Export to URL</Text>
+        <Heading as="h2" size="5" weight="regular">
+          Export to URL
+        </Heading>
         <Flex align="center" gap="4">
           <Tooltip content="Copy">
             <IconButton color="gray" onClick={copy} size="2" variant="ghost">

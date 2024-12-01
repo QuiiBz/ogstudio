@@ -99,7 +99,7 @@ export function OgImage({
   name,
   copiable,
   deletable,
-  // size = "small",
+  size = "small",
   client,
   preview,
   previewTitle = "Your page title",
@@ -115,7 +115,7 @@ export function OgImage({
     if (preview === "slack") {
       return function Wrapper(props: { children: ReactNode }) {
         return (
-          <Flex gap="3">
+          <Flex gap="3" className="w-[480px]">
             <div className="bg-[#35373B] min-w-1 h-full rounded" />
             <Flex direction="column" className="gap-0.5">
               <p className="text-[#D1D2D3] text-[15px] font-black">
@@ -137,15 +137,27 @@ export function OgImage({
     };
   }, [preview, previewDescription, previewSite, previewTitle]);
 
+  const from = useMemo(() => {
+    try {
+      const url = new URL(previewUrl);
+      return url.hostname;
+    } catch {
+      return previewUrl;
+    }
+  }, [previewUrl]);
+
   return (
     <WrapperComponent>
       <Tag
         className={clsx(
           className,
-          "min-h-[252px] min-w-[480px] flex flex-col items-center justify-center rounded relative group overflow-hidden",
+          "min-h-[157px] w-[300px] min-w-[300px] flex flex-col items-center justify-center rounded relative group overflow-hidden",
           {
-            "rounded-2xl h-[calc(251px-20px)]": preview === "x",
-            "rounded-lg max-h-[189px] max-w-[360px]": preview === "slack",
+            "min-h-[157px] w-[300px] min-w-[300px]": size === "small",
+            "min-h-[252px] w-[480px] min-w-[480px]": size === "medium",
+            "rounded-2xl h-[252px]": preview === "x",
+            "rounded-lg min-h-[189px] w-[360px] min-w-[360px]":
+              preview === "slack",
             "rounded-md": preview === "linkedin",
           },
         )}
@@ -170,7 +182,7 @@ export function OgImage({
             mockDynamicTexts={mockDynamicTexts}
           />
         ) : null}
-        {src ? <img alt="" src={src} className="w-fit h-fit" /> : null}
+        {src ? <img alt="" src={src} /> : null}
         {children}
         {name ? (
           <Text
@@ -244,7 +256,7 @@ export function OgImage({
       </Tag>
       {preview === "x" ? (
         <span className="text-[#8b98a5] text-[12px] -mt-1.5 relative">
-          From {previewUrl}
+          From {from}
         </span>
       ) : null}
     </WrapperComponent>

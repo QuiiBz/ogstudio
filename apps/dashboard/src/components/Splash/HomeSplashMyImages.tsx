@@ -1,5 +1,5 @@
 "use client";
-import { Button, Flex, Text } from "@radix-ui/themes";
+import { Button, Flex, Heading, Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { type OGImage, useImagesStore } from "../../stores/imagesStore";
@@ -16,7 +16,9 @@ export function HomeSplashMyImages() {
   return (
     <Flex direction="column" gap="4">
       <Flex align="center" justify="between">
-        <Text size="5">My images</Text>
+        <Heading as="h2" size="5" weight="regular">
+          My images
+        </Heading>
         <Button asChild color="gray" radius="full" variant="ghost">
           <Link href="/my-images">
             See all ({images.length})

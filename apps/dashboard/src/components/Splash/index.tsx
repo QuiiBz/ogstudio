@@ -15,6 +15,7 @@ import { usePathname } from "next/navigation";
 import { OgEditor } from "../OgEditor";
 import { GitHubIcon } from "../icons/GitHubIcon";
 import { useUser } from "../../lib/hooks/useUser";
+import { ImageIcon } from "../icons/ImageIcon";
 
 interface OgSplashProps {
   children: ReactNode;
@@ -22,7 +23,7 @@ interface OgSplashProps {
 
 export function Splash({ children }: OgSplashProps) {
   const { data } = useUser();
-  const largeSplash = usePathname() === "/open-graph-validator";
+  const largeSplash = usePathname() === "/tools/open-graph-image-checker";
 
   return (
     <>
@@ -74,6 +75,12 @@ export function Splash({ children }: OgSplashProps) {
                 <Link href="https://github.com/QuiiBz/ogstudio" target="_blank">
                   <GitHubIcon />
                   GitHub
+                </Link>
+              </Button>
+              <Button asChild color="gray" radius="full" variant="ghost">
+                <Link href="/tools/open-graph-image-checker">
+                  <ImageIcon />
+                  Open Graph Checker
                 </Link>
               </Button>
             </Flex>

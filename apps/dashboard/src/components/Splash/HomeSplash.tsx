@@ -1,4 +1,4 @@
-import { Button, Flex, Separator, Text } from "@radix-ui/themes";
+import { Button, Flex, Heading, Separator } from "@radix-ui/themes";
 import Link from "next/link";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 import { TEMPLATES, toTemplateSlug } from "../../lib/templates";
@@ -10,7 +10,9 @@ export function HomeSplash() {
     <>
       <Flex direction="column" gap="4">
         <Flex align="center" justify="between">
-          <Text size="5">Templates</Text>
+          <Heading as="h2" size="5" weight="regular">
+            Templates
+          </Heading>
           <Button asChild color="gray" radius="full" variant="ghost">
             <Link href="/templates">
               See all ({TEMPLATES.length})
