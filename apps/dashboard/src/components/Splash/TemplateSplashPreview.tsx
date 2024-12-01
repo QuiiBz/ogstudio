@@ -27,11 +27,11 @@ export function TemplateSplashPreview({ image }: TemplateSplashPreviewProps) {
   }, []);
 
   return (
-    <Flex direction="column" gap="4">
+    <Flex direction="column" gap="2">
+      <PreviewControls />
       <OgImage preview={preview} size={isMobile ? "small" : "medium"}>
         {image}
       </OgImage>
-      <PreviewControls />
     </Flex>
   );
 }

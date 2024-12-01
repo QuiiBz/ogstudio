@@ -80,7 +80,7 @@ interface OgImageProps {
   deletable?: (event: MouseEvent<HTMLSpanElement>) => void;
   size?: "small" | "medium";
   client?: boolean;
-  preview?: "x" | "linkedin";
+  preview?: "x" | "slack" | "linkedin";
   className?: string;
 }
 
@@ -110,6 +110,7 @@ export function OgImage({
           "min-h-[157px] w-[300px] min-w-[300px]": size === "small",
           "min-h-[252px] w-[480px] min-w-[480px]": size === "medium",
           "rounded-2xl": preview === "x",
+          "rounded-lg": preview === "slack",
           "rounded-md": preview === "linkedin",
         },
       )}
@@ -182,7 +183,7 @@ export function OgImage({
       ) : null}
       {preview === "x" ? (
         <span
-          className="absolute bottom-3 left-3 text-white h-5 px-1 rounded text-[13px]"
+          className="absolute bottom-3 left-3 text-white h-5 px-2 rounded text-[13px]"
           style={{ backgroundColor: "rgba(0, 0, 0, 0.77)" }}
         >
           Your page title

@@ -49,11 +49,11 @@ export function ExportURL({ exportedKey, dynamicTexts }: ExportURLProps) {
 
   const code = (
     <Code
-      className="p-3 overflow-x-scroll whitespace-nowrap"
+      className="p-3 overflow-x-scroll whitespace-nowrap no-scrollbar"
       color="gray"
       highContrast
       id="embed-code"
-      size="4"
+      size="2"
     >
       {type === "html" ? (
         <>
@@ -76,7 +76,7 @@ export function ExportURL({ exportedKey, dynamicTexts }: ExportURLProps) {
   }
 
   return (
-    <Flex direction="column" gap="4" maxWidth="70%">
+    <Flex direction="column" gap="4" maxWidth="60%">
       <Flex align="center" justify="between">
         <Text size="5">Export to URL</Text>
         <Flex align="center" gap="4">
