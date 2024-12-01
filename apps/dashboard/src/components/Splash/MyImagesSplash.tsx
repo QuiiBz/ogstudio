@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Button, Flex, Grid, Text } from "@radix-ui/themes";
+import { Button, Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import Link from "next/link";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { AddIcon } from "../icons/AddIcon";
@@ -16,7 +16,9 @@ export function MyImagesSplash() {
   return (
     <Flex direction="column" gap="4">
       <Flex align="center" justify="between">
-        <Text size="5">My images</Text>
+        <Heading as="h1" size="5" weight="regular">
+          My images
+        </Heading>
         <Button asChild color="gray" radius="full" variant="ghost">
           <Link href="/">
             <ArrowLeftIcon />

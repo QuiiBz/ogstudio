@@ -11,9 +11,11 @@ import {
   Separator,
   Text,
 } from "@radix-ui/themes";
+import { usePathname } from "next/navigation";
 import { OgEditor } from "../OgEditor";
 import { GitHubIcon } from "../icons/GitHubIcon";
 import { useUser } from "../../lib/hooks/useUser";
+import { ImageIcon } from "../icons/ImageIcon";
 
 interface OgSplashProps {
   children: ReactNode;
@@ -21,6 +23,7 @@ interface OgSplashProps {
 
 export function Splash({ children }: OgSplashProps) {
   const { data } = useUser();
+  const largeSplash = usePathname() === "/tools/open-graph-image-checker";
 
   return (
     <>
@@ -37,7 +40,7 @@ export function Splash({ children }: OgSplashProps) {
         width="100vw"
       >
         <Box
-          height="680px"
+          height={largeSplash ? "740px" : "680px"}
           p="6"
           style={{
             boxShadow: "var(--shadow-6)",
@@ -45,7 +48,7 @@ export function Splash({ children }: OgSplashProps) {
             borderRadius: "var(--radius-5)",
           }}
           maxWidth="100vw"
-          width="980px"
+          width={largeSplash ? "1160px" : "980px"}
         >
           <Flex align="center" justify="between" className="-mt-2">
             <Flex align="center" gap="6">
@@ -72,6 +75,12 @@ export function Splash({ children }: OgSplashProps) {
                 <Link href="https://github.com/QuiiBz/ogstudio" target="_blank">
                   <GitHubIcon />
                   GitHub
+                </Link>
+              </Button>
+              <Button asChild color="gray" radius="full" variant="ghost">
+                <Link href="/tools/open-graph-image-checker">
+                  <ImageIcon />
+                  Open Graph Checker
                 </Link>
               </Button>
             </Flex>

@@ -1,4 +1,4 @@
-import { Flex, Text, TextField } from "@radix-ui/themes";
+import { Flex, Heading, Text, TextField } from "@radix-ui/themes";
 import { startTransition } from "react";
 import { OgImage } from "../OgImage";
 import { useElementsStore } from "../../stores/elementsStore";
@@ -15,7 +15,9 @@ export function Preview({ dynamicTexts, setDynamicTexts }: PreviewProps) {
 
   return (
     <Flex direction="column" gap="4">
-      <Text size="5">Live Preview</Text>
+      <Heading as="h2" size="5" weight="regular">
+        Live preview
+      </Heading>
       <Flex gap="6" justify="between" align="start" minHeight="353px">
         <Flex direction="column" gap="2">
           <PreviewControls />

@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@radix-ui/themes";
+import { Button, Flex, Heading, Text } from "@radix-ui/themes";
 import Link from "next/link";
 import { GitHubIcon } from "../../../components/icons/GitHubIcon";
 import { GoogleIcon } from "../../../components/icons/GoogleIcon";
@@ -13,7 +13,9 @@ export default function Page() {
   return (
     <Flex align="center" direction="column" gap="6" justify="center" mx="9">
       <Flex align="center" direction="column" gap="2">
-        <Text size="5">Sign in</Text>
+        <Heading as="h1" size="5" weight="regular">
+          Sign in
+        </Heading>
         <Text align="center" as="p" size="2">
           Create an account to export your images to URLs <br /> and make them
           available in all your devices.
