@@ -8,33 +8,19 @@ import {
   TextField,
   Tooltip,
 } from "@radix-ui/themes";
-import { useEffect, useState } from "react";
-import * as htmlparser2 from "htmlparser2";
+import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import { usePreviewControls } from "../../../lib/hooks/usePreviewControls";
 import { InfoIcon } from "../../icons/InfoIcon";
 import { OgImage } from "../../OgImage";
-
-const META_TAGS = {
-  "og:title": "The title of your object as it should appear within the graph.",
-  "og:description": "A one to two sentence description of your object.",
-  "og:site_name": "The name which should be displayed for the overall site.",
-  "og:url":
-    "The canonical URL of your object that will be used as its permanent ID in the graph.",
-  "og:image":
-    "An image URL which should represent your object within the graph.",
-} as const;
-
-const META_KEYS = Object.keys(META_TAGS) as MetaTags[];
-
-type MetaTags = keyof typeof META_TAGS;
+import { META_KEYS, META_TAGS, type MetaTags } from "../../../lib/meta";
 
 export function OpenGraphImageChecker() {
-  const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<Record<MetaTags, string> | undefined>();
   const { preview, PreviewControls } = usePreviewControls();
 
-  useEffect(() => {
+  const debounced = useDebouncedCallback((url: string) => {
     try {
       let finalUrl = url;
 
@@ -50,28 +36,13 @@ export function OpenGraphImageChecker() {
 
       setLoading(true);
 
-      fetch(maybeUrl)
+      fetch(`/api/og/check?url=${encodeURIComponent(maybeUrl.toString())}`)
         .then(async (response) => {
-          const text = await response.text();
-          // @ts-expect-error missing values
-          const tempData: Record<MetaTags, string> = {};
+          const tempData = (await response.json()) as Record<MetaTags, string>;
 
-          const parser = new htmlparser2.Parser({
-            onopentag(name, attributes) {
-              if (
-                name === "meta" &&
-                META_KEYS.includes(
-                  (attributes.name || attributes.property) as MetaTags,
-                )
-              ) {
-                tempData[(attributes.name || attributes.property) as MetaTags] =
-                  attributes.content;
-              }
-            },
-          });
-
-          parser.write(text);
-          parser.end();
+          if (!response.ok) {
+            throw new Error("Failed to fetch URL");
+          }
 
           setLoading(false);
           setData(tempData);
@@ -85,7 +56,7 @@ export function OpenGraphImageChecker() {
       setLoading(false);
       setData(undefined);
     }
-  }, [url]);
+  }, 200);
 
   return (
     <Flex direction="column" gap="4">
@@ -99,7 +70,7 @@ export function OpenGraphImageChecker() {
       <Flex direction="column" gap="6">
         <TextField.Root
           onChange={(event) => {
-            setUrl(event.target.value);
+            debounced(event.target.value);
           }}
           placeholder="https://ogstudio.app"
         />
