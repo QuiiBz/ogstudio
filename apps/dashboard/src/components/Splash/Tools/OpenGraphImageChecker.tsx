@@ -13,7 +13,12 @@ import { useDebouncedCallback } from "use-debounce";
 import { usePreviewControls } from "../../../lib/hooks/usePreviewControls";
 import { InfoIcon } from "../../icons/InfoIcon";
 import { OgImage } from "../../OgImage";
-import { META_KEYS, META_TAGS, type MetaTags } from "../../../lib/meta";
+import {
+  META_KEYS,
+  META_TAGS,
+  REQUIRED_META_TAGS,
+  type MetaTags,
+} from "../../../lib/meta";
 
 export function OpenGraphImageChecker() {
   const [loading, setLoading] = useState(false);
@@ -98,7 +103,8 @@ export function OpenGraphImageChecker() {
                       {loading ? (
                         <Skeleton width="300px" />
                       ) : (
-                        data?.[tag] ?? "⚠️ Missing value"
+                        data?.[tag] ??
+                        `⚠️ Missing value (${REQUIRED_META_TAGS.includes(tag) ? "required" : "optional"})`
                       )}
                     </Table.Cell>
                   </Table.Row>
