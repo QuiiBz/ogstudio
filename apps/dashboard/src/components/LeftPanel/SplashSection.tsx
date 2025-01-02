@@ -30,6 +30,9 @@ export function SplashSection() {
         </DropdownMenu.Trigger>
         <DropdownMenu.Content variant="soft">
           <DropdownMenu.Item asChild>
+            <Link href="/templates">Browse templates</Link>
+          </DropdownMenu.Item>
+          <DropdownMenu.Item asChild>
             <Link href="/my-images">My images</Link>
           </DropdownMenu.Item>
           {data?.user ? (

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button, Flex, Text } from "@radix-ui/themes";
+import { Button, Flex, Heading, Text } from "@radix-ui/themes";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import type { Template } from "../../lib/templates";
 import { OgImageInnerServer } from "../OgImage";
@@ -14,7 +14,9 @@ export function TemplateSplash({ template }: TemplateSplashProps) {
   return (
     <Flex direction="column" gap="4">
       <Flex align="center" justify="between">
-        <Text size="5">{template.name} template</Text>
+        <Heading as="h1" size="5" weight="regular">
+          {template.name} template
+        </Heading>
         <Button asChild color="gray" radius="full" variant="ghost">
           <Link href="/templates">
             <ArrowLeftIcon />

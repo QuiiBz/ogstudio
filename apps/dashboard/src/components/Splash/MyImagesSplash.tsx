@@ -17,7 +17,7 @@ export function MyImagesSplash() {
     <Flex direction="column" gap="4">
       <Flex align="center" justify="between">
         <Heading as="h1" size="5" weight="regular">
-          My images
+          My Open Graph images
         </Heading>
         <Button asChild color="gray" radius="full" variant="ghost">
           <Link href="/">

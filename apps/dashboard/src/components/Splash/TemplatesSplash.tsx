@@ -9,7 +9,7 @@ export function TemplatesSplash() {
     <Flex direction="column" gap="4">
       <Flex align="center" justify="between">
         <Heading as="h1" size="5" weight="regular">
-          All templates
+          All free Open Graph templates
         </Heading>
         <Button asChild color="gray" radius="full" variant="ghost">
           <Link href="/">
