@@ -13,10 +13,9 @@ export function generateStaticParams() {
   return TEMPLATES.map((template) => ({ slug: template.name.toLowerCase() }));
 }
 
-export async function generateMetadata(
-  { params }: TemplateProps,
-  state: unknown,
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: TemplateProps): Promise<Metadata> {
   const { slug } = await params;
 
   const decodedSlug = decodeURIComponent(slug);
@@ -31,13 +30,6 @@ export async function generateMetadata(
     };
   }
 
-  const url = Object.getOwnPropertySymbols(state)
-    // @ts-expect-error -- safe
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- safe
-    .map((item) => state[item])
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, no-prototype-builtins, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-shadow -- safe
-    .find((state) => state?.hasOwnProperty("url"))?.url?.pathname as string;
-
   return {
     title: `${template.name} template - OG Studio`,
     description: `${template.description} Edit this free template in an intuitive, Figma-like visual editor, and export it to SVG/PNG or to a dynamic URL.`,
@@ -49,7 +41,7 @@ export async function generateMetadata(
         `https://ogstudio.app/api/og/template/${toTemplateSlug(template)}`,
       )}`,
       type: "website",
-      url: `https://ogstudio.app${url}`,
+      url: `https://ogstudio.app/templates/${toTemplateSlug(template)}`,
     },
   };
 }

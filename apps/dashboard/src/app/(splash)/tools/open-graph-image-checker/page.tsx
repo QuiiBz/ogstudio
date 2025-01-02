@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Open Graph Image Checker - OG Studio",
   description:
     "Free tool to check Open Graph meta tags of any website. Create static or dynamic OG (Open Graph) images with an intuitive, Figma-like visual editor.",
+  openGraph: {
+    url: "https://ogstudio.app/tools/open-graph-image-checker",
+  },
 };
 
 export default function Page() {
