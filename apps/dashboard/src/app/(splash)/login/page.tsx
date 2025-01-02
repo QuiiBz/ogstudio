@@ -5,6 +5,9 @@ import { GoogleIcon } from "../../../components/icons/GoogleIcon";
 
 export const metadata = {
   title: "Sign in - OG Studio",
+  openGraph: {
+    url: "https://ogstudio.app/login",
+  },
 };
 
 export const dynamic = "force-static";

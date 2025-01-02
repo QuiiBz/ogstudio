@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Profile - OG Studio",
   openGraph: {
     type: "profile",
+    url: "https://ogstudio.app/profile",
   },
 };
 
