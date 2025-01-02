@@ -733,4 +733,4 @@ export const TEMPLATES = [
       },
     ],
   },
-] satisfies Template[];
+] as const satisfies Template[];
