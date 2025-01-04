@@ -5,6 +5,10 @@ export const metadata = {
   description:
     "Free, pre-made Open Graph image templates. Create static or dynamic OG (Open Graph) images with an intuitive, Figma-like visual editor.",
   openGraph: {
+    siteName: "OG Studio",
+    images:
+      "https://github.com/QuiiBz/ogstudio/blob/main/assets/builder.jpeg?raw=true",
+    type: "website",
     url: "https://ogstudio.app/templates",
   },
 };
