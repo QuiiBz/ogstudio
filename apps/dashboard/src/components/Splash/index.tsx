@@ -59,7 +59,7 @@ export function Splash({ children }: OgSplashProps) {
           >
             <Flex
               align="center"
-              className="flex-wrap gap-1 justify-between sm:gap-6 sm:justify-normal w-full"
+              className="flex-wrap gap-1 justify-between sm:gap-8 sm:justify-normal w-full"
             >
               <Text asChild size="6">
                 <Link className="flex gap-2 items-center min-w-fit" href="/">
