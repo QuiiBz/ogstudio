@@ -80,7 +80,11 @@ export function OpenGraphImageChecker() {
           placeholder="https://ogstudio.app"
         />
         {data ?? loading ? (
-          <Flex gap="6" justify="between">
+          <Flex
+            gap="6"
+            justify="between"
+            direction={{ initial: "column-reverse", md: "row" }}
+          >
             <Table.Root size="1">
               <Table.Header>
                 <Table.Row>
