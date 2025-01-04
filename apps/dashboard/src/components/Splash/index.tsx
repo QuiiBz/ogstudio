@@ -40,7 +40,10 @@ export function Splash({ children }: OgSplashProps) {
         width="100vw"
       >
         <Box
-          height={largeSplash ? "740px" : "680px"}
+          minHeight={largeSplash ? "740px" : "680px"}
+          maxHeight="calc(100vh - 80px)"
+          overflowY={{ initial: "scroll", md: "auto" }}
+          overflowX="hidden"
           p="6"
           style={{
             boxShadow: "var(--shadow-6)",
@@ -50,10 +53,16 @@ export function Splash({ children }: OgSplashProps) {
           maxWidth="100vw"
           width={largeSplash ? "1160px" : "980px"}
         >
-          <Flex align="center" justify="between" className="-mt-2">
-            <Flex align="center" gap="6">
+          <Flex
+            justify="between"
+            className="-mt-2 sm:mb-0 mb-4 gap-8 sm:items-center items-start"
+          >
+            <Flex
+              align="center"
+              className="flex-wrap gap-1 justify-between sm:gap-6 sm:justify-normal w-full"
+            >
               <Text asChild size="6">
-                <Link className="flex gap-2 items-center" href="/">
+                <Link className="flex gap-2 items-center min-w-fit" href="/">
                   <Image
                     alt="OG Studio logo"
                     height={50}
@@ -67,7 +76,7 @@ export function Splash({ children }: OgSplashProps) {
                 color="orange"
                 radius="full"
                 size="2"
-                className="hidden sm:block"
+                className="hidden md:block"
               >
                 Early preview
               </Badge>
@@ -84,7 +93,14 @@ export function Splash({ children }: OgSplashProps) {
                 </Link>
               </Button>
             </Flex>
-            <Button asChild color="gray" mr="2" radius="full" variant="ghost">
+            <Button
+              asChild
+              color="gray"
+              mr="2"
+              radius="full"
+              variant="ghost"
+              className="mt-2 sm:mt-[inherit]"
+            >
               <Link href={data?.user ? "/profile" : "/login"}>
                 {data?.user?.name ?? "Guest"}
                 <Avatar

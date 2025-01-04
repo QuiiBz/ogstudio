@@ -19,8 +19,8 @@ export default function Page() {
         <Heading as="h1" size="5" weight="regular">
           Sign in
         </Heading>
-        <Text align="center" as="p" size="2">
-          Create an account to export your images to URLs <br /> and make them
+        <Text align="center" as="p" size="2" className="max-w-xs">
+          Create an account to export your images to URLs and make them
           available in all your devices.
         </Text>
       </Flex>

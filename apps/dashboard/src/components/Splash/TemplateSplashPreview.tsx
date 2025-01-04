@@ -1,8 +1,9 @@
 "use client";
 import { Flex } from "@radix-ui/themes";
-import { useEffect, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { OgImage } from "../OgImage";
 import { usePreviewControls } from "../../lib/hooks/usePreviewControls";
+import { useIsMobile } from "../../lib/hooks/useIsMobile";
 
 interface TemplateSplashPreviewProps {
   image: ReactNode;
@@ -10,21 +11,7 @@ interface TemplateSplashPreviewProps {
 
 export function TemplateSplashPreview({ image }: TemplateSplashPreviewProps) {
   const { preview, PreviewControls } = usePreviewControls();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-
-    const onResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      window.removeEventListener("resize", onResize);
-    };
-  }, []);
+  const isMobile = useIsMobile();
 
   return (
     <Flex direction="column" gap="2">
