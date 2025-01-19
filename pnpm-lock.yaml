@@ -160,6 +160,12 @@ importers:
       lucia:
         specifier: ^3.2.2
         version: 3.2.2
+      next:
+        specifier: 15.1.5
+        version: 15.1.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react:
+        specifier: 19.0.0
+        version: 19.0.0
     devDependencies:
       '@ogstudio/eslint':
         specifier: workspace:*

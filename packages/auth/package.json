@@ -12,6 +12,10 @@
     "arctic": "^1.9.2",
     "lucia": "^3.2.2"
   },
+  "peerDependencies": {
+    "next": "15.1.5",
+    "react": "19.0.0"
+  },
   "devDependencies": {
     "@ogstudio/eslint": "workspace:*",
     "@ogstudio/typescript": "workspace:*",
