@@ -189,7 +189,7 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                 onClick={() => {
                   updateElement({
                     ...selectedElement,
-                    backgroundImage: "https://source.unsplash.com/random",
+                    backgroundImage: "https://picsum.photos/200/150",
                     backgroundSize: "cover",
                   });
                 }}

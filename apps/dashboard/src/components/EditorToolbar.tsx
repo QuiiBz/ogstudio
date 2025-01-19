@@ -60,7 +60,7 @@ export function EditorToolbar() {
             </IconButton>
           </Tooltip>
           <Separator orientation="vertical" />
-          <Tooltip content="Rounded Box • C">
+          <Tooltip content="Rounded Box • O">
             <IconButton
               color="gray"
               onClick={(event) => {

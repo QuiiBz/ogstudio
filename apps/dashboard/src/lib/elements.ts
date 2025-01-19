@@ -104,25 +104,33 @@ export function createDefaultElement(type: ElementType): OGElement {
         tag: "div",
         name: "Image",
         width: 200,
-        height: 200,
+        height: 150,
         visible: true,
         rotate: 0,
         blur: 0,
         radius: 0,
-        backgroundImage: "",
+        backgroundColor: "#000000",
+        backgroundImage: "https://picsum.photos/200/150",
+        backgroundSize: "cover",
       });
     }
     case "dynamic-text": {
       return createElement({
-        tag: "div",
+        tag: "span",
         name: "Dynamic text",
-        width: 200,
-        height: 200,
+        width: 312,
+        height: 50,
         visible: true,
         rotate: 0,
         blur: 0,
-        radius: 0,
-        backgroundImage: "",
+        content: "dynamic",
+        color: "#000000",
+        fontFamily: "Inter",
+        fontWeight: 400,
+        lineHeight: 1,
+        letterSpacing: 0,
+        fontSize: 50,
+        align: "left",
       });
     }
   }
