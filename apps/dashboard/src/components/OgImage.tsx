@@ -116,15 +116,17 @@ export function OgImage({
       return function Wrapper(props: { children: ReactNode }) {
         return (
           <Flex gap="3" className="w-[480px]">
-            <div className="bg-[#35373B] min-w-1 h-full rounded" />
+            <div className="bg-[#DDDDDD] dark:bg-[#35373B] min-w-1 h-full rounded" />
             <Flex direction="column" className="gap-0.5">
-              <p className="text-[#D1D2D3] text-[15px] font-black">
+              <p className="text-[#1D1C1D] dark:text-[#D1D2D3] text-[15px] font-black">
                 {previewSite}
               </p>
-              <p className="text-[#1D9BD1] text-[15px] font-bold break-words">
+              <p className="text-[#1264A3] dark:text-[#1D9BD1] text-[15px] font-bold break-words">
                 {previewTitle}
               </p>
-              <p className="text-[#D1D2D3] text-[15px]">{previewDescription}</p>
+              <p className="text-[#1D1C1D] dark:text-[#D1D2D3] text-[15px]">
+                {previewDescription}
+              </p>
               {props.children}
             </Flex>
           </Flex>
