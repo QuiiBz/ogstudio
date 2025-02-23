@@ -19,13 +19,14 @@ export function SplashSection() {
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
           <Button color="gray" radius="full" variant="ghost">
-            {data?.user?.name ?? "Guest"}
             <Avatar
               fallback="G"
               radius="full"
               size="1"
               src={data?.user?.avatar}
+              ml="-1"
             />
+            {data?.user?.name ?? "Guest"}
           </Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content variant="soft">
