@@ -102,13 +102,14 @@ export function Splash({ children }: OgSplashProps) {
               className="mt-2 sm:mt-[inherit]"
             >
               <Link href={data?.user ? "/profile" : "/login"}>
-                {data?.user?.name ?? "Guest"}
                 <Avatar
                   fallback="G"
                   radius="full"
                   size="1"
                   src={data?.user?.avatar}
+                  ml="-1"
                 />
+                {data?.user?.name ?? "Guest"}
               </Link>
             </Button>
           </Flex>

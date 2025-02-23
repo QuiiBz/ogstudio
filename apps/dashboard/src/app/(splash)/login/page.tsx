@@ -1,7 +1,5 @@
-import { Button, Flex, Heading, Text } from "@radix-ui/themes";
-import Link from "next/link";
-import { GitHubIcon } from "../../../components/icons/GitHubIcon";
-import { GoogleIcon } from "../../../components/icons/GoogleIcon";
+import { Flex, Heading, Text } from "@radix-ui/themes";
+import { LoginButtons } from "../../../components/Login";
 
 export const metadata = {
   title: "Sign in - OG Studio",
@@ -29,18 +27,7 @@ export default function Page() {
         </Text>
       </Flex>
       <Flex align="center" direction="column" gap="2">
-        <Button asChild color="gray" variant="soft">
-          <Link href="/api/auth/github">
-            <GitHubIcon />
-            Sign in with GitHub
-          </Link>
-        </Button>
-        <Button asChild color="gray" variant="soft">
-          <Link href="/api/auth/google">
-            <GoogleIcon />
-            Sign in with Google
-          </Link>
-        </Button>
+        <LoginButtons />
       </Flex>
     </Flex>
   );
