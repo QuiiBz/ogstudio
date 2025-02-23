@@ -3,7 +3,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { clsx } from "clsx";
 import { Box, ContextMenu } from "@radix-ui/themes";
 import type { OGElement } from "../lib/types";
-import { createElementStyle, createImgElementStyle } from "../lib/elements";
+import {
+  createElementStyle,
+  createImgElementStyle,
+  getImageElementSrc,
+} from "../lib/elements";
 import { useElementsStore } from "../stores/elementsStore";
 
 interface ElementProps {
@@ -294,8 +298,12 @@ export function Element({ element }: ElementProps) {
       transform: undefined,
       pointerEvents: "none",
     };
+    const imageSrc =
+      element.tag === "div" && element.backgroundImage
+        ? getImageElementSrc(element)
+        : undefined;
 
-    return { elementStyle, tagStyle };
+    return { elementStyle, tagStyle, imageSrc };
   }, [element]);
 
   if (!element.visible) {
@@ -326,9 +334,10 @@ export function Element({ element }: ElementProps) {
             {element.tag === "p" ? element.content : null}
             {element.tag === "span" ? "Dynamic text" : null}
             {element.tag === "div" && element.backgroundImage ? (
+              // eslint-disable-next-line @next/next/no-img-element -- we need to use an img element
               <img
                 alt=""
-                src={element.backgroundImage}
+                src={style.imageSrc}
                 style={{
                   pointerEvents: "none",
                   ...createImgElementStyle(element),

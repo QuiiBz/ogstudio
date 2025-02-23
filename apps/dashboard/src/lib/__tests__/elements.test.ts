@@ -4,7 +4,10 @@ import {
   createElement,
   createElementStyle,
   createImgElementStyle,
+  getImageElementSrc,
+  createDefaultElement,
 } from "../elements";
+import { type OGDivElement } from "../types";
 
 describe("createElementId", () => {
   it("should generate a random id", () => {
@@ -636,5 +639,32 @@ describe("createImgElementStyle", () => {
         "objectFit": "cover",
       }
     `);
+  });
+});
+
+describe("getImageElementSrc", () => {
+  it("should return the image src", () => {
+    const src = "https://via.placeholder.com/150";
+    const element = createDefaultElement("image") as OGDivElement;
+    element.backgroundImage = src;
+
+    expect(getImageElementSrc(element)).toEqual(src);
+  });
+
+  it("should return data url if the image is a data url", () => {
+    const src =
+      "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABKUlEQVQ4jZWTsUoDQRCFv9f7X7F==";
+    const element = createDefaultElement("image") as OGDivElement;
+    element.backgroundImage = src;
+
+    expect(getImageElementSrc(element)).toEqual(src);
+  });
+
+  it("should return data svg if the image is an SVG", () => {
+    const src = `<svg width="1728" height="1118" viewBox="0 0 1728 1118" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_134_2)"> <rect width="1728" height="1118" fill="white"/> <line x1="-4.37114e-08" y1="1117.5" x2="1728" y2="1117.5" stroke="#D1D1D1"/> <line x1="-4.37114e-08" y1="279.5" x2="1728" y2="279.5" stroke="#D1D1D1"/> <line x1="863.5" y1="1118" x2="863.5" y2="-2.18556e-08" stroke="#D1D1D1"/> <line x1="1295.5" y1="1118" x2="1295.5" y2="-2.18556e-08" stroke="#D1D1D1"/> <line x1="431.5" y1="1118" x2="431.5" y2="-2.18556e-08" stroke="#D1D1D1"/> <line x1="-4.37114e-08" y1="838.5" x2="1728" y2="838.5" stroke="#D1D1D1"/> <line x1="-4.37114e-08" y1="558.5" x2="1728" y2="558.5" stroke="#D1D1D1"/> <g opacity="0.63"> <g filter="url(#filter0_f_134_2)"> <circle cx="1560" cy="-69" r="253" fill="#F4E347" fill-opacity="0.4"/> </g> <g filter="url(#filter1_f_134_2)"> <circle cy="1181" r="253" fill="#17275D" fill-opacity="0.4"/> </g> <g filter="url(#filter2_f_134_2)"> <circle cx="1794" cy="1258" r="498" fill="#47EAF4" fill-opacity="0.4"/> </g> <g filter="url(#filter3_f_134_2)"> <circle cx="-52.5" cy="-143.5" r="396.5" fill="#6AF447" fill-opacity="0.4"/> </g> </g> </g> <defs> <filter id="filter0_f_134_2" x="1107" y="-522" width="906" height="906" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"/> <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/> <feGaussianBlur stdDeviation="100" result="effect1_foregroundBlur_134_2"/> </filter> <filter id="filter1_f_134_2" x="-453" y="728" width="906" height="906" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"/> <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/> <feGaussianBlur stdDeviation="100" result="effect1_foregroundBlur_134_2"/> </filter> <filter id="filter2_f_134_2" x="1096" y="560" width="1396" height="1396" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"/> <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/> <feGaussianBlur stdDeviation="100" result="effect1_foregroundBlur_134_2"/> </filter> <filter id="filter3_f_134_2" x="-649" y="-740" width="1193" height="1193" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"/> <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/> <feGaussianBlur stdDeviation="100" result="effect1_foregroundBlur_134_2"/> </filter> <clipPath id="clip0_134_2"> <rect width="1728" height="1118" fill="white"/> </clipPath> </defs> </svg>`;
+    const element = createDefaultElement("image") as OGDivElement;
+    element.backgroundImage = src;
+
+    expect(getImageElementSrc(element)).toMatchSnapshot();
   });
 });

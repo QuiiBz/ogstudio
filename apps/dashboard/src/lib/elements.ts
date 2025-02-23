@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import type { OGElement } from "./types";
+import type { OGDivElement, OGElement } from "./types";
 import { hexAlphaToRgba } from "./colors";
 
 /**
@@ -243,19 +243,12 @@ export function createImgElementStyle(element: OGElement): CSSProperties {
 
 export function getDynamicTextKeys(elements: OGElement[]) {
   return elements
-    .filter(
-      (element) =>
-        element.tag === "span" ||
-        (element.tag === "div" &&
-          element.backgroundImage &&
-          !element.backgroundImage.startsWith("http")),
-    )
-    .map((element) => {
-      if (element.tag === "div") {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- We know it's not null
-        return element.backgroundImage!;
-      }
+    .filter((element) => element.tag === "span")
+    .map((element) => element.content);
+}
 
-      return element.content;
-    });
+export function getImageElementSrc(element: OGDivElement) {
+  return element.backgroundImage?.startsWith("<svg")
+    ? `data:image/svg+xml,${encodeURIComponent(element.backgroundImage)}`
+    : element.backgroundImage;
 }
