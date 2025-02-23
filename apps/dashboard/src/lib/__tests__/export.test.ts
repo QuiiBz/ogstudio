@@ -130,31 +130,6 @@ describe("elementsToReactElements", () => {
     );
     expect(data).toMatchSnapshot();
   });
-
-  it("should replace dynamic texts if present in images", () => {
-    const data = elementsToReactElements(
-      [
-        {
-          tag: "div",
-          id: createElementId(),
-          name: "Text",
-          width: 100,
-          height: 50,
-          x: 0,
-          y: 0,
-          visible: true,
-          rotate: 0,
-          blur: 0,
-          backgroundImage: "dynamic",
-          backgroundColor: "#000000",
-        },
-      ],
-      {
-        dynamic: "This is a dynamic text!",
-      },
-    );
-    expect(data).toMatchSnapshot();
-  });
 });
 
 describe("exportToSvg", () => {

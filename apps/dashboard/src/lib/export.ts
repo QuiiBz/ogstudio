@@ -4,7 +4,11 @@ import { toast } from "sonner";
 import type { CSSProperties } from "react";
 import type { OGElement } from "./types";
 import { loadFonts } from "./fonts";
-import { createElementStyle, createImgElementStyle } from "./elements";
+import {
+  createElementStyle,
+  createImgElementStyle,
+  getImageElementSrc,
+} from "./elements";
 
 let initWasmPromise: Promise<void> | undefined;
 
@@ -60,14 +64,6 @@ export function elementsToReactElements(
             if (element.tag === "span") {
               dynamicText = dynamicTexts[element.content];
             }
-
-            if (
-              element.tag === "div" &&
-              element.backgroundImage &&
-              !element.backgroundImage.startsWith("http")
-            ) {
-              dynamicText = dynamicTexts[element.backgroundImage];
-            }
           }
 
           return {
@@ -80,7 +76,11 @@ export function elementsToReactElements(
                   }
                 : createElementStyle(element),
               ...(isImage
-                ? { src: dynamicText ? dynamicText : element.backgroundImage }
+                ? {
+                    src: getImageElementSrc(element),
+                    width: `${element.width}px`,
+                    height: `${element.height}px`,
+                  }
                 : {}),
               ...(element.tag === "p" ? { children: [element.content] } : {}),
               ...(!isImage && dynamicText ? { children: [dynamicText] } : {}),
