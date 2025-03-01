@@ -24,7 +24,7 @@ export function ExportURL({ exportedKey, dynamicTexts }: ExportURLProps) {
   const { data } = useUser();
   const isSignedIn = Boolean(data && "user" in data);
 
-  const key = exportedKey ?? <span className="blur-sm">{"x".repeat(32)}</span>;
+  const key = exportedKey ?? <span className="blur-xs">{"x".repeat(32)}</span>;
   let url = (
     <>
       {typeof window !== "undefined" ? window.location.origin : ""}/api/og/{key}

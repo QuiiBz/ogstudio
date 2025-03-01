@@ -145,7 +145,7 @@ export const ElementRow = memo(({ element }: ElementRowProps) => {
       </Button>
       <IconButton
         className={clsx("opacity-0 group-hover:opacity-100", {
-          "!opacity-100": !element.visible,
+          "opacity-100!": !element.visible,
         })}
         color="gray"
         mr="1"

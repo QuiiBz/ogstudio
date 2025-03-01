@@ -315,10 +315,10 @@ export function Element({ element }: ElementProps) {
       <ContextMenu.Trigger>
         <div
           className={clsx(
-            "element cursor-default select-none outline-1 outline-offset-[3px] hover:outline",
+            "element cursor-default select-none outline-offset-[3px] hover:outline",
             { "outline cursor-move": isSelected },
-            { "!outline !cursor-text": isEditing },
-            { "!outline-dashed": element.tag === "span" },
+            { "outline cursor-text!": isEditing },
+            { "outline-dashed outline-1": element.tag === "span" },
           )}
           id={`element-${element.id}`}
           style={style.elementStyle}
