@@ -116,7 +116,7 @@ export function OgImage({
       return function Wrapper(props: { children: ReactNode }) {
         return (
           <Flex gap="3" className="w-[480px]">
-            <div className="bg-[#DDDDDD] dark:bg-[#35373B] min-w-1 h-full rounded" />
+            <div className="bg-[#DDDDDD] dark:bg-[#35373B] min-w-1 h-full rounded-sm" />
             <Flex direction="column" className="gap-0.5">
               <p className="text-[#1D1C1D] dark:text-[#D1D2D3] text-[15px] font-black">
                 {previewSite}
@@ -153,7 +153,7 @@ export function OgImage({
       <Tag
         className={clsx(
           className,
-          "min-h-[157px] w-[300px] min-w-[300px] flex flex-col items-center justify-center rounded relative group overflow-hidden",
+          "min-h-[157px] w-[300px] min-w-[300px] flex flex-col items-center justify-center rounded-sm relative group overflow-hidden",
           {
             "min-h-[157px] w-[300px] min-w-[300px]": size === "small",
             "min-h-[252px] w-[480px] min-w-[480px]": size === "medium",
@@ -233,7 +233,7 @@ export function OgImage({
         ) : null}
         {preview === "x" ? (
           <span
-            className="absolute bottom-2.5 left-2.5 text-white h-5 px-2 rounded text-[12px]"
+            className="absolute bottom-2.5 left-2.5 text-white h-5 px-2 rounded-sm text-[12px]"
             style={{ backgroundColor: "rgba(0, 0, 0, 0.77)" }}
           >
             {previewTitle}
