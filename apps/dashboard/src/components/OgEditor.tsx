@@ -193,7 +193,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
 
       // When trying to save the document, show a toast
       if (event.key === "s" && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
+        event.stopPropagation();
         toast("Your work is saved automatically!");
       }
 
@@ -226,11 +226,13 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
 
     const ref = rootRef.current;
 
-    if (ref) {
-      ref.addEventListener("click", onClick);
-    }
+    if (imageId !== "splash") {
+      if (ref) {
+        ref.addEventListener("click", onClick);
+      }
 
-    document.body.addEventListener("keydown", onKeyDown);
+      document.body.addEventListener("keydown", onKeyDown);
+    }
 
     return () => {
       if (ref) {
@@ -249,6 +251,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
     updateElement,
     redo,
     undo,
+    imageId,
   ]);
 
   return (
