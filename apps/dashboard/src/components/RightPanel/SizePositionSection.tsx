@@ -1,6 +1,8 @@
-import { Flex, Grid, Text, TextField } from "@radix-ui/themes";
+import { Flex, IconButton, Text, TextField, Tooltip } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { useElementsStore } from "../../stores/elementsStore";
+import { AlignVerticallyIcon } from "../icons/AlignVertically";
+import { AlignHorizontallyIcon } from "../icons/AlignHorizontally";
 
 interface SizePositionSectionProps {
   selectedElement: OGElement;
@@ -14,7 +16,7 @@ export function SizePositionSection({
   return (
     <Flex direction="column" gap="2">
       <Text size="1">Size & position</Text>
-      <Grid columns="2" gap="2">
+      <Flex direction="row" gap="2">
         <TextField.Root
           color="gray"
           onChange={(event) => {
@@ -45,6 +47,23 @@ export function SizePositionSection({
           <TextField.Slot>Y</TextField.Slot>
           <TextField.Slot>px</TextField.Slot>
         </TextField.Root>
+        <Tooltip content="Align vertically">
+          <IconButton
+            size="2"
+            variant="soft"
+            color="gray"
+            onClick={() => {
+              updateElement({
+                ...selectedElement,
+                y: (630 - selectedElement.height) / 2,
+              });
+            }}
+          >
+            <AlignVerticallyIcon />
+          </IconButton>
+        </Tooltip>
+      </Flex>
+      <Flex direction="row" gap="2">
         <TextField.Root
           color="gray"
           onChange={(event) => {
@@ -75,7 +94,22 @@ export function SizePositionSection({
           <TextField.Slot>H</TextField.Slot>
           <TextField.Slot>px</TextField.Slot>
         </TextField.Root>
-      </Grid>
+        <Tooltip content="Align horizontally">
+          <IconButton
+            size="2"
+            variant="soft"
+            color="gray"
+            onClick={() => {
+              updateElement({
+                ...selectedElement,
+                x: (1200 - selectedElement.width) / 2,
+              });
+            }}
+          >
+            <AlignHorizontallyIcon />
+          </IconButton>
+        </Tooltip>
+      </Flex>
     </Flex>
   );
 }
