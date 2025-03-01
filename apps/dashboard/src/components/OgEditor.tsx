@@ -226,11 +226,13 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
 
     const ref = rootRef.current;
 
-    if (ref) {
-      ref.addEventListener("click", onClick);
-    }
+    if (imageId !== "splash") {
+      if (ref) {
+        ref.addEventListener("click", onClick);
+      }
 
-    document.body.addEventListener("keydown", onKeyDown);
+      document.body.addEventListener("keydown", onKeyDown);
+    }
 
     return () => {
       if (ref) {
@@ -249,6 +251,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
     updateElement,
     redo,
     undo,
+    imageId,
   ]);
 
   return (
