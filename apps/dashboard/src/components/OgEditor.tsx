@@ -193,7 +193,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
 
       // When trying to save the document, show a toast
       if (event.key === "s" && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
+        event.stopPropagation();
         toast("Your work is saved automatically!");
       }
 
