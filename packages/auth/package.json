@@ -13,7 +13,7 @@
     "lucia": "^3.2.2"
   },
   "peerDependencies": {
-    "next": "15.1.5",
+    "next": "15.2.0",
     "react": "19.0.0"
   },
   "devDependencies": {
