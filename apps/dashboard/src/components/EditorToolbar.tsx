@@ -99,23 +99,6 @@ export function EditorToolbar() {
       </Card>
       <Card variant="classic">
         <Flex align="center" gap="4">
-          <Tooltip content="Zoom Out">
-            <IconButton
-              color="gray"
-              onClick={() => {
-                zoomOut();
-              }}
-              variant="ghost"
-            >
-              <ZoomOutIcon height="1.4em" width="1.4em" />
-            </IconButton>
-          </Tooltip>
-          <Separator orientation="vertical" />
-          {/* Set absolute width to make sure it doesn't change the layout */}
-          <Text align="center" className="select-none min-w-[40px]" size="1">
-            {zoom}%
-          </Text>
-          <Separator orientation="vertical" />
           <Tooltip content="Zoom In">
             <IconButton
               color="gray"
@@ -125,6 +108,23 @@ export function EditorToolbar() {
               variant="ghost"
             >
               <ZoomInIcon height="1.4em" width="1.4em" />
+            </IconButton>
+          </Tooltip>
+          <Separator orientation="vertical" />
+          {/* Set absolute width to make sure it doesn't change the layout */}
+          <Text align="center" className="select-none min-w-[40px]" size="1">
+            {zoom}%
+          </Text>
+          <Separator orientation="vertical" />
+          <Tooltip content="Zoom Out">
+            <IconButton
+              color="gray"
+              onClick={() => {
+                zoomOut();
+              }}
+              variant="ghost"
+            >
+              <ZoomOutIcon height="1.4em" width="1.4em" />
             </IconButton>
           </Tooltip>
         </Flex>

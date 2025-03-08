@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import type { OGElement } from "../lib/types";
 import { createDefaultElement, createElementId } from "../lib/elements";
-import { useZoomStore } from "../stores/zoomStore";
 import { useElementsStore } from "../stores/elementsStore";
 import { useImagesStore } from "../stores/imagesStore";
+import { useAdjustedZoom } from "../lib/hooks/useAdjustedZoom";
 import { Element } from "./Element";
 import { RightPanel } from "./RightPanel";
 import { LeftPanel } from "./LeftPanel";
@@ -25,7 +25,6 @@ let elementIdToCopy: string | undefined;
 export function OgEditor({ imageId, width, height }: OgProviderProps) {
   const router = useRouter();
   const rootRef = useRef<HTMLDivElement>(null);
-  const zoom = useZoomStore((state) => state.zoom);
   const {
     selectedElementId,
     setSelectedElementId,
@@ -39,6 +38,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
   const setSelectedImageId = useImagesStore(
     (state) => state.setSelectedImageId,
   );
+  const adjustedZoom = useAdjustedZoom();
 
   /**
    * When the editor image is updated or loaded for the first time, reset every
@@ -288,7 +288,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
           style={{
             width,
             height,
-            transform: `scale(${zoom / 100})`,
+            transform: `scale(${adjustedZoom})`,
             boxShadow: "var(--shadow-3)",
             backgroundColor: "var(--gray-1)",
           }}
@@ -308,7 +308,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
           style={{
             width,
             height,
-            transform: `scale(${zoom / 100})`,
+            transform: `scale(${adjustedZoom})`,
             border: "1px solid var(--gray-contrast)",
           }}
         />
