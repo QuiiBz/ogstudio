@@ -23,25 +23,28 @@ import {
 export function OpenGraphImageChecker() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<Record<MetaTags, string> | undefined>();
+  const [url, setUrl] = useState<URL | undefined>();
   const { preview, PreviewControls } = usePreviewControls();
 
-  const debounced = useDebouncedCallback((url: string) => {
+  const debounced = useDebouncedCallback((maybeUrl: string) => {
     try {
-      let finalUrl = url;
+      let finalUrl = maybeUrl;
 
-      if (!url.startsWith("http")) {
-        finalUrl = `https://${url}`;
+      if (!maybeUrl.startsWith("http")) {
+        finalUrl = `https://${maybeUrl}`;
       }
 
       if (!finalUrl.includes("://") || !finalUrl.includes(".")) {
         throw new Error("Invalid URL");
       }
 
-      const maybeUrl = new URL(finalUrl);
+      // eslint-disable-next-line @typescript-eslint/no-shadow -- disable no shadow
+      const url = new URL(finalUrl);
 
+      setUrl(url);
       setLoading(true);
 
-      fetch(`/api/og/check?url=${encodeURIComponent(maybeUrl.toString())}`)
+      fetch(`/api/og/check?url=${encodeURIComponent(url.toString())}`)
         .then(async (response) => {
           const tempData = (await response.json()) as Record<MetaTags, string>;
 
@@ -124,7 +127,7 @@ export function OpenGraphImageChecker() {
                   previewTitle={data["og:title"]}
                   previewDescription={data["og:description"]}
                   previewUrl={data["og:url"]}
-                  previewSite={data["og:site_name"]}
+                  previewSite={data["og:site_name"] || url?.hostname}
                   size="medium"
                 />
               </Flex>
