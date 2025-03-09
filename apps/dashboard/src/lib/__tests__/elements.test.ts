@@ -319,6 +319,7 @@ describe("createElementStyle", () => {
           "marginBottom": 0,
           "marginTop": 0,
           "position": "absolute",
+          "textAlign": "left",
           "top": "20px",
           "width": "100px",
         }
@@ -369,6 +370,7 @@ describe("createElementStyle", () => {
           "marginBottom": 0,
           "marginTop": 0,
           "position": "absolute",
+          "textAlign": "left",
           "textShadow": "2px 2px 4px blue",
           "top": "20px",
           "width": "100px",
@@ -413,6 +415,7 @@ describe("createElementStyle", () => {
           "marginBottom": 0,
           "marginTop": 0,
           "position": "absolute",
+          "textAlign": "center",
           "top": "20px",
           "width": "100px",
         }
@@ -456,6 +459,7 @@ describe("createElementStyle", () => {
           "marginBottom": 0,
           "marginTop": 0,
           "position": "absolute",
+          "textAlign": "right",
           "top": "20px",
           "width": "100px",
         }

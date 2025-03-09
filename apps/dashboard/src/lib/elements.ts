@@ -189,6 +189,9 @@ export function createElementStyle(element: OGElement): CSSProperties {
       fontSize: `${element.fontSize}px`,
       lineHeight: element.lineHeight,
       letterSpacing: `${element.letterSpacing}px`,
+      // We need both textAlign and justifyContent to center the text
+      // so that it works with both single and multi-line text
+      textAlign: element.align,
       justifyContent:
         element.align === "center"
           ? "center"
