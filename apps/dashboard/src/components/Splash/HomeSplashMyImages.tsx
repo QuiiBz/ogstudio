@@ -36,6 +36,7 @@ export function HomeSplashMyImages() {
             router.push(`/editor?i=${image.id}`);
             createImage(image);
           }}
+          className="cursor-pointer"
         >
           <Flex align="center" gap="1">
             <AddIcon height="1.4em" width="1.4em" />

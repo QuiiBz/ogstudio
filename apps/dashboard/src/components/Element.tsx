@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion -- we know it's defined */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { clsx } from "clsx";
-import { Box, ContextMenu } from "@radix-ui/themes";
+import { Box } from "@radix-ui/themes";
 import type { OGElement } from "../lib/types";
 import {
   createElementStyle,
@@ -9,6 +9,7 @@ import {
   getImageElementSrc,
 } from "../lib/elements";
 import { useElementsStore } from "../stores/elementsStore";
+import { ElementMenu } from "./ElementMenu";
 
 interface ElementProps {
   element: OGElement;
@@ -26,8 +27,6 @@ export function Element({ element }: ElementProps) {
   );
   const updateElement = useElementsStore((state) => state.updateElement);
   const removeElement = useElementsStore((state) => state.removeElement);
-  const { undo, redo, pastStates, futureStates } =
-    useElementsStore.temporal.getState();
 
   const isSelected = selectedElementId === element.id;
   const Tag = element.tag;
@@ -311,165 +310,107 @@ export function Element({ element }: ElementProps) {
   }
 
   return (
-    <ContextMenu.Root>
-      <ContextMenu.Trigger>
-        <div
-          className={clsx(
-            "element cursor-default select-none outline-offset-[3px] hover:outline",
-            { "outline cursor-move": isSelected },
-            { "outline cursor-text!": isEditing },
-            { "outline-dashed outline-1": element.tag === "span" },
-          )}
-          id={`element-${element.id}`}
-          style={style.elementStyle}
+    <ElementMenu element={element} showGlobalShortcuts>
+      <div
+        className={clsx(
+          "element cursor-default select-none outline-offset-[3px] hover:outline",
+          { "outline-1 cursor-move": isSelected },
+          { "hover:outline-dashed": element.tag === "span" },
+          { "outline-dashed": isSelected && element.tag === "span" },
+          { "outline-1 cursor-text!": isEditing },
+        )}
+        id={`element-${element.id}`}
+        style={style.elementStyle}
+        // @ts-expect-error wtf?
+        ref={elementRef}
+      >
+        <Tag
+          className="outline-none"
+          style={style.tagStyle}
           // @ts-expect-error wtf?
-          ref={elementRef}
+          ref={tagRef}
         >
-          <Tag
-            className="outline-none"
-            style={style.tagStyle}
-            // @ts-expect-error wtf?
-            ref={tagRef}
-          >
-            {element.tag === "p" ? element.content : null}
-            {element.tag === "span" ? "Dynamic text" : null}
-            {element.tag === "div" && element.backgroundImage ? (
-              // eslint-disable-next-line @next/next/no-img-element -- we need to use an img element
-              <img
-                alt=""
-                src={style.imageSrc}
-                style={{
-                  pointerEvents: "none",
-                  ...createImgElementStyle(element),
-                  width: "100%",
-                  height: "100%",
-                }}
-              />
-            ) : null}
-          </Tag>
-          {isSelected ? (
-            <>
-              <Box
-                as="span"
-                className="handle top-left filter-none"
-                height="10px"
-                position="absolute"
-                style={{
-                  border: "1px solid var(--accent-track)",
-                  borderRadius: "100%",
-                  backgroundColor: "var(--gray-contrast)",
-                }}
-                width="10px"
-              />
-              <Box
-                as="span"
-                className="handle top-right filter-none"
-                height="10px"
-                position="absolute"
-                style={{
-                  border: "1px solid var(--accent-track)",
-                  borderRadius: "100%",
-                  backgroundColor: "var(--gray-contrast)",
-                }}
-                width="10px"
-              />
-              <Box
-                as="span"
-                className="handle bottom-left filter-none"
-                height="10px"
-                position="absolute"
-                style={{
-                  border: "1px solid var(--accent-track)",
-                  borderRadius: "100%",
-                  backgroundColor: "var(--gray-contrast)",
-                }}
-                width="10px"
-              />
-              <Box
-                as="span"
-                className="handle bottom-right filter-none"
-                height="10px"
-                position="absolute"
-                style={{
-                  border: "1px solid var(--accent-track)",
-                  borderRadius: "100%",
-                  backgroundColor: "var(--gray-contrast)",
-                }}
-                width="10px"
-              />
-              <Box
-                as="span"
-                className="handle top-center filter-none"
-                height="10px"
-                position="absolute"
-                style={{
-                  border: "1px solid var(--accent-track)",
-                  borderRadius: "100%",
-                  backgroundColor: "var(--gray-contrast)",
-                }}
-                width="10px"
-              />
-            </>
+          {element.tag === "p" ? element.content : null}
+          {element.tag === "span" ? "Dynamic text" : null}
+          {element.tag === "div" && element.backgroundImage ? (
+            // eslint-disable-next-line @next/next/no-img-element -- we need to use an img element
+            <img
+              alt=""
+              src={style.imageSrc}
+              style={{
+                pointerEvents: "none",
+                ...createImgElementStyle(element),
+                width: "100%",
+                height: "100%",
+              }}
+            />
           ) : null}
-        </div>
-      </ContextMenu.Trigger>
-      <ContextMenu.Content variant="soft">
-        <ContextMenu.Item
-          onClick={() => {
-            const event = new KeyboardEvent("keydown", {
-              key: "c",
-              ctrlKey: true,
-            });
-
-            document.body.dispatchEvent(event);
-          }}
-          shortcut="⌘ C"
-        >
-          Copy
-        </ContextMenu.Item>
-        <ContextMenu.Item
-          onClick={() => {
-            const event = new KeyboardEvent("keydown", {
-              key: "v",
-              ctrlKey: true,
-            });
-
-            document.body.dispatchEvent(event);
-          }}
-          shortcut="⌘ V"
-        >
-          Paste
-        </ContextMenu.Item>
-        <ContextMenu.Separator />
-        <ContextMenu.Item
-          disabled={pastStates.length === 0}
-          onClick={() => {
-            undo();
-          }}
-          shortcut="⌘ Z"
-        >
-          Undo
-        </ContextMenu.Item>
-        <ContextMenu.Item
-          disabled={futureStates.length === 0}
-          onClick={() => {
-            redo();
-          }}
-          shortcut="⌘ ⇧ Z"
-        >
-          Redo
-        </ContextMenu.Item>
-        <ContextMenu.Separator />
-        <ContextMenu.Item
-          color="red"
-          onClick={() => {
-            removeElement(element.id);
-          }}
-          shortcut="⌫"
-        >
-          Delete
-        </ContextMenu.Item>
-      </ContextMenu.Content>
-    </ContextMenu.Root>
+        </Tag>
+        {isSelected ? (
+          <>
+            <Box
+              as="span"
+              className="handle top-left filter-none"
+              height="10px"
+              position="absolute"
+              style={{
+                border: "1px solid var(--accent-track)",
+                borderRadius: "100%",
+                backgroundColor: "var(--gray-contrast)",
+              }}
+              width="10px"
+            />
+            <Box
+              as="span"
+              className="handle top-right filter-none"
+              height="10px"
+              position="absolute"
+              style={{
+                border: "1px solid var(--accent-track)",
+                borderRadius: "100%",
+                backgroundColor: "var(--gray-contrast)",
+              }}
+              width="10px"
+            />
+            <Box
+              as="span"
+              className="handle bottom-left filter-none"
+              height="10px"
+              position="absolute"
+              style={{
+                border: "1px solid var(--accent-track)",
+                borderRadius: "100%",
+                backgroundColor: "var(--gray-contrast)",
+              }}
+              width="10px"
+            />
+            <Box
+              as="span"
+              className="handle bottom-right filter-none"
+              height="10px"
+              position="absolute"
+              style={{
+                border: "1px solid var(--accent-track)",
+                borderRadius: "100%",
+                backgroundColor: "var(--gray-contrast)",
+              }}
+              width="10px"
+            />
+            <Box
+              as="span"
+              className="handle top-center filter-none"
+              height="10px"
+              position="absolute"
+              style={{
+                border: "1px solid var(--accent-track)",
+                borderRadius: "100%",
+                backgroundColor: "var(--gray-contrast)",
+              }}
+              width="10px"
+            />
+          </>
+        ) : null}
+      </div>
+    </ElementMenu>
   );
 }
