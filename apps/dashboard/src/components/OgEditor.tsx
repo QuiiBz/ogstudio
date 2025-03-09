@@ -22,6 +22,10 @@ interface OgProviderProps {
 
 let elementIdToCopy: string | undefined;
 
+export function hasElementInClipboard() {
+  return elementIdToCopy !== undefined;
+}
+
 export function OgEditor({ imageId, width, height }: OgProviderProps) {
   const router = useRouter();
   const rootRef = useRef<HTMLDivElement>(null);

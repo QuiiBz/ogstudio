@@ -71,7 +71,7 @@ export function ExportURL({ exportedKey, dynamicTexts }: ExportURLProps) {
     if (embed?.textContent) {
       void navigator.clipboard.writeText(embed.textContent);
 
-      toast.success("Copied to clipboard!");
+      toast("Copied to clipboard!");
     }
   }
 
