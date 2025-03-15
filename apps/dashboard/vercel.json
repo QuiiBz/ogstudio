@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "src/app/api/og/[key]": {
+      "memory": 3009
+    },
+    "src/app/api/template/[slug]": {
+      "memory": 3009
+    }
+  }
+}
