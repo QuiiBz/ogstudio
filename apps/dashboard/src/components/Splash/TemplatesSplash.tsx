@@ -1,4 +1,4 @@
-import { Button, Flex, Grid, Text } from "@radix-ui/themes";
+import { Button, Flex, Grid, Heading } from "@radix-ui/themes";
 import Link from "next/link";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { TEMPLATES, toTemplateSlug } from "../../lib/templates";
@@ -8,7 +8,9 @@ export function TemplatesSplash() {
   return (
     <Flex direction="column" gap="4">
       <Flex align="center" justify="between">
-        <Text size="5">All templates</Text>
+        <Heading as="h1" size="5" weight="regular">
+          All free Open Graph templates
+        </Heading>
         <Button asChild color="gray" radius="full" variant="ghost">
           <Link href="/">
             <ArrowLeftIcon />

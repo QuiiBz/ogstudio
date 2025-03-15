@@ -1,4 +1,12 @@
-import { Popover, Button, TextField, Flex, Badge } from "@radix-ui/themes";
+import {
+  Popover,
+  Button,
+  TextField,
+  Flex,
+  Badge,
+  IconButton,
+  Tooltip,
+} from "@radix-ui/themes";
 import Fuse from "fuse.js";
 import { useMemo, useState } from "react";
 import { useFontsStore } from "../../stores/fontsStore";
@@ -7,6 +15,7 @@ import { FontPreview } from "../FontPreview";
 import type { OGElement } from "../../lib/types";
 import { useDebounce } from "../../lib/hooks/useDebounce";
 import { DEFAULT_FONTS } from "../../lib/fonts";
+import { AddIcon } from "../icons/AddIcon";
 
 interface FontSelectorProps {
   selectedElement: OGElement & { tag: "p" | "span" };
@@ -31,9 +40,11 @@ export function FontSelector({ selectedElement }: FontSelectorProps) {
   return (
     <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
       <Popover.Trigger>
-        <Button size="2" variant="soft" color="gray">
-          +
-        </Button>
+        <Tooltip content="Add font">
+          <IconButton size="2" variant="soft" color="gray">
+            <AddIcon />
+          </IconButton>
+        </Tooltip>
       </Popover.Trigger>
       <Popover.Content width="300px">
         <Flex gap="3" direction="column">

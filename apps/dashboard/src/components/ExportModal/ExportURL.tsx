@@ -2,13 +2,13 @@ import type { ReactNode } from "react";
 import { startTransition, useState } from "react";
 import Link from "next/link";
 import {
-  Text,
   Flex,
   Dialog,
   SegmentedControl,
   Code,
   Tooltip,
   IconButton,
+  Heading,
 } from "@radix-ui/themes";
 import { toast } from "sonner";
 import { useUser } from "../../lib/hooks/useUser";
@@ -24,10 +24,10 @@ export function ExportURL({ exportedKey, dynamicTexts }: ExportURLProps) {
   const { data } = useUser();
   const isSignedIn = Boolean(data && "user" in data);
 
-  const key = exportedKey ?? <span className="blur-sm">{"x".repeat(32)}</span>;
+  const key = exportedKey ?? <span className="blur-xs">{"x".repeat(32)}</span>;
   let url = (
     <>
-      {window.location.origin}/api/og/{key}
+      {typeof window !== "undefined" ? window.location.origin : ""}/api/og/{key}
     </>
   );
 
@@ -49,11 +49,11 @@ export function ExportURL({ exportedKey, dynamicTexts }: ExportURLProps) {
 
   const code = (
     <Code
-      className="p-3 overflow-x-scroll whitespace-nowrap"
+      className="p-3 overflow-x-scroll whitespace-nowrap no-scrollbar"
       color="gray"
       highContrast
       id="embed-code"
-      size="4"
+      size="2"
     >
       {type === "html" ? (
         <>
@@ -71,14 +71,16 @@ export function ExportURL({ exportedKey, dynamicTexts }: ExportURLProps) {
     if (embed?.textContent) {
       void navigator.clipboard.writeText(embed.textContent);
 
-      toast.success("Copied to clipboard!");
+      toast("Copied to clipboard!");
     }
   }
 
   return (
-    <Flex direction="column" gap="4" maxWidth="70%">
+    <Flex direction="column" gap="4" maxWidth="60%">
       <Flex align="center" justify="between">
-        <Text size="5">Export to URL</Text>
+        <Heading as="h2" size="5" weight="regular">
+          Export to URL
+        </Heading>
         <Flex align="center" gap="4">
           <Tooltip content="Copy">
             <IconButton color="gray" onClick={copy} size="2" variant="ghost">

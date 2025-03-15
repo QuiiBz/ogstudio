@@ -189,7 +189,7 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                 onClick={() => {
                   updateElement({
                     ...selectedElement,
-                    backgroundImage: "https://source.unsplash.com/random",
+                    backgroundImage: "https://picsum.photos/200/150",
                     backgroundSize: "cover",
                   });
                 }}
@@ -214,9 +214,11 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                 value={selectedElement.backgroundImage}
                 variant="soft"
               >
-                <TextField.Slot>
-                  <LinkIcon />
-                </TextField.Slot>
+                <Tooltip content="URL or SVG content">
+                  <TextField.Slot>
+                    <LinkIcon />
+                  </TextField.Slot>
+                </Tooltip>
               </TextField.Root>
               <Select.Root
                 onValueChange={(value) => {

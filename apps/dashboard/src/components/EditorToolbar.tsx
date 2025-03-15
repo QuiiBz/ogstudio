@@ -1,5 +1,13 @@
-import { Card, Flex, IconButton, Separator, Text } from "@radix-ui/themes";
-import { createElement } from "../lib/elements";
+import {
+  Card,
+  Flex,
+  IconButton,
+  Separator,
+  Text,
+  Tooltip,
+} from "@radix-ui/themes";
+import { type MouseEvent } from "react";
+import { createDefaultElement, type ElementType } from "../lib/elements";
 import { useZoomStore } from "../stores/zoomStore";
 import { useElementsStore } from "../stores/elementsStore";
 import { TextIcon } from "./icons/TextIcon";
@@ -14,161 +22,111 @@ export function EditorToolbar() {
   const addElement = useElementsStore((state) => state.addElement);
   const { zoom, zoomIn, zoomOut } = useZoomStore();
 
+  function addNewElement(
+    event: MouseEvent<HTMLButtonElement>,
+    type: ElementType,
+  ) {
+    // Un-focus the clicked button since we'll be focusing the new element
+    event.currentTarget.blur();
+
+    addElement(createDefaultElement(type));
+  }
+
   return (
     <Flex gap="4">
       <Card variant="classic">
         <Flex align="center" gap="4">
-          <IconButton
-            color="gray"
-            onClick={() => {
-              addElement(
-                createElement({
-                  tag: "p",
-                  name: "Text",
-                  width: 100,
-                  height: 50,
-                  visible: true,
-                  rotate: 0,
-                  blur: 0,
-                  content: "Text",
-                  color: "#000000",
-                  fontFamily: "Inter",
-                  fontWeight: 400,
-                  lineHeight: 1,
-                  letterSpacing: 0,
-                  fontSize: 50,
-                  align: "left",
-                }),
-              );
-            }}
-            variant="ghost"
-          >
-            <TextIcon height="1.4em" width="1.4em" />
-          </IconButton>
+          <Tooltip content="Text • T">
+            <IconButton
+              color="gray"
+              onClick={(event) => {
+                addNewElement(event, "text");
+              }}
+              variant="ghost"
+            >
+              <TextIcon height="1.4em" width="1.4em" />
+            </IconButton>
+          </Tooltip>
           <Separator orientation="vertical" />
-          <IconButton
-            color="gray"
-            onClick={() => {
-              addElement(
-                createElement({
-                  tag: "div",
-                  name: "Box",
-                  width: 200,
-                  height: 200,
-                  visible: true,
-                  rotate: 0,
-                  blur: 0,
-                  radius: 0,
-                  backgroundColor: "#000000",
-                }),
-              );
-            }}
-            variant="ghost"
-          >
-            <BoxIcon height="1.4em" width="1.4em" />
-          </IconButton>
+          <Tooltip content="Box • B">
+            <IconButton
+              color="gray"
+              onClick={(event) => {
+                addNewElement(event, "box");
+              }}
+              variant="ghost"
+            >
+              <BoxIcon height="1.4em" width="1.4em" />
+            </IconButton>
+          </Tooltip>
           <Separator orientation="vertical" />
-          <IconButton
-            color="gray"
-            onClick={() => {
-              addElement(
-                createElement({
-                  tag: "div",
-                  name: "Rounded box",
-                  width: 150,
-                  height: 150,
-                  visible: true,
-                  rotate: 0,
-                  blur: 0,
-                  backgroundColor: "#000000",
-                  radius: 999,
-                }),
-              );
-            }}
-            variant="ghost"
-          >
-            <CircleIcon height="1.4em" width="1.4em" />
-          </IconButton>
+          <Tooltip content="Rounded Box • O">
+            <IconButton
+              color="gray"
+              onClick={(event) => {
+                addNewElement(event, "rounded-box");
+              }}
+              variant="ghost"
+            >
+              <CircleIcon height="1.4em" width="1.4em" />
+            </IconButton>
+          </Tooltip>
           <Separator orientation="vertical" />
-          <IconButton
-            color="gray"
-            onClick={() => {
-              addElement(
-                createElement({
-                  tag: "div",
-                  name: "Image",
-                  width: 200,
-                  height: 150,
-                  visible: true,
-                  rotate: 0,
-                  blur: 0,
-                  radius: 0,
-                  backgroundColor: "#000000",
-                  backgroundImage: "https://source.unsplash.com/random",
-                  backgroundSize: "cover",
-                }),
-              );
-            }}
-            variant="ghost"
-          >
-            <ImageIcon height="1.4em" width="1.4em" />
-          </IconButton>
+          <Tooltip content="Image • I">
+            <IconButton
+              color="gray"
+              onClick={(event) => {
+                addNewElement(event, "image");
+              }}
+              variant="ghost"
+            >
+              <ImageIcon height="1.4em" width="1.4em" />
+            </IconButton>
+          </Tooltip>
           <Separator orientation="vertical" />
-          <IconButton
-            color="gray"
-            onClick={() => {
-              addElement(
-                createElement({
-                  tag: "span",
-                  name: "Dynamic text",
-                  width: 312,
-                  height: 50,
-                  visible: true,
-                  rotate: 0,
-                  blur: 0,
-                  content: "dynamic",
-                  color: "#000000",
-                  fontFamily: "Inter",
-                  fontWeight: 400,
-                  lineHeight: 1,
-                  letterSpacing: 0,
-                  fontSize: 50,
-                  align: "left",
-                }),
-              );
-            }}
-            variant="ghost"
-          >
-            <MagicWandIcon height="1.4em" width="1.4em" />
-          </IconButton>
+          <Tooltip content="Dynamic Text • D">
+            <IconButton
+              color="gray"
+              onClick={(event) => {
+                addNewElement(event, "dynamic-text");
+              }}
+              variant="ghost"
+            >
+              <MagicWandIcon height="1.4em" width="1.4em" />
+            </IconButton>
+          </Tooltip>
         </Flex>
       </Card>
       <Card variant="classic">
         <Flex align="center" gap="4">
-          <IconButton
-            color="gray"
-            onClick={() => {
-              zoomOut();
-            }}
-            variant="ghost"
-          >
-            <ZoomOutIcon height="1.4em" width="1.4em" />
-          </IconButton>
+          <Tooltip content="Zoom In">
+            <IconButton
+              color="gray"
+              onClick={() => {
+                zoomIn();
+              }}
+              variant="ghost"
+            >
+              <ZoomInIcon height="1.4em" width="1.4em" />
+            </IconButton>
+          </Tooltip>
           <Separator orientation="vertical" />
           {/* Set absolute width to make sure it doesn't change the layout */}
           <Text align="center" className="select-none min-w-[40px]" size="1">
             {zoom}%
           </Text>
           <Separator orientation="vertical" />
-          <IconButton
-            color="gray"
-            onClick={() => {
-              zoomIn();
-            }}
-            variant="ghost"
-          >
-            <ZoomInIcon height="1.4em" width="1.4em" />
-          </IconButton>
+          <Tooltip content="Zoom Out">
+            <IconButton
+              color="gray"
+              onClick={() => {
+                zoomOut();
+              }}
+              variant="ghost"
+            >
+              <ZoomOutIcon height="1.4em" width="1.4em" />
+            </IconButton>
+          </Tooltip>
         </Flex>
       </Card>
     </Flex>

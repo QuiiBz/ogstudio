@@ -4,7 +4,11 @@ import { toast } from "sonner";
 import type { CSSProperties } from "react";
 import type { OGElement } from "./types";
 import { loadFonts } from "./fonts";
-import { createElementStyle, createImgElementStyle } from "./elements";
+import {
+  createElementStyle,
+  createImgElementStyle,
+  getImageElementSrc,
+} from "./elements";
 
 let initWasmPromise: Promise<void> | undefined;
 
@@ -18,9 +22,13 @@ if (process.env.VITEST_POOL_ID) {
   );
 } else {
   initWasmPromise = initWasm(
-    fetch("https://unpkg.com/@resvg/resvg-wasm@2.6.2/index_bg.wasm", {
-      cache: "no-store",
-    }),
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- ignore
+    typeof window !== "undefined"
+      ? fetch("https://unpkg.com/@resvg/resvg-wasm@2.6.2/index_bg.wasm")
+      : // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-member-access -- ignore
+        require("node:fs/promises").readFile(
+          "node_modules/@resvg/resvg-wasm/index_bg.wasm",
+        ),
   );
 }
 
@@ -62,14 +70,6 @@ export function elementsToReactElements(
             if (element.tag === "span") {
               dynamicText = dynamicTexts[element.content];
             }
-
-            if (
-              element.tag === "div" &&
-              element.backgroundImage &&
-              !element.backgroundImage.startsWith("http")
-            ) {
-              dynamicText = dynamicTexts[element.backgroundImage];
-            }
           }
 
           return {
@@ -82,7 +82,11 @@ export function elementsToReactElements(
                   }
                 : createElementStyle(element),
               ...(isImage
-                ? { src: dynamicText ? dynamicText : element.backgroundImage }
+                ? {
+                    src: getImageElementSrc(element),
+                    width: `${element.width}px`,
+                    height: `${element.height}px`,
+                  }
                 : {}),
               ...(element.tag === "p" ? { children: [element.content] } : {}),
               ...(!isImage && dynamicText ? { children: [dynamicText] } : {}),

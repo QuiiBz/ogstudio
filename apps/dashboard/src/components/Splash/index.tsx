@@ -11,9 +11,11 @@ import {
   Separator,
   Text,
 } from "@radix-ui/themes";
+import { usePathname } from "next/navigation";
 import { OgEditor } from "../OgEditor";
 import { GitHubIcon } from "../icons/GitHubIcon";
 import { useUser } from "../../lib/hooks/useUser";
+import { ImageIcon } from "../icons/ImageIcon";
 
 interface OgSplashProps {
   children: ReactNode;
@@ -21,6 +23,7 @@ interface OgSplashProps {
 
 export function Splash({ children }: OgSplashProps) {
   const { data } = useUser();
+  const largeSplash = usePathname() === "/tools/open-graph-image-checker";
 
   return (
     <>
@@ -37,7 +40,10 @@ export function Splash({ children }: OgSplashProps) {
         width="100vw"
       >
         <Box
-          height="680px"
+          minHeight={largeSplash ? "740px" : "680px"}
+          maxHeight="calc(100vh - 80px)"
+          overflowY={{ initial: "scroll", md: "auto" }}
+          overflowX="hidden"
           p="6"
           style={{
             boxShadow: "var(--shadow-6)",
@@ -45,12 +51,18 @@ export function Splash({ children }: OgSplashProps) {
             borderRadius: "var(--radius-5)",
           }}
           maxWidth="100vw"
-          width="980px"
+          width={largeSplash ? "1160px" : "980px"}
         >
-          <Flex align="center" justify="between" className="-mt-2">
-            <Flex align="center" gap="6">
+          <Flex
+            justify="between"
+            className="-mt-2 sm:mb-0 mb-4 gap-8 sm:items-center items-start"
+          >
+            <Flex
+              align="center"
+              className="flex-wrap gap-1 justify-between sm:gap-8 sm:justify-normal w-full"
+            >
               <Text asChild size="6">
-                <Link className="flex gap-2 items-center" href="/">
+                <Link className="flex gap-2 items-center min-w-fit" href="/">
                   <Image
                     alt="OG Studio logo"
                     height={50}
@@ -64,7 +76,7 @@ export function Splash({ children }: OgSplashProps) {
                 color="orange"
                 radius="full"
                 size="2"
-                className="hidden sm:block"
+                className="hidden md:block"
               >
                 Early preview
               </Badge>
@@ -74,16 +86,30 @@ export function Splash({ children }: OgSplashProps) {
                   GitHub
                 </Link>
               </Button>
+              <Button asChild color="gray" radius="full" variant="ghost">
+                <Link href="/tools/open-graph-image-checker">
+                  <ImageIcon />
+                  Open Graph Checker
+                </Link>
+              </Button>
             </Flex>
-            <Button asChild color="gray" mr="2" radius="full" variant="ghost">
+            <Button
+              asChild
+              color="gray"
+              mr="2"
+              radius="full"
+              variant="ghost"
+              className="mt-2 sm:mt-[inherit]"
+            >
               <Link href={data?.user ? "/profile" : "/login"}>
-                {data?.user?.name ?? "Guest"}
                 <Avatar
                   fallback="G"
                   radius="full"
                   size="1"
                   src={data?.user?.avatar}
+                  ml="-1"
                 />
+                {data?.user?.name ?? "Guest"}
               </Link>
             </Button>
           </Flex>

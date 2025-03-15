@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import type { OGElement } from "./types";
+import type { OGDivElement, OGElement } from "./types";
 import { hexAlphaToRgba } from "./colors";
 
 /**
@@ -39,6 +39,101 @@ export function createElement(element: Partial<OGElement>): OGElement {
     x: (1200 - (element.width ?? 0)) / 2,
     y: (630 - (element.height ?? 0)) / 2,
   };
+}
+
+// All different types of elements that can be added to the canvas.
+export type ElementType =
+  | "text"
+  | "box"
+  | "rounded-box"
+  | "image"
+  | "dynamic-text";
+
+/**
+ * Create a new element with default values based on its type.
+ */
+export function createDefaultElement(type: ElementType): OGElement {
+  switch (type) {
+    case "text": {
+      return createElement({
+        tag: "p",
+        name: "Text",
+        width: 100,
+        height: 50,
+        visible: true,
+        rotate: 0,
+        blur: 0,
+        content: "Text",
+        color: "#000000",
+        fontFamily: "Inter",
+        fontWeight: 400,
+        lineHeight: 1,
+        letterSpacing: 0,
+        fontSize: 50,
+        align: "left",
+      });
+    }
+    case "box": {
+      return createElement({
+        tag: "div",
+        name: "Box",
+        width: 200,
+        height: 200,
+        visible: true,
+        rotate: 0,
+        blur: 0,
+        radius: 0,
+        backgroundColor: "#000000",
+      });
+    }
+    case "rounded-box": {
+      return createElement({
+        tag: "div",
+        name: "Rounded box",
+        width: 150,
+        height: 150,
+        visible: true,
+        rotate: 0,
+        blur: 0,
+        radius: 999,
+        backgroundColor: "#000000",
+      });
+    }
+    case "image": {
+      return createElement({
+        tag: "div",
+        name: "Image",
+        width: 200,
+        height: 150,
+        visible: true,
+        rotate: 0,
+        blur: 0,
+        radius: 0,
+        backgroundColor: "#000000",
+        backgroundImage: "https://picsum.photos/200/150",
+        backgroundSize: "cover",
+      });
+    }
+    case "dynamic-text": {
+      return createElement({
+        tag: "span",
+        name: "Dynamic text",
+        width: 312,
+        height: 50,
+        visible: true,
+        rotate: 0,
+        blur: 0,
+        content: "dynamic",
+        color: "#000000",
+        fontFamily: "Inter",
+        fontWeight: 400,
+        lineHeight: 1,
+        letterSpacing: 0,
+        fontSize: 50,
+        align: "left",
+      });
+    }
+  }
 }
 
 /**
@@ -81,6 +176,7 @@ export function createElementStyle(element: OGElement): CSSProperties {
       element.rotate !== 0 ? `rotate(${element.rotate}deg)` : undefined,
     boxShadow: boxShadows.length ? boxShadows.join(", ") : undefined,
     filter: element.blur !== 0 ? `blur(${element.blur}px)` : undefined,
+    willChange: element.blur !== 0 ? "filter" : undefined,
   };
 
   if (element.tag === "p" || element.tag === "span") {
@@ -93,6 +189,9 @@ export function createElementStyle(element: OGElement): CSSProperties {
       fontSize: `${element.fontSize}px`,
       lineHeight: element.lineHeight,
       letterSpacing: `${element.letterSpacing}px`,
+      // We need both textAlign and justifyContent to center the text
+      // so that it works with both single and multi-line text
+      textAlign: element.align,
       justifyContent:
         element.align === "center"
           ? "center"
@@ -147,19 +246,12 @@ export function createImgElementStyle(element: OGElement): CSSProperties {
 
 export function getDynamicTextKeys(elements: OGElement[]) {
   return elements
-    .filter(
-      (element) =>
-        element.tag === "span" ||
-        (element.tag === "div" &&
-          element.backgroundImage &&
-          !element.backgroundImage.startsWith("http")),
-    )
-    .map((element) => {
-      if (element.tag === "div") {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- We know it's not null
-        return element.backgroundImage!;
-      }
+    .filter((element) => element.tag === "span")
+    .map((element) => element.content);
+}
 
-      return element.content;
-    });
+export function getImageElementSrc(element: OGDivElement) {
+  return element.backgroundImage?.startsWith("<svg")
+    ? `data:image/svg+xml,${encodeURIComponent(element.backgroundImage)}`
+    : element.backgroundImage;
 }

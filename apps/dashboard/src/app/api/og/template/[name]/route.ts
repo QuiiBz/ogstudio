@@ -8,12 +8,11 @@ import { loadFonts } from "../../../../../lib/fonts";
 
 export async function GET(
   _: Request,
-  { params }: { params: { name: string } },
+  { params }: { params: Promise<{ name: string }> },
 ) {
-  const decodedName = decodeURIComponent(params.name);
-  const template = TEMPLATES.find(
-    ({ name }) => name.toLowerCase() === decodedName,
-  );
+  const { name } = await params;
+  const decodedName = decodeURIComponent(name);
+  const template = TEMPLATES.find((t) => t.name.toLowerCase() === decodedName);
 
   if (!template) {
     return new Response("Template not found", { status: 404 });

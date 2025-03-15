@@ -1,5 +1,5 @@
 "use client";
-import { Button, Flex, Text } from "@radix-ui/themes";
+import { Button, Flex, Heading, Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { type OGImage, useImagesStore } from "../../stores/imagesStore";
@@ -11,13 +11,14 @@ import { createElementId } from "../../lib/elements";
 
 export function HomeSplashMyImages() {
   const { images, createImage, copyImage, deleteImage } = useImagesStore();
-
   const router = useRouter();
 
   return (
     <Flex direction="column" gap="4">
       <Flex align="center" justify="between">
-        <Text size="5">My images</Text>
+        <Heading as="h2" size="5" weight="regular">
+          My Open Graph images
+        </Heading>
         <Button asChild color="gray" radius="full" variant="ghost">
           <Link href="/my-images">
             See all ({images.length})
@@ -35,6 +36,7 @@ export function HomeSplashMyImages() {
             router.push(`/editor?i=${image.id}`);
             createImage(image);
           }}
+          className="cursor-pointer"
         >
           <Flex align="center" gap="1">
             <AddIcon height="1.4em" width="1.4em" />

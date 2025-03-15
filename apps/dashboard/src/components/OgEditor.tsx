@@ -2,11 +2,12 @@
 import { useEffect, useRef } from "react";
 import { Box, Flex } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import type { OGElement } from "../lib/types";
-import { createElementId } from "../lib/elements";
-import { useZoomStore } from "../stores/zoomStore";
+import { createDefaultElement, createElementId } from "../lib/elements";
 import { useElementsStore } from "../stores/elementsStore";
 import { useImagesStore } from "../stores/imagesStore";
+import { useAdjustedZoom } from "../lib/hooks/useAdjustedZoom";
 import { Element } from "./Element";
 import { RightPanel } from "./RightPanel";
 import { LeftPanel } from "./LeftPanel";
@@ -21,10 +22,13 @@ interface OgProviderProps {
 
 let elementIdToCopy: string | undefined;
 
+export function hasElementInClipboard() {
+  return elementIdToCopy !== undefined;
+}
+
 export function OgEditor({ imageId, width, height }: OgProviderProps) {
   const router = useRouter();
   const rootRef = useRef<HTMLDivElement>(null);
-  const zoom = useZoomStore((state) => state.zoom);
   const {
     selectedElementId,
     setSelectedElementId,
@@ -38,6 +42,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
   const setSelectedImageId = useImagesStore(
     (state) => state.setSelectedImageId,
   );
+  const adjustedZoom = useAdjustedZoom();
 
   /**
    * When the editor image is updated or loaded for the first time, reset every
@@ -189,15 +194,49 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
           elementIdToCopy = newElement.id;
         }
       }
+
+      // When trying to save the document, show a toast
+      if (event.key === "s" && (event.metaKey || event.ctrlKey)) {
+        event.stopPropagation();
+        toast("Your work is saved automatically!");
+      }
+
+      // Insert elements with keyboard shortcuts
+      if (event.key === "t") {
+        event.preventDefault();
+        addElement(createDefaultElement("text"));
+      }
+
+      if (event.key === "b") {
+        event.preventDefault();
+        addElement(createDefaultElement("box"));
+      }
+
+      if (event.key === "o") {
+        event.preventDefault();
+        addElement(createDefaultElement("rounded-box"));
+      }
+
+      if (event.key === "i") {
+        event.preventDefault();
+        addElement(createDefaultElement("image"));
+      }
+
+      if (event.key === "d") {
+        event.preventDefault();
+        addElement(createDefaultElement("dynamic-text"));
+      }
     }
 
     const ref = rootRef.current;
 
-    if (ref) {
-      ref.addEventListener("click", onClick);
-    }
+    if (imageId !== "splash") {
+      if (ref) {
+        ref.addEventListener("click", onClick);
+      }
 
-    document.body.addEventListener("keydown", onKeyDown);
+      document.body.addEventListener("keydown", onKeyDown);
+    }
 
     return () => {
       if (ref) {
@@ -216,6 +255,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
     updateElement,
     redo,
     undo,
+    imageId,
   ]);
 
   return (
@@ -252,7 +292,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
           style={{
             width,
             height,
-            transform: `scale(${zoom / 100})`,
+            transform: `scale(${adjustedZoom})`,
             boxShadow: "var(--shadow-3)",
             backgroundColor: "var(--gray-1)",
           }}
@@ -272,7 +312,7 @@ export function OgEditor({ imageId, width, height }: OgProviderProps) {
           style={{
             width,
             height,
-            transform: `scale(${zoom / 100})`,
+            transform: `scale(${adjustedZoom})`,
             border: "1px solid var(--gray-contrast)",
           }}
         />

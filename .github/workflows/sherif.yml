@@ -9,7 +9,4 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-      - run: npx sherif@1.0.0
+      - uses: QuiiBz/sherif@v1

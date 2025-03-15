@@ -20,6 +20,7 @@ exports[`elementsToReactElements > should ignore dynamic texts by default 1`] = 
             "marginBottom": 0,
             "marginTop": 0,
             "position": "absolute",
+            "textAlign": "left",
             "top": "0px",
             "width": "100px",
           },
@@ -74,6 +75,7 @@ exports[`elementsToReactElements > should render text chidrens 1`] = `
             "marginBottom": 0,
             "marginTop": 0,
             "position": "absolute",
+            "textAlign": "left",
             "top": "0px",
             "width": "100px",
           },
@@ -143,41 +145,12 @@ exports[`elementsToReactElements > should replace dynamic texts if present 1`] =
             "marginBottom": 0,
             "marginTop": 0,
             "position": "absolute",
+            "textAlign": "left",
             "top": "0px",
             "width": "100px",
           },
         },
         "type": "span",
-      },
-    ],
-    "style": {
-      "display": "flex",
-      "height": "100%",
-      "width": "100%",
-    },
-  },
-  "type": "div",
-}
-`;
-
-exports[`elementsToReactElements > should replace dynamic texts if present in images 1`] = `
-{
-  "props": {
-    "children": [
-      {
-        "props": {
-          "src": "This is a dynamic text!",
-          "style": {
-            "display": "flex",
-            "height": "50px",
-            "left": "0px",
-            "objectFit": "contain",
-            "position": "absolute",
-            "top": "0px",
-            "width": "100px",
-          },
-        },
-        "type": "img",
       },
     ],
     "style": {

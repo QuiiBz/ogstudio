@@ -1,4 +1,4 @@
-import { Button, Flex, Separator, Text } from "@radix-ui/themes";
+import { Button, Flex, Heading, Separator } from "@radix-ui/themes";
 import Link from "next/link";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 import { TEMPLATES, toTemplateSlug } from "../../lib/templates";
@@ -10,7 +10,9 @@ export function HomeSplash() {
     <>
       <Flex direction="column" gap="4">
         <Flex align="center" justify="between">
-          <Text size="5">Templates</Text>
+          <Heading as="h1" size="5" weight="regular">
+            Free Open Graph templates
+          </Heading>
           <Button asChild color="gray" radius="full" variant="ghost">
             <Link href="/templates">
               See all ({TEMPLATES.length})
@@ -19,7 +21,12 @@ export function HomeSplash() {
           </Button>
         </Flex>
         <Flex gap="2" className="overflow-x-scroll max-w-[100vw] no-scrollbar">
-          {TEMPLATES.slice(0, 3).map((template) => (
+          {TEMPLATES.filter(
+            (template) =>
+              template.name === "Blog post" ||
+              template.name === "Space" ||
+              template.name === "AI Startup",
+          ).map((template) => (
             <OgImage
               elements={template.elements}
               href={`/templates/${toTemplateSlug(template)}`}

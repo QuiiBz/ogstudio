@@ -12,6 +12,7 @@ import { CircleIcon } from "../icons/CircleIcon";
 import { ImageIcon } from "../icons/ImageIcon";
 import { MagicWandIcon } from "../icons/MagicWandIcon";
 import { useElementsStore } from "../../stores/elementsStore";
+import { ElementMenu } from "../ElementMenu";
 
 interface ElementRowProps {
   element: OGElement;
@@ -85,67 +86,73 @@ export const ElementRow = memo(({ element }: ElementRowProps) => {
       {...attributes}
       {...listeners}
     >
-      <Button
-        className="grow justify-start"
-        color={
-          selectedElementId === element.id || isDragging ? undefined : "gray"
-        }
-        disabled={!element.visible}
-        ml="2"
-        mr="4"
-        onClick={() => {
-          setSelectedElementId(element.id);
-        }}
-        onDoubleClick={(event) => {
-          if (isEditing || !element.visible) {
-            return;
+      <ElementMenu element={element}>
+        <Button
+          className="grow justify-start flex gap-2"
+          color={
+            selectedElementId === element.id || isDragging ? undefined : "gray"
           }
+          disabled={!element.visible}
+          ml="2"
+          mr="4"
+          onClick={() => {
+            setSelectedElementId(element.id);
+          }}
+          onDoubleClick={(event) => {
+            if (isEditing || !element.visible) {
+              return;
+            }
 
-          event.preventDefault();
-          setIsEditing(true);
-        }}
-        size="2"
-        type="button"
-        variant={isDragging ? "surface" : "ghost"}
-      >
-        {element.tag === "p" ? <TextIcon height="1.4em" width="1.4em" /> : null}
-        {element.tag === "div" && element.backgroundImage ? (
-          <ImageIcon height="1.4em" width="1.4em" />
-        ) : null}
-        {element.tag === "div" &&
-        !element.backgroundImage &&
-        !element.radius ? (
-          <BoxIcon height="1.4em" width="1.4em" />
-        ) : null}
-        {element.tag === "div" && !element.backgroundImage && element.radius ? (
-          <CircleIcon height="1.4em" width="1.4em" />
-        ) : null}
-        {element.tag === "span" ? (
-          <MagicWandIcon height="1.4em" width="1.4em" />
-        ) : null}
-        {isEditing ? (
-          <TextField.Root
-            className="w-full elementNameInput"
-            defaultValue={element.name}
-            onBlur={(event) => {
-              onSubmit(event.currentTarget.value);
-            }}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === "Escape") {
-                event.currentTarget.blur();
-              }
-            }}
-            size="1"
-            // eslint-disable-next-line -- Usability and accessibility for users is not reduced here
-            autoFocus
-          />
-        ) : (
-          element.name
-        )}
-      </Button>
+            event.preventDefault();
+            setIsEditing(true);
+          }}
+          size="2"
+          type="button"
+          variant={isDragging ? "surface" : "ghost"}
+        >
+          {element.tag === "p" ? (
+            <TextIcon height="1.4em" width="1.4em" />
+          ) : null}
+          {element.tag === "div" && element.backgroundImage ? (
+            <ImageIcon height="1.4em" width="1.4em" />
+          ) : null}
+          {element.tag === "div" &&
+          !element.backgroundImage &&
+          !element.radius ? (
+            <BoxIcon height="1.4em" width="1.4em" />
+          ) : null}
+          {element.tag === "div" &&
+          !element.backgroundImage &&
+          element.radius ? (
+            <CircleIcon height="1.4em" width="1.4em" />
+          ) : null}
+          {element.tag === "span" ? (
+            <MagicWandIcon height="1.4em" width="1.4em" />
+          ) : null}
+          {isEditing ? (
+            <TextField.Root
+              className="w-full elementNameInput"
+              defaultValue={element.name}
+              onBlur={(event) => {
+                onSubmit(event.currentTarget.value);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === "Escape") {
+                  event.currentTarget.blur();
+                }
+              }}
+              size="1"
+              // eslint-disable-next-line -- Usability and accessibility for users is not reduced here
+              autoFocus
+            />
+          ) : (
+            element.name
+          )}
+        </Button>
+      </ElementMenu>
       <IconButton
         className={clsx("opacity-0 group-hover:opacity-100", {
-          "!opacity-100": !element.visible,
+          "opacity-100!": !element.visible,
         })}
         color="gray"
         mr="1"

@@ -1,7 +1,15 @@
+import { type Metadata } from "next";
 import { Profile } from "../../../components/Profile";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Profile - OG Studio",
+  openGraph: {
+    siteName: "OG Studio",
+    images:
+      "https://github.com/QuiiBz/ogstudio/blob/main/assets/builder.jpeg?raw=true",
+    type: "profile",
+    url: "https://ogstudio.app/profile",
+  },
 };
 
 export const dynamic = "force-static";
