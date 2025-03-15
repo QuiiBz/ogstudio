@@ -1,9 +1,9 @@
 {
   "functions": {
-    "app/api/og/[key]": {
+    "app/api/og/[key]/route.ts": {
       "memory": 3009
     },
-    "app/api/template/[slug]": {
+    "app/api/template/[slug]/route.ts": {
       "memory": 3009
     }
   }
