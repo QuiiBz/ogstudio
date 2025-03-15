@@ -2,12 +2,11 @@ import { streamText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { getSession } from "@ogstudio/auth/api";
 
-const groq = createOpenAI({
-  baseURL: "https://api.groq.com/openai/v1",
-  apiKey: process.env.GROQ_API_KEY,
+const openai = createOpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
-const model = groq("llama3-8b-8192");
+const model = openai("gpt-4o-mini");
 
 export interface GenerateRequest {
   prompt: string;
@@ -21,9 +20,9 @@ export async function POST(request: Request) {
   }
   const { prompt } = (await request.json()) as GenerateRequest;
 
-  const { textStream } = await streamText({
+  const result = streamText({
     model,
-    system: `You are a programmer. I will give you a typescript definition of a schema that describes images with a list of elements like a block, a text, a rounded text. The image size is 1200 by 630px, and the default font is Roboto. Return a list of elements in JSON following that schema and the prompt direction, without any other information or formatting.
+    system: `You are a creative design engineer. I will give you a TypeScript definition of a schema that describes elements like a block, a text, a rounded text. You are going to design and code an open-graph image (NOT a website, so NO header/footer) following this schema, as a list of OGElement. The image size is 1200 by 630px, and the default font is Inter. Font size must be between 50 and 150px, line height should always be 1 and letter spacing should be between -10 and 10. All positions are absolute. Return a list of elements in JSON (last elements in the array are displayed above others) following that schema, without any other information or formatting.
 
 export type OGElement = (OGPElement | OGDivElement) & {
   id: string;
@@ -77,16 +76,5 @@ export interface OGDivElement {
     prompt,
   });
 
-  const { readable, writable } = new TransformStream();
-  const writer = writable.getWriter();
-
-  void (async () => {
-    for await (const chunk of textStream) {
-      await writer.write(chunk);
-    }
-
-    await writer.close();
-  })();
-
-  return new Response(readable);
+  return result.toTextStreamResponse();
 }
