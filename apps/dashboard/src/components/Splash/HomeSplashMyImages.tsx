@@ -5,12 +5,13 @@ import Link from "next/link";
 import { type OGImage, useImagesStore } from "../../stores/imagesStore";
 import { OgImage } from "../OgImage";
 import { AddIcon } from "../icons/AddIcon";
-import type { OGElement } from "../../lib/types";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 import { createElementId } from "../../lib/elements";
+import { useSavedImages } from "../../lib/hooks/useSavedImages";
 
 export function HomeSplashMyImages() {
-  const { images, createImage, copyImage, deleteImage } = useImagesStore();
+  const { createImage, copyImage, deleteImage } = useImagesStore();
+  const images = useSavedImages();
   const router = useRouter();
 
   return (
@@ -54,9 +55,7 @@ export function HomeSplashMyImages() {
             deletable={() => {
               deleteImage(image);
             }}
-            elements={
-              JSON.parse(localStorage.getItem(image.id) ?? "[]") as OGElement[]
-            }
+            elements={image.elements}
             href={`/editor?i=${image.id}`}
             key={image.id}
             mockDynamicTexts

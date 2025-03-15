@@ -22,7 +22,7 @@ interface ExportURLProps {
 export function ExportURL({ exportedKey, dynamicTexts }: ExportURLProps) {
   const [type, setType] = useState<"html" | "url">("html");
   const { data } = useUser();
-  const isSignedIn = Boolean(data && "user" in data);
+  const isSignedIn = Boolean(data && "user" in data.session);
 
   const key = exportedKey ?? <span className="blur-xs">{"x".repeat(32)}</span>;
   let url = (
