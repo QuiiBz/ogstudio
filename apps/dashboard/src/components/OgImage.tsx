@@ -104,7 +104,7 @@ export function OgImage({
   preview,
   previewTitle = "Your page title",
   previewDescription = "Your page description.",
-  previewUrl = "website.com",
+  previewUrl = "example.com",
   previewSite = "Your site",
   className,
   src,
@@ -125,6 +125,10 @@ export function OgImage({
                 <img
                   src={`https://${hostname}/favicon.ico`}
                   alt={`${previewSite} logo`}
+                  onError={(event) => {
+                    // Falback to OG Studio's favicon if the site doesn't have one
+                    event.currentTarget.src = "/favicon.ico";
+                  }}
                   className="w-4 h-4"
                 />
                 <p className="text-[#1D1C1D] dark:text-[#D1D2D3] text-[15px] font-black">
