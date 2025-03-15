@@ -17,6 +17,10 @@ const nextConfig = {
 
     return config
   },
+  outputFileTracingIncludes: {
+    '/api/og/\\[key\\]': ['node_modules/@resvg/resvg-wasm/index_bg.wasm']
+
+  },
   images: {
     remotePatterns: [
       {
