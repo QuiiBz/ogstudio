@@ -113,14 +113,24 @@ export function OgImage({
 
   const WrapperComponent = useMemo(() => {
     if (preview === "slack") {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- wrong types
+      const hostname = URL.parse(previewUrl)?.hostname ?? previewUrl;
+
       return function Wrapper(props: { children: ReactNode }) {
         return (
           <Flex gap="3" className="w-[480px]">
             <div className="bg-[#DDDDDD] dark:bg-[#35373B] min-w-1 h-min-content rounded-sm" />
             <Flex direction="column" className="gap-0.5">
-              <p className="text-[#1D1C1D] dark:text-[#D1D2D3] text-[15px] font-black">
-                {previewSite}
-              </p>
+              <Flex gap="1" align="center">
+                <img
+                  src={`https://${hostname}/favicon.ico`}
+                  alt={`${previewSite} logo`}
+                  className="w-4 h-4"
+                />
+                <p className="text-[#1D1C1D] dark:text-[#D1D2D3] text-[15px] font-black">
+                  {previewSite}
+                </p>
+              </Flex>
               <p className="text-[#1264A3] dark:text-[#1D9BD1] text-[15px] font-bold break-words">
                 {previewTitle}
               </p>
@@ -157,10 +167,10 @@ export function OgImage({
           {
             "min-h-[157px] w-[300px] min-w-[300px]": size === "small",
             "min-h-[252px] w-[480px] min-w-[480px]": size === "medium",
-            "rounded-2xl h-[252px]": preview === "x",
-            "rounded-lg min-h-[189px] w-[360px] min-w-[360px]":
+            "rounded-2xl! h-[252px]": preview === "x",
+            "rounded-lg! min-h-[189px] w-[360px] min-w-[360px]":
               preview === "slack",
-            "rounded-md": preview === "linkedin",
+            "rounded-md!": preview === "linkedin",
           },
         )}
         // @ts-expect-error - href is not a valid prop for button
@@ -233,7 +243,7 @@ export function OgImage({
         ) : null}
         {preview === "x" ? (
           <span
-            className="absolute bottom-2.5 left-2.5 text-white h-5 px-2 rounded-sm text-[12px]"
+            className="absolute bottom-[12px] left-[12px] text-white h-5 px-2 rounded-sm text-[13px]"
             style={{ backgroundColor: "rgba(0, 0, 0, 0.77)" }}
           >
             {previewTitle}
@@ -257,7 +267,7 @@ export function OgImage({
         ) : null}
       </Tag>
       {preview === "x" ? (
-        <span className="text-[#8b98a5] text-[12px] -mt-1.5 relative">
+        <span className="text-[#8b98a5] text-[13px] -mt-1.5 relative">
           From {from}
         </span>
       ) : null}

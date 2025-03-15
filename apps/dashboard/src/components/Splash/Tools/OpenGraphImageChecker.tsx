@@ -34,7 +34,11 @@ export function OpenGraphImageChecker() {
         finalUrl = `https://${maybeUrl}`;
       }
 
-      if (!finalUrl.includes("://") || !finalUrl.includes(".")) {
+      if (
+        !finalUrl.includes("://") ||
+        !finalUrl.includes(".") ||
+        finalUrl.endsWith(".")
+      ) {
         throw new Error("Invalid URL");
       }
 
