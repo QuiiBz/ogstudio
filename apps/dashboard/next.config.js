@@ -19,7 +19,8 @@ const nextConfig = {
   },
   outputFileTracingIncludes: {
     '/api/og/\\[key\\]': ['node_modules/@resvg/resvg-wasm/index_bg.wasm'],
-    '/template/\\[name\\]': ['node_modules/@resvg/resvg-wasm/index_bg.wasm']
+    '/api/template/\\[slug\\]': ['node_modules/@resvg/resvg-wasm/index_bg.wasm'],
+    '/templates/\\[slug\\]': ['node_modules/@resvg/resvg-wasm/index_bg.wasm'],
   },
   images: {
     remotePatterns: [
