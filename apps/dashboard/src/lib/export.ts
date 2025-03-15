@@ -22,7 +22,13 @@ if (process.env.VITEST_POOL_ID) {
   );
 } else {
   initWasmPromise = initWasm(
-    fetch("https://unpkg.com/@resvg/resvg-wasm@2.6.2/index_bg.wasm"),
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- ignore
+    typeof window !== "undefined"
+      ? fetch("https://unpkg.com/@resvg/resvg-wasm@2.6.2/index_bg.wasm")
+      : // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-member-access -- ignore
+        require("node:fs/promises").readFile(
+          "node_modules/@resvg/resvg-wasm/index_bg.wasm",
+        ),
   );
 }
 
