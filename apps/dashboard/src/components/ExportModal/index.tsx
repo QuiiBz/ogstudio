@@ -7,8 +7,8 @@ import type {
 } from "../../app/api/og/export/route";
 import { useImagesStore } from "../../stores/imagesStore";
 import { getDynamicTextKeys } from "../../lib/elements";
-import { useUser } from "../../lib/hooks/useUser";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
+import { useIsSignedIn } from "../../lib/hooks/useIsSignedIn";
 import { ExportURL } from "./ExportURL";
 import { Preview } from "./Preview";
 import { Download } from "./Download";
@@ -16,6 +16,8 @@ import { Download } from "./Download";
 export function ExportModal() {
   const elements = useElementsStore((state) => state.elements);
   const selectedImageId = useImagesStore((state) => state.selectedImageId);
+  const images = useImagesStore((state) => state.images);
+  const selectedImage = images.find((image) => image.id === selectedImageId);
   const dynamicTextKeys = useMemo(
     () => getDynamicTextKeys(elements),
     [elements],
@@ -24,8 +26,7 @@ export function ExportModal() {
     Object.fromEntries(dynamicTextKeys.map((key) => [key, "Dynamic text"])),
   );
   const [exportedKey, setKey] = useState<string | null>(null);
-  const { data } = useUser();
-  const isSignedIn = Boolean(data && "user" in data);
+  const isSignedIn = useIsSignedIn();
 
   useEffect(() => {
     async function exportUrl() {
@@ -38,6 +39,7 @@ export function ExportModal() {
         body: JSON.stringify({
           id: selectedImageId,
           elements,
+          name: selectedImage?.name ?? "",
         } satisfies ExportRequest),
       });
 
@@ -52,7 +54,7 @@ export function ExportModal() {
     }
 
     void exportUrl();
-  }, [selectedImageId, elements, isSignedIn]);
+  }, [selectedImageId, elements, isSignedIn, selectedImage]);
 
   return (
     <>

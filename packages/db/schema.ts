@@ -15,3 +15,13 @@ export const sessionTable = sqliteTable("user_session", {
     .references(() => userTable.id),
   expiresAt: integer("expires_at").notNull(),
 });
+
+export const imagesTable = sqliteTable("image", {
+  id: text("id").notNull().primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => userTable.id),
+  createdAt: integer("created_at").notNull(),
+  name: text("name").notNull(),
+  elements: text("elements", { mode: "json" }).notNull(),
+});

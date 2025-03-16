@@ -3,10 +3,12 @@ import Link from "next/link";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { useUser } from "../../lib/hooks/useUser";
 import { useLogout } from "../../lib/hooks/useLogout";
+import { useIsSignedIn } from "../../lib/hooks/useIsSignedIn";
 
 export function SplashSection() {
   const { data } = useUser();
   const logout = useLogout();
+  const isSignedIn = useIsSignedIn();
 
   return (
     <Flex align="center" justify="between" mx="2">
@@ -23,10 +25,10 @@ export function SplashSection() {
               fallback="G"
               radius="full"
               size="1"
-              src={data?.user?.avatar}
+              src={isSignedIn ? data?.session.user?.avatar : undefined}
               ml="-1"
             />
-            {data?.user?.name ?? "Guest"}
+            {isSignedIn ? data?.session.user?.name : "Guest"}
           </Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content variant="soft">
@@ -36,7 +38,7 @@ export function SplashSection() {
           <DropdownMenu.Item asChild>
             <Link href="/my-images">My images</Link>
           </DropdownMenu.Item>
-          {data?.user ? (
+          {isSignedIn ? (
             <>
               <DropdownMenu.Item asChild>
                 <Link href="/profile">Profile</Link>

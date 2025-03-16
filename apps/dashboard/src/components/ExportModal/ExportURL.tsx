@@ -11,8 +11,8 @@ import {
   Heading,
 } from "@radix-ui/themes";
 import { toast } from "sonner";
-import { useUser } from "../../lib/hooks/useUser";
 import { CopyIcon } from "../icons/CopyIcon";
+import { useIsSignedIn } from "../../lib/hooks/useIsSignedIn";
 
 interface ExportURLProps {
   exportedKey: ReactNode;
@@ -21,8 +21,7 @@ interface ExportURLProps {
 
 export function ExportURL({ exportedKey, dynamicTexts }: ExportURLProps) {
   const [type, setType] = useState<"html" | "url">("html");
-  const { data } = useUser();
-  const isSignedIn = Boolean(data && "user" in data);
+  const isSignedIn = useIsSignedIn();
 
   const key = exportedKey ?? <span className="blur-xs">{"x".repeat(32)}</span>;
   let url = (

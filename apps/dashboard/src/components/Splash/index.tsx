@@ -16,6 +16,7 @@ import { OgEditor } from "../OgEditor";
 import { GitHubIcon } from "../icons/GitHubIcon";
 import { useUser } from "../../lib/hooks/useUser";
 import { ImageIcon } from "../icons/ImageIcon";
+import { useIsSignedIn } from "../../lib/hooks/useIsSignedIn";
 
 interface OgSplashProps {
   children: ReactNode;
@@ -24,6 +25,7 @@ interface OgSplashProps {
 export function Splash({ children }: OgSplashProps) {
   const { data } = useUser();
   const largeSplash = usePathname() === "/tools/open-graph-image-checker";
+  const isSignedIn = useIsSignedIn();
 
   return (
     <>
@@ -101,15 +103,15 @@ export function Splash({ children }: OgSplashProps) {
               variant="ghost"
               className="mt-2 sm:mt-[inherit]"
             >
-              <Link href={data?.user ? "/profile" : "/login"}>
+              <Link href={isSignedIn ? "/profile" : "/login"}>
                 <Avatar
                   fallback="G"
                   radius="full"
                   size="1"
-                  src={data?.user?.avatar}
+                  src={isSignedIn ? data?.session.user?.avatar : undefined}
                   ml="-1"
                 />
-                {data?.user?.name ?? "Guest"}
+                {isSignedIn ? data?.session.user?.name : "Guest"}
               </Link>
             </Button>
           </Flex>

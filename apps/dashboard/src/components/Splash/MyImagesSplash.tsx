@@ -5,13 +5,16 @@ import Link from "next/link";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { AddIcon } from "../icons/AddIcon";
 import { type OGImage, useImagesStore } from "../../stores/imagesStore";
-import type { OGElement } from "../../lib/types";
 import { OgImage } from "../OgImage";
 import { createElementId } from "../../lib/elements";
+import { useSavedImages } from "../../lib/hooks/useSavedImages";
+import { useDeletedSavedImage } from "../../lib/hooks/useDeletedSavedImage";
 
 export function MyImagesSplash() {
-  const { images, createImage, copyImage, deleteImage } = useImagesStore();
+  const { createImage, copyImage, deleteImage } = useImagesStore();
+  const images = useSavedImages();
   const router = useRouter();
+  const deleteSavedImage = useDeletedSavedImage();
 
   return (
     <Flex direction="column" gap="4">
@@ -57,14 +60,14 @@ export function MyImagesSplash() {
             }}
             deletable={() => {
               deleteImage(image);
+              void deleteSavedImage(image);
             }}
-            elements={
-              JSON.parse(localStorage.getItem(image.id) ?? "[]") as OGElement[]
-            }
+            elements={image.elements}
             href={`/editor?i=${image.id}`}
             key={image.id}
             mockDynamicTexts
             name={image.name}
+            cloudSaved={image.fromCloud}
           />
         ))}
       </Grid>

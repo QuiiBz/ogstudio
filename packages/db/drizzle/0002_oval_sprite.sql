@@ -1,0 +1,1 @@
+ALTER TABLE `image` ADD `name` text NOT NULL;

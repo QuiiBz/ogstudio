@@ -8,6 +8,20 @@
       "when": 1704032646128,
       "tag": "0000_charming_prism",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1742058888663,
+      "tag": "0001_cheerful_living_mummy",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1742059076630,
+      "tag": "0002_oval_sprite",
+      "breakpoints": true
     }
   ]
 }

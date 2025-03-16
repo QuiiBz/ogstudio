@@ -2,12 +2,14 @@ import type { MouseEvent, ReactNode } from "react";
 import { Suspense, use, useMemo } from "react";
 import Link from "next/link";
 import { clsx } from "clsx";
-import { Flex, IconButton, Skeleton, Text } from "@radix-ui/themes";
+import { Flex, IconButton, Skeleton, Text, Tooltip } from "@radix-ui/themes";
 import type { OGElement } from "../lib/types";
 import { renderToImg } from "../lib/export";
 import { getDynamicTextKeys } from "../lib/elements";
 import { CopyIcon } from "./icons/CopyIcon";
 import { DeleteIcon } from "./icons/DeleteIcon";
+import { CloudOnIcon } from "./icons/CloudOnIcon";
+import { CloudOffIcon } from "./icons/CloudOffIcon";
 
 interface OgImageInnerProps {
   elements: OGElement[];
@@ -76,6 +78,7 @@ interface OgImageProps {
   mockDynamicTexts?: boolean;
   children?: ReactNode;
   name?: string;
+  cloudSaved?: boolean;
   copiable?: (event: MouseEvent<HTMLSpanElement>) => void;
   deletable?: (event: MouseEvent<HTMLSpanElement>) => void;
   size?: "small" | "medium";
@@ -97,6 +100,7 @@ export function OgImage({
   mockDynamicTexts,
   children,
   name,
+  cloudSaved,
   copiable,
   deletable,
   size = "small",
@@ -151,7 +155,7 @@ export function OgImage({
     return function Wrapper(props: { children: ReactNode }) {
       return <>{props.children}</>;
     };
-  }, [preview, previewDescription, previewSite, previewTitle]);
+  }, [preview, previewDescription, previewSite, previewTitle, previewUrl]);
 
   const from = useMemo(() => {
     try {
@@ -203,7 +207,7 @@ export function OgImage({
         {name ? (
           <Text
             as="span"
-            className="absolute left-1 top-1 p-1 hidden group-hover:block max-w-[70%]"
+            className="absolute left-1 top-1 p-1 hidden group-hover:flex max-w-[70%] items-center gap-1"
             size="1"
             style={{
               backgroundColor: "var(--gray-12)",
@@ -212,6 +216,16 @@ export function OgImage({
             }}
             truncate
           >
+            {cloudSaved === true ? (
+              <Tooltip content="This image is automatically saved to the Cloud">
+                <CloudOnIcon className="w-4 h-4" />
+              </Tooltip>
+            ) : null}
+            {cloudSaved === false ? (
+              <Tooltip content="Export this image to save it to the Cloud">
+                <CloudOffIcon className="w-4 h-4" />
+              </Tooltip>
+            ) : null}
             {name}
           </Text>
         ) : null}
