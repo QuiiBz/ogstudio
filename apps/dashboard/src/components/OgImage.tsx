@@ -212,7 +212,7 @@ export function OgImage({
             style={{
               backgroundColor: "var(--gray-12)",
               color: "var(--gray-1)",
-              borderRadius: "var(--radius-1)",
+              borderRadius: "var(--radius-3)",
             }}
             truncate
           >
@@ -231,7 +231,7 @@ export function OgImage({
         ) : null}
         {copiable ? (
           <IconButton
-            className="absolute right-8 top-1 hidden group-hover:flex"
+            className="absolute right-8 top-1 hidden group-hover:flex cursor-pointer"
             color="gray"
             highContrast
             onClick={(event) => {
@@ -240,13 +240,14 @@ export function OgImage({
             }}
             size="1"
             variant="solid"
+            radius="large"
           >
             <CopyIcon />
           </IconButton>
         ) : null}
         {deletable ? (
           <IconButton
-            className="absolute right-1 top-1 hidden group-hover:flex"
+            className="absolute right-1 top-1 hidden group-hover:flex cursor-pointer"
             color="gray"
             highContrast
             onClick={(event) => {
@@ -255,6 +256,7 @@ export function OgImage({
             }}
             size="1"
             variant="solid"
+            radius="large"
           >
             <DeleteIcon />
           </IconButton>

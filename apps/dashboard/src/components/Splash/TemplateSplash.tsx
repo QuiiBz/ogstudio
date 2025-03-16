@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { Button, Flex, Heading, Text } from "@radix-ui/themes";
-import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
+import Link from "next/link";
 import type { Template } from "../../lib/templates";
 import { OgImageInnerServer } from "../OgImage";
 import { TemplateSplashButton } from "./TemplateSplashButton";
@@ -12,29 +11,30 @@ interface TemplateSplashProps {
 
 export function TemplateSplash({ template }: TemplateSplashProps) {
   return (
-    <Flex direction="column" gap="4">
-      <Flex align="center" justify="between">
-        <Heading as="h1" size="5" weight="regular">
-          {template.name} template
+    <>
+      <Flex direction="column" align="center" gap="2" py="8">
+        <Heading
+          as="h1"
+          size="6"
+          weight="regular"
+          align="center"
+          className="w-2/3 lg:w-full"
+        >
+          {template.name} Open Graph image template
         </Heading>
-        <Button asChild color="gray" radius="full" variant="ghost">
-          <Link href="/templates">
-            <ArrowLeftIcon />
-            Back
-          </Link>
-        </Button>
-      </Flex>
-      <Flex gap="8" justify="between" className="flex-col sm:flex-row">
-        <TemplateSplashPreview
-          image={<OgImageInnerServer elements={template.elements} />}
-        />
-        <Flex direction="column" gap="4">
-          <Text as="p" size="2">
-            {template.description}
-          </Text>
+        <Text as="p" className="w-2/3 md:w-1/3" size="2" align="center">
+          {template.description}
+        </Text>
+        <Flex gap="2" mt="4" align="center">
           <TemplateSplashButton template={template} />
+          <Button asChild color="gray" variant="ghost" radius="full" mt="auto">
+            <Link href="/templates">View all templates</Link>
+          </Button>
         </Flex>
       </Flex>
-    </Flex>
+      <TemplateSplashPreview
+        image={<OgImageInnerServer elements={template.elements} />}
+      />
+    </>
   );
 }

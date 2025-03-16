@@ -2,20 +2,11 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Flex,
-  Separator,
-  Text,
-} from "@radix-ui/themes";
+import { Avatar, Box, Button, Flex, Text } from "@radix-ui/themes";
 import { usePathname } from "next/navigation";
 import { OgEditor } from "../OgEditor";
 import { GitHubIcon } from "../icons/GitHubIcon";
 import { useUser } from "../../lib/hooks/useUser";
-import { ImageIcon } from "../icons/ImageIcon";
 import { useIsSignedIn } from "../../lib/hooks/useIsSignedIn";
 
 interface OgSplashProps {
@@ -24,8 +15,8 @@ interface OgSplashProps {
 
 export function Splash({ children }: OgSplashProps) {
   const { data } = useUser();
-  const largeSplash = usePathname() === "/tools/open-graph-image-checker";
   const isSignedIn = useIsSignedIn();
+  const pathname = usePathname();
 
   return (
     <>
@@ -42,8 +33,10 @@ export function Splash({ children }: OgSplashProps) {
         width="100vw"
       >
         <Box
-          minHeight={largeSplash ? "740px" : "680px"}
-          maxHeight="calc(100vh - 80px)"
+          height="800px"
+          maxHeight="calc(100vh - 40px)"
+          width="1160px"
+          maxWidth="calc(100vw - 20px)"
           overflowY={{ initial: "scroll", md: "auto" }}
           overflowX="hidden"
           p="6"
@@ -52,17 +45,13 @@ export function Splash({ children }: OgSplashProps) {
             backgroundColor: "var(--color-panel-solid)",
             borderRadius: "var(--radius-5)",
           }}
-          maxWidth="100vw"
-          width={largeSplash ? "1160px" : "980px"}
         >
           <Flex
             justify="between"
-            className="-mt-2 sm:mb-0 mb-4 gap-8 sm:items-center items-start"
+            mt="-3"
+            className="sm:items-center items-start"
           >
-            <Flex
-              align="center"
-              className="flex-wrap gap-1 justify-between sm:gap-8 sm:justify-normal w-full"
-            >
+            <Flex align="center" gap="6">
               <Text asChild size="6">
                 <Link className="flex gap-2 items-center min-w-fit" href="/">
                   <Image
@@ -74,53 +63,60 @@ export function Splash({ children }: OgSplashProps) {
                   Studio
                 </Link>
               </Text>
-              <Badge
-                color="orange"
+              <Button
+                asChild
+                color="gray"
                 radius="full"
-                size="2"
-                className="hidden md:block"
+                variant="ghost"
+                highContrast={pathname.startsWith("/templates")}
               >
-                Early preview
-              </Badge>
+                <Link href="/templates">Templates</Link>
+              </Button>
+              <Button
+                asChild
+                color="gray"
+                radius="full"
+                variant="ghost"
+                highContrast={pathname === "/tools/open-graph-image-checker"}
+              >
+                <Link href="/tools/open-graph-image-checker">
+                  Open Graph Checker
+                </Link>
+              </Button>
+            </Flex>
+            <Flex align="center" gap="6">
               <Button asChild color="gray" radius="full" variant="ghost">
                 <Link href="https://github.com/QuiiBz/ogstudio" target="_blank">
                   <GitHubIcon />
                   GitHub
                 </Link>
               </Button>
-              <Button asChild color="gray" radius="full" variant="ghost">
-                <Link href="/tools/open-graph-image-checker">
-                  <ImageIcon />
-                  Open Graph Checker
+              <Button
+                asChild
+                color="gray"
+                radius="full"
+                variant="ghost"
+                highContrast={pathname === "/profile" || pathname === "/login"}
+              >
+                <Link href={isSignedIn ? "/profile" : "/login"}>
+                  <Avatar
+                    fallback="G"
+                    radius="full"
+                    size="1"
+                    src={isSignedIn ? data?.session.user?.avatar : undefined}
+                    ml="-1"
+                  />
+                  {isSignedIn ? data?.session.user?.name : "Guest"}
                 </Link>
               </Button>
             </Flex>
-            <Button
-              asChild
-              color="gray"
-              mr="2"
-              radius="full"
-              variant="ghost"
-              className="mt-2 sm:mt-[inherit]"
-            >
-              <Link href={isSignedIn ? "/profile" : "/login"}>
-                <Avatar
-                  fallback="G"
-                  radius="full"
-                  size="1"
-                  src={isSignedIn ? data?.session.user?.avatar : undefined}
-                  ml="-1"
-                />
-                {isSignedIn ? data?.session.user?.name : "Guest"}
-              </Link>
-            </Button>
           </Flex>
-          <Text as="p" className="lg:w-2/3" size="2">
-            Create static or dynamic OG (Open Graph) images with an intuitive,
-            Figma-like visual editor. Browse ready-to-use templates, and export
-            your images to SVG/PNG or to a dynamic URL.
-          </Text>
-          <Separator className="opacity-50" my="6" size="4" />
+          {/* <Text as="p" className="lg:w-2/3" size="2"> */}
+          {/*   Create static or dynamic OG (Open Graph) images with an intuitive, */}
+          {/*   Figma-like visual editor. Browse ready-to-use templates, and export */}
+          {/*   your images to SVG/PNG or to a dynamic URL. */}
+          {/* </Text> */}
+          {/* <Separator className="opacity-50" my="6" size="4" /> */}
           {children}
         </Box>
       </Flex>

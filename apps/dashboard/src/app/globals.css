@@ -11,6 +11,7 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -25,10 +26,12 @@
  * https://github.com/tailwindlabs/tailwindcss/pull/5732
  */
 @utility no-scrollbar {
+
   /* Chrome, Safari and Opera */
   &::-webkit-scrollbar {
     display: none;
   }
+
   -ms-overflow-style: none;
   /* IE and Edge */
   scrollbar-width: none;
@@ -87,7 +90,7 @@ input[type=number]::-webkit-inner-spin-button {
   transform: translateX(-50%);
   width: 1px;
   height: 12px;
-  @apply bg-blue-500;
+  @apply bg-[var(--accent-track)]
 }
 
 .react-colorful {
