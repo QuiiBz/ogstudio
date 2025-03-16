@@ -1,5 +1,6 @@
-import { kv } from "@vercel/kv";
 import type { NextRequest } from "next/server";
+import { db, eq } from "@ogstudio/db/db";
+import { imagesTable } from "@ogstudio/db/schema";
 import type { OGElement } from "../../../../lib/types";
 import {
   elementsToReactElements,
@@ -13,13 +14,17 @@ export async function GET(
   { params }: { params: Promise<{ key: string }> },
 ) {
   const { key } = await params;
-  const elements = await kv.get(atob(key));
+  const images = await db
+    .select()
+    .from(imagesTable)
+    .where(eq(imagesTable.id, atob(key)));
+  const image = images.length ? images[0] : null;
 
-  if (elements === null) {
+  if (image === null) {
     return Response.json("Not found", { status: 404 });
   }
 
-  const ogElements = elements as OGElement[];
+  const ogElements = JSON.parse(image.elements as string) as OGElement[];
   const dynamicTexts = Object.fromEntries(
     request.nextUrl.searchParams.entries(),
   );

@@ -8,11 +8,13 @@ import { AddIcon } from "../icons/AddIcon";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 import { createElementId } from "../../lib/elements";
 import { useSavedImages } from "../../lib/hooks/useSavedImages";
+import { useDeletedSavedImage } from "../../lib/hooks/useDeletedSavedImage";
 
 export function HomeSplashMyImages() {
   const { createImage, copyImage, deleteImage } = useImagesStore();
   const images = useSavedImages();
   const router = useRouter();
+  const deleteSavedImage = useDeletedSavedImage();
 
   return (
     <Flex direction="column" gap="4">
@@ -54,12 +56,14 @@ export function HomeSplashMyImages() {
             }}
             deletable={() => {
               deleteImage(image);
+              void deleteSavedImage(image);
             }}
             elements={image.elements}
             href={`/editor?i=${image.id}`}
             key={image.id}
             mockDynamicTexts
             name={image.name}
+            cloudSaved={image.fromCloud}
           />
         ))}
       </Flex>

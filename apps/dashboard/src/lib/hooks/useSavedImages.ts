@@ -1,11 +1,13 @@
 import { type OGImage, useImagesStore } from "../../stores/imagesStore";
 import { type OGElement } from "../types";
+import { useIsSignedIn } from "./useIsSignedIn";
 import { useUser } from "./useUser";
 
 export function useSavedImages() {
   const { images } = useImagesStore();
   const { data } = useUser();
   const savedImages = data && "images" in data ? data.images : [];
+  const isSignedIn = useIsSignedIn();
 
   return [
     ...images
@@ -20,6 +22,7 @@ export function useSavedImages() {
         elements: JSON.parse(
           localStorage.getItem(image.id) ?? "[]",
         ) as OGElement[],
+        fromCloud: isSignedIn ? false : undefined,
       })),
     ...savedImages.map((image) => {
       const id = image.id.split(":")[1];
@@ -32,7 +35,8 @@ export function useSavedImages() {
         ...image,
         id,
         elements: JSON.parse(image.elements as string) as OGElement[],
+        fromCloud: true,
       };
     }),
-  ] as (OGImage & { elements: OGElement[] })[];
+  ] as (OGImage & { elements: OGElement[]; fromCloud?: boolean })[];
 }

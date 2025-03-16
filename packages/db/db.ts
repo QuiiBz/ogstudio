@@ -14,4 +14,4 @@ export const client = createClient({
 });
 
 export const db = drizzle(client);
-export { eq } from 'drizzle-orm'
+export { eq, and } from 'drizzle-orm'

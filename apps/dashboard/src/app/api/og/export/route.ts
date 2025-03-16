@@ -1,5 +1,3 @@
-import { kv } from "@vercel/kv";
-import { revalidatePath } from "next/cache";
 import { getSession } from "@ogstudio/auth/api";
 import { db } from "@ogstudio/db/db";
 import { imagesTable } from "@ogstudio/db/schema";
@@ -25,19 +23,22 @@ export async function POST(request: Request) {
   const { id, elements, name } = (await request.json()) as ExportRequest;
   const key = `${session.user.id}:${id}`;
 
-  await kv.set(key, JSON.stringify(elements));
+  await db
+    .insert(imagesTable)
+    .values({
+      id: key,
+      userId: session.user.id,
+      elements: JSON.stringify(elements),
+      createdAt: Date.now(),
+      name,
+    })
+    .onConflictDoUpdate({
+      target: imagesTable.id,
+      set: {
+        elements: JSON.stringify(elements),
+        name,
+      },
+    });
 
-  // upsert
-  await db.insert(imagesTable).values({
-    id: key,
-    userId: session.user.id,
-    elements: JSON.stringify(elements),
-    createdAt: Date.now(),
-    name,
-  });
-
-  const encodedKey = btoa(key);
-  revalidatePath(`/api/og/${encodedKey}`);
-
-  return Response.json({ key: encodedKey });
+  return Response.json({ key: btoa(key) });
 }

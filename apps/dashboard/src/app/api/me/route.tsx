@@ -18,8 +18,7 @@ export async function GET() {
   const images = await db
     .select()
     .from(imagesTable)
-    .where(eq(imagesTable.userId, session.user.id))
-    .all();
+    .where(eq(imagesTable.userId, session.user.id));
 
   return Response.json({
     session,

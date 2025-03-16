@@ -8,11 +8,13 @@ import { type OGImage, useImagesStore } from "../../stores/imagesStore";
 import { OgImage } from "../OgImage";
 import { createElementId } from "../../lib/elements";
 import { useSavedImages } from "../../lib/hooks/useSavedImages";
+import { useDeletedSavedImage } from "../../lib/hooks/useDeletedSavedImage";
 
 export function MyImagesSplash() {
   const { createImage, copyImage, deleteImage } = useImagesStore();
   const images = useSavedImages();
   const router = useRouter();
+  const deleteSavedImage = useDeletedSavedImage();
 
   return (
     <Flex direction="column" gap="4">
@@ -58,12 +60,14 @@ export function MyImagesSplash() {
             }}
             deletable={() => {
               deleteImage(image);
+              void deleteSavedImage(image);
             }}
             elements={image.elements}
             href={`/editor?i=${image.id}`}
             key={image.id}
             mockDynamicTexts
             name={image.name}
+            cloudSaved={image.fromCloud}
           />
         ))}
       </Grid>
