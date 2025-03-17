@@ -52,7 +52,7 @@ export function Splash({ children }: OgSplashProps) {
             className="sm:items-center items-start"
           >
             <Flex align="center" gap="6">
-              <Text asChild size="6">
+              <Text asChild size="5" className="font-[Raleway]" weight="medium">
                 <Link className="flex gap-2 items-center min-w-fit" href="/">
                   <Image
                     alt="OG Studio logo"

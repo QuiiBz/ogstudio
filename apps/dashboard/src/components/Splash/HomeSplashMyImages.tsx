@@ -1,6 +1,7 @@
 "use client";
-import { Flex, Heading, Text } from "@radix-ui/themes";
+import { Button, Flex, Heading, Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { type OGImage, useImagesStore } from "../../stores/imagesStore";
 import { OgImage } from "../OgImage";
 import { AddIcon } from "../icons/AddIcon";
@@ -27,13 +28,25 @@ export function HomeSplashMyImages() {
         width="300px"
         className="mr-4 lg:mr-[90px]"
       >
-        <Heading as="h2" size="5" weight="regular">
+        <Heading as="h2" size="5" weight="medium" className="font-[Raleway]">
           {images.length ? "Jump back where you were" : "Or create your own"}
         </Heading>
         <Text as="p" size="2">
           Create your own Open Graph images from scratch and export them as
           SVG/PNG or to dynamic URLs.
         </Text>
+        {images.length ? (
+          <Button
+            asChild
+            className="w-fit"
+            color="indigo"
+            variant="soft"
+            radius="full"
+            mt="auto"
+          >
+            <Link href="/my-images">View my images</Link>
+          </Button>
+        ) : null}
       </Flex>
       <OgImage
         onClick={() => {

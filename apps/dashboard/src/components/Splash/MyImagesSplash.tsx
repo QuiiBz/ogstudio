@@ -19,10 +19,10 @@ export function MyImagesSplash() {
       <Flex direction="column" align="center" gap="2" py="8">
         <Heading
           as="h1"
-          size="6"
-          weight="regular"
+          size="7"
+          weight="medium"
           align="center"
-          className="w-2/3 lg:w-full"
+          className="w-2/3 lg:w-full font-[Raleway]"
         >
           My Open Graph images
         </Heading>

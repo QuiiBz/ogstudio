@@ -73,7 +73,13 @@ export function OpenGraphImageChecker() {
   return (
     <>
       <Flex direction="column" align="center" gap="2" py="8">
-        <Heading as="h1" size="6" weight="regular">
+        <Heading
+          as="h1"
+          size="7"
+          weight="medium"
+          align="center"
+          className="font-[Raleway]"
+        >
           Open Graph Image Checker
         </Heading>
         <Text as="p" className="w-2/3 md:w-1/3" size="2" align="center">

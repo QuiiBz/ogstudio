@@ -20,7 +20,7 @@ export function HomeSplash() {
           minWidth="300px"
           className="mr-4 lg:mr-[90px]"
         >
-          <Heading as="h2" size="5" weight="regular">
+          <Heading as="h2" size="5" weight="medium" className="font-[Raleway]">
             Use pre-made templates
           </Heading>
           <Text as="p" size="2">
