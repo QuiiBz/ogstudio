@@ -62,19 +62,21 @@ export function Download({ dynamicTexts }: DownloadProps) {
       </Heading>
       <Flex gap="2" mt="2">
         <Button
-          color="green"
+          color="indigo"
           disabled={isLoading}
           onClick={() => exportSvg()}
           variant="soft"
+          radius="full"
         >
           <SvgIcon />
           Download SVG
         </Button>
         <Button
-          color="green"
+          color="indigo"
           disabled={isLoading}
           onClick={() => exportPng()}
           variant="soft"
+          radius="full"
         >
           <PngIcon />
           Download PNG

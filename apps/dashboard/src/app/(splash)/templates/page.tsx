@@ -1,7 +1,7 @@
 import { TemplatesSplash } from "../../../components/Splash/TemplatesSplash";
 
 export const metadata = {
-  title: "Templates - OG Studio",
+  title: "Open Graph image templates - OG Studio",
   description:
     "Free, pre-made Open Graph image templates. Create static or dynamic OG (Open Graph) images with an intuitive, Figma-like visual editor.",
   openGraph: {

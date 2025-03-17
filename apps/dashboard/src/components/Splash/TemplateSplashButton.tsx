@@ -19,12 +19,13 @@ export function TemplateSplashButton({ template }: TemplateSplashButtonProps) {
 
   return (
     <Button
-      className="w-fit"
-      color="green"
+      className="cursor-pointer"
+      color="indigo"
+      variant="classic"
+      radius="full"
       onClick={useTemplate}
-      variant="soft"
     >
-      Start with this template
+      Edit template
     </Button>
   );
 }

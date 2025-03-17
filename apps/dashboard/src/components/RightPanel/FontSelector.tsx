@@ -5,7 +5,6 @@ import {
   Flex,
   Badge,
   IconButton,
-  Tooltip,
 } from "@radix-ui/themes";
 import Fuse from "fuse.js";
 import { useMemo, useState } from "react";
@@ -40,11 +39,9 @@ export function FontSelector({ selectedElement }: FontSelectorProps) {
   return (
     <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
       <Popover.Trigger>
-        <Tooltip content="Add font">
-          <IconButton size="2" variant="soft" color="gray">
-            <AddIcon />
-          </IconButton>
-        </Tooltip>
+        <IconButton size="2" variant="soft" color="gray">
+          <AddIcon />
+        </IconButton>
       </Popover.Trigger>
       <Popover.Content width="300px">
         <Flex gap="3" direction="column">
@@ -80,9 +77,9 @@ export function FontSelector({ selectedElement }: FontSelectorProps) {
               >
                 <FontPreview font={font} />
                 {DEFAULT_FONTS.includes(font) ? (
-                  <Badge color="blue">Pre-installed</Badge>
+                  <Badge color="indigo">Pre-installed</Badge>
                 ) : installedFonts.has(font) ? (
-                  <Badge color="green">Installed</Badge>
+                  <Badge color="indigo">Installed</Badge>
                 ) : null}
               </Button>
             ))}

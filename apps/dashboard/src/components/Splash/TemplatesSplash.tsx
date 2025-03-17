@@ -1,27 +1,30 @@
-import { Button, Flex, Grid, Heading } from "@radix-ui/themes";
-import Link from "next/link";
-import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
+import { Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import { TEMPLATES, toTemplateSlug } from "../../lib/templates";
 import { OgImage } from "../OgImage";
 
 export function TemplatesSplash() {
   return (
-    <Flex direction="column" gap="4">
-      <Flex align="center" justify="between">
-        <Heading as="h1" size="5" weight="regular">
-          All free Open Graph templates
+    <>
+      <Flex direction="column" align="center" gap="2" py="8">
+        <Heading
+          as="h1"
+          size="7"
+          weight="medium"
+          align="center"
+          className="w-2/3 lg:w-full font-[Raleway]"
+        >
+          All free Open Graph image templates
         </Heading>
-        <Button asChild color="gray" radius="full" variant="ghost">
-          <Link href="/">
-            <ArrowLeftIcon />
-            Back
-          </Link>
-        </Button>
+        <Text as="p" className="w-2/3 md:w-1/3" size="2" align="center">
+          Browse over {TEMPLATES.length} ready-to-use Open Graph image
+          templates, and edit them to your liking.
+        </Text>
       </Flex>
       <Grid
-        className="max-h-[427px] overflow-y-scroll no-scrollbar"
-        columns="3"
-        gap="2"
+        className="overflow-y-scroll no-scrollbar grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+        mx="auto"
+        width="fit-content"
+        gap="4"
       >
         {TEMPLATES.map((template) => (
           <OgImage
@@ -33,6 +36,6 @@ export function TemplatesSplash() {
           />
         ))}
       </Grid>
-    </Flex>
+    </>
   );
 }

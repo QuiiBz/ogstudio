@@ -2,7 +2,7 @@ import { type Metadata } from "next";
 import { Profile } from "../../../components/Profile";
 
 export const metadata: Metadata = {
-  title: "Profile - OG Studio",
+  title: "My profile - OG Studio",
   openGraph: {
     siteName: "OG Studio",
     images:

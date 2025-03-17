@@ -1,8 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Button, Flex, Grid, Heading, Text } from "@radix-ui/themes";
-import Link from "next/link";
-import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
+import { Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import { AddIcon } from "../icons/AddIcon";
 import { type OGImage, useImagesStore } from "../../stores/imagesStore";
 import { OgImage } from "../OgImage";
@@ -17,22 +15,23 @@ export function MyImagesSplash() {
   const deleteSavedImage = useDeletedSavedImage();
 
   return (
-    <Flex direction="column" gap="4">
-      <Flex align="center" justify="between">
-        <Heading as="h1" size="5" weight="regular">
+    <>
+      <Flex direction="column" align="center" gap="2" py="8">
+        <Heading
+          as="h1"
+          size="7"
+          weight="medium"
+          align="center"
+          className="w-2/3 lg:w-full font-[Raleway]"
+        >
           My Open Graph images
         </Heading>
-        <Button asChild color="gray" radius="full" variant="ghost">
-          <Link href="/">
-            <ArrowLeftIcon />
-            Back
-          </Link>
-        </Button>
       </Flex>
       <Grid
-        className="max-h-[427px] overflow-y-scroll no-scrollbar"
-        columns="3"
-        gap="2"
+        className="overflow-y-scroll no-scrollbar grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+        mx="auto"
+        width="fit-content"
+        gap="4"
       >
         <OgImage
           onClick={() => {
@@ -71,6 +70,6 @@ export function MyImagesSplash() {
           />
         ))}
       </Grid>
-    </Flex>
+    </>
   );
 }
