@@ -117,6 +117,7 @@ export function OgImage({
 
   const WrapperComponent = useMemo(() => {
     if (preview === "slack") {
+      // @ts-expect-error -- wrong types
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- wrong types
       const hostname = URL.parse(previewUrl)?.hostname ?? previewUrl;
 
