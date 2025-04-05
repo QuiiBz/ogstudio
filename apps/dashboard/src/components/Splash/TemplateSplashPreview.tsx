@@ -14,7 +14,7 @@ export function TemplateSplashPreview({ image }: TemplateSplashPreviewProps) {
   const isMobile = useIsMobile();
 
   return (
-    <Flex direction="column" gap="2">
+    <Flex direction="column" gap="2" width="fit-content" mx="auto">
       <PreviewControls />
       <OgImage preview={preview} size={isMobile ? "small" : "medium"}>
         {image}

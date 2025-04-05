@@ -8,17 +8,15 @@ import {
   TextField,
 } from "@radix-ui/themes";
 import { HexAlphaColorPicker } from "react-colorful";
-import { useMemo, type ReactNode } from "react";
+import { useMemo } from "react";
 import { useElementsStore } from "../stores/elementsStore";
-import { ColorIcon } from "./icons/ColorIcon";
 
 interface ColorPickerProps {
   value: string;
   onChange: (value: string) => void;
-  children?: ReactNode;
 }
 
-export function ColorPicker({ value, onChange, children }: ColorPickerProps) {
+export function ColorPicker({ value, onChange }: ColorPickerProps) {
   const elements = useElementsStore((state) => state.elements);
   const colors = useMemo(() => {
     // Loop through all elements and extract all colors in the image
@@ -53,8 +51,15 @@ export function ColorPicker({ value, onChange, children }: ColorPickerProps) {
   return (
     <Popover.Root>
       <Popover.Trigger>
-        <Button color="gray" style={{ color: value }} variant="soft">
-          {children ? children : <ColorIcon />}
+        <Button
+          color="gray"
+          variant="soft"
+          className="font-mono flex justify-between px-2"
+        >
+          <div
+            className="w-[14px] h-[14px] rounded-full border border-[var(--gray-6)]"
+            style={{ backgroundColor: value }}
+          />
           {value}
         </Button>
       </Popover.Trigger>
@@ -91,10 +96,9 @@ export function ColorPicker({ value, onChange, children }: ColorPickerProps) {
                   onClick={() => {
                     onChange(color);
                   }}
-                  className="rounded-md w-6 h-6 border"
+                  className="rounded-full w-6 h-6 cursor-pointer border border-[var(--gray-6)]"
                   style={{
                     backgroundColor: color,
-                    borderColor: "var(--gray-6)",
                   }}
                 />
               ))}

@@ -16,17 +16,21 @@ export const dynamic = "force-static";
 
 export default function Page() {
   return (
-    <Flex align="center" direction="column" gap="6" justify="center" mx="9">
-      <Flex align="center" direction="column" gap="2">
-        <Heading as="h1" size="5" weight="regular">
-          Sign in
-        </Heading>
-        <Text align="center" as="p" size="2" className="max-w-xs">
-          Create an account to export your images to URLs and make them
-          available in all your devices.
-        </Text>
-      </Flex>
-      <Flex align="center" direction="column" gap="2">
+    <Flex direction="column" align="center" gap="2" py="8">
+      <Heading
+        as="h1"
+        size="7"
+        weight="medium"
+        align="center"
+        className="w-2/3 lg:w-full font-[Raleway]"
+      >
+        Sign in
+      </Heading>
+      <Text as="p" className="w-2/3 md:w-1/3" size="2" align="center">
+        Create an account to export your images to URLs and make them available
+        across your devices.
+      </Text>
+      <Flex direction="column" gap="2" mt="4" align="center">
         <LoginButtons />
       </Flex>
     </Flex>
