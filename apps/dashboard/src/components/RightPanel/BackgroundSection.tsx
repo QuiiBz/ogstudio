@@ -9,9 +9,7 @@ import {
 } from "@radix-ui/themes";
 import type { OGElement } from "../../lib/types";
 import { DeleteIcon } from "../icons/DeleteIcon";
-import { StartIcon } from "../icons/StartIcon";
 import { AddIcon } from "../icons/AddIcon";
-import { EndIcon } from "../icons/EndIcon";
 import { SquareIcon } from "../icons/SquareIcon";
 import { LinkIcon } from "../icons/LinkIcon";
 import { useElementsStore } from "../../stores/elementsStore";
@@ -97,9 +95,7 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                   });
                 }}
                 value={selectedElement.gradient.start}
-              >
-                <StartIcon />
-              </ColorPicker>
+              />
               <ColorPicker
                 onChange={(end) => {
                   updateElement({
@@ -112,9 +108,7 @@ export function BackgroundSection({ selectedElement }: BackgroundSectionProps) {
                   });
                 }}
                 value={selectedElement.gradient.end}
-              >
-                <EndIcon />
-              </ColorPicker>
+              />
               <Select.Root
                 onValueChange={(value) => {
                   updateElement({
