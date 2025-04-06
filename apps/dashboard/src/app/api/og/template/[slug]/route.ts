@@ -3,16 +3,22 @@ import {
   exportToPng,
   exportToSvg,
 } from "../../../../../lib/export";
-import { TEMPLATES } from "../../../../../lib/templates";
+import { TEMPLATES, toTemplateSlug } from "../../../../../lib/templates";
 import { loadFonts } from "../../../../../lib/fonts";
+
+export function generateStaticParams() {
+  return TEMPLATES.map((template) => ({ slug: toTemplateSlug(template) }));
+}
 
 export async function GET(
   _: Request,
-  { params }: { params: Promise<{ name: string }> },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
-  const { name } = await params;
-  const decodedName = decodeURIComponent(name);
-  const template = TEMPLATES.find((t) => t.name.toLowerCase() === decodedName);
+  const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug);
+  const template = TEMPLATES.find(
+    (current) => toTemplateSlug(current) === decodedSlug,
+  );
 
   if (!template) {
     return new Response("Template not found", { status: 404 });

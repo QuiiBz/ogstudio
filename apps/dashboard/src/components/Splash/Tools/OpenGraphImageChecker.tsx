@@ -89,10 +89,11 @@ export function OpenGraphImageChecker() {
         <Flex gap="2" mt="4" align="center">
           <TextField.Root
             radius="full"
+            className="min-w-48"
             onChange={(event) => {
               debounced(event.target.value);
             }}
-            placeholder="https://ogstudio.app"
+            placeholder="e.g. ogstudio.app"
           />
         </Flex>
       </Flex>
