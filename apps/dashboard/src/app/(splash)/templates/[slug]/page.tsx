@@ -10,7 +10,7 @@ interface TemplateProps {
 }
 
 export function generateStaticParams() {
-  return TEMPLATES.map((template) => ({ slug: template.name.toLowerCase() }));
+  return TEMPLATES.map((template) => ({ slug: toTemplateSlug(template) }));
 }
 
 export async function generateMetadata({
@@ -35,11 +35,7 @@ export async function generateMetadata({
     description: `${template.description} Edit this free template in an intuitive, Figma-like visual editor, and export it to SVG/PNG or to a dynamic URL.`,
     openGraph: {
       siteName: "OG Studio",
-      images: `https://ogstudio.app/api/og/MWI5enZ0YmJ6M3A2c3hzOnlkN21nNDl5eA==?title=${encodeURIComponent(
-        `${template.name} template`,
-      )}&description=${encodeURIComponent(template.description)}&image=${encodeURIComponent(
-        `https://ogstudio.app/api/og/template/${toTemplateSlug(template)}`,
-      )}`,
+      images: `https://ogstudio.app/api/og/template/${toTemplateSlug(template)}`,
       type: "website",
       url: `https://ogstudio.app/templates/${toTemplateSlug(template)}`,
     },
