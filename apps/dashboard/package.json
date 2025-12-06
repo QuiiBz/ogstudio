@@ -26,7 +26,7 @@
     "clsx": "^2.1.1",
     "fuse.js": "^7.0.0",
     "htmlparser2": "^9.1.0",
-    "next": "15.2.0",
+    "next": "15.2.6",
     "next-themes": "^0.4.4",
     "oslo": "1.2.0",
     "react": "19.0.0",
@@ -39,7 +39,7 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "15.2.0",
+    "@next/eslint-plugin-next": "15.2.6",
     "@ogstudio/eslint": "workspace:*",
     "@ogstudio/typescript": "workspace:*",
     "@tailwindcss/postcss": "^4.0.9",
